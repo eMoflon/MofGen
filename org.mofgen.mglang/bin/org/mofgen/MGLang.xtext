@@ -1,0 +1,110 @@
+grammar org.mofgen.MGLang with org.eclipse.xtext.common.Terminals
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+generate mGLang "http://www.mofgen.org/MGLang"
+
+// TODO: Arithmetics von Re.action auslagern und dann mit in eMoflon-Projekt packen und importieren, wo es benötigt wird?
+MofgenFile:
+	(imports+=Import)*
+	(patterns+=Pattern |
+	generators+=Generator)*;
+
+Import:
+	'import' name=STRING 'as' alias=ID;
+
+Pattern:
+//(abstract?='abstract')? // 'Abstract' necessary? TODO
+	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (nodes+=PatternNodeCreation |
+	refsAssigns+=NodeReferenceOrAssignment)* //TODO: Validate order of node creation and assignments?
+	'}' return=PatternReturn;
+
+PatternReturn: //Is a return obligatory? TODO
+	'return' thisUsed?='this' // ('.' returnValue=[Node])? TODO
+	// TODO Is a this obligatory? And what does it do exactly?
+;
+
+// Nodes
+PatternNodeCreation:
+	node=Node (constructor=NodeConstructor)?;
+
+NodeConstructor:
+	{NodeConstructor} '(' (params+=ID)* ')';
+
+Node:
+	type=[ecore::EClass] name=ID;
+
+NodeReferenceOrAssignment:
+	(PatternNodeReference | Assignment) ('[' condition=Condition ']')?;
+
+Condition:
+	lhs=[Parameter] // EditorRelation only needed for non-booleans
+	(relation=EditorRelation rhs=[Parameter])?;
+
+PatternNodeReference:
+	source=[Node] '-' type=[ecore::EReference] '->' target=[Node];
+	//TODO: "doc -entries-> entry" fügt einen entry in entries hinzu oder weist entries objekt entry zu? Das führt zu zweideutigkeiten so
+
+Assignment:
+	object=NodeAttributeCall PATTERN_ASSIGNMENT_OP value=ID //TODO 'ID' is probably not the right use here? Maybe introduce new Rule only for possible assignments
+;
+
+NodeAttributeCall:
+	object=[Node] '.' attribute=[ecore::EAttribute]
+;
+
+Parameter:
+	name=ID ':' type=[ecore::EClassifier];
+
+Generator:
+	'generator' name=ID '('
+	// TODO	
+	')' '{' (commands+=GeneratorElement)* '}';
+
+GeneratorElement:
+	GeneratorCommand | ForLoop
+;
+
+GeneratorCommand: //Only serves as super class for all possible commands within generator
+	PatternCall | PatternObjectCreation; //TODO Wie hier patterns wie "examplePattern" und PatternObjects dazu mittels "ExamplePattern" ermöglichen? Eventuell in Scoping einklinken, alle Patterns holen und dann in PatternObject übersetzen?
+
+PatternCall:
+	calledPattern=[Pattern] ('(' (params+=PatternObject)* ')')?;
+
+PatternObjectCreation:
+	pObject=PatternObject ASSIGNMENT_OP patternCall=PatternCall;
+
+PatternObject:
+	type=[Pattern] name=ID;
+
+ForLoop:
+	'for' iteratorVar=ID 'in' iteratingCondition=ForCondition '{'
+		(commands += GeneratorCommand)*	
+	'}' 
+;
+
+ForCondition:
+	ForEachCollection | ForRange
+;
+
+ForEachCollection:
+	coll=NodeAttributeCall
+;
+
+ForRange:
+	start=INT ':' end=INT
+;
+
+
+enum EditorRelation:
+	GREATER='>' |
+	GREATER_OR_EQUAL='>=' |
+	EQUAL='==' |
+	UNEQUAL='!=' |
+	SMALLER_OR_EQUAL='<=' |
+	SMALLER='<';
+
+terminal PATTERN_ASSIGNMENT_OP:
+	':=';
+
+terminal ASSIGNMENT_OP:
+	'=';
