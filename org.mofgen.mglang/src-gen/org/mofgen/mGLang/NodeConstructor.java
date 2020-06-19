@@ -26,15 +26,15 @@ import org.eclipse.emf.ecore.EObject;
 public interface NodeConstructor extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Params</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Params</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.LiteralExpression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Params</em>' attribute list.
+   * @return the value of the '<em>Params</em>' containment reference list.
    * @see org.mofgen.mGLang.MGLangPackage#getNodeConstructor_Params()
-   * @model unique="false"
+   * @model containment="true"
    * @generated
    */
-  EList<String> getParams();
+  EList<LiteralExpression> getParams();
 
 } // NodeConstructor

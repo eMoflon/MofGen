@@ -10,6 +10,11 @@ import org.mofgen.utils.MofgenModelUtils
 import org.eclipse.xtext.scoping.Scopes
 import org.mofgen.mGLang.MofgenFile
 import org.mofgen.mGLang.PatternNodeReference
+import org.eclipse.xtext.scoping.IScope
+import org.mofgen.mGLang.Node
+import org.eclipse.xtext.EcoreUtil2
+import org.mofgen.mGLang.Assignment
+import org.mofgen.mGLang.NodeAttributeCall
 
 /**
  * This class contains custom scoping description.
@@ -19,38 +24,60 @@ import org.mofgen.mGLang.PatternNodeReference
  */
 class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
-//	override getScope(EObject context, EReference reference) {
-//		if(isReferenceSource(context, reference)){
-//			return getScopeForClasses(context as EditorNodeReference)
-//		}
-//		if(isReferenceType(context, reference)){
-//			return getScopeForReferenceType(context as EditorNodeReference)
-//		}
-//		if(isReferenceTarget(context, reference)){
-//			return getScopeForClasses(context as EditorNodeReference)
-//		}
-//	}
-
-	def getScopeForReferenceType(PatternNodeReference ref){
-		val src = ref.source
-		val file = getRootFile(ref)
-		val classes = MofgenModelUtils.getClasses(file)
-		val srcClass = classes.filter[c|c.name.equals(src.name)].toList.get(0)
-		return Scopes.scopeFor(srcClass.EAllReferences)
-	}
-
-	def getScopeForClasses(PatternNodeReference ref){
-		val file = getRootFile(ref)
-		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
-	}
-
-	def getRootFile(EObject context){
-		var traverser = context
-		while(!(context instanceof MofgenFile)){
-			traverser = traverser.eContainer
+	override getScope(EObject context, EReference reference) {
+		if(isNodeCreation(context, reference)){
+			return getScopeForNodeCreationType(context as Node)
+		}
+		if(isReferenceType(context, reference)){
+			return getScopeForReferenceType(context as PatternNodeReference)
+		}
+		if(isReferenceTarget(context, reference)){
+			return getScopeForReferenceTarget(context as PatternNodeReference)
+		}
+		if(isNodeAttributeCallObject(context, reference)){
+			return getScopeForNodeAttributeCallObject(context as NodeAttributeCall)
+		}
+		if(isNodeAttributeCallAttribute(context, reference)){
+			return getScopeForNodeAttributeCallAttribute(context as NodeAttributeCall)
 		}
 		
-		return traverser as MofgenFile
+		return super.getScope(context, reference)
+		//return IScope.NULLSCOPE;
+	}
+	
+	def getScopeForNodeCreationType(Node n){
+		val file = getRootFile(n)
+		val classes = MofgenModelUtils.getClasses(file)
+		return Scopes.scopeFor(classes)
+	}
+
+	def getScopeForReferenceType(PatternNodeReference ref){
+		val file = getRootFile(ref)
+		val src = ref.source
+		val classes = MofgenModelUtils.getClasses(file)
+		val sourceClass = classes.filter[c|c == src.type].get(0)
+		return Scopes.scopeFor(sourceClass.EAllReferences)
+	}
+	
+	def getScopeForAllNodes(EObject context){
+		val root = getRootFile(context)
+		val allNodes = EcoreUtil2.getAllContentsOfType(root, Node)
+		return Scopes.scopeFor(allNodes)
+	}
+	
+	def getScopeForReferenceTarget(PatternNodeReference ref){
+		return getScopeForAllNodes(ref)
+	}
+	
+	def getScopeForNodeAttributeCallObject(NodeAttributeCall call){
+		return getScopeForAllNodes(call)
+	}
+	
+	def getScopeForNodeAttributeCallAttribute(NodeAttributeCall call){
+		val objType = call.object.type
+		val file = getRootFile(call)
+		val clazz = MofgenModelUtils.getClasses(file).filter[c|c == objType].get(0)
+		return Scopes.scopeFor(clazz.EAllAttributes)
 	}
 
 	def isReferenceSource(EObject context, EReference reference){
@@ -65,4 +92,24 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return context instanceof PatternNodeReference && reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TARGET
 	}
 	
+	def isNodeCreation(EObject context, EReference reference){
+		return context instanceof Node && reference == MGLangPackage.Literals.NODE__TYPE
+	}
+	
+	def isNodeAttributeCallObject(EObject context, EReference reference){
+		return context instanceof NodeAttributeCall && reference == MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__OBJECT
+	}
+	
+	def isNodeAttributeCallAttribute(EObject context, EReference reference){
+		return context instanceof NodeAttributeCall && reference == MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE
+	}
+	
+	def getRootFile(EObject context){
+		var traverser = context
+		while(!(traverser instanceof MofgenFile)){
+			traverser = traverser.eContainer
+		}
+		
+		return traverser as MofgenFile
+	}
 }

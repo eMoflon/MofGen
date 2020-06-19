@@ -89,6 +89,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.FOR_CONDITION: return createForCondition();
       case MGLangPackage.FOR_EACH_COLLECTION: return createForEachCollection();
       case MGLangPackage.FOR_RANGE: return createForRange();
+      case MGLangPackage.LITERAL_EXPRESSION: return createLiteralExpression();
+      case MGLangPackage.BOOLEAN_LITERAL: return createBooleanLiteral();
+      case MGLangPackage.NUMBER_LITERAL: return createNumberLiteral();
+      case MGLangPackage.STRING_LITERAL: return createStringLiteral();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -402,6 +406,54 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     ForRangeImpl forRange = new ForRangeImpl();
     return forRange;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public LiteralExpression createLiteralExpression()
+  {
+    LiteralExpressionImpl literalExpression = new LiteralExpressionImpl();
+    return literalExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public BooleanLiteral createBooleanLiteral()
+  {
+    BooleanLiteralImpl booleanLiteral = new BooleanLiteralImpl();
+    return booleanLiteral;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NumberLiteral createNumberLiteral()
+  {
+    NumberLiteralImpl numberLiteral = new NumberLiteralImpl();
+    return numberLiteral;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public StringLiteral createStringLiteral()
+  {
+    StringLiteralImpl stringLiteral = new StringLiteralImpl();
+    return stringLiteral;
   }
 
   /**

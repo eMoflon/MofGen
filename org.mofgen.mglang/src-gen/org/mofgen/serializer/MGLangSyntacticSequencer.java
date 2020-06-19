@@ -33,6 +33,8 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (ruleCall.getRule() == grammarAccess.getASSIGNMENT_OPRule())
 			return getASSIGNMENT_OPToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getNumberLiteralRule())
+			return getNumberLiteralToken(semanticObject, ruleCall, node);
 		else if (ruleCall.getRule() == grammarAccess.getPATTERN_ASSIGNMENT_OPRule())
 			return getPATTERN_ASSIGNMENT_OPToken(semanticObject, ruleCall, node);
 		return "";
@@ -46,6 +48,16 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 		if (node != null)
 			return getTokenText(node);
 		return "=";
+	}
+	
+	/**
+	 * NumberLiteral:
+	 *   ('-')? INT ('.' INT)?;
+	 */
+	protected String getNumberLiteralToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "";
 	}
 	
 	/**

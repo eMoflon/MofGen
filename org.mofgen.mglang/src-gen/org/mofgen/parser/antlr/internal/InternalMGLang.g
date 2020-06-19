@@ -491,19 +491,20 @@ ruleNodeConstructor returns [EObject current=null]
 		}
 		(
 			(
-				lv_params_2_0=RULE_ID
 				{
-					newLeafNode(lv_params_2_0, grammarAccess.getNodeConstructorAccess().getParamsIDTerminalRuleCall_2_0());
+					newCompositeNode(grammarAccess.getNodeConstructorAccess().getParamsLiteralExpressionParserRuleCall_2_0());
 				}
+				lv_params_2_0=ruleLiteralExpression
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getNodeConstructorRule());
+						$current = createModelElementForParent(grammarAccess.getNodeConstructorRule());
 					}
-					addWithLastConsumed(
+					add(
 						$current,
 						"params",
 						lv_params_2_0,
-						"org.eclipse.xtext.common.Terminals.ID");
+						"org.mofgen.MGLang.LiteralExpression");
+					afterParserOrEnumRuleCall();
 				}
 			)
 		)*
@@ -782,17 +783,17 @@ ruleAssignment returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getAssignmentAccess().getObjectNodeAttributeCallParserRuleCall_0_0());
+					newCompositeNode(grammarAccess.getAssignmentAccess().getTargetNodeAttributeCallParserRuleCall_0_0());
 				}
-				lv_object_0_0=ruleNodeAttributeCall
+				lv_target_0_0=ruleNodeAttributeCall
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getAssignmentRule());
 					}
 					set(
 						$current,
-						"object",
-						lv_object_0_0,
+						"target",
+						lv_target_0_0,
 						"org.mofgen.MGLang.NodeAttributeCall");
 					afterParserOrEnumRuleCall();
 				}
@@ -804,19 +805,20 @@ ruleAssignment returns [EObject current=null]
 		}
 		(
 			(
-				lv_value_2_0=RULE_ID
 				{
-					newLeafNode(lv_value_2_0, grammarAccess.getAssignmentAccess().getValueIDTerminalRuleCall_2_0());
+					newCompositeNode(grammarAccess.getAssignmentAccess().getValueLiteralExpressionParserRuleCall_2_0());
 				}
+				lv_value_2_0=ruleLiteralExpression
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getAssignmentRule());
+						$current = createModelElementForParent(grammarAccess.getAssignmentRule());
 					}
-					setWithLastConsumed(
+					set(
 						$current,
 						"value",
 						lv_value_2_0,
-						"org.eclipse.xtext.common.Terminals.ID");
+						"org.mofgen.MGLang.LiteralExpression");
+					afterParserOrEnumRuleCall();
 				}
 			)
 		)
@@ -1465,6 +1467,153 @@ ruleForRange returns [EObject current=null]
 				}
 			)
 		)
+	)
+;
+
+// Entry rule entryRuleLiteralExpression
+entryRuleLiteralExpression returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getLiteralExpressionRule()); }
+	iv_ruleLiteralExpression=ruleLiteralExpression
+	{ $current=$iv_ruleLiteralExpression.current; }
+	EOF;
+
+// Rule LiteralExpression
+ruleLiteralExpression returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getLiteralExpressionAccess().getBooleanLiteralAction_0_0(),
+						$current);
+				}
+			)
+			(
+				(
+					(
+						lv_value_1_1='true'
+						{
+							newLeafNode(lv_value_1_1, grammarAccess.getLiteralExpressionAccess().getValueTrueKeyword_0_1_0_0());
+						}
+						{
+							if ($current==null) {
+								$current = createModelElement(grammarAccess.getLiteralExpressionRule());
+							}
+							setWithLastConsumed($current, "value", lv_value_1_1, null);
+						}
+						    |
+						lv_value_1_2='false'
+						{
+							newLeafNode(lv_value_1_2, grammarAccess.getLiteralExpressionAccess().getValueFalseKeyword_0_1_0_1());
+						}
+						{
+							if ($current==null) {
+								$current = createModelElement(grammarAccess.getLiteralExpressionRule());
+							}
+							setWithLastConsumed($current, "value", lv_value_1_2, null);
+						}
+					)
+				)
+			)
+		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getLiteralExpressionAccess().getNumberLiteralAction_1_0(),
+						$current);
+				}
+			)
+			{
+				newCompositeNode(grammarAccess.getLiteralExpressionAccess().getNumberLiteralParserRuleCall_1_1());
+			}
+			ruleNumberLiteral
+			{
+				afterParserOrEnumRuleCall();
+			}
+		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getLiteralExpressionAccess().getStringLiteralAction_2_0(),
+						$current);
+				}
+			)
+			(
+				(
+					lv_value_5_0=RULE_STRING
+					{
+						newLeafNode(lv_value_5_0, grammarAccess.getLiteralExpressionAccess().getValueSTRINGTerminalRuleCall_2_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getLiteralExpressionRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"value",
+							lv_value_5_0,
+							"org.eclipse.xtext.common.Terminals.STRING");
+					}
+				)
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleNumberLiteral
+entryRuleNumberLiteral returns [String current=null]:
+	{ newCompositeNode(grammarAccess.getNumberLiteralRule()); }
+	iv_ruleNumberLiteral=ruleNumberLiteral
+	{ $current=$iv_ruleNumberLiteral.current.getText(); }
+	EOF;
+
+// Rule NumberLiteral
+ruleNumberLiteral returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			kw='-'
+			{
+				$current.merge(kw);
+				newLeafNode(kw, grammarAccess.getNumberLiteralAccess().getHyphenMinusKeyword_0());
+			}
+		)?
+		this_INT_1=RULE_INT
+		{
+			$current.merge(this_INT_1);
+		}
+		{
+			newLeafNode(this_INT_1, grammarAccess.getNumberLiteralAccess().getINTTerminalRuleCall_1());
+		}
+		(
+			kw='.'
+			{
+				$current.merge(kw);
+				newLeafNode(kw, grammarAccess.getNumberLiteralAccess().getFullStopKeyword_2_0());
+			}
+			this_INT_3=RULE_INT
+			{
+				$current.merge(this_INT_3);
+			}
+			{
+				newLeafNode(this_INT_3, grammarAccess.getNumberLiteralAccess().getINTTerminalRuleCall_2_1());
+			}
+		)?
 	)
 ;
 

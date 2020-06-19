@@ -13,7 +13,7 @@ package org.mofgen.mGLang;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.Assignment#getObject <em>Object</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.Assignment#getTarget <em>Target</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Assignment#getValue <em>Value</em>}</li>
  * </ul>
  *
@@ -24,47 +24,47 @@ package org.mofgen.mGLang;
 public interface Assignment extends NodeReferenceOrAssignment
 {
   /**
-   * Returns the value of the '<em><b>Object</b></em>' containment reference.
+   * Returns the value of the '<em><b>Target</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Object</em>' containment reference.
-   * @see #setObject(NodeAttributeCall)
-   * @see org.mofgen.mGLang.MGLangPackage#getAssignment_Object()
+   * @return the value of the '<em>Target</em>' containment reference.
+   * @see #setTarget(NodeAttributeCall)
+   * @see org.mofgen.mGLang.MGLangPackage#getAssignment_Target()
    * @model containment="true"
    * @generated
    */
-  NodeAttributeCall getObject();
+  NodeAttributeCall getTarget();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.Assignment#getObject <em>Object</em>}' containment reference.
+   * Sets the value of the '{@link org.mofgen.mGLang.Assignment#getTarget <em>Target</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Object</em>' containment reference.
-   * @see #getObject()
+   * @param value the new value of the '<em>Target</em>' containment reference.
+   * @see #getTarget()
    * @generated
    */
-  void setObject(NodeAttributeCall value);
+  void setTarget(NodeAttributeCall value);
 
   /**
-   * Returns the value of the '<em><b>Value</b></em>' attribute.
+   * Returns the value of the '<em><b>Value</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Value</em>' attribute.
-   * @see #setValue(String)
+   * @return the value of the '<em>Value</em>' containment reference.
+   * @see #setValue(LiteralExpression)
    * @see org.mofgen.mGLang.MGLangPackage#getAssignment_Value()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  String getValue();
+  LiteralExpression getValue();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.Assignment#getValue <em>Value</em>}' attribute.
+   * Sets the value of the '{@link org.mofgen.mGLang.Assignment#getValue <em>Value</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Value</em>' attribute.
+   * @param value the new value of the '<em>Value</em>' containment reference.
    * @see #getValue()
    * @generated
    */
-  void setValue(String value);
+  void setValue(LiteralExpression value);
 
 } // Assignment

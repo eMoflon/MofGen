@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.mofgen.mGLang.Assignment;
+import org.mofgen.mGLang.BooleanLiteral;
 import org.mofgen.mGLang.Condition;
 import org.mofgen.mGLang.EditorRelation;
 import org.mofgen.mGLang.ForCondition;
@@ -22,6 +23,7 @@ import org.mofgen.mGLang.Generator;
 import org.mofgen.mGLang.GeneratorCommand;
 import org.mofgen.mGLang.GeneratorElement;
 import org.mofgen.mGLang.Import;
+import org.mofgen.mGLang.LiteralExpression;
 import org.mofgen.mGLang.MGLangFactory;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MofgenFile;
@@ -29,6 +31,7 @@ import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.NodeAttributeCall;
 import org.mofgen.mGLang.NodeConstructor;
 import org.mofgen.mGLang.NodeReferenceOrAssignment;
+import org.mofgen.mGLang.NumberLiteral;
 import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternCall;
@@ -37,6 +40,7 @@ import org.mofgen.mGLang.PatternNodeReference;
 import org.mofgen.mGLang.PatternObject;
 import org.mofgen.mGLang.PatternObjectCreation;
 import org.mofgen.mGLang.PatternReturn;
+import org.mofgen.mGLang.StringLiteral;
 
 /**
  * <!-- begin-user-doc -->
@@ -206,6 +210,34 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   private EClass forRangeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass literalExpressionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass booleanLiteralEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass numberLiteralEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass stringLiteralEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -492,9 +524,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getNodeConstructor_Params()
+  public EReference getNodeConstructor_Params()
   {
-    return (EAttribute)nodeConstructorEClass.getEStructuralFeatures().get(0);
+    return (EReference)nodeConstructorEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -657,7 +689,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getAssignment_Object()
+  public EReference getAssignment_Target()
   {
     return (EReference)assignmentEClass.getEStructuralFeatures().get(0);
   }
@@ -668,9 +700,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getAssignment_Value()
+  public EReference getAssignment_Value()
   {
-    return (EAttribute)assignmentEClass.getEStructuralFeatures().get(1);
+    return (EReference)assignmentEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1009,6 +1041,72 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
+  public EClass getLiteralExpression()
+  {
+    return literalExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getBooleanLiteral()
+  {
+    return booleanLiteralEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getBooleanLiteral_Value()
+  {
+    return (EAttribute)booleanLiteralEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getNumberLiteral()
+  {
+    return numberLiteralEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getStringLiteral()
+  {
+    return stringLiteralEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getStringLiteral_Value()
+  {
+    return (EAttribute)stringLiteralEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EEnum getEditorRelation()
   {
     return editorRelationEEnum;
@@ -1069,7 +1167,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(patternNodeCreationEClass, PATTERN_NODE_CREATION__CONSTRUCTOR);
 
     nodeConstructorEClass = createEClass(NODE_CONSTRUCTOR);
-    createEAttribute(nodeConstructorEClass, NODE_CONSTRUCTOR__PARAMS);
+    createEReference(nodeConstructorEClass, NODE_CONSTRUCTOR__PARAMS);
 
     nodeEClass = createEClass(NODE);
     createEReference(nodeEClass, NODE__TYPE);
@@ -1089,8 +1187,8 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(patternNodeReferenceEClass, PATTERN_NODE_REFERENCE__TARGET);
 
     assignmentEClass = createEClass(ASSIGNMENT);
-    createEReference(assignmentEClass, ASSIGNMENT__OBJECT);
-    createEAttribute(assignmentEClass, ASSIGNMENT__VALUE);
+    createEReference(assignmentEClass, ASSIGNMENT__TARGET);
+    createEReference(assignmentEClass, ASSIGNMENT__VALUE);
 
     nodeAttributeCallEClass = createEClass(NODE_ATTRIBUTE_CALL);
     createEReference(nodeAttributeCallEClass, NODE_ATTRIBUTE_CALL__OBJECT);
@@ -1134,6 +1232,16 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEAttribute(forRangeEClass, FOR_RANGE__START);
     createEAttribute(forRangeEClass, FOR_RANGE__END);
 
+    literalExpressionEClass = createEClass(LITERAL_EXPRESSION);
+
+    booleanLiteralEClass = createEClass(BOOLEAN_LITERAL);
+    createEAttribute(booleanLiteralEClass, BOOLEAN_LITERAL__VALUE);
+
+    numberLiteralEClass = createEClass(NUMBER_LITERAL);
+
+    stringLiteralEClass = createEClass(STRING_LITERAL);
+    createEAttribute(stringLiteralEClass, STRING_LITERAL__VALUE);
+
     // Create enums
     editorRelationEEnum = createEEnum(EDITOR_RELATION);
   }
@@ -1175,6 +1283,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     forLoopEClass.getESuperTypes().add(this.getGeneratorElement());
     forEachCollectionEClass.getESuperTypes().add(this.getForCondition());
     forRangeEClass.getESuperTypes().add(this.getForCondition());
+    booleanLiteralEClass.getESuperTypes().add(this.getLiteralExpression());
+    numberLiteralEClass.getESuperTypes().add(this.getLiteralExpression());
+    stringLiteralEClass.getESuperTypes().add(this.getLiteralExpression());
 
     // Initialize classes and features; add operations and parameters
     initEClass(mofgenFileEClass, MofgenFile.class, "MofgenFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1201,7 +1312,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getPatternNodeCreation_Constructor(), this.getNodeConstructor(), null, "constructor", null, 0, 1, PatternNodeCreation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeConstructorEClass, NodeConstructor.class, "NodeConstructor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getNodeConstructor_Params(), ecorePackage.getEString(), "params", null, 0, -1, NodeConstructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNodeConstructor_Params(), this.getLiteralExpression(), null, "params", null, 0, -1, NodeConstructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNode_Type(), ecorePackage.getEClass(), null, "type", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1221,8 +1332,8 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getPatternNodeReference_Target(), this.getNode(), null, "target", null, 0, 1, PatternNodeReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(assignmentEClass, Assignment.class, "Assignment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAssignment_Object(), this.getNodeAttributeCall(), null, "object", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getAssignment_Value(), ecorePackage.getEString(), "value", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAssignment_Target(), this.getNodeAttributeCall(), null, "target", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAssignment_Value(), this.getLiteralExpression(), null, "value", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeAttributeCallEClass, NodeAttributeCall.class, "NodeAttributeCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNodeAttributeCall_Object(), this.getNode(), null, "object", null, 0, 1, NodeAttributeCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1265,6 +1376,16 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEClass(forRangeEClass, ForRange.class, "ForRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getForRange_Start(), ecorePackage.getEInt(), "start", null, 0, 1, ForRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getForRange_End(), ecorePackage.getEInt(), "end", null, 0, 1, ForRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(literalExpressionEClass, LiteralExpression.class, "LiteralExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(booleanLiteralEClass, BooleanLiteral.class, "BooleanLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getBooleanLiteral_Value(), ecorePackage.getEString(), "value", null, 0, 1, BooleanLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(numberLiteralEClass, NumberLiteral.class, "NumberLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(stringLiteralEClass, StringLiteral.class, "StringLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getStringLiteral_Value(), ecorePackage.getEString(), "value", null, 0, 1, StringLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(editorRelationEEnum, EditorRelation.class, "EditorRelation");

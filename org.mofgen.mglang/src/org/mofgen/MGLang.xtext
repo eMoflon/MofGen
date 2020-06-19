@@ -28,7 +28,7 @@ PatternNodeCreation:
 	node=Node (constructor=NodeConstructor)?;
 
 NodeConstructor:
-	{NodeConstructor} '(' (params+=ID)* ')';
+	{NodeConstructor} '(' (params+=LiteralExpression)* ')';
 
 Node:
 	type=[ecore::EClass] name=ID;
@@ -45,8 +45,10 @@ PatternNodeReference:
 	//TODO: "doc -entries-> entry" fügt einen entry in entries hinzu oder weist entries objekt entry zu? Das führt zu zweideutigkeiten so
 
 Assignment:
-	object=NodeAttributeCall PATTERN_ASSIGNMENT_OP value=ID //TODO 'ID' is probably not the right use here? Maybe introduce new Rule only for possible assignments
+	target=NodeAttributeCall PATTERN_ASSIGNMENT_OP value=LiteralExpression
 ;
+
+//TODO make Enum Assignments possible
 
 NodeAttributeCall:
 	object=[Node] '.' attribute=[ecore::EAttribute]
@@ -94,6 +96,13 @@ ForRange:
 	start=INT ':' end=INT
 ;
 
+LiteralExpression:
+  {BooleanLiteral} value=('true' | 'false') |
+  {NumberLiteral} NumberLiteral |
+  {StringLiteral} value=STRING;
+
+NumberLiteral:
+  ('-')? INT ('.' INT)?;
 
 enum EditorRelation:
 	GREATER='>' |

@@ -5,14 +5,19 @@ package org.mofgen.mGLang.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.mofgen.mGLang.LiteralExpression;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.NodeConstructor;
 
@@ -32,14 +37,14 @@ import org.mofgen.mGLang.NodeConstructor;
 public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements NodeConstructor
 {
   /**
-   * The cached value of the '{@link #getParams() <em>Params</em>}' attribute list.
+   * The cached value of the '{@link #getParams() <em>Params</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getParams()
    * @generated
    * @ordered
    */
-  protected EList<String> params;
+  protected EList<LiteralExpression> params;
 
   /**
    * <!-- begin-user-doc -->
@@ -68,13 +73,29 @@ public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements
    * @generated
    */
   @Override
-  public EList<String> getParams()
+  public EList<LiteralExpression> getParams()
   {
     if (params == null)
     {
-      params = new EDataTypeEList<String>(String.class, this, MGLangPackage.NODE_CONSTRUCTOR__PARAMS);
+      params = new EObjectContainmentEList<LiteralExpression>(LiteralExpression.class, this, MGLangPackage.NODE_CONSTRUCTOR__PARAMS);
     }
     return params;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.NODE_CONSTRUCTOR__PARAMS:
+        return ((InternalEList<?>)getParams()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -106,7 +127,7 @@ public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements
     {
       case MGLangPackage.NODE_CONSTRUCTOR__PARAMS:
         getParams().clear();
-        getParams().addAll((Collection<? extends String>)newValue);
+        getParams().addAll((Collection<? extends LiteralExpression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -143,23 +164,6 @@ public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements
         return params != null && !params.isEmpty();
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (params: ");
-    result.append(params);
-    result.append(')');
-    return result.toString();
   }
 
 } //NodeConstructorImpl

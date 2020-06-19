@@ -5,16 +5,20 @@ package org.mofgen.scoping;
 
 import com.google.common.base.Objects;
 import java.util.ArrayList;
+import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
+import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
+import org.mofgen.mGLang.NodeAttributeCall;
 import org.mofgen.mGLang.PatternNodeReference;
 import org.mofgen.scoping.AbstractMGLangScopeProvider;
 import org.mofgen.utils.MofgenModelUtils;
@@ -27,28 +31,71 @@ import org.mofgen.utils.MofgenModelUtils;
  */
 @SuppressWarnings("all")
 public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
+  @Override
+  public IScope getScope(final EObject context, final EReference reference) {
+    boolean _isNodeCreation = this.isNodeCreation(context, reference);
+    if (_isNodeCreation) {
+      return this.getScopeForNodeCreationType(((Node) context));
+    }
+    boolean _isReferenceType = this.isReferenceType(context, reference);
+    if (_isReferenceType) {
+      return this.getScopeForReferenceType(((PatternNodeReference) context));
+    }
+    boolean _isReferenceTarget = this.isReferenceTarget(context, reference);
+    if (_isReferenceTarget) {
+      return this.getScopeForReferenceTarget(((PatternNodeReference) context));
+    }
+    boolean _isNodeAttributeCallObject = this.isNodeAttributeCallObject(context, reference);
+    if (_isNodeAttributeCallObject) {
+      return this.getScopeForNodeAttributeCallObject(((NodeAttributeCall) context));
+    }
+    boolean _isNodeAttributeCallAttribute = this.isNodeAttributeCallAttribute(context, reference);
+    if (_isNodeAttributeCallAttribute) {
+      return this.getScopeForNodeAttributeCallAttribute(((NodeAttributeCall) context));
+    }
+    return super.getScope(context, reference);
+  }
+  
+  public IScope getScopeForNodeCreationType(final Node n) {
+    final MofgenFile file = this.getRootFile(n);
+    final ArrayList<EClass> classes = MofgenModelUtils.getClasses(file);
+    return Scopes.scopeFor(classes);
+  }
+  
   public IScope getScopeForReferenceType(final PatternNodeReference ref) {
-    final Node src = ref.getSource();
     final MofgenFile file = this.getRootFile(ref);
+    final Node src = ref.getSource();
     final ArrayList<EClass> classes = MofgenModelUtils.getClasses(file);
     final Function1<EClass, Boolean> _function = (EClass c) -> {
-      return Boolean.valueOf(c.getName().equals(src.getName()));
+      EClass _type = src.getType();
+      return Boolean.valueOf(Objects.equal(c, _type));
     };
-    final EClass srcClass = IterableExtensions.<EClass>toList(IterableExtensions.<EClass>filter(classes, _function)).get(0);
-    return Scopes.scopeFor(srcClass.getEAllReferences());
+    final EClass sourceClass = ((EClass[])Conversions.unwrapArray(IterableExtensions.<EClass>filter(classes, _function), EClass.class))[0];
+    return Scopes.scopeFor(sourceClass.getEAllReferences());
   }
   
-  public IScope getScopeForClasses(final PatternNodeReference ref) {
-    final MofgenFile file = this.getRootFile(ref);
-    return Scopes.scopeFor(MofgenModelUtils.getClasses(file));
+  public IScope getScopeForAllNodes(final EObject context) {
+    final MofgenFile root = this.getRootFile(context);
+    final List<Node> allNodes = EcoreUtil2.<Node>getAllContentsOfType(root, Node.class);
+    return Scopes.scopeFor(allNodes);
   }
   
-  public MofgenFile getRootFile(final EObject context) {
-    EObject traverser = context;
-    while ((!(context instanceof MofgenFile))) {
-      traverser = traverser.eContainer();
-    }
-    return ((MofgenFile) traverser);
+  public IScope getScopeForReferenceTarget(final PatternNodeReference ref) {
+    return this.getScopeForAllNodes(ref);
+  }
+  
+  public IScope getScopeForNodeAttributeCallObject(final NodeAttributeCall call) {
+    return this.getScopeForAllNodes(call);
+  }
+  
+  public IScope getScopeForNodeAttributeCallAttribute(final NodeAttributeCall call) {
+    final EClass objType = call.getObject().getType();
+    final MofgenFile file = this.getRootFile(call);
+    final Function1<EClass, Boolean> _function = (EClass c) -> {
+      return Boolean.valueOf(Objects.equal(c, objType));
+    };
+    final EClass clazz = ((EClass[])Conversions.unwrapArray(IterableExtensions.<EClass>filter(MofgenModelUtils.getClasses(file), _function), EClass.class))[0];
+    return Scopes.scopeFor(clazz.getEAllAttributes());
   }
   
   public boolean isReferenceSource(final EObject context, final EReference reference) {
@@ -61,5 +108,25 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   
   public boolean isReferenceTarget(final EObject context, final EReference reference) {
     return ((context instanceof PatternNodeReference) && Objects.equal(reference, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TARGET));
+  }
+  
+  public boolean isNodeCreation(final EObject context, final EReference reference) {
+    return ((context instanceof Node) && Objects.equal(reference, MGLangPackage.Literals.NODE__TYPE));
+  }
+  
+  public boolean isNodeAttributeCallObject(final EObject context, final EReference reference) {
+    return ((context instanceof NodeAttributeCall) && Objects.equal(reference, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__OBJECT));
+  }
+  
+  public boolean isNodeAttributeCallAttribute(final EObject context, final EReference reference) {
+    return ((context instanceof NodeAttributeCall) && Objects.equal(reference, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE));
+  }
+  
+  public MofgenFile getRootFile(final EObject context) {
+    EObject traverser = context;
+    while ((!(traverser instanceof MofgenFile))) {
+      traverser = traverser.eContainer();
+    }
+    return ((MofgenFile) traverser);
   }
 }

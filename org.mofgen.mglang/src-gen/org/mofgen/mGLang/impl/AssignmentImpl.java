@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.mofgen.mGLang.Assignment;
+import org.mofgen.mGLang.LiteralExpression;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.NodeAttributeCall;
 
@@ -23,7 +24,7 @@ import org.mofgen.mGLang.NodeAttributeCall;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.AssignmentImpl#getObject <em>Object</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.AssignmentImpl#getTarget <em>Target</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.AssignmentImpl#getValue <em>Value</em>}</li>
  * </ul>
  *
@@ -32,34 +33,24 @@ import org.mofgen.mGLang.NodeAttributeCall;
 public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Assignment
 {
   /**
-   * The cached value of the '{@link #getObject() <em>Object</em>}' containment reference.
+   * The cached value of the '{@link #getTarget() <em>Target</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getObject()
+   * @see #getTarget()
    * @generated
    * @ordered
    */
-  protected NodeAttributeCall object;
+  protected NodeAttributeCall target;
 
   /**
-   * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+   * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getValue()
    * @generated
    * @ordered
    */
-  protected static final String VALUE_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getValue()
-   * @generated
-   * @ordered
-   */
-  protected String value = VALUE_EDEFAULT;
+  protected LiteralExpression value;
 
   /**
    * <!-- begin-user-doc -->
@@ -88,9 +79,9 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    */
   @Override
-  public NodeAttributeCall getObject()
+  public NodeAttributeCall getTarget()
   {
-    return object;
+    return target;
   }
 
   /**
@@ -98,13 +89,13 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetObject(NodeAttributeCall newObject, NotificationChain msgs)
+  public NotificationChain basicSetTarget(NodeAttributeCall newTarget, NotificationChain msgs)
   {
-    NodeAttributeCall oldObject = object;
-    object = newObject;
+    NodeAttributeCall oldTarget = target;
+    target = newTarget;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__OBJECT, oldObject, newObject);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__TARGET, oldTarget, newTarget);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -116,20 +107,20 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    */
   @Override
-  public void setObject(NodeAttributeCall newObject)
+  public void setTarget(NodeAttributeCall newTarget)
   {
-    if (newObject != object)
+    if (newTarget != target)
     {
       NotificationChain msgs = null;
-      if (object != null)
-        msgs = ((InternalEObject)object).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ASSIGNMENT__OBJECT, null, msgs);
-      if (newObject != null)
-        msgs = ((InternalEObject)newObject).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ASSIGNMENT__OBJECT, null, msgs);
-      msgs = basicSetObject(newObject, msgs);
+      if (target != null)
+        msgs = ((InternalEObject)target).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ASSIGNMENT__TARGET, null, msgs);
+      if (newTarget != null)
+        msgs = ((InternalEObject)newTarget).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ASSIGNMENT__TARGET, null, msgs);
+      msgs = basicSetTarget(newTarget, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__OBJECT, newObject, newObject));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__TARGET, newTarget, newTarget));
   }
 
   /**
@@ -138,7 +129,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    */
   @Override
-  public String getValue()
+  public LiteralExpression getValue()
   {
     return value;
   }
@@ -148,13 +139,38 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setValue(String newValue)
+  public NotificationChain basicSetValue(LiteralExpression newValue, NotificationChain msgs)
   {
-    String oldValue = value;
+    LiteralExpression oldValue = value;
     value = newValue;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__VALUE, oldValue, value));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__VALUE, oldValue, newValue);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setValue(LiteralExpression newValue)
+  {
+    if (newValue != value)
+    {
+      NotificationChain msgs = null;
+      if (value != null)
+        msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ASSIGNMENT__VALUE, null, msgs);
+      if (newValue != null)
+        msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ASSIGNMENT__VALUE, null, msgs);
+      msgs = basicSetValue(newValue, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__VALUE, newValue, newValue));
   }
 
   /**
@@ -167,8 +183,10 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
   {
     switch (featureID)
     {
-      case MGLangPackage.ASSIGNMENT__OBJECT:
-        return basicSetObject(null, msgs);
+      case MGLangPackage.ASSIGNMENT__TARGET:
+        return basicSetTarget(null, msgs);
+      case MGLangPackage.ASSIGNMENT__VALUE:
+        return basicSetValue(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -183,8 +201,8 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
   {
     switch (featureID)
     {
-      case MGLangPackage.ASSIGNMENT__OBJECT:
-        return getObject();
+      case MGLangPackage.ASSIGNMENT__TARGET:
+        return getTarget();
       case MGLangPackage.ASSIGNMENT__VALUE:
         return getValue();
     }
@@ -201,11 +219,11 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
   {
     switch (featureID)
     {
-      case MGLangPackage.ASSIGNMENT__OBJECT:
-        setObject((NodeAttributeCall)newValue);
+      case MGLangPackage.ASSIGNMENT__TARGET:
+        setTarget((NodeAttributeCall)newValue);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
-        setValue((String)newValue);
+        setValue((LiteralExpression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -221,11 +239,11 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
   {
     switch (featureID)
     {
-      case MGLangPackage.ASSIGNMENT__OBJECT:
-        setObject((NodeAttributeCall)null);
+      case MGLangPackage.ASSIGNMENT__TARGET:
+        setTarget((NodeAttributeCall)null);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
-        setValue(VALUE_EDEFAULT);
+        setValue((LiteralExpression)null);
         return;
     }
     super.eUnset(featureID);
@@ -241,29 +259,12 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
   {
     switch (featureID)
     {
-      case MGLangPackage.ASSIGNMENT__OBJECT:
-        return object != null;
+      case MGLangPackage.ASSIGNMENT__TARGET:
+        return target != null;
       case MGLangPackage.ASSIGNMENT__VALUE:
-        return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+        return value != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (value: ");
-    result.append(value);
-    result.append(')');
-    return result.toString();
   }
 
 } //AssignmentImpl
