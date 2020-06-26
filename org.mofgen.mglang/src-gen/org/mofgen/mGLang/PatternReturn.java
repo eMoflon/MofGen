@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.PatternReturn#isThisUsed <em>This Used</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.PatternReturn#getReturnValue <em>Return Value</em>}</li>
  * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getPatternReturn()
@@ -24,25 +24,25 @@ import org.eclipse.emf.ecore.EObject;
 public interface PatternReturn extends EObject
 {
   /**
-   * Returns the value of the '<em><b>This Used</b></em>' attribute.
+   * Returns the value of the '<em><b>Return Value</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>This Used</em>' attribute.
-   * @see #setThisUsed(boolean)
-   * @see org.mofgen.mGLang.MGLangPackage#getPatternReturn_ThisUsed()
+   * @return the value of the '<em>Return Value</em>' reference.
+   * @see #setReturnValue(Node)
+   * @see org.mofgen.mGLang.MGLangPackage#getPatternReturn_ReturnValue()
    * @model
    * @generated
    */
-  boolean isThisUsed();
+  Node getReturnValue();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.PatternReturn#isThisUsed <em>This Used</em>}' attribute.
+   * Sets the value of the '{@link org.mofgen.mGLang.PatternReturn#getReturnValue <em>Return Value</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>This Used</em>' attribute.
-   * @see #isThisUsed()
+   * @param value the new value of the '<em>Return Value</em>' reference.
+   * @see #getReturnValue()
    * @generated
    */
-  void setThisUsed(boolean value);
+  void setReturnValue(Node value);
 
 } // PatternReturn

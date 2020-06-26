@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.mofgen.mGLang.Pattern#getName <em>Name</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getNodes <em>Nodes</em>}</li>
- *   <li>{@link org.mofgen.mGLang.Pattern#getRefsAssigns <em>Refs Assigns</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getReturn <em>Return</em>}</li>
  * </ul>
  *
@@ -65,7 +64,7 @@ public interface Pattern extends EObject
 
   /**
    * Returns the value of the '<em><b>Nodes</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.PatternNodeCreation}.
+   * The list contents are of type {@link org.mofgen.mGLang.Node}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Nodes</em>' containment reference list.
@@ -73,19 +72,7 @@ public interface Pattern extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<PatternNodeCreation> getNodes();
-
-  /**
-   * Returns the value of the '<em><b>Refs Assigns</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.NodeReferenceOrAssignment}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Refs Assigns</em>' containment reference list.
-   * @see org.mofgen.mGLang.MGLangPackage#getPattern_RefsAssigns()
-   * @model containment="true"
-   * @generated
-   */
-  EList<NodeReferenceOrAssignment> getRefsAssigns();
+  EList<Node> getNodes();
 
   /**
    * Returns the value of the '<em><b>Return</b></em>' containment reference.

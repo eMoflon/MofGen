@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.Generator#getName <em>Name</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Generator#getCommands <em>Commands</em>}</li>
  * </ul>
  *
@@ -26,28 +25,6 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Generator extends EObject
 {
-  /**
-   * Returns the value of the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Name</em>' attribute.
-   * @see #setName(String)
-   * @see org.mofgen.mGLang.MGLangPackage#getGenerator_Name()
-   * @model
-   * @generated
-   */
-  String getName();
-
-  /**
-   * Sets the value of the '{@link org.mofgen.mGLang.Generator#getName <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Name</em>' attribute.
-   * @see #getName()
-   * @generated
-   */
-  void setName(String value);
-
   /**
    * Returns the value of the '<em><b>Commands</b></em>' containment reference list.
    * The list contents are of type {@link org.mofgen.mGLang.GeneratorElement}.

@@ -15,6 +15,7 @@ import org.eclipse.xtext.scoping.Scopes;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.mofgen.mGLang.Assignment;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
@@ -53,6 +54,10 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
     if (_isNodeAttributeCallAttribute) {
       return this.getScopeForNodeAttributeCallAttribute(((NodeAttributeCall) context));
     }
+    boolean _isNodeAttributeAssignmentType = this.isNodeAttributeAssignmentType(context, reference);
+    if (_isNodeAttributeAssignmentType) {
+      return this.getScopeForNodeAssignmentType(((Assignment) context));
+    }
     return super.getScope(context, reference);
   }
   
@@ -64,14 +69,19 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   
   public IScope getScopeForReferenceType(final PatternNodeReference ref) {
     final MofgenFile file = this.getRootFile(ref);
-    final Node src = ref.getSource();
+    final Node src = EcoreUtil2.<Node>getContainerOfType(ref, Node.class);
     final ArrayList<EClass> classes = MofgenModelUtils.getClasses(file);
     final Function1<EClass, Boolean> _function = (EClass c) -> {
       EClass _type = src.getType();
       return Boolean.valueOf(Objects.equal(c, _type));
     };
-    final EClass sourceClass = ((EClass[])Conversions.unwrapArray(IterableExtensions.<EClass>filter(classes, _function), EClass.class))[0];
-    return Scopes.scopeFor(sourceClass.getEAllReferences());
+    final Iterable<EClass> filteredClasses = IterableExtensions.<EClass>filter(classes, _function);
+    boolean _isEmpty = IterableExtensions.isEmpty(filteredClasses);
+    if (_isEmpty) {
+      return IScope.NULLSCOPE;
+    } else {
+      return Scopes.scopeFor((((EClass[])Conversions.unwrapArray(filteredClasses, EClass.class))[0]).getEAllReferences());
+    }
   }
   
   public IScope getScopeForAllNodes(final EObject context) {
@@ -89,17 +99,34 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   }
   
   public IScope getScopeForNodeAttributeCallAttribute(final NodeAttributeCall call) {
-    final EClass objType = call.getObject().getType();
+    final EClass objType = call.getNode().getType();
     final MofgenFile file = this.getRootFile(call);
     final Function1<EClass, Boolean> _function = (EClass c) -> {
       return Boolean.valueOf(Objects.equal(c, objType));
     };
-    final EClass clazz = ((EClass[])Conversions.unwrapArray(IterableExtensions.<EClass>filter(MofgenModelUtils.getClasses(file), _function), EClass.class))[0];
-    return Scopes.scopeFor(clazz.getEAllAttributes());
+    final Iterable<EClass> clazzez = IterableExtensions.<EClass>filter(MofgenModelUtils.getClasses(file), _function);
+    boolean _isEmpty = IterableExtensions.isEmpty(clazzez);
+    if (_isEmpty) {
+      return IScope.NULLSCOPE;
+    } else {
+      return Scopes.scopeFor((((EClass[])Conversions.unwrapArray(clazzez, EClass.class))[0]).getEAllAttributes());
+    }
   }
   
-  public boolean isReferenceSource(final EObject context, final EReference reference) {
-    return ((context instanceof PatternNodeReference) && Objects.equal(reference, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__SOURCE));
+  public IScope getScopeForNodeAssignmentType(final Assignment ass) {
+    final Node srcNode = EcoreUtil2.<Node>getContainerOfType(ass, Node.class);
+    final MofgenFile file = this.getRootFile(ass);
+    final Function1<EClass, Boolean> _function = (EClass c) -> {
+      EClass _type = srcNode.getType();
+      return Boolean.valueOf(Objects.equal(c, _type));
+    };
+    final Iterable<EClass> clazzez = IterableExtensions.<EClass>filter(MofgenModelUtils.getClasses(file), _function);
+    boolean _isEmpty = IterableExtensions.isEmpty(clazzez);
+    if (_isEmpty) {
+      return IScope.NULLSCOPE;
+    } else {
+      return Scopes.scopeFor((((EClass[])Conversions.unwrapArray(clazzez, EClass.class))[0]).getEAllAttributes());
+    }
   }
   
   public boolean isReferenceType(final EObject context, final EReference reference) {
@@ -115,18 +142,18 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   }
   
   public boolean isNodeAttributeCallObject(final EObject context, final EReference reference) {
-    return ((context instanceof NodeAttributeCall) && Objects.equal(reference, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__OBJECT));
+    return ((context instanceof NodeAttributeCall) && Objects.equal(reference, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__NODE));
   }
   
   public boolean isNodeAttributeCallAttribute(final EObject context, final EReference reference) {
     return ((context instanceof NodeAttributeCall) && Objects.equal(reference, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE));
   }
   
+  public boolean isNodeAttributeAssignmentType(final EObject context, final EReference reference) {
+    return ((context instanceof Assignment) && Objects.equal(reference, MGLangPackage.Literals.ASSIGNMENT__TARGET));
+  }
+  
   public MofgenFile getRootFile(final EObject context) {
-    EObject traverser = context;
-    while ((!(traverser instanceof MofgenFile))) {
-      traverser = traverser.eContainer();
-    }
-    return ((MofgenFile) traverser);
+    return EcoreUtil2.<MofgenFile>getContainerOfType(context, MofgenFile.class);
   }
 }

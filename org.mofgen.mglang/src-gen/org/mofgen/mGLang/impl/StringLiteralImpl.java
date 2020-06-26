@@ -4,12 +4,15 @@
 package org.mofgen.mGLang.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.STRING;
 import org.mofgen.mGLang.StringLiteral;
 
 /**
@@ -28,24 +31,14 @@ import org.mofgen.mGLang.StringLiteral;
 public class StringLiteralImpl extends LiteralExpressionImpl implements StringLiteral
 {
   /**
-   * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+   * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getValue()
    * @generated
    * @ordered
    */
-  protected static final String VALUE_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getValue()
-   * @generated
-   * @ordered
-   */
-  protected String value = VALUE_EDEFAULT;
+  protected STRING value;
 
   /**
    * <!-- begin-user-doc -->
@@ -74,7 +67,7 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
    * @generated
    */
   @Override
-  public String getValue()
+  public STRING getValue()
   {
     return value;
   }
@@ -84,13 +77,54 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setValue(String newValue)
+  public NotificationChain basicSetValue(STRING newValue, NotificationChain msgs)
   {
-    String oldValue = value;
+    STRING oldValue = value;
     value = newValue;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.STRING_LITERAL__VALUE, oldValue, value));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.STRING_LITERAL__VALUE, oldValue, newValue);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setValue(STRING newValue)
+  {
+    if (newValue != value)
+    {
+      NotificationChain msgs = null;
+      if (value != null)
+        msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.STRING_LITERAL__VALUE, null, msgs);
+      if (newValue != null)
+        msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.STRING_LITERAL__VALUE, null, msgs);
+      msgs = basicSetValue(newValue, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.STRING_LITERAL__VALUE, newValue, newValue));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.STRING_LITERAL__VALUE:
+        return basicSetValue(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -120,7 +154,7 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
     switch (featureID)
     {
       case MGLangPackage.STRING_LITERAL__VALUE:
-        setValue((String)newValue);
+        setValue((STRING)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -137,7 +171,7 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
     switch (featureID)
     {
       case MGLangPackage.STRING_LITERAL__VALUE:
-        setValue(VALUE_EDEFAULT);
+        setValue((STRING)null);
         return;
     }
     super.eUnset(featureID);
@@ -154,26 +188,9 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
     switch (featureID)
     {
       case MGLangPackage.STRING_LITERAL__VALUE:
-        return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+        return value != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (value: ");
-    result.append(value);
-    result.append(')');
-    return result.toString();
   }
 
 } //StringLiteralImpl

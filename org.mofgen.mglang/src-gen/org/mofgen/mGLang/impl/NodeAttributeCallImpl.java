@@ -24,7 +24,7 @@ import org.mofgen.mGLang.NodeAttributeCall;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.NodeAttributeCallImpl#getObject <em>Object</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.NodeAttributeCallImpl#getNode <em>Node</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.NodeAttributeCallImpl#getAttribute <em>Attribute</em>}</li>
  * </ul>
  *
@@ -33,14 +33,14 @@ import org.mofgen.mGLang.NodeAttributeCall;
 public class NodeAttributeCallImpl extends MinimalEObjectImpl.Container implements NodeAttributeCall
 {
   /**
-   * The cached value of the '{@link #getObject() <em>Object</em>}' reference.
+   * The cached value of the '{@link #getNode() <em>Node</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getObject()
+   * @see #getNode()
    * @generated
    * @ordered
    */
-  protected Node object;
+  protected Node node;
 
   /**
    * The cached value of the '{@link #getAttribute() <em>Attribute</em>}' reference.
@@ -79,19 +79,19 @@ public class NodeAttributeCallImpl extends MinimalEObjectImpl.Container implemen
    * @generated
    */
   @Override
-  public Node getObject()
+  public Node getNode()
   {
-    if (object != null && object.eIsProxy())
+    if (node != null && node.eIsProxy())
     {
-      InternalEObject oldObject = (InternalEObject)object;
-      object = (Node)eResolveProxy(oldObject);
-      if (object != oldObject)
+      InternalEObject oldNode = (InternalEObject)node;
+      node = (Node)eResolveProxy(oldNode);
+      if (node != oldNode)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.NODE_ATTRIBUTE_CALL__OBJECT, oldObject, object));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.NODE_ATTRIBUTE_CALL__NODE, oldNode, node));
       }
     }
-    return object;
+    return node;
   }
 
   /**
@@ -99,9 +99,9 @@ public class NodeAttributeCallImpl extends MinimalEObjectImpl.Container implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public Node basicGetObject()
+  public Node basicGetNode()
   {
-    return object;
+    return node;
   }
 
   /**
@@ -110,12 +110,12 @@ public class NodeAttributeCallImpl extends MinimalEObjectImpl.Container implemen
    * @generated
    */
   @Override
-  public void setObject(Node newObject)
+  public void setNode(Node newNode)
   {
-    Node oldObject = object;
-    object = newObject;
+    Node oldNode = node;
+    node = newNode;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.NODE_ATTRIBUTE_CALL__OBJECT, oldObject, object));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.NODE_ATTRIBUTE_CALL__NODE, oldNode, node));
   }
 
   /**
@@ -173,9 +173,9 @@ public class NodeAttributeCallImpl extends MinimalEObjectImpl.Container implemen
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_ATTRIBUTE_CALL__OBJECT:
-        if (resolve) return getObject();
-        return basicGetObject();
+      case MGLangPackage.NODE_ATTRIBUTE_CALL__NODE:
+        if (resolve) return getNode();
+        return basicGetNode();
       case MGLangPackage.NODE_ATTRIBUTE_CALL__ATTRIBUTE:
         if (resolve) return getAttribute();
         return basicGetAttribute();
@@ -193,8 +193,8 @@ public class NodeAttributeCallImpl extends MinimalEObjectImpl.Container implemen
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_ATTRIBUTE_CALL__OBJECT:
-        setObject((Node)newValue);
+      case MGLangPackage.NODE_ATTRIBUTE_CALL__NODE:
+        setNode((Node)newValue);
         return;
       case MGLangPackage.NODE_ATTRIBUTE_CALL__ATTRIBUTE:
         setAttribute((EAttribute)newValue);
@@ -213,8 +213,8 @@ public class NodeAttributeCallImpl extends MinimalEObjectImpl.Container implemen
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_ATTRIBUTE_CALL__OBJECT:
-        setObject((Node)null);
+      case MGLangPackage.NODE_ATTRIBUTE_CALL__NODE:
+        setNode((Node)null);
         return;
       case MGLangPackage.NODE_ATTRIBUTE_CALL__ATTRIBUTE:
         setAttribute((EAttribute)null);
@@ -233,8 +233,8 @@ public class NodeAttributeCallImpl extends MinimalEObjectImpl.Container implemen
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_ATTRIBUTE_CALL__OBJECT:
-        return object != null;
+      case MGLangPackage.NODE_ATTRIBUTE_CALL__NODE:
+        return node != null;
       case MGLangPackage.NODE_ATTRIBUTE_CALL__ATTRIBUTE:
         return attribute != null;
     }

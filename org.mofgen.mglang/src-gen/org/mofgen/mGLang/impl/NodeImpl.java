@@ -4,8 +4,10 @@
 package org.mofgen.mGLang.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -24,6 +26,7 @@ import org.mofgen.mGLang.Node;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getCreatedBy <em>Created By</em>}</li>
  * </ul>
  *
  * @generated
@@ -59,6 +62,16 @@ public class NodeImpl extends MinimalEObjectImpl.Container implements Node
    * @ordered
    */
   protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getCreatedBy() <em>Created By</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getCreatedBy()
+   * @generated
+   * @ordered
+   */
+  protected EObject createdBy;
 
   /**
    * <!-- begin-user-doc -->
@@ -157,6 +170,72 @@ public class NodeImpl extends MinimalEObjectImpl.Container implements Node
    * @generated
    */
   @Override
+  public EObject getCreatedBy()
+  {
+    return createdBy;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetCreatedBy(EObject newCreatedBy, NotificationChain msgs)
+  {
+    EObject oldCreatedBy = createdBy;
+    createdBy = newCreatedBy;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.NODE__CREATED_BY, oldCreatedBy, newCreatedBy);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setCreatedBy(EObject newCreatedBy)
+  {
+    if (newCreatedBy != createdBy)
+    {
+      NotificationChain msgs = null;
+      if (createdBy != null)
+        msgs = ((InternalEObject)createdBy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.NODE__CREATED_BY, null, msgs);
+      if (newCreatedBy != null)
+        msgs = ((InternalEObject)newCreatedBy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.NODE__CREATED_BY, null, msgs);
+      msgs = basicSetCreatedBy(newCreatedBy, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.NODE__CREATED_BY, newCreatedBy, newCreatedBy));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.NODE__CREATED_BY:
+        return basicSetCreatedBy(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
     switch (featureID)
@@ -166,6 +245,8 @@ public class NodeImpl extends MinimalEObjectImpl.Container implements Node
         return basicGetType();
       case MGLangPackage.NODE__NAME:
         return getName();
+      case MGLangPackage.NODE__CREATED_BY:
+        return getCreatedBy();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -185,6 +266,9 @@ public class NodeImpl extends MinimalEObjectImpl.Container implements Node
         return;
       case MGLangPackage.NODE__NAME:
         setName((String)newValue);
+        return;
+      case MGLangPackage.NODE__CREATED_BY:
+        setCreatedBy((EObject)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -206,6 +290,9 @@ public class NodeImpl extends MinimalEObjectImpl.Container implements Node
       case MGLangPackage.NODE__NAME:
         setName(NAME_EDEFAULT);
         return;
+      case MGLangPackage.NODE__CREATED_BY:
+        setCreatedBy((EObject)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -224,6 +311,8 @@ public class NodeImpl extends MinimalEObjectImpl.Container implements Node
         return type != null;
       case MGLangPackage.NODE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case MGLangPackage.NODE__CREATED_BY:
+        return createdBy != null;
     }
     return super.eIsSet(featureID);
   }

@@ -3,6 +3,7 @@
  */
 package org.mofgen.mGLang;
 
+import org.eclipse.emf.ecore.EAttribute;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,26 +25,26 @@ package org.mofgen.mGLang;
 public interface Assignment extends NodeReferenceOrAssignment
 {
   /**
-   * Returns the value of the '<em><b>Target</b></em>' containment reference.
+   * Returns the value of the '<em><b>Target</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Target</em>' containment reference.
-   * @see #setTarget(NodeAttributeCall)
+   * @return the value of the '<em>Target</em>' reference.
+   * @see #setTarget(EAttribute)
    * @see org.mofgen.mGLang.MGLangPackage#getAssignment_Target()
-   * @model containment="true"
+   * @model
    * @generated
    */
-  NodeAttributeCall getTarget();
+  EAttribute getTarget();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.Assignment#getTarget <em>Target</em>}' containment reference.
+   * Sets the value of the '{@link org.mofgen.mGLang.Assignment#getTarget <em>Target</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Target</em>' containment reference.
+   * @param value the new value of the '<em>Target</em>' reference.
    * @see #getTarget()
    * @generated
    */
-  void setTarget(NodeAttributeCall value);
+  void setTarget(EAttribute value);
 
   /**
    * Returns the value of the '<em><b>Value</b></em>' containment reference.

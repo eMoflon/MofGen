@@ -14,7 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.PatternCall#getCalledPattern <em>Called Pattern</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.PatternCall#getCalled <em>Called</em>}</li>
  *   <li>{@link org.mofgen.mGLang.PatternCall#getParams <em>Params</em>}</li>
  * </ul>
  *
@@ -25,30 +25,30 @@ import org.eclipse.emf.common.util.EList;
 public interface PatternCall extends GeneratorCommand
 {
   /**
-   * Returns the value of the '<em><b>Called Pattern</b></em>' reference.
+   * Returns the value of the '<em><b>Called</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Called Pattern</em>' reference.
-   * @see #setCalledPattern(Pattern)
-   * @see org.mofgen.mGLang.MGLangPackage#getPatternCall_CalledPattern()
+   * @return the value of the '<em>Called</em>' reference.
+   * @see #setCalled(Pattern)
+   * @see org.mofgen.mGLang.MGLangPackage#getPatternCall_Called()
    * @model
    * @generated
    */
-  Pattern getCalledPattern();
+  Pattern getCalled();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.PatternCall#getCalledPattern <em>Called Pattern</em>}' reference.
+   * Sets the value of the '{@link org.mofgen.mGLang.PatternCall#getCalled <em>Called</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Called Pattern</em>' reference.
-   * @see #getCalledPattern()
+   * @param value the new value of the '<em>Called</em>' reference.
+   * @see #getCalled()
    * @generated
    */
-  void setCalledPattern(Pattern value);
+  void setCalled(Pattern value);
 
   /**
    * Returns the value of the '<em><b>Params</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.PatternObject}.
+   * The list contents are of type {@link org.mofgen.mGLang.LiteralExpression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Params</em>' containment reference list.
@@ -56,6 +56,6 @@ public interface PatternCall extends GeneratorCommand
    * @model containment="true"
    * @generated
    */
-  EList<PatternObject> getParams();
+  EList<LiteralExpression> getParams();
 
 } // PatternCall

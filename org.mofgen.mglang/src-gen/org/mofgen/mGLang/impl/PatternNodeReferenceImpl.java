@@ -23,7 +23,6 @@ import org.mofgen.mGLang.PatternNodeReference;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.PatternNodeReferenceImpl#getSource <em>Source</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternNodeReferenceImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternNodeReferenceImpl#getTarget <em>Target</em>}</li>
  * </ul>
@@ -32,16 +31,6 @@ import org.mofgen.mGLang.PatternNodeReference;
  */
 public class PatternNodeReferenceImpl extends NodeReferenceOrAssignmentImpl implements PatternNodeReference
 {
-  /**
-   * The cached value of the '{@link #getSource() <em>Source</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getSource()
-   * @generated
-   * @ordered
-   */
-  protected Node source;
-
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' reference.
    * <!-- begin-user-doc -->
@@ -81,51 +70,6 @@ public class PatternNodeReferenceImpl extends NodeReferenceOrAssignmentImpl impl
   protected EClass eStaticClass()
   {
     return MGLangPackage.Literals.PATTERN_NODE_REFERENCE;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Node getSource()
-  {
-    if (source != null && source.eIsProxy())
-    {
-      InternalEObject oldSource = (InternalEObject)source;
-      source = (Node)eResolveProxy(oldSource);
-      if (source != oldSource)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.PATTERN_NODE_REFERENCE__SOURCE, oldSource, source));
-      }
-    }
-    return source;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Node basicGetSource()
-  {
-    return source;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setSource(Node newSource)
-  {
-    Node oldSource = source;
-    source = newSource;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_NODE_REFERENCE__SOURCE, oldSource, source));
   }
 
   /**
@@ -228,9 +172,6 @@ public class PatternNodeReferenceImpl extends NodeReferenceOrAssignmentImpl impl
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_NODE_REFERENCE__SOURCE:
-        if (resolve) return getSource();
-        return basicGetSource();
       case MGLangPackage.PATTERN_NODE_REFERENCE__TYPE:
         if (resolve) return getType();
         return basicGetType();
@@ -251,9 +192,6 @@ public class PatternNodeReferenceImpl extends NodeReferenceOrAssignmentImpl impl
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_NODE_REFERENCE__SOURCE:
-        setSource((Node)newValue);
-        return;
       case MGLangPackage.PATTERN_NODE_REFERENCE__TYPE:
         setType((EReference)newValue);
         return;
@@ -274,9 +212,6 @@ public class PatternNodeReferenceImpl extends NodeReferenceOrAssignmentImpl impl
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_NODE_REFERENCE__SOURCE:
-        setSource((Node)null);
-        return;
       case MGLangPackage.PATTERN_NODE_REFERENCE__TYPE:
         setType((EReference)null);
         return;
@@ -297,8 +232,6 @@ public class PatternNodeReferenceImpl extends NodeReferenceOrAssignmentImpl impl
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_NODE_REFERENCE__SOURCE:
-        return source != null;
       case MGLangPackage.PATTERN_NODE_REFERENCE__TYPE:
         return type != null;
       case MGLangPackage.PATTERN_NODE_REFERENCE__TARGET:

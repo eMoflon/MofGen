@@ -96,9 +96,9 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createPatternReturnAdapter();
       }
       @Override
-      public Adapter casePatternNodeCreation(PatternNodeCreation object)
+      public Adapter caseNode(Node object)
       {
-        return createPatternNodeCreationAdapter();
+        return createNodeAdapter();
       }
       @Override
       public Adapter caseNodeConstructor(NodeConstructor object)
@@ -106,9 +106,9 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createNodeConstructorAdapter();
       }
       @Override
-      public Adapter caseNode(Node object)
+      public Adapter casePatternCall(PatternCall object)
       {
-        return createNodeAdapter();
+        return createPatternCallAdapter();
       }
       @Override
       public Adapter caseNodeReferenceOrAssignment(NodeReferenceOrAssignment object)
@@ -141,6 +141,21 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createParameterAdapter();
       }
       @Override
+      public Adapter casePrimitiveParameter(PrimitiveParameter object)
+      {
+        return createPrimitiveParameterAdapter();
+      }
+      @Override
+      public Adapter caseObjectParameter(ObjectParameter object)
+      {
+        return createObjectParameterAdapter();
+      }
+      @Override
+      public Adapter caseSTRING(STRING object)
+      {
+        return createSTRINGAdapter();
+      }
+      @Override
       public Adapter caseGenerator(Generator object)
       {
         return createGeneratorAdapter();
@@ -156,9 +171,9 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createGeneratorCommandAdapter();
       }
       @Override
-      public Adapter casePatternCall(PatternCall object)
+      public Adapter caseGenPatternCall(GenPatternCall object)
       {
-        return createPatternCallAdapter();
+        return createGenPatternCallAdapter();
       }
       @Override
       public Adapter casePatternObjectCreation(PatternObjectCreation object)
@@ -194,6 +209,11 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
       public Adapter caseLiteralExpression(LiteralExpression object)
       {
         return createLiteralExpressionAdapter();
+      }
+      @Override
+      public Adapter caseConcat(Concat object)
+      {
+        return createConcatAdapter();
       }
       @Override
       public Adapter caseBooleanLiteral(BooleanLiteral object)
@@ -293,16 +313,16 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.PatternNodeCreation <em>Pattern Node Creation</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.Node <em>Node</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.PatternNodeCreation
+   * @see org.mofgen.mGLang.Node
    * @generated
    */
-  public Adapter createPatternNodeCreationAdapter()
+  public Adapter createNodeAdapter()
   {
     return null;
   }
@@ -323,16 +343,16 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.Node <em>Node</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.PatternCall <em>Pattern Call</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.Node
+   * @see org.mofgen.mGLang.PatternCall
    * @generated
    */
-  public Adapter createNodeAdapter()
+  public Adapter createPatternCallAdapter()
   {
     return null;
   }
@@ -428,6 +448,51 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.PrimitiveParameter <em>Primitive Parameter</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.PrimitiveParameter
+   * @generated
+   */
+  public Adapter createPrimitiveParameterAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ObjectParameter <em>Object Parameter</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.ObjectParameter
+   * @generated
+   */
+  public Adapter createObjectParameterAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.STRING <em>STRING</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.STRING
+   * @generated
+   */
+  public Adapter createSTRINGAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.Generator <em>Generator</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -473,16 +538,16 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.PatternCall <em>Pattern Call</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.GenPatternCall <em>Gen Pattern Call</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.PatternCall
+   * @see org.mofgen.mGLang.GenPatternCall
    * @generated
    */
-  public Adapter createPatternCallAdapter()
+  public Adapter createGenPatternCallAdapter()
   {
     return null;
   }
@@ -588,6 +653,21 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createLiteralExpressionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.Concat <em>Concat</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.Concat
+   * @generated
+   */
+  public Adapter createConcatAdapter()
   {
     return null;
   }

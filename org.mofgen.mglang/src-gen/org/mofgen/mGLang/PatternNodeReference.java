@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EReference;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.PatternNodeReference#getSource <em>Source</em>}</li>
  *   <li>{@link org.mofgen.mGLang.PatternNodeReference#getType <em>Type</em>}</li>
  *   <li>{@link org.mofgen.mGLang.PatternNodeReference#getTarget <em>Target</em>}</li>
  * </ul>
@@ -25,28 +24,6 @@ import org.eclipse.emf.ecore.EReference;
  */
 public interface PatternNodeReference extends NodeReferenceOrAssignment
 {
-  /**
-   * Returns the value of the '<em><b>Source</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Source</em>' reference.
-   * @see #setSource(Node)
-   * @see org.mofgen.mGLang.MGLangPackage#getPatternNodeReference_Source()
-   * @model
-   * @generated
-   */
-  Node getSource();
-
-  /**
-   * Sets the value of the '{@link org.mofgen.mGLang.PatternNodeReference#getSource <em>Source</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Source</em>' reference.
-   * @see #getSource()
-   * @generated
-   */
-  void setSource(Node value);
-
   /**
    * Returns the value of the '<em><b>Type</b></em>' reference.
    * <!-- begin-user-doc -->

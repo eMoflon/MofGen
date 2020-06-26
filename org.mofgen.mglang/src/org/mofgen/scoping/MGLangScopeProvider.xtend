@@ -15,6 +15,7 @@ import org.mofgen.mGLang.Node
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.Assignment
 import org.mofgen.mGLang.NodeAttributeCall
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * This class contains custom scoping description.
@@ -40,6 +41,9 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if(isNodeAttributeCallAttribute(context, reference)){
 			return getScopeForNodeAttributeCallAttribute(context as NodeAttributeCall)
 		}
+		if(isNodeAttributeAssignmentType(context, reference)){
+			return getScopeForNodeAssignmentType(context as Assignment)
+		}
 		
 		return super.getScope(context, reference)
 		//return IScope.NULLSCOPE;
@@ -53,10 +57,15 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	def getScopeForReferenceType(PatternNodeReference ref){
 		val file = getRootFile(ref)
-		val src = ref.source
+		val src = EcoreUtil2.getContainerOfType(ref, Node)
 		val classes = MofgenModelUtils.getClasses(file)
-		val sourceClass = classes.filter[c|c == src.type].get(0)
-		return Scopes.scopeFor(sourceClass.EAllReferences)
+		val filteredClasses = classes.filter[c|c == src.type]
+		if(filteredClasses.empty){
+			return IScope.NULLSCOPE
+		}else{
+			return Scopes.scopeFor(filteredClasses.get(0).EAllReferences)	
+		}
+		
 	}
 	
 	def getScopeForAllNodes(EObject context){
@@ -74,14 +83,25 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 	
 	def getScopeForNodeAttributeCallAttribute(NodeAttributeCall call){
-		val objType = call.object.type
+		val objType = call.node.type
 		val file = getRootFile(call)
-		val clazz = MofgenModelUtils.getClasses(file).filter[c|c == objType].get(0)
-		return Scopes.scopeFor(clazz.EAllAttributes)
+		val clazzez = MofgenModelUtils.getClasses(file).filter[c|c == objType]
+		if(clazzez.isEmpty){
+			return IScope.NULLSCOPE
+		}else{
+			return Scopes.scopeFor(clazzez.get(0).EAllAttributes)	
+		}	
 	}
-
-	def isReferenceSource(EObject context, EReference reference){
-		return context instanceof PatternNodeReference && reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__SOURCE
+	
+	def getScopeForNodeAssignmentType(Assignment ass){
+		val srcNode = EcoreUtil2.getContainerOfType(ass, Node)
+		val file = getRootFile(ass)
+		val clazzez = MofgenModelUtils.getClasses(file).filter[c|c == srcNode.type]
+				if(clazzez.isEmpty){
+			return IScope.NULLSCOPE
+		}else{
+			return Scopes.scopeFor(clazzez.get(0).EAllAttributes)	
+		}	
 	}
 	
 	def isReferenceType(EObject context, EReference reference){
@@ -97,19 +117,18 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 	
 	def isNodeAttributeCallObject(EObject context, EReference reference){
-		return context instanceof NodeAttributeCall && reference == MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__OBJECT
+		return context instanceof NodeAttributeCall && reference == MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__NODE
 	}
 	
 	def isNodeAttributeCallAttribute(EObject context, EReference reference){
 		return context instanceof NodeAttributeCall && reference == MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE
 	}
 	
+	def isNodeAttributeAssignmentType(EObject context, EReference reference){
+		return context instanceof Assignment && reference == MGLangPackage.Literals.ASSIGNMENT__TARGET
+	}
+	
 	def getRootFile(EObject context){
-		var traverser = context
-		while(!(traverser instanceof MofgenFile)){
-			traverser = traverser.eContainer
-		}
-		
-		return traverser as MofgenFile
+		return EcoreUtil2.getContainerOfType(context, MofgenFile)
 	}
 }

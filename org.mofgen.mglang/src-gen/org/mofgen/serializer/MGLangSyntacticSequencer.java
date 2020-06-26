@@ -21,22 +21,22 @@ import org.mofgen.services.MGLangGrammarAccess;
 public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected MGLangGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_PatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q;
+	protected AbstractElementAlias match_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q;
+	protected AbstractElementAlias match_LiteralExpression___FullStopKeyword_1_3_0_INTTerminalRuleCall_1_3_1__q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (MGLangGrammarAccess) access;
-		match_PatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getPatternCallAccess().getLeftParenthesisKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getPatternCallAccess().getRightParenthesisKeyword_1_2()));
+		match_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getGenPatternCallAccess().getLeftParenthesisKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getGenPatternCallAccess().getRightParenthesisKeyword_1_2()));
+		match_LiteralExpression___FullStopKeyword_1_3_0_INTTerminalRuleCall_1_3_1__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getLiteralExpressionAccess().getFullStopKeyword_1_3_0()), new TokenAlias(false, false, grammarAccess.getLiteralExpressionAccess().getINTTerminalRuleCall_1_3_1()));
 	}
 	
 	@Override
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (ruleCall.getRule() == grammarAccess.getASSIGNMENT_OPRule())
 			return getASSIGNMENT_OPToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getNumberLiteralRule())
-			return getNumberLiteralToken(semanticObject, ruleCall, node);
-		else if (ruleCall.getRule() == grammarAccess.getPATTERN_ASSIGNMENT_OPRule())
-			return getPATTERN_ASSIGNMENT_OPToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getINTRule())
+			return getINTToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
@@ -51,23 +51,12 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	}
 	
 	/**
-	 * NumberLiteral:
-	 *   ('-')? INT ('.' INT)?;
+	 * terminal INT returns ecore::EInt: ('0'..'9')+;
 	 */
-	protected String getNumberLiteralToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+	protected String getINTToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (node != null)
 			return getTokenText(node);
 		return "";
-	}
-	
-	/**
-	 * terminal PATTERN_ASSIGNMENT_OP:
-	 * 	':=';
-	 */
-	protected String getPATTERN_ASSIGNMENT_OPToken(EObject semanticObject, RuleCall ruleCall, INode node) {
-		if (node != null)
-			return getTokenText(node);
-		return ":=";
 	}
 	
 	@Override
@@ -76,8 +65,10 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if (match_PatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q.equals(syntax))
-				emit_PatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			if (match_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q.equals(syntax))
+				emit_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_LiteralExpression___FullStopKeyword_1_3_0_INTTerminalRuleCall_1_3_1__q.equals(syntax))
+				emit_LiteralExpression___FullStopKeyword_1_3_0_INTTerminalRuleCall_1_3_1__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -89,7 +80,19 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     calledPattern=[Pattern|ID] (ambiguity) (rule end)
 	 */
-	protected void emit_PatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     ('.' INT)?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     (rule start) INT (ambiguity) (rule start)
+	 *     value='-' INT (ambiguity) (rule end)
+	 */
+	protected void emit_LiteralExpression___FullStopKeyword_1_3_0_INTTerminalRuleCall_1_3_1__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

@@ -20,10 +20,9 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.NodeReferenceOrAssignment;
+import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.Pattern;
-import org.mofgen.mGLang.PatternNodeCreation;
 import org.mofgen.mGLang.PatternReturn;
 
 /**
@@ -37,7 +36,6 @@ import org.mofgen.mGLang.PatternReturn;
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getNodes <em>Nodes</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getRefsAssigns <em>Refs Assigns</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getReturn <em>Return</em>}</li>
  * </ul>
  *
@@ -83,17 +81,7 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
    * @generated
    * @ordered
    */
-  protected EList<PatternNodeCreation> nodes;
-
-  /**
-   * The cached value of the '{@link #getRefsAssigns() <em>Refs Assigns</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getRefsAssigns()
-   * @generated
-   * @ordered
-   */
-  protected EList<NodeReferenceOrAssignment> refsAssigns;
+  protected EList<Node> nodes;
 
   /**
    * The cached value of the '{@link #getReturn() <em>Return</em>}' containment reference.
@@ -172,28 +160,13 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
    * @generated
    */
   @Override
-  public EList<PatternNodeCreation> getNodes()
+  public EList<Node> getNodes()
   {
     if (nodes == null)
     {
-      nodes = new EObjectContainmentEList<PatternNodeCreation>(PatternNodeCreation.class, this, MGLangPackage.PATTERN__NODES);
+      nodes = new EObjectContainmentEList<Node>(Node.class, this, MGLangPackage.PATTERN__NODES);
     }
     return nodes;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<NodeReferenceOrAssignment> getRefsAssigns()
-  {
-    if (refsAssigns == null)
-    {
-      refsAssigns = new EObjectContainmentEList<NodeReferenceOrAssignment>(NodeReferenceOrAssignment.class, this, MGLangPackage.PATTERN__REFS_ASSIGNS);
-    }
-    return refsAssigns;
   }
 
   /**
@@ -260,8 +233,6 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
       case MGLangPackage.PATTERN__NODES:
         return ((InternalEList<?>)getNodes()).basicRemove(otherEnd, msgs);
-      case MGLangPackage.PATTERN__REFS_ASSIGNS:
-        return ((InternalEList<?>)getRefsAssigns()).basicRemove(otherEnd, msgs);
       case MGLangPackage.PATTERN__RETURN:
         return basicSetReturn(null, msgs);
     }
@@ -284,8 +255,6 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return getParameters();
       case MGLangPackage.PATTERN__NODES:
         return getNodes();
-      case MGLangPackage.PATTERN__REFS_ASSIGNS:
-        return getRefsAssigns();
       case MGLangPackage.PATTERN__RETURN:
         return getReturn();
     }
@@ -312,11 +281,7 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return;
       case MGLangPackage.PATTERN__NODES:
         getNodes().clear();
-        getNodes().addAll((Collection<? extends PatternNodeCreation>)newValue);
-        return;
-      case MGLangPackage.PATTERN__REFS_ASSIGNS:
-        getRefsAssigns().clear();
-        getRefsAssigns().addAll((Collection<? extends NodeReferenceOrAssignment>)newValue);
+        getNodes().addAll((Collection<? extends Node>)newValue);
         return;
       case MGLangPackage.PATTERN__RETURN:
         setReturn((PatternReturn)newValue);
@@ -344,9 +309,6 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
       case MGLangPackage.PATTERN__NODES:
         getNodes().clear();
         return;
-      case MGLangPackage.PATTERN__REFS_ASSIGNS:
-        getRefsAssigns().clear();
-        return;
       case MGLangPackage.PATTERN__RETURN:
         setReturn((PatternReturn)null);
         return;
@@ -370,8 +332,6 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return parameters != null && !parameters.isEmpty();
       case MGLangPackage.PATTERN__NODES:
         return nodes != null && !nodes.isEmpty();
-      case MGLangPackage.PATTERN__REFS_ASSIGNS:
-        return refsAssigns != null && !refsAssigns.isEmpty();
       case MGLangPackage.PATTERN__RETURN:
         return return_ != null;
     }

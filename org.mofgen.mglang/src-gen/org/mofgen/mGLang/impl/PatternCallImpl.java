@@ -18,10 +18,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.mofgen.mGLang.LiteralExpression;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternCall;
-import org.mofgen.mGLang.PatternObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,7 +31,7 @@ import org.mofgen.mGLang.PatternObject;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.PatternCallImpl#getCalledPattern <em>Called Pattern</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.PatternCallImpl#getCalled <em>Called</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternCallImpl#getParams <em>Params</em>}</li>
  * </ul>
  *
@@ -40,14 +40,14 @@ import org.mofgen.mGLang.PatternObject;
 public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
 {
   /**
-   * The cached value of the '{@link #getCalledPattern() <em>Called Pattern</em>}' reference.
+   * The cached value of the '{@link #getCalled() <em>Called</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getCalledPattern()
+   * @see #getCalled()
    * @generated
    * @ordered
    */
-  protected Pattern calledPattern;
+  protected Pattern called;
 
   /**
    * The cached value of the '{@link #getParams() <em>Params</em>}' containment reference list.
@@ -57,7 +57,7 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
    * @generated
    * @ordered
    */
-  protected EList<PatternObject> params;
+  protected EList<LiteralExpression> params;
 
   /**
    * <!-- begin-user-doc -->
@@ -86,19 +86,19 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
    * @generated
    */
   @Override
-  public Pattern getCalledPattern()
+  public Pattern getCalled()
   {
-    if (calledPattern != null && calledPattern.eIsProxy())
+    if (called != null && called.eIsProxy())
     {
-      InternalEObject oldCalledPattern = (InternalEObject)calledPattern;
-      calledPattern = (Pattern)eResolveProxy(oldCalledPattern);
-      if (calledPattern != oldCalledPattern)
+      InternalEObject oldCalled = (InternalEObject)called;
+      called = (Pattern)eResolveProxy(oldCalled);
+      if (called != oldCalled)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.PATTERN_CALL__CALLED_PATTERN, oldCalledPattern, calledPattern));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.PATTERN_CALL__CALLED, oldCalled, called));
       }
     }
-    return calledPattern;
+    return called;
   }
 
   /**
@@ -106,9 +106,9 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
    * <!-- end-user-doc -->
    * @generated
    */
-  public Pattern basicGetCalledPattern()
+  public Pattern basicGetCalled()
   {
-    return calledPattern;
+    return called;
   }
 
   /**
@@ -117,12 +117,12 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
    * @generated
    */
   @Override
-  public void setCalledPattern(Pattern newCalledPattern)
+  public void setCalled(Pattern newCalled)
   {
-    Pattern oldCalledPattern = calledPattern;
-    calledPattern = newCalledPattern;
+    Pattern oldCalled = called;
+    called = newCalled;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_CALL__CALLED_PATTERN, oldCalledPattern, calledPattern));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_CALL__CALLED, oldCalled, called));
   }
 
   /**
@@ -131,11 +131,11 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
    * @generated
    */
   @Override
-  public EList<PatternObject> getParams()
+  public EList<LiteralExpression> getParams()
   {
     if (params == null)
     {
-      params = new EObjectContainmentEList<PatternObject>(PatternObject.class, this, MGLangPackage.PATTERN_CALL__PARAMS);
+      params = new EObjectContainmentEList<LiteralExpression>(LiteralExpression.class, this, MGLangPackage.PATTERN_CALL__PARAMS);
     }
     return params;
   }
@@ -166,9 +166,9 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_CALL__CALLED_PATTERN:
-        if (resolve) return getCalledPattern();
-        return basicGetCalledPattern();
+      case MGLangPackage.PATTERN_CALL__CALLED:
+        if (resolve) return getCalled();
+        return basicGetCalled();
       case MGLangPackage.PATTERN_CALL__PARAMS:
         return getParams();
     }
@@ -186,12 +186,12 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_CALL__CALLED_PATTERN:
-        setCalledPattern((Pattern)newValue);
+      case MGLangPackage.PATTERN_CALL__CALLED:
+        setCalled((Pattern)newValue);
         return;
       case MGLangPackage.PATTERN_CALL__PARAMS:
         getParams().clear();
-        getParams().addAll((Collection<? extends PatternObject>)newValue);
+        getParams().addAll((Collection<? extends LiteralExpression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -207,8 +207,8 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_CALL__CALLED_PATTERN:
-        setCalledPattern((Pattern)null);
+      case MGLangPackage.PATTERN_CALL__CALLED:
+        setCalled((Pattern)null);
         return;
       case MGLangPackage.PATTERN_CALL__PARAMS:
         getParams().clear();
@@ -227,8 +227,8 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_CALL__CALLED_PATTERN:
-        return calledPattern != null;
+      case MGLangPackage.PATTERN_CALL__CALLED:
+        return called != null;
       case MGLangPackage.PATTERN_CALL__PARAMS:
         return params != null && !params.isEmpty();
     }

@@ -14,24 +14,20 @@ Import:
 
 Pattern:
 //(abstract?='abstract')? // 'Abstract' necessary? TODO
-	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (nodes+=PatternNodeCreation |
-	refsAssigns+=NodeReferenceOrAssignment)* //TODO: Validate order of node creation and assignments?
-	'}' return=PatternReturn;
+	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (nodes+=Node)* '}'
+	(return=PatternReturn)?;
 
-PatternReturn: //Is a return obligatory? TODO
-	'return' thisUsed?='this' // ('.' returnValue=[Node])? TODO
-	// TODO Is a this obligatory? And what does it do exactly?
-;
-
-// Nodes
-PatternNodeCreation:
-	node=Node (constructor=NodeConstructor)?;
-
-NodeConstructor:
-	{NodeConstructor} '(' (params+=LiteralExpression)* ')';
+PatternReturn:
+	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
 
 Node:
-	type=[ecore::EClass] name=ID;
+	type=[ecore::EClass] name=ID (createdBy=(NodeConstructor | PatternCall))?;
+
+NodeConstructor:
+	{NodeConstructor} '{' (refsAssigns+=NodeReferenceOrAssignment)* '}';
+
+PatternCall:
+	called=[Pattern] '(' (params+=LiteralExpression)* ')';
 
 NodeReferenceOrAssignment:
 	(PatternNodeReference | Assignment) ('[' condition=Condition ']')?;
@@ -41,35 +37,51 @@ Condition:
 	(relation=EditorRelation rhs=[Parameter])?;
 
 PatternNodeReference:
-	source=[Node] '-' type=[ecore::EReference] '->' target=[Node];
+	type=[ecore::EReference] '->' target=[Node];
 	//TODO: "doc -entries-> entry" fügt einen entry in entries hinzu oder weist entries objekt entry zu? Das führt zu zweideutigkeiten so
 
 Assignment:
-	target=NodeAttributeCall PATTERN_ASSIGNMENT_OP value=LiteralExpression
-;
-
-//TODO make Enum Assignments possible
+	target=[ecore::EAttribute] ASSIGNMENT_OP value=LiteralExpression;
+	//TODO make Enum Assignments possible
 
 NodeAttributeCall:
-	object=[Node] '.' attribute=[ecore::EAttribute]
-;
+	node=[Node] '.' attribute=[ecore::EAttribute];
 
 Parameter:
-	name=ID ':' type=[ecore::EClassifier];
+	PrimitiveParameter | ObjectParameter
+;
+
+PrimitiveParameter:
+	type=PrimitiveType name=ID
+;
+
+ObjectParameter:
+	type=[ecore::EClassifier] name=ID
+;
+
+StringConcatenation returns STRING:
+	StringLiteral ({Concat.left=current} '+' right=StringConcatenation)?
+;
+
+StringLiteral returns STRING:
+	value=STRING
+;
+
+enum PrimitiveType:
+	INT='int' | CHAR='char' | DOUBLE = 'double'
+;
 
 Generator:
-	'generator' name=ID '('
+	{Generator} 'gen' '('
 	// TODO	
 	')' '{' (commands+=GeneratorElement)* '}';
 
 GeneratorElement:
-	GeneratorCommand | ForLoop
-;
+	GeneratorCommand | ForLoop;
 
 GeneratorCommand: //Only serves as super class for all possible commands within generator
 	PatternCall | PatternObjectCreation; //TODO Wie hier patterns wie "examplePattern" und PatternObjects dazu mittels "ExamplePattern" ermöglichen? Eventuell in Scoping einklinken, alle Patterns holen und dann in PatternObject übersetzen?
-
-PatternCall:
+GenPatternCall:
 	calledPattern=[Pattern] ('(' (params+=PatternObject)* ')')?;
 
 PatternObjectCreation:
@@ -80,29 +92,22 @@ PatternObject:
 
 ForLoop:
 	'for' iteratorVar=ID 'in' iteratingCondition=ForCondition '{'
-		(commands += GeneratorCommand)*	
-	'}' 
-;
+	(commands+=GeneratorCommand)*
+	'}';
 
 ForCondition:
-	ForEachCollection | ForRange
-;
+	ForEachCollection | ForRange;
 
 ForEachCollection:
-	coll=NodeAttributeCall
-;
+	coll=NodeAttributeCall;
 
 ForRange:
-	start=INT ':' end=INT
-;
+	start=INT ':' end=INT;
 
 LiteralExpression:
-  {BooleanLiteral} value=('true' | 'false') |
-  {NumberLiteral} NumberLiteral |
-  {StringLiteral} value=STRING;
-
-NumberLiteral:
-  ('-')? INT ('.' INT)?;
+	{BooleanLiteral} value=('true' | 'false') |
+	{NumberLiteral} value=('-')? INT ('.' INT)? |
+	{StringLiteral} value=StringConcatenation;
 
 enum EditorRelation:
 	GREATER='>' |
@@ -111,9 +116,6 @@ enum EditorRelation:
 	UNEQUAL='!=' |
 	SMALLER_OR_EQUAL='<=' |
 	SMALLER='<';
-
-terminal PATTERN_ASSIGNMENT_OP:
-	':=';
 
 terminal ASSIGNMENT_OP:
 	'=';

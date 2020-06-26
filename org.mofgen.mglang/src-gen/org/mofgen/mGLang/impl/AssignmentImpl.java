@@ -6,6 +6,7 @@ package org.mofgen.mGLang.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
@@ -14,7 +15,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.mofgen.mGLang.Assignment;
 import org.mofgen.mGLang.LiteralExpression;
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.NodeAttributeCall;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,14 +33,14 @@ import org.mofgen.mGLang.NodeAttributeCall;
 public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Assignment
 {
   /**
-   * The cached value of the '{@link #getTarget() <em>Target</em>}' containment reference.
+   * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getTarget()
    * @generated
    * @ordered
    */
-  protected NodeAttributeCall target;
+  protected EAttribute target;
 
   /**
    * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
@@ -79,7 +79,27 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    */
   @Override
-  public NodeAttributeCall getTarget()
+  public EAttribute getTarget()
+  {
+    if (target != null && target.eIsProxy())
+    {
+      InternalEObject oldTarget = (InternalEObject)target;
+      target = (EAttribute)eResolveProxy(oldTarget);
+      if (target != oldTarget)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.ASSIGNMENT__TARGET, oldTarget, target));
+      }
+    }
+    return target;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute basicGetTarget()
   {
     return target;
   }
@@ -89,38 +109,13 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetTarget(NodeAttributeCall newTarget, NotificationChain msgs)
+  @Override
+  public void setTarget(EAttribute newTarget)
   {
-    NodeAttributeCall oldTarget = target;
+    EAttribute oldTarget = target;
     target = newTarget;
     if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__TARGET, oldTarget, newTarget);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setTarget(NodeAttributeCall newTarget)
-  {
-    if (newTarget != target)
-    {
-      NotificationChain msgs = null;
-      if (target != null)
-        msgs = ((InternalEObject)target).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ASSIGNMENT__TARGET, null, msgs);
-      if (newTarget != null)
-        msgs = ((InternalEObject)newTarget).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ASSIGNMENT__TARGET, null, msgs);
-      msgs = basicSetTarget(newTarget, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__TARGET, newTarget, newTarget));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__TARGET, oldTarget, target));
   }
 
   /**
@@ -183,8 +178,6 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
   {
     switch (featureID)
     {
-      case MGLangPackage.ASSIGNMENT__TARGET:
-        return basicSetTarget(null, msgs);
       case MGLangPackage.ASSIGNMENT__VALUE:
         return basicSetValue(null, msgs);
     }
@@ -202,7 +195,8 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
     switch (featureID)
     {
       case MGLangPackage.ASSIGNMENT__TARGET:
-        return getTarget();
+        if (resolve) return getTarget();
+        return basicGetTarget();
       case MGLangPackage.ASSIGNMENT__VALUE:
         return getValue();
     }
@@ -220,7 +214,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
     switch (featureID)
     {
       case MGLangPackage.ASSIGNMENT__TARGET:
-        setTarget((NodeAttributeCall)newValue);
+        setTarget((EAttribute)newValue);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
         setValue((LiteralExpression)newValue);
@@ -240,7 +234,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
     switch (featureID)
     {
       case MGLangPackage.ASSIGNMENT__TARGET:
-        setTarget((NodeAttributeCall)null);
+        setTarget((EAttribute)null);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
         setValue((LiteralExpression)null);

@@ -101,10 +101,10 @@ public class MGLangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MGLangPackage.PATTERN_NODE_CREATION:
+      case MGLangPackage.NODE:
       {
-        PatternNodeCreation patternNodeCreation = (PatternNodeCreation)theEObject;
-        T result = casePatternNodeCreation(patternNodeCreation);
+        Node node = (Node)theEObject;
+        T result = caseNode(node);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -115,10 +115,12 @@ public class MGLangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MGLangPackage.NODE:
+      case MGLangPackage.PATTERN_CALL:
       {
-        Node node = (Node)theEObject;
-        T result = caseNode(node);
+        PatternCall patternCall = (PatternCall)theEObject;
+        T result = casePatternCall(patternCall);
+        if (result == null) result = caseGeneratorCommand(patternCall);
+        if (result == null) result = caseGeneratorElement(patternCall);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -166,6 +168,29 @@ public class MGLangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MGLangPackage.PRIMITIVE_PARAMETER:
+      {
+        PrimitiveParameter primitiveParameter = (PrimitiveParameter)theEObject;
+        T result = casePrimitiveParameter(primitiveParameter);
+        if (result == null) result = caseParameter(primitiveParameter);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MGLangPackage.OBJECT_PARAMETER:
+      {
+        ObjectParameter objectParameter = (ObjectParameter)theEObject;
+        T result = caseObjectParameter(objectParameter);
+        if (result == null) result = caseParameter(objectParameter);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MGLangPackage.STRING:
+      {
+        STRING string = (STRING)theEObject;
+        T result = caseSTRING(string);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MGLangPackage.GENERATOR:
       {
         Generator generator = (Generator)theEObject;
@@ -188,12 +213,10 @@ public class MGLangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MGLangPackage.PATTERN_CALL:
+      case MGLangPackage.GEN_PATTERN_CALL:
       {
-        PatternCall patternCall = (PatternCall)theEObject;
-        T result = casePatternCall(patternCall);
-        if (result == null) result = caseGeneratorCommand(patternCall);
-        if (result == null) result = caseGeneratorElement(patternCall);
+        GenPatternCall genPatternCall = (GenPatternCall)theEObject;
+        T result = caseGenPatternCall(genPatternCall);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -248,6 +271,14 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         LiteralExpression literalExpression = (LiteralExpression)theEObject;
         T result = caseLiteralExpression(literalExpression);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MGLangPackage.CONCAT:
+      {
+        Concat concat = (Concat)theEObject;
+        T result = caseConcat(concat);
+        if (result == null) result = caseSTRING(concat);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -344,17 +375,17 @@ public class MGLangSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Pattern Node Creation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Node</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Pattern Node Creation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Node</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T casePatternNodeCreation(PatternNodeCreation object)
+  public T caseNode(Node object)
   {
     return null;
   }
@@ -376,17 +407,17 @@ public class MGLangSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Node</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Pattern Call</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Node</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Pattern Call</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseNode(Node object)
+  public T casePatternCall(PatternCall object)
   {
     return null;
   }
@@ -488,6 +519,54 @@ public class MGLangSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Primitive Parameter</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Primitive Parameter</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casePrimitiveParameter(PrimitiveParameter object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Object Parameter</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Object Parameter</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseObjectParameter(ObjectParameter object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>STRING</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>STRING</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSTRING(STRING object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Generator</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -536,17 +615,17 @@ public class MGLangSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Pattern Call</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Gen Pattern Call</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Pattern Call</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Gen Pattern Call</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T casePatternCall(PatternCall object)
+  public T caseGenPatternCall(GenPatternCall object)
   {
     return null;
   }
@@ -659,6 +738,22 @@ public class MGLangSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseLiteralExpression(LiteralExpression object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Concat</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Concat</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseConcat(Concat object)
   {
     return null;
   }

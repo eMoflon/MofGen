@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.NodeAttributeCall#getObject <em>Object</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.NodeAttributeCall#getNode <em>Node</em>}</li>
  *   <li>{@link org.mofgen.mGLang.NodeAttributeCall#getAttribute <em>Attribute</em>}</li>
  * </ul>
  *
@@ -26,26 +26,26 @@ import org.eclipse.emf.ecore.EObject;
 public interface NodeAttributeCall extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Object</b></em>' reference.
+   * Returns the value of the '<em><b>Node</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Object</em>' reference.
-   * @see #setObject(Node)
-   * @see org.mofgen.mGLang.MGLangPackage#getNodeAttributeCall_Object()
+   * @return the value of the '<em>Node</em>' reference.
+   * @see #setNode(Node)
+   * @see org.mofgen.mGLang.MGLangPackage#getNodeAttributeCall_Node()
    * @model
    * @generated
    */
-  Node getObject();
+  Node getNode();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.NodeAttributeCall#getObject <em>Object</em>}' reference.
+   * Sets the value of the '{@link org.mofgen.mGLang.NodeAttributeCall#getNode <em>Node</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Object</em>' reference.
-   * @see #getObject()
+   * @param value the new value of the '<em>Node</em>' reference.
+   * @see #getNode()
    * @generated
    */
-  void setObject(Node value);
+  void setNode(Node value);
 
   /**
    * Returns the value of the '<em><b>Attribute</b></em>' reference.

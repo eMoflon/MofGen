@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.NodeConstructor#getParams <em>Params</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.NodeConstructor#getRefsAssigns <em>Refs Assigns</em>}</li>
  * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getNodeConstructor()
@@ -26,15 +26,15 @@ import org.eclipse.emf.ecore.EObject;
 public interface NodeConstructor extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Params</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.LiteralExpression}.
+   * Returns the value of the '<em><b>Refs Assigns</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.NodeReferenceOrAssignment}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Params</em>' containment reference list.
-   * @see org.mofgen.mGLang.MGLangPackage#getNodeConstructor_Params()
+   * @return the value of the '<em>Refs Assigns</em>' containment reference list.
+   * @see org.mofgen.mGLang.MGLangPackage#getNodeConstructor_RefsAssigns()
    * @model containment="true"
    * @generated
    */
-  EList<LiteralExpression> getParams();
+  EList<NodeReferenceOrAssignment> getRefsAssigns();
 
 } // NodeConstructor

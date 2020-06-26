@@ -60,13 +60,13 @@ public interface MGLangFactory extends EFactory
   PatternReturn createPatternReturn();
 
   /**
-   * Returns a new object of class '<em>Pattern Node Creation</em>'.
+   * Returns a new object of class '<em>Node</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Pattern Node Creation</em>'.
+   * @return a new object of class '<em>Node</em>'.
    * @generated
    */
-  PatternNodeCreation createPatternNodeCreation();
+  Node createNode();
 
   /**
    * Returns a new object of class '<em>Node Constructor</em>'.
@@ -78,13 +78,13 @@ public interface MGLangFactory extends EFactory
   NodeConstructor createNodeConstructor();
 
   /**
-   * Returns a new object of class '<em>Node</em>'.
+   * Returns a new object of class '<em>Pattern Call</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Node</em>'.
+   * @return a new object of class '<em>Pattern Call</em>'.
    * @generated
    */
-  Node createNode();
+  PatternCall createPatternCall();
 
   /**
    * Returns a new object of class '<em>Node Reference Or Assignment</em>'.
@@ -141,6 +141,33 @@ public interface MGLangFactory extends EFactory
   Parameter createParameter();
 
   /**
+   * Returns a new object of class '<em>Primitive Parameter</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Primitive Parameter</em>'.
+   * @generated
+   */
+  PrimitiveParameter createPrimitiveParameter();
+
+  /**
+   * Returns a new object of class '<em>Object Parameter</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Object Parameter</em>'.
+   * @generated
+   */
+  ObjectParameter createObjectParameter();
+
+  /**
+   * Returns a new object of class '<em>STRING</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>STRING</em>'.
+   * @generated
+   */
+  STRING createSTRING();
+
+  /**
    * Returns a new object of class '<em>Generator</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -168,13 +195,13 @@ public interface MGLangFactory extends EFactory
   GeneratorCommand createGeneratorCommand();
 
   /**
-   * Returns a new object of class '<em>Pattern Call</em>'.
+   * Returns a new object of class '<em>Gen Pattern Call</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Pattern Call</em>'.
+   * @return a new object of class '<em>Gen Pattern Call</em>'.
    * @generated
    */
-  PatternCall createPatternCall();
+  GenPatternCall createGenPatternCall();
 
   /**
    * Returns a new object of class '<em>Pattern Object Creation</em>'.
@@ -238,6 +265,15 @@ public interface MGLangFactory extends EFactory
    * @generated
    */
   LiteralExpression createLiteralExpression();
+
+  /**
+   * Returns a new object of class '<em>Concat</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Concat</em>'.
+   * @generated
+   */
+  Concat createConcat();
 
   /**
    * Returns a new object of class '<em>Boolean Literal</em>'.

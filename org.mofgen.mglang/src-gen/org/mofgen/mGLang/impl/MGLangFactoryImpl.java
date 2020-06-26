@@ -70,19 +70,22 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.IMPORT: return createImport();
       case MGLangPackage.PATTERN: return createPattern();
       case MGLangPackage.PATTERN_RETURN: return createPatternReturn();
-      case MGLangPackage.PATTERN_NODE_CREATION: return createPatternNodeCreation();
-      case MGLangPackage.NODE_CONSTRUCTOR: return createNodeConstructor();
       case MGLangPackage.NODE: return createNode();
+      case MGLangPackage.NODE_CONSTRUCTOR: return createNodeConstructor();
+      case MGLangPackage.PATTERN_CALL: return createPatternCall();
       case MGLangPackage.NODE_REFERENCE_OR_ASSIGNMENT: return createNodeReferenceOrAssignment();
       case MGLangPackage.CONDITION: return createCondition();
       case MGLangPackage.PATTERN_NODE_REFERENCE: return createPatternNodeReference();
       case MGLangPackage.ASSIGNMENT: return createAssignment();
       case MGLangPackage.NODE_ATTRIBUTE_CALL: return createNodeAttributeCall();
       case MGLangPackage.PARAMETER: return createParameter();
+      case MGLangPackage.PRIMITIVE_PARAMETER: return createPrimitiveParameter();
+      case MGLangPackage.OBJECT_PARAMETER: return createObjectParameter();
+      case MGLangPackage.STRING: return createSTRING();
       case MGLangPackage.GENERATOR: return createGenerator();
       case MGLangPackage.GENERATOR_ELEMENT: return createGeneratorElement();
       case MGLangPackage.GENERATOR_COMMAND: return createGeneratorCommand();
-      case MGLangPackage.PATTERN_CALL: return createPatternCall();
+      case MGLangPackage.GEN_PATTERN_CALL: return createGenPatternCall();
       case MGLangPackage.PATTERN_OBJECT_CREATION: return createPatternObjectCreation();
       case MGLangPackage.PATTERN_OBJECT: return createPatternObject();
       case MGLangPackage.FOR_LOOP: return createForLoop();
@@ -90,6 +93,7 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.FOR_EACH_COLLECTION: return createForEachCollection();
       case MGLangPackage.FOR_RANGE: return createForRange();
       case MGLangPackage.LITERAL_EXPRESSION: return createLiteralExpression();
+      case MGLangPackage.CONCAT: return createConcat();
       case MGLangPackage.BOOLEAN_LITERAL: return createBooleanLiteral();
       case MGLangPackage.NUMBER_LITERAL: return createNumberLiteral();
       case MGLangPackage.STRING_LITERAL: return createStringLiteral();
@@ -108,6 +112,8 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case MGLangPackage.PRIMITIVE_TYPE:
+        return createPrimitiveTypeFromString(eDataType, initialValue);
       case MGLangPackage.EDITOR_RELATION:
         return createEditorRelationFromString(eDataType, initialValue);
       default:
@@ -125,6 +131,8 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case MGLangPackage.PRIMITIVE_TYPE:
+        return convertPrimitiveTypeToString(eDataType, instanceValue);
       case MGLangPackage.EDITOR_RELATION:
         return convertEditorRelationToString(eDataType, instanceValue);
       default:
@@ -186,10 +194,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public PatternNodeCreation createPatternNodeCreation()
+  public Node createNode()
   {
-    PatternNodeCreationImpl patternNodeCreation = new PatternNodeCreationImpl();
-    return patternNodeCreation;
+    NodeImpl node = new NodeImpl();
+    return node;
   }
 
   /**
@@ -210,10 +218,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public Node createNode()
+  public PatternCall createPatternCall()
   {
-    NodeImpl node = new NodeImpl();
-    return node;
+    PatternCallImpl patternCall = new PatternCallImpl();
+    return patternCall;
   }
 
   /**
@@ -294,6 +302,42 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
+  public PrimitiveParameter createPrimitiveParameter()
+  {
+    PrimitiveParameterImpl primitiveParameter = new PrimitiveParameterImpl();
+    return primitiveParameter;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ObjectParameter createObjectParameter()
+  {
+    ObjectParameterImpl objectParameter = new ObjectParameterImpl();
+    return objectParameter;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public STRING createSTRING()
+  {
+    STRINGImpl string = new STRINGImpl();
+    return string;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Generator createGenerator()
   {
     GeneratorImpl generator = new GeneratorImpl();
@@ -330,10 +374,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public PatternCall createPatternCall()
+  public GenPatternCall createGenPatternCall()
   {
-    PatternCallImpl patternCall = new PatternCallImpl();
-    return patternCall;
+    GenPatternCallImpl genPatternCall = new GenPatternCallImpl();
+    return genPatternCall;
   }
 
   /**
@@ -426,6 +470,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
+  public Concat createConcat()
+  {
+    ConcatImpl concat = new ConcatImpl();
+    return concat;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public BooleanLiteral createBooleanLiteral()
   {
     BooleanLiteralImpl booleanLiteral = new BooleanLiteralImpl();
@@ -454,6 +510,28 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     StringLiteralImpl stringLiteral = new StringLiteralImpl();
     return stringLiteral;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public PrimitiveType createPrimitiveTypeFromString(EDataType eDataType, String initialValue)
+  {
+    PrimitiveType result = PrimitiveType.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertPrimitiveTypeToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
   }
 
   /**

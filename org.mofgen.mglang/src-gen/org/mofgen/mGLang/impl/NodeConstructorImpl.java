@@ -17,9 +17,9 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.mofgen.mGLang.LiteralExpression;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.NodeConstructor;
+import org.mofgen.mGLang.NodeReferenceOrAssignment;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +29,7 @@ import org.mofgen.mGLang.NodeConstructor;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.NodeConstructorImpl#getParams <em>Params</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.NodeConstructorImpl#getRefsAssigns <em>Refs Assigns</em>}</li>
  * </ul>
  *
  * @generated
@@ -37,14 +37,14 @@ import org.mofgen.mGLang.NodeConstructor;
 public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements NodeConstructor
 {
   /**
-   * The cached value of the '{@link #getParams() <em>Params</em>}' containment reference list.
+   * The cached value of the '{@link #getRefsAssigns() <em>Refs Assigns</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getParams()
+   * @see #getRefsAssigns()
    * @generated
    * @ordered
    */
-  protected EList<LiteralExpression> params;
+  protected EList<NodeReferenceOrAssignment> refsAssigns;
 
   /**
    * <!-- begin-user-doc -->
@@ -73,13 +73,13 @@ public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements
    * @generated
    */
   @Override
-  public EList<LiteralExpression> getParams()
+  public EList<NodeReferenceOrAssignment> getRefsAssigns()
   {
-    if (params == null)
+    if (refsAssigns == null)
     {
-      params = new EObjectContainmentEList<LiteralExpression>(LiteralExpression.class, this, MGLangPackage.NODE_CONSTRUCTOR__PARAMS);
+      refsAssigns = new EObjectContainmentEList<NodeReferenceOrAssignment>(NodeReferenceOrAssignment.class, this, MGLangPackage.NODE_CONSTRUCTOR__REFS_ASSIGNS);
     }
-    return params;
+    return refsAssigns;
   }
 
   /**
@@ -92,8 +92,8 @@ public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_CONSTRUCTOR__PARAMS:
-        return ((InternalEList<?>)getParams()).basicRemove(otherEnd, msgs);
+      case MGLangPackage.NODE_CONSTRUCTOR__REFS_ASSIGNS:
+        return ((InternalEList<?>)getRefsAssigns()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -108,8 +108,8 @@ public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_CONSTRUCTOR__PARAMS:
-        return getParams();
+      case MGLangPackage.NODE_CONSTRUCTOR__REFS_ASSIGNS:
+        return getRefsAssigns();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -125,9 +125,9 @@ public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_CONSTRUCTOR__PARAMS:
-        getParams().clear();
-        getParams().addAll((Collection<? extends LiteralExpression>)newValue);
+      case MGLangPackage.NODE_CONSTRUCTOR__REFS_ASSIGNS:
+        getRefsAssigns().clear();
+        getRefsAssigns().addAll((Collection<? extends NodeReferenceOrAssignment>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -143,8 +143,8 @@ public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_CONSTRUCTOR__PARAMS:
-        getParams().clear();
+      case MGLangPackage.NODE_CONSTRUCTOR__REFS_ASSIGNS:
+        getRefsAssigns().clear();
         return;
     }
     super.eUnset(featureID);
@@ -160,8 +160,8 @@ public class NodeConstructorImpl extends MinimalEObjectImpl.Container implements
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_CONSTRUCTOR__PARAMS:
-        return params != null && !params.isEmpty();
+      case MGLangPackage.NODE_CONSTRUCTOR__REFS_ASSIGNS:
+        return refsAssigns != null && !refsAssigns.isEmpty();
     }
     return super.eIsSet(featureID);
   }

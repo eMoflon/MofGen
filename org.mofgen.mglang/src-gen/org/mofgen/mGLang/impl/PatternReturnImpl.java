@@ -6,11 +6,13 @@ package org.mofgen.mGLang.impl;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.PatternReturn;
 
 /**
@@ -21,7 +23,7 @@ import org.mofgen.mGLang.PatternReturn;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.PatternReturnImpl#isThisUsed <em>This Used</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.PatternReturnImpl#getReturnValue <em>Return Value</em>}</li>
  * </ul>
  *
  * @generated
@@ -29,24 +31,14 @@ import org.mofgen.mGLang.PatternReturn;
 public class PatternReturnImpl extends MinimalEObjectImpl.Container implements PatternReturn
 {
   /**
-   * The default value of the '{@link #isThisUsed() <em>This Used</em>}' attribute.
+   * The cached value of the '{@link #getReturnValue() <em>Return Value</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #isThisUsed()
+   * @see #getReturnValue()
    * @generated
    * @ordered
    */
-  protected static final boolean THIS_USED_EDEFAULT = false;
-
-  /**
-   * The cached value of the '{@link #isThisUsed() <em>This Used</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isThisUsed()
-   * @generated
-   * @ordered
-   */
-  protected boolean thisUsed = THIS_USED_EDEFAULT;
+  protected Node returnValue;
 
   /**
    * <!-- begin-user-doc -->
@@ -75,9 +67,29 @@ public class PatternReturnImpl extends MinimalEObjectImpl.Container implements P
    * @generated
    */
   @Override
-  public boolean isThisUsed()
+  public Node getReturnValue()
   {
-    return thisUsed;
+    if (returnValue != null && returnValue.eIsProxy())
+    {
+      InternalEObject oldReturnValue = (InternalEObject)returnValue;
+      returnValue = (Node)eResolveProxy(oldReturnValue);
+      if (returnValue != oldReturnValue)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.PATTERN_RETURN__RETURN_VALUE, oldReturnValue, returnValue));
+      }
+    }
+    return returnValue;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Node basicGetReturnValue()
+  {
+    return returnValue;
   }
 
   /**
@@ -86,12 +98,12 @@ public class PatternReturnImpl extends MinimalEObjectImpl.Container implements P
    * @generated
    */
   @Override
-  public void setThisUsed(boolean newThisUsed)
+  public void setReturnValue(Node newReturnValue)
   {
-    boolean oldThisUsed = thisUsed;
-    thisUsed = newThisUsed;
+    Node oldReturnValue = returnValue;
+    returnValue = newReturnValue;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_RETURN__THIS_USED, oldThisUsed, thisUsed));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_RETURN__RETURN_VALUE, oldReturnValue, returnValue));
   }
 
   /**
@@ -104,8 +116,9 @@ public class PatternReturnImpl extends MinimalEObjectImpl.Container implements P
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_RETURN__THIS_USED:
-        return isThisUsed();
+      case MGLangPackage.PATTERN_RETURN__RETURN_VALUE:
+        if (resolve) return getReturnValue();
+        return basicGetReturnValue();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -120,8 +133,8 @@ public class PatternReturnImpl extends MinimalEObjectImpl.Container implements P
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_RETURN__THIS_USED:
-        setThisUsed((Boolean)newValue);
+      case MGLangPackage.PATTERN_RETURN__RETURN_VALUE:
+        setReturnValue((Node)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -137,8 +150,8 @@ public class PatternReturnImpl extends MinimalEObjectImpl.Container implements P
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_RETURN__THIS_USED:
-        setThisUsed(THIS_USED_EDEFAULT);
+      case MGLangPackage.PATTERN_RETURN__RETURN_VALUE:
+        setReturnValue((Node)null);
         return;
     }
     super.eUnset(featureID);
@@ -154,27 +167,10 @@ public class PatternReturnImpl extends MinimalEObjectImpl.Container implements P
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_RETURN__THIS_USED:
-        return thisUsed != THIS_USED_EDEFAULT;
+      case MGLangPackage.PATTERN_RETURN__RETURN_VALUE:
+        return returnValue != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (thisUsed: ");
-    result.append(thisUsed);
-    result.append(')');
-    return result.toString();
   }
 
 } //PatternReturnImpl

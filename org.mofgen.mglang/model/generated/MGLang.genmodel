@@ -6,6 +6,11 @@
     copyrightFields="false" runtimeVersion="2.20">
   <genPackages prefix="MGLang" basePackage="org.mofgen" disposableProviderFactory="true"
       fileExtensions="mofgen" ecorePackage="MGLang.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="MGLang.ecore#//PrimitiveType">
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/INT"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/CHAR"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/DOUBLE"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="MGLang.ecore#//EditorRelation">
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//EditorRelation/GREATER"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//EditorRelation/GREATER_OR_EQUAL"/>
@@ -27,22 +32,22 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Pattern/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/parameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/nodes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/refsAssigns"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/return"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternReturn">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//PatternReturn/thisUsed"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//PatternNodeCreation">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeCreation/node"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeCreation/constructor"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//NodeConstructor">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//NodeConstructor/params"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternReturn/returnValue"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Node">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//Node/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Node/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Node/createdBy"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//NodeConstructor">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//NodeConstructor/refsAssigns"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//PatternCall">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCall/called"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCall/params"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//NodeReferenceOrAssignment">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//NodeReferenceOrAssignment/condition"/>
@@ -53,31 +58,37 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//Condition/rhs"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternNodeReference">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReference/source"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReference/type"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReference/target"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Assignment">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Assignment/target"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//Assignment/target"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Assignment/value"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//NodeAttributeCall">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//NodeAttributeCall/object"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//NodeAttributeCall/node"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//NodeAttributeCall/attribute"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Parameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Parameter/name"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//Parameter/type"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//PrimitiveParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//PrimitiveParameter/type"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//ObjectParameter">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ObjectParameter/type"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//STRING">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//STRING/value"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Generator">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Generator/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Generator/commands"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//GeneratorElement"/>
     <genClasses ecoreClass="MGLang.ecore#//GeneratorCommand"/>
-    <genClasses ecoreClass="MGLang.ecore#//PatternCall">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCall/calledPattern"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCall/params"/>
+    <genClasses ecoreClass="MGLang.ecore#//GenPatternCall">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenPatternCall/calledPattern"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenPatternCall/params"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternObjectCreation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternObjectCreation/pObject"/>
@@ -101,12 +112,18 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//ForRange/end"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//LiteralExpression"/>
+    <genClasses ecoreClass="MGLang.ecore#//Concat">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Concat/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Concat/right"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//BooleanLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//BooleanLiteral/value"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//NumberLiteral"/>
+    <genClasses ecoreClass="MGLang.ecore#//NumberLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//NumberLiteral/value"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//StringLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//StringLiteral/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//StringLiteral/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
