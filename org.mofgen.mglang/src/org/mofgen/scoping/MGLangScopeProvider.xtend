@@ -15,7 +15,10 @@ import org.mofgen.mGLang.Node
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.Assignment
 import org.mofgen.mGLang.NodeAttributeCall
-import org.eclipse.emf.ecore.util.EcoreUtil
+import org.mofgen.mGLang.ParameterRef
+import org.mofgen.mGLang.Pattern
+import org.mofgen.mGLang.MethodCall
+import org.mofgen.mGLang.ObjectParameter
 
 /**
  * This class contains custom scoping description.
@@ -43,6 +46,15 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 		if(isNodeAttributeAssignmentType(context, reference)){
 			return getScopeForNodeAssignmentType(context as Assignment)
+		}
+		if(isParameterRef(context, reference)){
+			return getScopeForParameterRef(context as ParameterRef)
+		}
+		if(isMethodCallNode(context, reference)){
+			return getScopeForMethodCallNode(context as MethodCall)
+		}
+		if(isMethodCallMethod(context, reference)){
+			return getScopeForMethodCallMethod(context as MethodCall)
 		}
 		
 		return super.getScope(context, reference)
@@ -104,6 +116,28 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}	
 	}
 	
+	def getScopeForParameterRef(ParameterRef ref){
+		// get parameters of above Pattern
+		val pattern = EcoreUtil2.getContainerOfType(ref, Pattern)
+		val params = pattern.parameters
+		return Scopes.scopeFor(params)
+	}
+	
+	def getScopeForMethodCallNode(MethodCall mc){
+		// get all nodes of pattern (params and defined)
+		val pattern = EcoreUtil2.getContainerOfType(mc, Pattern)
+		val params = pattern.parameters.filter(ObjectParameter)
+		val nodes = pattern.nodes
+		return Scopes.scopeFor(params + nodes)
+	}
+	
+	def getScopeForMethodCallMethod(MethodCall mc){
+		val node = mc.calledNode
+		val file = getRootFile(mc)
+		val calledClass = MofgenModelUtils.getClasses(file).filter[c|c == node.type].get(0)
+		return Scopes.scopeFor(calledClass.EAllOperations)
+	}
+	
 	def isReferenceType(EObject context, EReference reference){
 		return context instanceof PatternNodeReference && reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE
 	}
@@ -126,6 +160,18 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	
 	def isNodeAttributeAssignmentType(EObject context, EReference reference){
 		return context instanceof Assignment && reference == MGLangPackage.Literals.ASSIGNMENT__TARGET
+	}
+	
+	def isParameterRef(EObject context, EReference reference){
+		return context instanceof ParameterRef && reference == MGLangPackage.Literals.PARAMETER_REF__REF
+	}
+	
+	def isMethodCallNode(EObject context, EReference reference){
+		return context instanceof MethodCall && reference == MGLangPackage.Literals.METHOD_CALL__CALLED_NODE
+	}
+		
+	def isMethodCallMethod(EObject context, EReference reference){
+		return context instanceof MethodCall && reference == MGLangPackage.Literals.METHOD_CALL__METHOD
 	}
 	
 	def getRootFile(EObject context){

@@ -11,41 +11,41 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.mofgen.mGLang.BooleanExpression;
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.STRING;
-import org.mofgen.mGLang.StringLiteral;
+import org.mofgen.mGLang.NegatedBoolean;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>String Literal</b></em>'.
+ * An implementation of the model object '<em><b>Negated Boolean</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.StringLiteralImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.NegatedBooleanImpl#getExpr <em>Expr</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class StringLiteralImpl extends LiteralExpressionImpl implements StringLiteral
+public class NegatedBooleanImpl extends BooleanExpressionImpl implements NegatedBoolean
 {
   /**
-   * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
+   * The cached value of the '{@link #getExpr() <em>Expr</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getValue()
+   * @see #getExpr()
    * @generated
    * @ordered
    */
-  protected STRING value;
+  protected BooleanExpression expr;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected StringLiteralImpl()
+  protected NegatedBooleanImpl()
   {
     super();
   }
@@ -58,7 +58,7 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
   @Override
   protected EClass eStaticClass()
   {
-    return MGLangPackage.Literals.STRING_LITERAL;
+    return MGLangPackage.Literals.NEGATED_BOOLEAN;
   }
 
   /**
@@ -67,9 +67,9 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
    * @generated
    */
   @Override
-  public STRING getValue()
+  public BooleanExpression getExpr()
   {
-    return value;
+    return expr;
   }
 
   /**
@@ -77,13 +77,13 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetValue(STRING newValue, NotificationChain msgs)
+  public NotificationChain basicSetExpr(BooleanExpression newExpr, NotificationChain msgs)
   {
-    STRING oldValue = value;
-    value = newValue;
+    BooleanExpression oldExpr = expr;
+    expr = newExpr;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.STRING_LITERAL__VALUE, oldValue, newValue);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.NEGATED_BOOLEAN__EXPR, oldExpr, newExpr);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -95,20 +95,20 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
    * @generated
    */
   @Override
-  public void setValue(STRING newValue)
+  public void setExpr(BooleanExpression newExpr)
   {
-    if (newValue != value)
+    if (newExpr != expr)
     {
       NotificationChain msgs = null;
-      if (value != null)
-        msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.STRING_LITERAL__VALUE, null, msgs);
-      if (newValue != null)
-        msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.STRING_LITERAL__VALUE, null, msgs);
-      msgs = basicSetValue(newValue, msgs);
+      if (expr != null)
+        msgs = ((InternalEObject)expr).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.NEGATED_BOOLEAN__EXPR, null, msgs);
+      if (newExpr != null)
+        msgs = ((InternalEObject)newExpr).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.NEGATED_BOOLEAN__EXPR, null, msgs);
+      msgs = basicSetExpr(newExpr, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.STRING_LITERAL__VALUE, newValue, newValue));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.NEGATED_BOOLEAN__EXPR, newExpr, newExpr));
   }
 
   /**
@@ -121,8 +121,8 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
   {
     switch (featureID)
     {
-      case MGLangPackage.STRING_LITERAL__VALUE:
-        return basicSetValue(null, msgs);
+      case MGLangPackage.NEGATED_BOOLEAN__EXPR:
+        return basicSetExpr(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -137,8 +137,8 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
   {
     switch (featureID)
     {
-      case MGLangPackage.STRING_LITERAL__VALUE:
-        return getValue();
+      case MGLangPackage.NEGATED_BOOLEAN__EXPR:
+        return getExpr();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -153,8 +153,8 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
   {
     switch (featureID)
     {
-      case MGLangPackage.STRING_LITERAL__VALUE:
-        setValue((STRING)newValue);
+      case MGLangPackage.NEGATED_BOOLEAN__EXPR:
+        setExpr((BooleanExpression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -170,8 +170,8 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
   {
     switch (featureID)
     {
-      case MGLangPackage.STRING_LITERAL__VALUE:
-        setValue((STRING)null);
+      case MGLangPackage.NEGATED_BOOLEAN__EXPR:
+        setExpr((BooleanExpression)null);
         return;
     }
     super.eUnset(featureID);
@@ -187,10 +187,10 @@ public class StringLiteralImpl extends LiteralExpressionImpl implements StringLi
   {
     switch (featureID)
     {
-      case MGLangPackage.STRING_LITERAL__VALUE:
-        return value != null;
+      case MGLangPackage.NEGATED_BOOLEAN__EXPR:
+        return expr != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //StringLiteralImpl
+} //NegatedBooleanImpl

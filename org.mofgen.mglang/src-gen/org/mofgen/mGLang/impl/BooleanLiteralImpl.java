@@ -25,7 +25,7 @@ import org.mofgen.mGLang.MGLangPackage;
  *
  * @generated
  */
-public class BooleanLiteralImpl extends LiteralExpressionImpl implements BooleanLiteral
+public class BooleanLiteralImpl extends BooleanExpressionImpl implements BooleanLiteral
 {
   /**
    * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
@@ -35,7 +35,7 @@ public class BooleanLiteralImpl extends LiteralExpressionImpl implements Boolean
    * @generated
    * @ordered
    */
-  protected static final String VALUE_EDEFAULT = null;
+  protected static final org.mofgen.mGLang.Boolean VALUE_EDEFAULT = org.mofgen.mGLang.Boolean.TRUE;
 
   /**
    * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
@@ -45,7 +45,7 @@ public class BooleanLiteralImpl extends LiteralExpressionImpl implements Boolean
    * @generated
    * @ordered
    */
-  protected String value = VALUE_EDEFAULT;
+  protected org.mofgen.mGLang.Boolean value = VALUE_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -74,7 +74,7 @@ public class BooleanLiteralImpl extends LiteralExpressionImpl implements Boolean
    * @generated
    */
   @Override
-  public String getValue()
+  public org.mofgen.mGLang.Boolean getValue()
   {
     return value;
   }
@@ -85,10 +85,10 @@ public class BooleanLiteralImpl extends LiteralExpressionImpl implements Boolean
    * @generated
    */
   @Override
-  public void setValue(String newValue)
+  public void setValue(org.mofgen.mGLang.Boolean newValue)
   {
-    String oldValue = value;
-    value = newValue;
+    org.mofgen.mGLang.Boolean oldValue = value;
+    value = newValue == null ? VALUE_EDEFAULT : newValue;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.BOOLEAN_LITERAL__VALUE, oldValue, value));
   }
@@ -120,7 +120,7 @@ public class BooleanLiteralImpl extends LiteralExpressionImpl implements Boolean
     switch (featureID)
     {
       case MGLangPackage.BOOLEAN_LITERAL__VALUE:
-        setValue((String)newValue);
+        setValue((org.mofgen.mGLang.Boolean)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -154,7 +154,7 @@ public class BooleanLiteralImpl extends LiteralExpressionImpl implements Boolean
     switch (featureID)
     {
       case MGLangPackage.BOOLEAN_LITERAL__VALUE:
-        return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+        return value != VALUE_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }

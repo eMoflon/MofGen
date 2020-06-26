@@ -20,28 +20,31 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface BooleanLiteral extends LiteralExpression
+public interface BooleanLiteral extends BooleanExpression
 {
   /**
    * Returns the value of the '<em><b>Value</b></em>' attribute.
+   * The literals are from the enumeration {@link org.mofgen.mGLang.Boolean}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Value</em>' attribute.
-   * @see #setValue(String)
+   * @see org.mofgen.mGLang.Boolean
+   * @see #setValue(org.mofgen.mGLang.Boolean)
    * @see org.mofgen.mGLang.MGLangPackage#getBooleanLiteral_Value()
    * @model
    * @generated
    */
-  String getValue();
+  org.mofgen.mGLang.Boolean getValue();
 
   /**
    * Sets the value of the '{@link org.mofgen.mGLang.BooleanLiteral#getValue <em>Value</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Value</em>' attribute.
+   * @see org.mofgen.mGLang.Boolean
    * @see #getValue()
    * @generated
    */
-  void setValue(String value);
+  void setValue(org.mofgen.mGLang.Boolean value);
 
 } // BooleanLiteral

@@ -306,7 +306,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGeneratorElement()
    * @generated
    */
-  int GENERATOR_ELEMENT = 17;
+  int GENERATOR_ELEMENT = 22;
 
   /**
    * The number of structural features of the '<em>Generator Element</em>' class.
@@ -325,7 +325,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGeneratorCommand()
    * @generated
    */
-  int GENERATOR_COMMAND = 18;
+  int GENERATOR_COMMAND = 23;
 
   /**
    * The number of structural features of the '<em>Generator Command</em>' class.
@@ -402,52 +402,6 @@ public interface MGLangPackage extends EPackage
   int NODE_REFERENCE_OR_ASSIGNMENT_FEATURE_COUNT = 1;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.ConditionImpl <em>Condition</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.ConditionImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCondition()
-   * @generated
-   */
-  int CONDITION = 8;
-
-  /**
-   * The feature id for the '<em><b>Lhs</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONDITION__LHS = 0;
-
-  /**
-   * The feature id for the '<em><b>Relation</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONDITION__RELATION = 1;
-
-  /**
-   * The feature id for the '<em><b>Rhs</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONDITION__RHS = 2;
-
-  /**
-   * The number of structural features of the '<em>Condition</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int CONDITION_FEATURE_COUNT = 3;
-
-  /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.PatternNodeReferenceImpl <em>Pattern Node Reference</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -455,7 +409,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPatternNodeReference()
    * @generated
    */
-  int PATTERN_NODE_REFERENCE = 9;
+  int PATTERN_NODE_REFERENCE = 8;
 
   /**
    * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -501,7 +455,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getAssignment()
    * @generated
    */
-  int ASSIGNMENT = 10;
+  int ASSIGNMENT = 9;
 
   /**
    * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -547,7 +501,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNodeAttributeCall()
    * @generated
    */
-  int NODE_ATTRIBUTE_CALL = 11;
+  int NODE_ATTRIBUTE_CALL = 10;
 
   /**
    * The feature id for the '<em><b>Node</b></em>' reference.
@@ -584,7 +538,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getParameter()
    * @generated
    */
-  int PARAMETER = 12;
+  int PARAMETER = 11;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -612,7 +566,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPrimitiveParameter()
    * @generated
    */
-  int PRIMITIVE_PARAMETER = 13;
+  int PRIMITIVE_PARAMETER = 12;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -649,7 +603,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getObjectParameter()
    * @generated
    */
-  int OBJECT_PARAMETER = 14;
+  int OBJECT_PARAMETER = 13;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -679,14 +633,144 @@ public interface MGLangPackage extends EPackage
   int OBJECT_PARAMETER_FEATURE_COUNT = PARAMETER_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.STRINGImpl <em>STRING</em>}' class.
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.ParameterOrMethodCallImpl <em>Parameter Or Method Call</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.STRINGImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSTRING()
+   * @see org.mofgen.mGLang.impl.ParameterOrMethodCallImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getParameterOrMethodCall()
    * @generated
    */
-  int STRING = 15;
+  int PARAMETER_OR_METHOD_CALL = 14;
+
+  /**
+   * The number of structural features of the '<em>Parameter Or Method Call</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PARAMETER_OR_METHOD_CALL_FEATURE_COUNT = 0;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.ParameterRefImpl <em>Parameter Ref</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.ParameterRefImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getParameterRef()
+   * @generated
+   */
+  int PARAMETER_REF = 15;
+
+  /**
+   * The feature id for the '<em><b>Ref</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PARAMETER_REF__REF = PARAMETER_OR_METHOD_CALL_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Parameter Ref</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PARAMETER_REF_FEATURE_COUNT = PARAMETER_OR_METHOD_CALL_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.MethodCallImpl <em>Method Call</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.MethodCallImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMethodCall()
+   * @generated
+   */
+  int METHOD_CALL = 16;
+
+  /**
+   * The feature id for the '<em><b>Called Node</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METHOD_CALL__CALLED_NODE = PARAMETER_OR_METHOD_CALL_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Method</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METHOD_CALL__METHOD = PARAMETER_OR_METHOD_CALL_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Method Call</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int METHOD_CALL_FEATURE_COUNT = PARAMETER_OR_METHOD_CALL_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.BooleanExpressionImpl <em>Boolean Expression</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.BooleanExpressionImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBooleanExpression()
+   * @generated
+   */
+  int BOOLEAN_EXPRESSION = 17;
+
+  /**
+   * The feature id for the '<em><b>Lhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOLEAN_EXPRESSION__LHS = 0;
+
+  /**
+   * The feature id for the '<em><b>Relation</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOLEAN_EXPRESSION__RELATION = 1;
+
+  /**
+   * The feature id for the '<em><b>Rhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOLEAN_EXPRESSION__RHS = 2;
+
+  /**
+   * The number of structural features of the '<em>Boolean Expression</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOLEAN_EXPRESSION_FEATURE_COUNT = 3;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.NumberLiteralImpl <em>Number Literal</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.NumberLiteralImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNumberLiteral()
+   * @generated
+   */
+  int NUMBER_LITERAL = 18;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -695,7 +779,54 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STRING__VALUE = 0;
+  int NUMBER_LITERAL__VALUE = 0;
+
+  /**
+   * The number of structural features of the '<em>Number Literal</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NUMBER_LITERAL_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.StringExpressionImpl <em>String Expression</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.StringExpressionImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getStringExpression()
+   * @generated
+   */
+  int STRING_EXPRESSION = 19;
+
+  /**
+   * The number of structural features of the '<em>String Expression</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRING_EXPRESSION_FEATURE_COUNT = 0;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.STRINGImpl <em>STRING</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.STRINGImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSTRING()
+   * @generated
+   */
+  int STRING = 20;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STRING__VALUE = STRING_EXPRESSION_FEATURE_COUNT + 0;
 
   /**
    * The number of structural features of the '<em>STRING</em>' class.
@@ -704,7 +835,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int STRING_FEATURE_COUNT = 1;
+  int STRING_FEATURE_COUNT = STRING_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.GeneratorImpl <em>Generator</em>}' class.
@@ -714,7 +845,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGenerator()
    * @generated
    */
-  int GENERATOR = 16;
+  int GENERATOR = 21;
 
   /**
    * The feature id for the '<em><b>Commands</b></em>' containment reference list.
@@ -742,7 +873,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGenPatternCall()
    * @generated
    */
-  int GEN_PATTERN_CALL = 19;
+  int GEN_PATTERN_CALL = 24;
 
   /**
    * The feature id for the '<em><b>Called Pattern</b></em>' reference.
@@ -779,7 +910,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPatternObjectCreation()
    * @generated
    */
-  int PATTERN_OBJECT_CREATION = 20;
+  int PATTERN_OBJECT_CREATION = 25;
 
   /**
    * The feature id for the '<em><b>PObject</b></em>' containment reference.
@@ -816,7 +947,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPatternObject()
    * @generated
    */
-  int PATTERN_OBJECT = 21;
+  int PATTERN_OBJECT = 26;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' reference.
@@ -853,7 +984,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForLoop()
    * @generated
    */
-  int FOR_LOOP = 22;
+  int FOR_LOOP = 27;
 
   /**
    * The feature id for the '<em><b>Iterator Var</b></em>' attribute.
@@ -899,7 +1030,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForCondition()
    * @generated
    */
-  int FOR_CONDITION = 23;
+  int FOR_CONDITION = 28;
 
   /**
    * The number of structural features of the '<em>For Condition</em>' class.
@@ -918,7 +1049,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForEachCollection()
    * @generated
    */
-  int FOR_EACH_COLLECTION = 24;
+  int FOR_EACH_COLLECTION = 29;
 
   /**
    * The feature id for the '<em><b>Coll</b></em>' containment reference.
@@ -946,7 +1077,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForRange()
    * @generated
    */
-  int FOR_RANGE = 25;
+  int FOR_RANGE = 30;
 
   /**
    * The feature id for the '<em><b>Start</b></em>' attribute.
@@ -976,23 +1107,306 @@ public interface MGLangPackage extends EPackage
   int FOR_RANGE_FEATURE_COUNT = FOR_CONDITION_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.LiteralExpressionImpl <em>Literal Expression</em>}' class.
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.OrImpl <em>Or</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.LiteralExpressionImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getLiteralExpression()
+   * @see org.mofgen.mGLang.impl.OrImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getOr()
    * @generated
    */
-  int LITERAL_EXPRESSION = 26;
+  int OR = 31;
 
   /**
-   * The number of structural features of the '<em>Literal Expression</em>' class.
+   * The feature id for the '<em><b>Lhs</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int LITERAL_EXPRESSION_FEATURE_COUNT = 0;
+  int OR__LHS = BOOLEAN_EXPRESSION__LHS;
+
+  /**
+   * The feature id for the '<em><b>Relation</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OR__RELATION = BOOLEAN_EXPRESSION__RELATION;
+
+  /**
+   * The feature id for the '<em><b>Rhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OR__RHS = BOOLEAN_EXPRESSION__RHS;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OR__LEFT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OR__RIGHT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Or</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int OR_FEATURE_COUNT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.XorImpl <em>Xor</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.XorImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getXor()
+   * @generated
+   */
+  int XOR = 32;
+
+  /**
+   * The feature id for the '<em><b>Lhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XOR__LHS = BOOLEAN_EXPRESSION__LHS;
+
+  /**
+   * The feature id for the '<em><b>Relation</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XOR__RELATION = BOOLEAN_EXPRESSION__RELATION;
+
+  /**
+   * The feature id for the '<em><b>Rhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XOR__RHS = BOOLEAN_EXPRESSION__RHS;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XOR__LEFT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XOR__RIGHT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Xor</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int XOR_FEATURE_COUNT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.AndImpl <em>And</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.AndImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getAnd()
+   * @generated
+   */
+  int AND = 33;
+
+  /**
+   * The feature id for the '<em><b>Lhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND__LHS = BOOLEAN_EXPRESSION__LHS;
+
+  /**
+   * The feature id for the '<em><b>Relation</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND__RELATION = BOOLEAN_EXPRESSION__RELATION;
+
+  /**
+   * The feature id for the '<em><b>Rhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND__RHS = BOOLEAN_EXPRESSION__RHS;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND__LEFT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND__RIGHT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>And</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int AND_FEATURE_COUNT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.NegatedBooleanImpl <em>Negated Boolean</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.NegatedBooleanImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNegatedBoolean()
+   * @generated
+   */
+  int NEGATED_BOOLEAN = 34;
+
+  /**
+   * The feature id for the '<em><b>Lhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NEGATED_BOOLEAN__LHS = BOOLEAN_EXPRESSION__LHS;
+
+  /**
+   * The feature id for the '<em><b>Relation</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NEGATED_BOOLEAN__RELATION = BOOLEAN_EXPRESSION__RELATION;
+
+  /**
+   * The feature id for the '<em><b>Rhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NEGATED_BOOLEAN__RHS = BOOLEAN_EXPRESSION__RHS;
+
+  /**
+   * The feature id for the '<em><b>Expr</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NEGATED_BOOLEAN__EXPR = BOOLEAN_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Negated Boolean</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NEGATED_BOOLEAN_FEATURE_COUNT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.BooleanLiteralImpl <em>Boolean Literal</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.BooleanLiteralImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBooleanLiteral()
+   * @generated
+   */
+  int BOOLEAN_LITERAL = 35;
+
+  /**
+   * The feature id for the '<em><b>Lhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOLEAN_LITERAL__LHS = BOOLEAN_EXPRESSION__LHS;
+
+  /**
+   * The feature id for the '<em><b>Relation</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOLEAN_LITERAL__RELATION = BOOLEAN_EXPRESSION__RELATION;
+
+  /**
+   * The feature id for the '<em><b>Rhs</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOLEAN_LITERAL__RHS = BOOLEAN_EXPRESSION__RHS;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOLEAN_LITERAL__VALUE = BOOLEAN_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Boolean Literal</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BOOLEAN_LITERAL_FEATURE_COUNT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.ConcatImpl <em>Concat</em>}' class.
@@ -1002,7 +1416,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getConcat()
    * @generated
    */
-  int CONCAT = 27;
+  int CONCAT = 36;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1041,88 +1455,14 @@ public interface MGLangPackage extends EPackage
   int CONCAT_FEATURE_COUNT = STRING_FEATURE_COUNT + 2;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.BooleanLiteralImpl <em>Boolean Literal</em>}' class.
+   * The meta object id for the '{@link org.mofgen.mGLang.Boolean <em>Boolean</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.BooleanLiteralImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBooleanLiteral()
+   * @see org.mofgen.mGLang.Boolean
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBoolean()
    * @generated
    */
-  int BOOLEAN_LITERAL = 28;
-
-  /**
-   * The feature id for the '<em><b>Value</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BOOLEAN_LITERAL__VALUE = LITERAL_EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Boolean Literal</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BOOLEAN_LITERAL_FEATURE_COUNT = LITERAL_EXPRESSION_FEATURE_COUNT + 1;
-
-  /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.NumberLiteralImpl <em>Number Literal</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.NumberLiteralImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNumberLiteral()
-   * @generated
-   */
-  int NUMBER_LITERAL = 29;
-
-  /**
-   * The feature id for the '<em><b>Value</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NUMBER_LITERAL__VALUE = LITERAL_EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Number Literal</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NUMBER_LITERAL_FEATURE_COUNT = LITERAL_EXPRESSION_FEATURE_COUNT + 1;
-
-  /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.StringLiteralImpl <em>String Literal</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.StringLiteralImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getStringLiteral()
-   * @generated
-   */
-  int STRING_LITERAL = 30;
-
-  /**
-   * The feature id for the '<em><b>Value</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int STRING_LITERAL__VALUE = LITERAL_EXPRESSION_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>String Literal</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int STRING_LITERAL_FEATURE_COUNT = LITERAL_EXPRESSION_FEATURE_COUNT + 1;
+  int BOOLEAN = 37;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.PrimitiveType <em>Primitive Type</em>}' enum.
@@ -1132,17 +1472,17 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPrimitiveType()
    * @generated
    */
-  int PRIMITIVE_TYPE = 31;
+  int PRIMITIVE_TYPE = 38;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.EditorRelation <em>Editor Relation</em>}' enum.
+   * The meta object id for the '{@link org.mofgen.mGLang.RelationalOp <em>Relational Op</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.EditorRelation
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getEditorRelation()
+   * @see org.mofgen.mGLang.RelationalOp
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRelationalOp()
    * @generated
    */
-  int EDITOR_RELATION = 32;
+  int RELATIONAL_OP = 39;
 
 
   /**
@@ -1413,49 +1753,6 @@ public interface MGLangPackage extends EPackage
   EReference getNodeReferenceOrAssignment_Condition();
 
   /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.Condition <em>Condition</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Condition</em>'.
-   * @see org.mofgen.mGLang.Condition
-   * @generated
-   */
-  EClass getCondition();
-
-  /**
-   * Returns the meta object for the reference '{@link org.mofgen.mGLang.Condition#getLhs <em>Lhs</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Lhs</em>'.
-   * @see org.mofgen.mGLang.Condition#getLhs()
-   * @see #getCondition()
-   * @generated
-   */
-  EReference getCondition_Lhs();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.mofgen.mGLang.Condition#getRelation <em>Relation</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Relation</em>'.
-   * @see org.mofgen.mGLang.Condition#getRelation()
-   * @see #getCondition()
-   * @generated
-   */
-  EAttribute getCondition_Relation();
-
-  /**
-   * Returns the meta object for the reference '{@link org.mofgen.mGLang.Condition#getRhs <em>Rhs</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Rhs</em>'.
-   * @see org.mofgen.mGLang.Condition#getRhs()
-   * @see #getCondition()
-   * @generated
-   */
-  EReference getCondition_Rhs();
-
-  /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.PatternNodeReference <em>Pattern Node Reference</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1613,6 +1910,143 @@ public interface MGLangPackage extends EPackage
    * @generated
    */
   EReference getObjectParameter_Type();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.ParameterOrMethodCall <em>Parameter Or Method Call</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Parameter Or Method Call</em>'.
+   * @see org.mofgen.mGLang.ParameterOrMethodCall
+   * @generated
+   */
+  EClass getParameterOrMethodCall();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.ParameterRef <em>Parameter Ref</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Parameter Ref</em>'.
+   * @see org.mofgen.mGLang.ParameterRef
+   * @generated
+   */
+  EClass getParameterRef();
+
+  /**
+   * Returns the meta object for the reference '{@link org.mofgen.mGLang.ParameterRef#getRef <em>Ref</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Ref</em>'.
+   * @see org.mofgen.mGLang.ParameterRef#getRef()
+   * @see #getParameterRef()
+   * @generated
+   */
+  EReference getParameterRef_Ref();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.MethodCall <em>Method Call</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Method Call</em>'.
+   * @see org.mofgen.mGLang.MethodCall
+   * @generated
+   */
+  EClass getMethodCall();
+
+  /**
+   * Returns the meta object for the reference '{@link org.mofgen.mGLang.MethodCall#getCalledNode <em>Called Node</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Called Node</em>'.
+   * @see org.mofgen.mGLang.MethodCall#getCalledNode()
+   * @see #getMethodCall()
+   * @generated
+   */
+  EReference getMethodCall_CalledNode();
+
+  /**
+   * Returns the meta object for the reference '{@link org.mofgen.mGLang.MethodCall#getMethod <em>Method</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Method</em>'.
+   * @see org.mofgen.mGLang.MethodCall#getMethod()
+   * @see #getMethodCall()
+   * @generated
+   */
+  EReference getMethodCall_Method();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.BooleanExpression <em>Boolean Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Boolean Expression</em>'.
+   * @see org.mofgen.mGLang.BooleanExpression
+   * @generated
+   */
+  EClass getBooleanExpression();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.BooleanExpression#getLhs <em>Lhs</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Lhs</em>'.
+   * @see org.mofgen.mGLang.BooleanExpression#getLhs()
+   * @see #getBooleanExpression()
+   * @generated
+   */
+  EReference getBooleanExpression_Lhs();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.mofgen.mGLang.BooleanExpression#getRelation <em>Relation</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Relation</em>'.
+   * @see org.mofgen.mGLang.BooleanExpression#getRelation()
+   * @see #getBooleanExpression()
+   * @generated
+   */
+  EAttribute getBooleanExpression_Relation();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.BooleanExpression#getRhs <em>Rhs</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Rhs</em>'.
+   * @see org.mofgen.mGLang.BooleanExpression#getRhs()
+   * @see #getBooleanExpression()
+   * @generated
+   */
+  EReference getBooleanExpression_Rhs();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.NumberLiteral <em>Number Literal</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Number Literal</em>'.
+   * @see org.mofgen.mGLang.NumberLiteral
+   * @generated
+   */
+  EClass getNumberLiteral();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.mofgen.mGLang.NumberLiteral#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see org.mofgen.mGLang.NumberLiteral#getValue()
+   * @see #getNumberLiteral()
+   * @generated
+   */
+  EAttribute getNumberLiteral_Value();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.StringExpression <em>String Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>String Expression</em>'.
+   * @see org.mofgen.mGLang.StringExpression
+   * @generated
+   */
+  EClass getStringExpression();
 
   /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.STRING <em>STRING</em>}'.
@@ -1879,14 +2313,142 @@ public interface MGLangPackage extends EPackage
   EAttribute getForRange_End();
 
   /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.LiteralExpression <em>Literal Expression</em>}'.
+   * Returns the meta object for class '{@link org.mofgen.mGLang.Or <em>Or</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Literal Expression</em>'.
-   * @see org.mofgen.mGLang.LiteralExpression
+   * @return the meta object for class '<em>Or</em>'.
+   * @see org.mofgen.mGLang.Or
    * @generated
    */
-  EClass getLiteralExpression();
+  EClass getOr();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.Or#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.mofgen.mGLang.Or#getLeft()
+   * @see #getOr()
+   * @generated
+   */
+  EReference getOr_Left();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.Or#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.mofgen.mGLang.Or#getRight()
+   * @see #getOr()
+   * @generated
+   */
+  EReference getOr_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.Xor <em>Xor</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Xor</em>'.
+   * @see org.mofgen.mGLang.Xor
+   * @generated
+   */
+  EClass getXor();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.Xor#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.mofgen.mGLang.Xor#getLeft()
+   * @see #getXor()
+   * @generated
+   */
+  EReference getXor_Left();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.Xor#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.mofgen.mGLang.Xor#getRight()
+   * @see #getXor()
+   * @generated
+   */
+  EReference getXor_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.And <em>And</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>And</em>'.
+   * @see org.mofgen.mGLang.And
+   * @generated
+   */
+  EClass getAnd();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.And#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see org.mofgen.mGLang.And#getLeft()
+   * @see #getAnd()
+   * @generated
+   */
+  EReference getAnd_Left();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.And#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see org.mofgen.mGLang.And#getRight()
+   * @see #getAnd()
+   * @generated
+   */
+  EReference getAnd_Right();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.NegatedBoolean <em>Negated Boolean</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Negated Boolean</em>'.
+   * @see org.mofgen.mGLang.NegatedBoolean
+   * @generated
+   */
+  EClass getNegatedBoolean();
+
+  /**
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.NegatedBoolean#getExpr <em>Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Expr</em>'.
+   * @see org.mofgen.mGLang.NegatedBoolean#getExpr()
+   * @see #getNegatedBoolean()
+   * @generated
+   */
+  EReference getNegatedBoolean_Expr();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.BooleanLiteral <em>Boolean Literal</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Boolean Literal</em>'.
+   * @see org.mofgen.mGLang.BooleanLiteral
+   * @generated
+   */
+  EClass getBooleanLiteral();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.mofgen.mGLang.BooleanLiteral#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see org.mofgen.mGLang.BooleanLiteral#getValue()
+   * @see #getBooleanLiteral()
+   * @generated
+   */
+  EAttribute getBooleanLiteral_Value();
 
   /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.Concat <em>Concat</em>}'.
@@ -1921,67 +2483,14 @@ public interface MGLangPackage extends EPackage
   EReference getConcat_Right();
 
   /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.BooleanLiteral <em>Boolean Literal</em>}'.
+   * Returns the meta object for enum '{@link org.mofgen.mGLang.Boolean <em>Boolean</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Boolean Literal</em>'.
-   * @see org.mofgen.mGLang.BooleanLiteral
+   * @return the meta object for enum '<em>Boolean</em>'.
+   * @see org.mofgen.mGLang.Boolean
    * @generated
    */
-  EClass getBooleanLiteral();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.mofgen.mGLang.BooleanLiteral#getValue <em>Value</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Value</em>'.
-   * @see org.mofgen.mGLang.BooleanLiteral#getValue()
-   * @see #getBooleanLiteral()
-   * @generated
-   */
-  EAttribute getBooleanLiteral_Value();
-
-  /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.NumberLiteral <em>Number Literal</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Number Literal</em>'.
-   * @see org.mofgen.mGLang.NumberLiteral
-   * @generated
-   */
-  EClass getNumberLiteral();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.mofgen.mGLang.NumberLiteral#getValue <em>Value</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Value</em>'.
-   * @see org.mofgen.mGLang.NumberLiteral#getValue()
-   * @see #getNumberLiteral()
-   * @generated
-   */
-  EAttribute getNumberLiteral_Value();
-
-  /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.StringLiteral <em>String Literal</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>String Literal</em>'.
-   * @see org.mofgen.mGLang.StringLiteral
-   * @generated
-   */
-  EClass getStringLiteral();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.StringLiteral#getValue <em>Value</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Value</em>'.
-   * @see org.mofgen.mGLang.StringLiteral#getValue()
-   * @see #getStringLiteral()
-   * @generated
-   */
-  EReference getStringLiteral_Value();
+  EEnum getBoolean();
 
   /**
    * Returns the meta object for enum '{@link org.mofgen.mGLang.PrimitiveType <em>Primitive Type</em>}'.
@@ -1994,14 +2503,14 @@ public interface MGLangPackage extends EPackage
   EEnum getPrimitiveType();
 
   /**
-   * Returns the meta object for enum '{@link org.mofgen.mGLang.EditorRelation <em>Editor Relation</em>}'.
+   * Returns the meta object for enum '{@link org.mofgen.mGLang.RelationalOp <em>Relational Op</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for enum '<em>Editor Relation</em>'.
-   * @see org.mofgen.mGLang.EditorRelation
+   * @return the meta object for enum '<em>Relational Op</em>'.
+   * @see org.mofgen.mGLang.RelationalOp
    * @generated
    */
-  EEnum getEditorRelation();
+  EEnum getRelationalOp();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -2243,40 +2752,6 @@ public interface MGLangPackage extends EPackage
     EReference NODE_REFERENCE_OR_ASSIGNMENT__CONDITION = eINSTANCE.getNodeReferenceOrAssignment_Condition();
 
     /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.ConditionImpl <em>Condition</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.ConditionImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCondition()
-     * @generated
-     */
-    EClass CONDITION = eINSTANCE.getCondition();
-
-    /**
-     * The meta object literal for the '<em><b>Lhs</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONDITION__LHS = eINSTANCE.getCondition_Lhs();
-
-    /**
-     * The meta object literal for the '<em><b>Relation</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute CONDITION__RELATION = eINSTANCE.getCondition_Relation();
-
-    /**
-     * The meta object literal for the '<em><b>Rhs</b></em>' reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference CONDITION__RHS = eINSTANCE.getCondition_Rhs();
-
-    /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.PatternNodeReferenceImpl <em>Pattern Node Reference</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2407,6 +2882,122 @@ public interface MGLangPackage extends EPackage
      * @generated
      */
     EReference OBJECT_PARAMETER__TYPE = eINSTANCE.getObjectParameter_Type();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.ParameterOrMethodCallImpl <em>Parameter Or Method Call</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.ParameterOrMethodCallImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getParameterOrMethodCall()
+     * @generated
+     */
+    EClass PARAMETER_OR_METHOD_CALL = eINSTANCE.getParameterOrMethodCall();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.ParameterRefImpl <em>Parameter Ref</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.ParameterRefImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getParameterRef()
+     * @generated
+     */
+    EClass PARAMETER_REF = eINSTANCE.getParameterRef();
+
+    /**
+     * The meta object literal for the '<em><b>Ref</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PARAMETER_REF__REF = eINSTANCE.getParameterRef_Ref();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.MethodCallImpl <em>Method Call</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.MethodCallImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMethodCall()
+     * @generated
+     */
+    EClass METHOD_CALL = eINSTANCE.getMethodCall();
+
+    /**
+     * The meta object literal for the '<em><b>Called Node</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference METHOD_CALL__CALLED_NODE = eINSTANCE.getMethodCall_CalledNode();
+
+    /**
+     * The meta object literal for the '<em><b>Method</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference METHOD_CALL__METHOD = eINSTANCE.getMethodCall_Method();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.BooleanExpressionImpl <em>Boolean Expression</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.BooleanExpressionImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBooleanExpression()
+     * @generated
+     */
+    EClass BOOLEAN_EXPRESSION = eINSTANCE.getBooleanExpression();
+
+    /**
+     * The meta object literal for the '<em><b>Lhs</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BOOLEAN_EXPRESSION__LHS = eINSTANCE.getBooleanExpression_Lhs();
+
+    /**
+     * The meta object literal for the '<em><b>Relation</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BOOLEAN_EXPRESSION__RELATION = eINSTANCE.getBooleanExpression_Relation();
+
+    /**
+     * The meta object literal for the '<em><b>Rhs</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BOOLEAN_EXPRESSION__RHS = eINSTANCE.getBooleanExpression_Rhs();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.NumberLiteralImpl <em>Number Literal</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.NumberLiteralImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNumberLiteral()
+     * @generated
+     */
+    EClass NUMBER_LITERAL = eINSTANCE.getNumberLiteral();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NUMBER_LITERAL__VALUE = eINSTANCE.getNumberLiteral_Value();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.StringExpressionImpl <em>String Expression</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.StringExpressionImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getStringExpression()
+     * @generated
+     */
+    EClass STRING_EXPRESSION = eINSTANCE.getStringExpression();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.STRINGImpl <em>STRING</em>}' class.
@@ -2631,14 +3222,118 @@ public interface MGLangPackage extends EPackage
     EAttribute FOR_RANGE__END = eINSTANCE.getForRange_End();
 
     /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.LiteralExpressionImpl <em>Literal Expression</em>}' class.
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.OrImpl <em>Or</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.LiteralExpressionImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getLiteralExpression()
+     * @see org.mofgen.mGLang.impl.OrImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getOr()
      * @generated
      */
-    EClass LITERAL_EXPRESSION = eINSTANCE.getLiteralExpression();
+    EClass OR = eINSTANCE.getOr();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OR__LEFT = eINSTANCE.getOr_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference OR__RIGHT = eINSTANCE.getOr_Right();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.XorImpl <em>Xor</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.XorImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getXor()
+     * @generated
+     */
+    EClass XOR = eINSTANCE.getXor();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference XOR__LEFT = eINSTANCE.getXor_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference XOR__RIGHT = eINSTANCE.getXor_Right();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.AndImpl <em>And</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.AndImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getAnd()
+     * @generated
+     */
+    EClass AND = eINSTANCE.getAnd();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference AND__LEFT = eINSTANCE.getAnd_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference AND__RIGHT = eINSTANCE.getAnd_Right();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.NegatedBooleanImpl <em>Negated Boolean</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.NegatedBooleanImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNegatedBoolean()
+     * @generated
+     */
+    EClass NEGATED_BOOLEAN = eINSTANCE.getNegatedBoolean();
+
+    /**
+     * The meta object literal for the '<em><b>Expr</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NEGATED_BOOLEAN__EXPR = eINSTANCE.getNegatedBoolean_Expr();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.BooleanLiteralImpl <em>Boolean Literal</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.BooleanLiteralImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBooleanLiteral()
+     * @generated
+     */
+    EClass BOOLEAN_LITERAL = eINSTANCE.getBooleanLiteral();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BOOLEAN_LITERAL__VALUE = eINSTANCE.getBooleanLiteral_Value();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.ConcatImpl <em>Concat</em>}' class.
@@ -2667,58 +3362,14 @@ public interface MGLangPackage extends EPackage
     EReference CONCAT__RIGHT = eINSTANCE.getConcat_Right();
 
     /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.BooleanLiteralImpl <em>Boolean Literal</em>}' class.
+     * The meta object literal for the '{@link org.mofgen.mGLang.Boolean <em>Boolean</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.BooleanLiteralImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBooleanLiteral()
+     * @see org.mofgen.mGLang.Boolean
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBoolean()
      * @generated
      */
-    EClass BOOLEAN_LITERAL = eINSTANCE.getBooleanLiteral();
-
-    /**
-     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute BOOLEAN_LITERAL__VALUE = eINSTANCE.getBooleanLiteral_Value();
-
-    /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.NumberLiteralImpl <em>Number Literal</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.NumberLiteralImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNumberLiteral()
-     * @generated
-     */
-    EClass NUMBER_LITERAL = eINSTANCE.getNumberLiteral();
-
-    /**
-     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute NUMBER_LITERAL__VALUE = eINSTANCE.getNumberLiteral_Value();
-
-    /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.StringLiteralImpl <em>String Literal</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.StringLiteralImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getStringLiteral()
-     * @generated
-     */
-    EClass STRING_LITERAL = eINSTANCE.getStringLiteral();
-
-    /**
-     * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference STRING_LITERAL__VALUE = eINSTANCE.getStringLiteral_Value();
+    EEnum BOOLEAN = eINSTANCE.getBoolean();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.PrimitiveType <em>Primitive Type</em>}' enum.
@@ -2731,14 +3382,14 @@ public interface MGLangPackage extends EPackage
     EEnum PRIMITIVE_TYPE = eINSTANCE.getPrimitiveType();
 
     /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.EditorRelation <em>Editor Relation</em>}' enum.
+     * The meta object literal for the '{@link org.mofgen.mGLang.RelationalOp <em>Relational Op</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.EditorRelation
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getEditorRelation()
+     * @see org.mofgen.mGLang.RelationalOp
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRelationalOp()
      * @generated
      */
-    EEnum EDITOR_RELATION = eINSTANCE.getEditorRelation();
+    EEnum RELATIONAL_OP = eINSTANCE.getRelationalOp();
 
   }
 

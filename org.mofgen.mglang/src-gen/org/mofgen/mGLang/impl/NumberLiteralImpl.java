@@ -8,6 +8,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.NumberLiteral;
@@ -25,7 +26,7 @@ import org.mofgen.mGLang.NumberLiteral;
  *
  * @generated
  */
-public class NumberLiteralImpl extends LiteralExpressionImpl implements NumberLiteral
+public class NumberLiteralImpl extends MinimalEObjectImpl.Container implements NumberLiteral
 {
   /**
    * The default value of the '{@link #getValue() <em>Value</em>}' attribute.

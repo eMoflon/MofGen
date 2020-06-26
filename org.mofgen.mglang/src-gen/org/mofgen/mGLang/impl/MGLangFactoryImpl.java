@@ -12,7 +12,47 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-import org.mofgen.mGLang.*;
+import org.mofgen.mGLang.And;
+import org.mofgen.mGLang.Assignment;
+import org.mofgen.mGLang.BooleanExpression;
+import org.mofgen.mGLang.BooleanLiteral;
+import org.mofgen.mGLang.Concat;
+import org.mofgen.mGLang.ForCondition;
+import org.mofgen.mGLang.ForEachCollection;
+import org.mofgen.mGLang.ForLoop;
+import org.mofgen.mGLang.ForRange;
+import org.mofgen.mGLang.GenPatternCall;
+import org.mofgen.mGLang.Generator;
+import org.mofgen.mGLang.GeneratorCommand;
+import org.mofgen.mGLang.GeneratorElement;
+import org.mofgen.mGLang.Import;
+import org.mofgen.mGLang.MGLangFactory;
+import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.MethodCall;
+import org.mofgen.mGLang.MofgenFile;
+import org.mofgen.mGLang.NegatedBoolean;
+import org.mofgen.mGLang.Node;
+import org.mofgen.mGLang.NodeAttributeCall;
+import org.mofgen.mGLang.NodeConstructor;
+import org.mofgen.mGLang.NodeReferenceOrAssignment;
+import org.mofgen.mGLang.NumberLiteral;
+import org.mofgen.mGLang.ObjectParameter;
+import org.mofgen.mGLang.Or;
+import org.mofgen.mGLang.Parameter;
+import org.mofgen.mGLang.ParameterOrMethodCall;
+import org.mofgen.mGLang.ParameterRef;
+import org.mofgen.mGLang.Pattern;
+import org.mofgen.mGLang.PatternCall;
+import org.mofgen.mGLang.PatternNodeReference;
+import org.mofgen.mGLang.PatternObject;
+import org.mofgen.mGLang.PatternObjectCreation;
+import org.mofgen.mGLang.PatternReturn;
+import org.mofgen.mGLang.PrimitiveParameter;
+import org.mofgen.mGLang.PrimitiveType;
+import org.mofgen.mGLang.RelationalOp;
+import org.mofgen.mGLang.STRING;
+import org.mofgen.mGLang.StringExpression;
+import org.mofgen.mGLang.Xor;
 
 /**
  * <!-- begin-user-doc -->
@@ -74,13 +114,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.NODE_CONSTRUCTOR: return createNodeConstructor();
       case MGLangPackage.PATTERN_CALL: return createPatternCall();
       case MGLangPackage.NODE_REFERENCE_OR_ASSIGNMENT: return createNodeReferenceOrAssignment();
-      case MGLangPackage.CONDITION: return createCondition();
       case MGLangPackage.PATTERN_NODE_REFERENCE: return createPatternNodeReference();
       case MGLangPackage.ASSIGNMENT: return createAssignment();
       case MGLangPackage.NODE_ATTRIBUTE_CALL: return createNodeAttributeCall();
       case MGLangPackage.PARAMETER: return createParameter();
       case MGLangPackage.PRIMITIVE_PARAMETER: return createPrimitiveParameter();
       case MGLangPackage.OBJECT_PARAMETER: return createObjectParameter();
+      case MGLangPackage.PARAMETER_OR_METHOD_CALL: return createParameterOrMethodCall();
+      case MGLangPackage.PARAMETER_REF: return createParameterRef();
+      case MGLangPackage.METHOD_CALL: return createMethodCall();
+      case MGLangPackage.BOOLEAN_EXPRESSION: return createBooleanExpression();
+      case MGLangPackage.NUMBER_LITERAL: return createNumberLiteral();
+      case MGLangPackage.STRING_EXPRESSION: return createStringExpression();
       case MGLangPackage.STRING: return createSTRING();
       case MGLangPackage.GENERATOR: return createGenerator();
       case MGLangPackage.GENERATOR_ELEMENT: return createGeneratorElement();
@@ -92,11 +137,12 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.FOR_CONDITION: return createForCondition();
       case MGLangPackage.FOR_EACH_COLLECTION: return createForEachCollection();
       case MGLangPackage.FOR_RANGE: return createForRange();
-      case MGLangPackage.LITERAL_EXPRESSION: return createLiteralExpression();
-      case MGLangPackage.CONCAT: return createConcat();
+      case MGLangPackage.OR: return createOr();
+      case MGLangPackage.XOR: return createXor();
+      case MGLangPackage.AND: return createAnd();
+      case MGLangPackage.NEGATED_BOOLEAN: return createNegatedBoolean();
       case MGLangPackage.BOOLEAN_LITERAL: return createBooleanLiteral();
-      case MGLangPackage.NUMBER_LITERAL: return createNumberLiteral();
-      case MGLangPackage.STRING_LITERAL: return createStringLiteral();
+      case MGLangPackage.CONCAT: return createConcat();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -112,10 +158,12 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case MGLangPackage.BOOLEAN:
+        return createBooleanFromString(eDataType, initialValue);
       case MGLangPackage.PRIMITIVE_TYPE:
         return createPrimitiveTypeFromString(eDataType, initialValue);
-      case MGLangPackage.EDITOR_RELATION:
-        return createEditorRelationFromString(eDataType, initialValue);
+      case MGLangPackage.RELATIONAL_OP:
+        return createRelationalOpFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -131,10 +179,12 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case MGLangPackage.BOOLEAN:
+        return convertBooleanToString(eDataType, instanceValue);
       case MGLangPackage.PRIMITIVE_TYPE:
         return convertPrimitiveTypeToString(eDataType, instanceValue);
-      case MGLangPackage.EDITOR_RELATION:
-        return convertEditorRelationToString(eDataType, instanceValue);
+      case MGLangPackage.RELATIONAL_OP:
+        return convertRelationalOpToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -242,18 +292,6 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public Condition createCondition()
-  {
-    ConditionImpl condition = new ConditionImpl();
-    return condition;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public PatternNodeReference createPatternNodeReference()
   {
     PatternNodeReferenceImpl patternNodeReference = new PatternNodeReferenceImpl();
@@ -318,6 +356,78 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     ObjectParameterImpl objectParameter = new ObjectParameterImpl();
     return objectParameter;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ParameterOrMethodCall createParameterOrMethodCall()
+  {
+    ParameterOrMethodCallImpl parameterOrMethodCall = new ParameterOrMethodCallImpl();
+    return parameterOrMethodCall;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ParameterRef createParameterRef()
+  {
+    ParameterRefImpl parameterRef = new ParameterRefImpl();
+    return parameterRef;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public MethodCall createMethodCall()
+  {
+    MethodCallImpl methodCall = new MethodCallImpl();
+    return methodCall;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public BooleanExpression createBooleanExpression()
+  {
+    BooleanExpressionImpl booleanExpression = new BooleanExpressionImpl();
+    return booleanExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NumberLiteral createNumberLiteral()
+  {
+    NumberLiteralImpl numberLiteral = new NumberLiteralImpl();
+    return numberLiteral;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public StringExpression createStringExpression()
+  {
+    StringExpressionImpl stringExpression = new StringExpressionImpl();
+    return stringExpression;
   }
 
   /**
@@ -458,10 +568,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public LiteralExpression createLiteralExpression()
+  public Or createOr()
   {
-    LiteralExpressionImpl literalExpression = new LiteralExpressionImpl();
-    return literalExpression;
+    OrImpl or = new OrImpl();
+    return or;
   }
 
   /**
@@ -470,10 +580,34 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public Concat createConcat()
+  public Xor createXor()
   {
-    ConcatImpl concat = new ConcatImpl();
-    return concat;
+    XorImpl xor = new XorImpl();
+    return xor;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public And createAnd()
+  {
+    AndImpl and = new AndImpl();
+    return and;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NegatedBoolean createNegatedBoolean()
+  {
+    NegatedBooleanImpl negatedBoolean = new NegatedBooleanImpl();
+    return negatedBoolean;
   }
 
   /**
@@ -494,10 +628,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public NumberLiteral createNumberLiteral()
+  public Concat createConcat()
   {
-    NumberLiteralImpl numberLiteral = new NumberLiteralImpl();
-    return numberLiteral;
+    ConcatImpl concat = new ConcatImpl();
+    return concat;
   }
 
   /**
@@ -505,11 +639,21 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public StringLiteral createStringLiteral()
+  public org.mofgen.mGLang.Boolean createBooleanFromString(EDataType eDataType, String initialValue)
   {
-    StringLiteralImpl stringLiteral = new StringLiteralImpl();
-    return stringLiteral;
+    org.mofgen.mGLang.Boolean result = org.mofgen.mGLang.Boolean.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertBooleanToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
   }
 
   /**
@@ -539,9 +683,9 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public EditorRelation createEditorRelationFromString(EDataType eDataType, String initialValue)
+  public RelationalOp createRelationalOpFromString(EDataType eDataType, String initialValue)
   {
-    EditorRelation result = EditorRelation.get(initialValue);
+    RelationalOp result = RelationalOp.get(initialValue);
     if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
     return result;
   }
@@ -551,7 +695,7 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public String convertEditorRelationToString(EDataType eDataType, Object instanceValue)
+  public String convertRelationalOpToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

@@ -96,15 +96,6 @@ public interface MGLangFactory extends EFactory
   NodeReferenceOrAssignment createNodeReferenceOrAssignment();
 
   /**
-   * Returns a new object of class '<em>Condition</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Condition</em>'.
-   * @generated
-   */
-  Condition createCondition();
-
-  /**
    * Returns a new object of class '<em>Pattern Node Reference</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -157,6 +148,60 @@ public interface MGLangFactory extends EFactory
    * @generated
    */
   ObjectParameter createObjectParameter();
+
+  /**
+   * Returns a new object of class '<em>Parameter Or Method Call</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Parameter Or Method Call</em>'.
+   * @generated
+   */
+  ParameterOrMethodCall createParameterOrMethodCall();
+
+  /**
+   * Returns a new object of class '<em>Parameter Ref</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Parameter Ref</em>'.
+   * @generated
+   */
+  ParameterRef createParameterRef();
+
+  /**
+   * Returns a new object of class '<em>Method Call</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Method Call</em>'.
+   * @generated
+   */
+  MethodCall createMethodCall();
+
+  /**
+   * Returns a new object of class '<em>Boolean Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Boolean Expression</em>'.
+   * @generated
+   */
+  BooleanExpression createBooleanExpression();
+
+  /**
+   * Returns a new object of class '<em>Number Literal</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Number Literal</em>'.
+   * @generated
+   */
+  NumberLiteral createNumberLiteral();
+
+  /**
+   * Returns a new object of class '<em>String Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>String Expression</em>'.
+   * @generated
+   */
+  StringExpression createStringExpression();
 
   /**
    * Returns a new object of class '<em>STRING</em>'.
@@ -258,22 +303,40 @@ public interface MGLangFactory extends EFactory
   ForRange createForRange();
 
   /**
-   * Returns a new object of class '<em>Literal Expression</em>'.
+   * Returns a new object of class '<em>Or</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Literal Expression</em>'.
+   * @return a new object of class '<em>Or</em>'.
    * @generated
    */
-  LiteralExpression createLiteralExpression();
+  Or createOr();
 
   /**
-   * Returns a new object of class '<em>Concat</em>'.
+   * Returns a new object of class '<em>Xor</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Concat</em>'.
+   * @return a new object of class '<em>Xor</em>'.
    * @generated
    */
-  Concat createConcat();
+  Xor createXor();
+
+  /**
+   * Returns a new object of class '<em>And</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>And</em>'.
+   * @generated
+   */
+  And createAnd();
+
+  /**
+   * Returns a new object of class '<em>Negated Boolean</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Negated Boolean</em>'.
+   * @generated
+   */
+  NegatedBoolean createNegatedBoolean();
 
   /**
    * Returns a new object of class '<em>Boolean Literal</em>'.
@@ -285,22 +348,13 @@ public interface MGLangFactory extends EFactory
   BooleanLiteral createBooleanLiteral();
 
   /**
-   * Returns a new object of class '<em>Number Literal</em>'.
+   * Returns a new object of class '<em>Concat</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Number Literal</em>'.
+   * @return a new object of class '<em>Concat</em>'.
    * @generated
    */
-  NumberLiteral createNumberLiteral();
-
-  /**
-   * Returns a new object of class '<em>String Literal</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>String Literal</em>'.
-   * @generated
-   */
-  StringLiteral createStringLiteral();
+  Concat createConcat();
 
   /**
    * Returns the package supported by this factory.

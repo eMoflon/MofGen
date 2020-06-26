@@ -51,12 +51,12 @@ public interface Assignment extends NodeReferenceOrAssignment
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Value</em>' containment reference.
-   * @see #setValue(LiteralExpression)
+   * @see #setValue(StringExpression)
    * @see org.mofgen.mGLang.MGLangPackage#getAssignment_Value()
    * @model containment="true"
    * @generated
    */
-  LiteralExpression getValue();
+  StringExpression getValue();
 
   /**
    * Sets the value of the '{@link org.mofgen.mGLang.Assignment#getValue <em>Value</em>}' containment reference.
@@ -66,6 +66,6 @@ public interface Assignment extends NodeReferenceOrAssignment
    * @see #getValue()
    * @generated
    */
-  void setValue(LiteralExpression value);
+  void setValue(StringExpression value);
 
 } // Assignment

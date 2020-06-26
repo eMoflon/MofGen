@@ -6,18 +6,22 @@
     copyrightFields="false" runtimeVersion="2.20">
   <genPackages prefix="MGLang" basePackage="org.mofgen" disposableProviderFactory="true"
       fileExtensions="mofgen" ecorePackage="MGLang.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="MGLang.ecore#//Boolean">
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//Boolean/TRUE"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//Boolean/FALSE"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="MGLang.ecore#//PrimitiveType">
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/INT"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/CHAR"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/DOUBLE"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="MGLang.ecore#//EditorRelation">
-      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//EditorRelation/GREATER"/>
-      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//EditorRelation/GREATER_OR_EQUAL"/>
-      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//EditorRelation/EQUAL"/>
-      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//EditorRelation/UNEQUAL"/>
-      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//EditorRelation/SMALLER_OR_EQUAL"/>
-      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//EditorRelation/SMALLER"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="MGLang.ecore#//RelationalOp">
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/GREATER"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/GREATER_OR_EQUAL"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/EQUAL"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/UNEQUAL"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/SMALLER_OR_EQUAL"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/SMALLER"/>
     </genEnums>
     <genClasses ecoreClass="MGLang.ecore#//MofgenFile">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/imports"/>
@@ -52,11 +56,6 @@
     <genClasses ecoreClass="MGLang.ecore#//NodeReferenceOrAssignment">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//NodeReferenceOrAssignment/condition"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//Condition">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//Condition/lhs"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Condition/relation"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//Condition/rhs"/>
-    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternNodeReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReference/type"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReference/target"/>
@@ -78,6 +77,23 @@
     <genClasses ecoreClass="MGLang.ecore#//ObjectParameter">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ObjectParameter/type"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//ParameterOrMethodCall"/>
+    <genClasses ecoreClass="MGLang.ecore#//ParameterRef">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ParameterRef/ref"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//MethodCall">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//MethodCall/calledNode"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//MethodCall/method"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//BooleanExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//BooleanExpression/lhs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//BooleanExpression/relation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//BooleanExpression/rhs"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//NumberLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//NumberLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//StringExpression"/>
     <genClasses ecoreClass="MGLang.ecore#//STRING">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//STRING/value"/>
     </genClasses>
@@ -111,19 +127,27 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//ForRange/start"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//ForRange/end"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//LiteralExpression"/>
-    <genClasses ecoreClass="MGLang.ecore#//Concat">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Concat/left"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Concat/right"/>
+    <genClasses ecoreClass="MGLang.ecore#//Or">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Or/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Or/right"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//Xor">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Xor/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Xor/right"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//And">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//And/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//And/right"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//NegatedBoolean">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//NegatedBoolean/expr"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//BooleanLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//BooleanLiteral/value"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//NumberLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//NumberLiteral/value"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//StringLiteral">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//StringLiteral/value"/>
+    <genClasses ecoreClass="MGLang.ecore#//Concat">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Concat/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Concat/right"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

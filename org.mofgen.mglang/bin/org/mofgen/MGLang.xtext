@@ -27,21 +27,17 @@ NodeConstructor:
 	{NodeConstructor} '{' (refsAssigns+=NodeReferenceOrAssignment)* '}';
 
 PatternCall:
-	called=[Pattern] '(' (params+=LiteralExpression)* ')';
+	called=[Pattern] '(' (params+=StringExpression)* ')';
 
 NodeReferenceOrAssignment:
-	(PatternNodeReference | Assignment) ('[' condition=Condition ']')?;
-
-Condition:
-	lhs=[Parameter] // EditorRelation only needed for non-booleans
-	(relation=EditorRelation rhs=[Parameter])?;
+	(PatternNodeReference | Assignment) ('[' condition=BooleanExpression ']')?;
 
 PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
 	//TODO: "doc -entries-> entry" fügt einen entry in entries hinzu oder weist entries objekt entry zu? Das führt zu zweideutigkeiten so
 
 Assignment:
-	target=[ecore::EAttribute] ASSIGNMENT_OP value=LiteralExpression;
+	target=[ecore::EAttribute] ASSIGNMENT_OP value=StringExpression;
 	//TODO make Enum Assignments possible
 
 NodeAttributeCall:
@@ -57,6 +53,63 @@ PrimitiveParameter:
 
 ObjectParameter:
 	type=[ecore::EClassifier] name=ID
+;
+
+ParameterOrMethodCall:
+	ParameterRef | MethodCall
+;
+
+ParameterRef:
+	ref=[Parameter] //TODO Scoping
+;
+
+MethodCall: //TODO Scoping
+	calledNode=[Node] '.' method=[ecore::EOperation]
+;
+
+
+BooleanExpression:
+	BooleanOr
+;
+
+RelationExpression returns BooleanExpression:
+	lhs=ParameterOrMethodCall relation=RelationalOp rhs=ParameterOrMethodCall
+;
+
+BooleanOr returns BooleanExpression:
+	BooleanXor ({Or.left=current} '||' right=(BooleanXor))*
+;
+
+BooleanXor returns BooleanExpression:
+	BooleanAnd ({Xor.left=current} '^' right=(BooleanAnd))*
+;
+
+BooleanAnd returns BooleanExpression:
+	BaseBoolean ({And.left=current} '&&' right=(BaseBoolean))*
+;
+
+BaseBoolean returns BooleanExpression:
+	{NegatedBoolean} '!' '(' expr=BooleanExpression ')' | '(' BooleanExpression ')' | {BooleanLiteral} value=Boolean | RelationExpression
+;
+
+
+enum Boolean:
+	TRUE='true' | FALSE='false'
+;
+
+NumberLiteral:
+	value=NUMBER
+;
+	
+@Override
+terminal INT returns ecore::EInt: ('0'..'9')+;
+
+terminal NUMBER:
+	('-')? INT ('.' INT)?
+;
+
+StringExpression:
+	StringConcatenation
 ;
 
 StringConcatenation returns STRING:
@@ -104,12 +157,7 @@ ForEachCollection:
 ForRange:
 	start=INT ':' end=INT;
 
-LiteralExpression:
-	{BooleanLiteral} value=('true' | 'false') |
-	{NumberLiteral} value=('-')? INT ('.' INT)? |
-	{StringLiteral} value=StringConcatenation;
-
-enum EditorRelation:
+enum RelationalOp:
 	GREATER='>' |
 	GREATER_OR_EQUAL='>=' |
 	EQUAL='==' |

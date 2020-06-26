@@ -48,7 +48,7 @@ public interface PatternCall extends GeneratorCommand
 
   /**
    * Returns the value of the '<em><b>Params</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.LiteralExpression}.
+   * The list contents are of type {@link org.mofgen.mGLang.StringExpression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Params</em>' containment reference list.
@@ -56,6 +56,6 @@ public interface PatternCall extends GeneratorCommand
    * @model containment="true"
    * @generated
    */
-  EList<LiteralExpression> getParams();
+  EList<StringExpression> getParams();
 
 } // PatternCall

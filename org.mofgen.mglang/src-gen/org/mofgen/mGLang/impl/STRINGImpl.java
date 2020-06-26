@@ -8,7 +8,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.STRING;
@@ -26,7 +25,7 @@ import org.mofgen.mGLang.STRING;
  *
  * @generated
  */
-public class STRINGImpl extends MinimalEObjectImpl.Container implements STRING
+public class STRINGImpl extends StringExpressionImpl implements STRING
 {
   /**
    * The default value of the '{@link #getValue() <em>Value</em>}' attribute.

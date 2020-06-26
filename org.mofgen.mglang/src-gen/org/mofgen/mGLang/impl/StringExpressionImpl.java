@@ -7,24 +7,24 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.mofgen.mGLang.LiteralExpression;
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.StringExpression;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Literal Expression</b></em>'.
+ * An implementation of the model object '<em><b>String Expression</b></em>'.
  * <!-- end-user-doc -->
  *
  * @generated
  */
-public class LiteralExpressionImpl extends MinimalEObjectImpl.Container implements LiteralExpression
+public class StringExpressionImpl extends MinimalEObjectImpl.Container implements StringExpression
 {
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected LiteralExpressionImpl()
+  protected StringExpressionImpl()
   {
     super();
   }
@@ -37,7 +37,7 @@ public class LiteralExpressionImpl extends MinimalEObjectImpl.Container implemen
   @Override
   protected EClass eStaticClass()
   {
-    return MGLangPackage.Literals.LITERAL_EXPRESSION;
+    return MGLangPackage.Literals.STRING_EXPRESSION;
   }
 
-} //LiteralExpressionImpl
+} //StringExpressionImpl

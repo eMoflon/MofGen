@@ -3,6 +3,7 @@
  */
 package org.mofgen.mGLang;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,7 +21,7 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface NumberLiteral extends LiteralExpression
+public interface NumberLiteral extends EObject
 {
   /**
    * Returns the value of the '<em><b>Value</b></em>' attribute.

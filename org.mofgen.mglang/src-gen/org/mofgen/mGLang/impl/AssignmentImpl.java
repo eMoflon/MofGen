@@ -13,8 +13,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.mofgen.mGLang.Assignment;
-import org.mofgen.mGLang.LiteralExpression;
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.StringExpression;
 
 /**
  * <!-- begin-user-doc -->
@@ -50,7 +50,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    * @ordered
    */
-  protected LiteralExpression value;
+  protected StringExpression value;
 
   /**
    * <!-- begin-user-doc -->
@@ -124,7 +124,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    */
   @Override
-  public LiteralExpression getValue()
+  public StringExpression getValue()
   {
     return value;
   }
@@ -134,9 +134,9 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetValue(LiteralExpression newValue, NotificationChain msgs)
+  public NotificationChain basicSetValue(StringExpression newValue, NotificationChain msgs)
   {
-    LiteralExpression oldValue = value;
+    StringExpression oldValue = value;
     value = newValue;
     if (eNotificationRequired())
     {
@@ -152,7 +152,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    */
   @Override
-  public void setValue(LiteralExpression newValue)
+  public void setValue(StringExpression newValue)
   {
     if (newValue != value)
     {
@@ -217,7 +217,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
         setTarget((EAttribute)newValue);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
-        setValue((LiteralExpression)newValue);
+        setValue((StringExpression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -237,7 +237,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
         setTarget((EAttribute)null);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
-        setValue((LiteralExpression)null);
+        setValue((StringExpression)null);
         return;
     }
     super.eUnset(featureID);

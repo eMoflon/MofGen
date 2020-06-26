@@ -11,14 +11,14 @@ import org.eclipse.emf.common.util.Enumerator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Editor Relation</b></em>',
+ * A representation of the literals of the enumeration '<em><b>Relational Op</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see org.mofgen.mGLang.MGLangPackage#getEditorRelation()
+ * @see org.mofgen.mGLang.MGLangPackage#getRelationalOp()
  * @model
  * @generated
  */
-public enum EditorRelation implements Enumerator
+public enum RelationalOp implements Enumerator
 {
   /**
    * The '<em><b>GREATER</b></em>' literal object.
@@ -147,13 +147,13 @@ public enum EditorRelation implements Enumerator
   public static final int SMALLER_VALUE = 5;
 
   /**
-   * An array of all the '<em><b>Editor Relation</b></em>' enumerators.
+   * An array of all the '<em><b>Relational Op</b></em>' enumerators.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private static final EditorRelation[] VALUES_ARRAY =
-    new EditorRelation[]
+  private static final RelationalOp[] VALUES_ARRAY =
+    new RelationalOp[]
     {
       GREATER,
       GREATER_OR_EQUAL,
@@ -164,26 +164,26 @@ public enum EditorRelation implements Enumerator
     };
 
   /**
-   * A public read-only list of all the '<em><b>Editor Relation</b></em>' enumerators.
+   * A public read-only list of all the '<em><b>Relational Op</b></em>' enumerators.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  public static final List<EditorRelation> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+  public static final List<RelationalOp> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
   /**
-   * Returns the '<em><b>Editor Relation</b></em>' literal with the specified literal value.
+   * Returns the '<em><b>Relational Op</b></em>' literal with the specified literal value.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param literal the literal.
    * @return the matching enumerator or <code>null</code>.
    * @generated
    */
-  public static EditorRelation get(String literal)
+  public static RelationalOp get(String literal)
   {
     for (int i = 0; i < VALUES_ARRAY.length; ++i)
     {
-      EditorRelation result = VALUES_ARRAY[i];
+      RelationalOp result = VALUES_ARRAY[i];
       if (result.toString().equals(literal))
       {
         return result;
@@ -193,18 +193,18 @@ public enum EditorRelation implements Enumerator
   }
 
   /**
-   * Returns the '<em><b>Editor Relation</b></em>' literal with the specified name.
+   * Returns the '<em><b>Relational Op</b></em>' literal with the specified name.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param name the name.
    * @return the matching enumerator or <code>null</code>.
    * @generated
    */
-  public static EditorRelation getByName(String name)
+  public static RelationalOp getByName(String name)
   {
     for (int i = 0; i < VALUES_ARRAY.length; ++i)
     {
-      EditorRelation result = VALUES_ARRAY[i];
+      RelationalOp result = VALUES_ARRAY[i];
       if (result.getName().equals(name))
       {
         return result;
@@ -214,14 +214,14 @@ public enum EditorRelation implements Enumerator
   }
 
   /**
-   * Returns the '<em><b>Editor Relation</b></em>' literal with the specified integer value.
+   * Returns the '<em><b>Relational Op</b></em>' literal with the specified integer value.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the integer value.
    * @return the matching enumerator or <code>null</code>.
    * @generated
    */
-  public static EditorRelation get(int value)
+  public static RelationalOp get(int value)
   {
     switch (value)
     {
@@ -262,7 +262,7 @@ public enum EditorRelation implements Enumerator
    * <!-- end-user-doc -->
    * @generated
    */
-  private EditorRelation(int value, String name, String literal)
+  private RelationalOp(int value, String name, String literal)
   {
     this.value = value;
     this.name = name;
@@ -314,4 +314,4 @@ public enum EditorRelation implements Enumerator
     return literal;
   }
   
-} //EditorRelation
+} //RelationalOp
