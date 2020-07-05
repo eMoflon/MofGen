@@ -37,7 +37,7 @@ import org.mofgen.mGLang.PatternCall;
  *
  * @generated
  */
-public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
+public class PatternCallImpl extends GeneratorExpressionImpl implements PatternCall
 {
   /**
    * The cached value of the '{@link #getCalled() <em>Called</em>}' reference.

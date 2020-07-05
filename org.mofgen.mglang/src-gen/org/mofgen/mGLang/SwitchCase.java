@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface SwitchCase extends GeneratorCommand
+public interface SwitchCase extends GeneratorExpression
 {
   /**
    * Returns the value of the '<em><b>Attribute</b></em>' containment reference.

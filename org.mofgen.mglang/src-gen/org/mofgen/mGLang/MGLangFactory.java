@@ -204,13 +204,13 @@ public interface MGLangFactory extends EFactory
   Generator createGenerator();
 
   /**
-   * Returns a new object of class '<em>Generator Command</em>'.
+   * Returns a new object of class '<em>Generator Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Generator Command</em>'.
+   * @return a new object of class '<em>Generator Expression</em>'.
    * @generated
    */
-  GeneratorCommand createGeneratorCommand();
+  GeneratorExpression createGeneratorExpression();
 
   /**
    * Returns a new object of class '<em>Pattern Object Creation</em>'.
@@ -294,58 +294,22 @@ public interface MGLangFactory extends EFactory
   IfStatement createIfStatement();
 
   /**
-   * Returns a new object of class '<em>Single Line If</em>'.
+   * Returns a new object of class '<em>Else If Or Else</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Single Line If</em>'.
+   * @return a new object of class '<em>Else If Or Else</em>'.
    * @generated
    */
-  SingleLineIf createSingleLineIf();
+  ElseIfOrElse createElseIfOrElse();
 
   /**
-   * Returns a new object of class '<em>Gen Command Block</em>'.
+   * Returns a new object of class '<em>Else Statement</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Gen Command Block</em>'.
+   * @return a new object of class '<em>Else Statement</em>'.
    * @generated
    */
-  GenCommandBlock createGenCommandBlock();
-
-  /**
-   * Returns a new object of class '<em>Block If</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Block If</em>'.
-   * @generated
-   */
-  BlockIf createBlockIf();
-
-  /**
-   * Returns a new object of class '<em>If Head And Body</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>If Head And Body</em>'.
-   * @generated
-   */
-  IfHeadAndBody createIfHeadAndBody();
-
-  /**
-   * Returns a new object of class '<em>If Head</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>If Head</em>'.
-   * @generated
-   */
-  IfHead createIfHead();
-
-  /**
-   * Returns a new object of class '<em>If Body</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>If Body</em>'.
-   * @generated
-   */
-  IfBody createIfBody();
+  ElseStatement createElseStatement();
 
   /**
    * Returns a new object of class '<em>Switch Case</em>'.

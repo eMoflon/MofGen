@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.mofgen.mGLang.Generator;
-import org.mofgen.mGLang.GeneratorCommand;
+import org.mofgen.mGLang.GeneratorExpression;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.Parameter;
 
@@ -56,7 +56,7 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
    * @generated
    * @ordered
    */
-  protected EList<GeneratorCommand> commands;
+  protected EList<GeneratorExpression> commands;
 
   /**
    * <!-- begin-user-doc -->
@@ -100,11 +100,11 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
    * @generated
    */
   @Override
-  public EList<GeneratorCommand> getCommands()
+  public EList<GeneratorExpression> getCommands()
   {
     if (commands == null)
     {
-      commands = new EObjectContainmentEList<GeneratorCommand>(GeneratorCommand.class, this, MGLangPackage.GENERATOR__COMMANDS);
+      commands = new EObjectContainmentEList<GeneratorExpression>(GeneratorExpression.class, this, MGLangPackage.GENERATOR__COMMANDS);
     }
     return commands;
   }
@@ -162,7 +162,7 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
         return;
       case MGLangPackage.GENERATOR__COMMANDS:
         getCommands().clear();
-        getCommands().addAll((Collection<? extends GeneratorCommand>)newValue);
+        getCommands().addAll((Collection<? extends GeneratorExpression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

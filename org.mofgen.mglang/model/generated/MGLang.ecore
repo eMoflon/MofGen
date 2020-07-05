@@ -43,7 +43,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="refsAssigns" upperBound="-1"
         eType="#//NodeReferenceOrAssignment" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternCall" eSuperTypes="#//GeneratorCommand">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCall" eSuperTypes="#//GeneratorExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="called" eType="#//Pattern"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//ArithmeticExpression" containment="true"/>
@@ -95,10 +95,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//Parameter" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
-        eType="#//GeneratorCommand" containment="true"/>
+        eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GeneratorCommand" eSuperTypes="#//Default #//CaseBody"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternObjectCreation" eSuperTypes="#//GeneratorCommand">
+  <eClassifiers xsi:type="ecore:EClass" name="GeneratorExpression" eSuperTypes="#//Default"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternObjectCreation" eSuperTypes="#//GeneratorExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pObject" eType="#//PatternObject"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="patternCall" eType="#//PatternCall"
@@ -108,7 +108,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Pattern"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ForStatement" eSuperTypes="#//GeneratorCommand">
+  <eClassifiers xsi:type="ecore:EClass" name="ForStatement" eSuperTypes="#//GeneratorExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="head" eType="#//ForHead"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//ForBody"
@@ -128,41 +128,31 @@
   <eClassifiers xsi:type="ecore:EClass" name="NodeOrParameterOrCollection">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ForBody"/>
-  <eClassifiers xsi:type="ecore:EClass" name="IfStatement" eSuperTypes="#//GeneratorCommand"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SingleLineIf" eSuperTypes="#//IfStatement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//ArithmeticExpression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="command" eType="#//GeneratorCommand"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GenCommandBlock" eSuperTypes="#//ForBody #//CaseBody">
+  <eClassifiers xsi:type="ecore:EClass" name="ForBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
-        eType="#//GeneratorCommand" containment="true"/>
+        eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BlockIf">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="if" eType="#//IfHeadAndBody"
+  <eClassifiers xsi:type="ecore:EClass" name="IfStatement" eSuperTypes="#//GeneratorExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cond" eType="#//ArithmeticExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elseifs" upperBound="-1"
-        eType="#//IfHeadAndBody" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="else" eType="#//IfBody"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="then" upperBound="-1" eType="#//GeneratorExpression"
         containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IfHeadAndBody">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="head" eType="#//IfHead"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//IfBody"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elseIf" eType="#//ElseIfOrElse"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IfHead">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//ArithmeticExpression"
+  <eClassifiers xsi:type="ecore:EClass" name="ElseIfOrElse">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cond" eType="#//ArithmeticExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="then" upperBound="-1" eType="#//GeneratorExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elseIf" eType="#//ElseIfOrElse"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IfBody">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" eType="#//GenCommandBlock"
+  <eClassifiers xsi:type="ecore:EClass" name="ElseStatement" eSuperTypes="#//ElseIfOrElse">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="else" upperBound="-1" eType="#//GeneratorExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SwitchCase" eSuperTypes="#//GeneratorCommand">
+  <eClassifiers xsi:type="ecore:EClass" name="SwitchCase" eSuperTypes="#//GeneratorExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//ParameterRefOrMethodCall"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
@@ -177,8 +167,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//CaseBody"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CaseBody"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//GeneratorCommand #//NodeOrParameterOrCollection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CaseBody">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
+        eType="#//GeneratorExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//GeneratorExpression #//NodeOrParameterOrCollection"/>
   <eClassifiers xsi:type="ecore:EClass" name="List" eSuperTypes="#//Collection"/>
   <eClassifiers xsi:type="ecore:EClass" name="ListAdHoc" eSuperTypes="#//List">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elements" unique="false"

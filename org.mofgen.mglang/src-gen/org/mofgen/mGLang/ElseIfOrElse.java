@@ -5,25 +5,27 @@ package org.mofgen.mGLang;
 
 import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.ecore.EObject;
+
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>If Statement</b></em>'.
+ * A representation of the model object '<em><b>Else If Or Else</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.IfStatement#getCond <em>Cond</em>}</li>
- *   <li>{@link org.mofgen.mGLang.IfStatement#getThen <em>Then</em>}</li>
- *   <li>{@link org.mofgen.mGLang.IfStatement#getElseIf <em>Else If</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.ElseIfOrElse#getCond <em>Cond</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.ElseIfOrElse#getThen <em>Then</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.ElseIfOrElse#getElseIf <em>Else If</em>}</li>
  * </ul>
  *
- * @see org.mofgen.mGLang.MGLangPackage#getIfStatement()
+ * @see org.mofgen.mGLang.MGLangPackage#getElseIfOrElse()
  * @model
  * @generated
  */
-public interface IfStatement extends GeneratorExpression
+public interface ElseIfOrElse extends EObject
 {
   /**
    * Returns the value of the '<em><b>Cond</b></em>' containment reference.
@@ -31,14 +33,14 @@ public interface IfStatement extends GeneratorExpression
    * <!-- end-user-doc -->
    * @return the value of the '<em>Cond</em>' containment reference.
    * @see #setCond(ArithmeticExpression)
-   * @see org.mofgen.mGLang.MGLangPackage#getIfStatement_Cond()
+   * @see org.mofgen.mGLang.MGLangPackage#getElseIfOrElse_Cond()
    * @model containment="true"
    * @generated
    */
   ArithmeticExpression getCond();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.IfStatement#getCond <em>Cond</em>}' containment reference.
+   * Sets the value of the '{@link org.mofgen.mGLang.ElseIfOrElse#getCond <em>Cond</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Cond</em>' containment reference.
@@ -53,7 +55,7 @@ public interface IfStatement extends GeneratorExpression
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Then</em>' containment reference list.
-   * @see org.mofgen.mGLang.MGLangPackage#getIfStatement_Then()
+   * @see org.mofgen.mGLang.MGLangPackage#getElseIfOrElse_Then()
    * @model containment="true"
    * @generated
    */
@@ -65,14 +67,14 @@ public interface IfStatement extends GeneratorExpression
    * <!-- end-user-doc -->
    * @return the value of the '<em>Else If</em>' containment reference.
    * @see #setElseIf(ElseIfOrElse)
-   * @see org.mofgen.mGLang.MGLangPackage#getIfStatement_ElseIf()
+   * @see org.mofgen.mGLang.MGLangPackage#getElseIfOrElse_ElseIf()
    * @model containment="true"
    * @generated
    */
   ElseIfOrElse getElseIf();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.IfStatement#getElseIf <em>Else If</em>}' containment reference.
+   * Sets the value of the '{@link org.mofgen.mGLang.ElseIfOrElse#getElseIf <em>Else If</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Else If</em>' containment reference.
@@ -81,4 +83,4 @@ public interface IfStatement extends GeneratorExpression
    */
   void setElseIf(ElseIfOrElse value);
 
-} // IfStatement
+} // ElseIfOrElse

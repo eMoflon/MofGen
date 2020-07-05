@@ -389,7 +389,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getDefault()
    * @generated
    */
-  int DEFAULT = 37;
+  int DEFAULT = 33;
 
   /**
    * The number of structural features of the '<em>Default</em>' class.
@@ -401,23 +401,23 @@ public interface MGLangPackage extends EPackage
   int DEFAULT_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.GeneratorCommandImpl <em>Generator Command</em>}' class.
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.GeneratorExpressionImpl <em>Generator Expression</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.GeneratorCommandImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGeneratorCommand()
+   * @see org.mofgen.mGLang.impl.GeneratorExpressionImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGeneratorExpression()
    * @generated
    */
-  int GENERATOR_COMMAND = 20;
+  int GENERATOR_EXPRESSION = 20;
 
   /**
-   * The number of structural features of the '<em>Generator Command</em>' class.
+   * The number of structural features of the '<em>Generator Expression</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int GENERATOR_COMMAND_FEATURE_COUNT = DEFAULT_FEATURE_COUNT + 0;
+  int GENERATOR_EXPRESSION_FEATURE_COUNT = DEFAULT_FEATURE_COUNT + 0;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.PatternCallImpl <em>Pattern Call</em>}' class.
@@ -436,7 +436,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN_CALL__CALLED = GENERATOR_COMMAND_FEATURE_COUNT + 0;
+  int PATTERN_CALL__CALLED = GENERATOR_EXPRESSION_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -445,7 +445,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN_CALL__PARAMS = GENERATOR_COMMAND_FEATURE_COUNT + 1;
+  int PATTERN_CALL__PARAMS = GENERATOR_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Pattern Call</em>' class.
@@ -454,7 +454,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN_CALL_FEATURE_COUNT = GENERATOR_COMMAND_FEATURE_COUNT + 2;
+  int PATTERN_CALL_FEATURE_COUNT = GENERATOR_EXPRESSION_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.NodeReferenceOrAssignmentImpl <em>Node Reference Or Assignment</em>}' class.
@@ -872,7 +872,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN_OBJECT_CREATION__POBJECT = GENERATOR_COMMAND_FEATURE_COUNT + 0;
+  int PATTERN_OBJECT_CREATION__POBJECT = GENERATOR_EXPRESSION_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Pattern Call</b></em>' containment reference.
@@ -881,7 +881,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN_OBJECT_CREATION__PATTERN_CALL = GENERATOR_COMMAND_FEATURE_COUNT + 1;
+  int PATTERN_OBJECT_CREATION__PATTERN_CALL = GENERATOR_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Pattern Object Creation</em>' class.
@@ -890,7 +890,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN_OBJECT_CREATION_FEATURE_COUNT = GENERATOR_COMMAND_FEATURE_COUNT + 2;
+  int PATTERN_OBJECT_CREATION_FEATURE_COUNT = GENERATOR_EXPRESSION_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.PatternObjectImpl <em>Pattern Object</em>}' class.
@@ -946,7 +946,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FOR_STATEMENT__HEAD = GENERATOR_COMMAND_FEATURE_COUNT + 0;
+  int FOR_STATEMENT__HEAD = GENERATOR_EXPRESSION_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -955,7 +955,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FOR_STATEMENT__BODY = GENERATOR_COMMAND_FEATURE_COUNT + 1;
+  int FOR_STATEMENT__BODY = GENERATOR_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>For Statement</em>' class.
@@ -964,7 +964,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FOR_STATEMENT_FEATURE_COUNT = GENERATOR_COMMAND_FEATURE_COUNT + 2;
+  int FOR_STATEMENT_FEATURE_COUNT = GENERATOR_EXPRESSION_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.ForHeadImpl <em>For Head</em>}' class.
@@ -1088,13 +1088,22 @@ public interface MGLangPackage extends EPackage
   int FOR_BODY = 28;
 
   /**
+   * The feature id for the '<em><b>Commands</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_BODY__COMMANDS = 0;
+
+  /**
    * The number of structural features of the '<em>For Body</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int FOR_BODY_FEATURE_COUNT = 0;
+  int FOR_BODY_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.IfStatementImpl <em>If Statement</em>}' class.
@@ -1107,217 +1116,141 @@ public interface MGLangPackage extends EPackage
   int IF_STATEMENT = 29;
 
   /**
+   * The feature id for the '<em><b>Cond</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int IF_STATEMENT__COND = GENERATOR_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Then</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int IF_STATEMENT__THEN = GENERATOR_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Else If</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int IF_STATEMENT__ELSE_IF = GENERATOR_EXPRESSION_FEATURE_COUNT + 2;
+
+  /**
    * The number of structural features of the '<em>If Statement</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int IF_STATEMENT_FEATURE_COUNT = GENERATOR_COMMAND_FEATURE_COUNT + 0;
+  int IF_STATEMENT_FEATURE_COUNT = GENERATOR_EXPRESSION_FEATURE_COUNT + 3;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.SingleLineIfImpl <em>Single Line If</em>}' class.
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.ElseIfOrElseImpl <em>Else If Or Else</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.SingleLineIfImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSingleLineIf()
+   * @see org.mofgen.mGLang.impl.ElseIfOrElseImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getElseIfOrElse()
    * @generated
    */
-  int SINGLE_LINE_IF = 30;
+  int ELSE_IF_OR_ELSE = 30;
 
   /**
-   * The feature id for the '<em><b>Condition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int SINGLE_LINE_IF__CONDITION = IF_STATEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Command</b></em>' containment reference.
+   * The feature id for the '<em><b>Cond</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SINGLE_LINE_IF__COMMAND = IF_STATEMENT_FEATURE_COUNT + 1;
+  int ELSE_IF_OR_ELSE__COND = 0;
 
   /**
-   * The number of structural features of the '<em>Single Line If</em>' class.
+   * The feature id for the '<em><b>Then</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SINGLE_LINE_IF_FEATURE_COUNT = IF_STATEMENT_FEATURE_COUNT + 2;
+  int ELSE_IF_OR_ELSE__THEN = 1;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.GenCommandBlockImpl <em>Gen Command Block</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.GenCommandBlockImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGenCommandBlock()
-   * @generated
-   */
-  int GEN_COMMAND_BLOCK = 31;
-
-  /**
-   * The feature id for the '<em><b>Commands</b></em>' containment reference list.
+   * The feature id for the '<em><b>Else If</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int GEN_COMMAND_BLOCK__COMMANDS = FOR_BODY_FEATURE_COUNT + 0;
+  int ELSE_IF_OR_ELSE__ELSE_IF = 2;
 
   /**
-   * The number of structural features of the '<em>Gen Command Block</em>' class.
+   * The number of structural features of the '<em>Else If Or Else</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int GEN_COMMAND_BLOCK_FEATURE_COUNT = FOR_BODY_FEATURE_COUNT + 1;
+  int ELSE_IF_OR_ELSE_FEATURE_COUNT = 3;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.BlockIfImpl <em>Block If</em>}' class.
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.ElseStatementImpl <em>Else Statement</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.BlockIfImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBlockIf()
+   * @see org.mofgen.mGLang.impl.ElseStatementImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getElseStatement()
    * @generated
    */
-  int BLOCK_IF = 32;
+  int ELSE_STATEMENT = 31;
 
   /**
-   * The feature id for the '<em><b>If</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int BLOCK_IF__IF = 0;
-
-  /**
-   * The feature id for the '<em><b>Elseifs</b></em>' containment reference list.
+   * The feature id for the '<em><b>Cond</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BLOCK_IF__ELSEIFS = 1;
+  int ELSE_STATEMENT__COND = ELSE_IF_OR_ELSE__COND;
 
   /**
-   * The feature id for the '<em><b>Else</b></em>' containment reference.
+   * The feature id for the '<em><b>Then</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BLOCK_IF__ELSE = 2;
+  int ELSE_STATEMENT__THEN = ELSE_IF_OR_ELSE__THEN;
 
   /**
-   * The number of structural features of the '<em>Block If</em>' class.
+   * The feature id for the '<em><b>Else If</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int BLOCK_IF_FEATURE_COUNT = 3;
+  int ELSE_STATEMENT__ELSE_IF = ELSE_IF_OR_ELSE__ELSE_IF;
 
   /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.IfHeadAndBodyImpl <em>If Head And Body</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.IfHeadAndBodyImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getIfHeadAndBody()
-   * @generated
-   */
-  int IF_HEAD_AND_BODY = 33;
-
-  /**
-   * The feature id for the '<em><b>Head</b></em>' containment reference.
+   * The feature id for the '<em><b>Else</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int IF_HEAD_AND_BODY__HEAD = 0;
+  int ELSE_STATEMENT__ELSE = ELSE_IF_OR_ELSE_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Body</b></em>' containment reference.
+   * The number of structural features of the '<em>Else Statement</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int IF_HEAD_AND_BODY__BODY = 1;
-
-  /**
-   * The number of structural features of the '<em>If Head And Body</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int IF_HEAD_AND_BODY_FEATURE_COUNT = 2;
-
-  /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.IfHeadImpl <em>If Head</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.IfHeadImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getIfHead()
-   * @generated
-   */
-  int IF_HEAD = 34;
-
-  /**
-   * The feature id for the '<em><b>Condition</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int IF_HEAD__CONDITION = 0;
-
-  /**
-   * The number of structural features of the '<em>If Head</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int IF_HEAD_FEATURE_COUNT = 1;
-
-  /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.IfBodyImpl <em>If Body</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.IfBodyImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getIfBody()
-   * @generated
-   */
-  int IF_BODY = 35;
-
-  /**
-   * The feature id for the '<em><b>Commands</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int IF_BODY__COMMANDS = 0;
-
-  /**
-   * The number of structural features of the '<em>If Body</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int IF_BODY_FEATURE_COUNT = 1;
+  int ELSE_STATEMENT_FEATURE_COUNT = ELSE_IF_OR_ELSE_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.SwitchCaseImpl <em>Switch Case</em>}' class.
@@ -1327,7 +1260,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSwitchCase()
    * @generated
    */
-  int SWITCH_CASE = 36;
+  int SWITCH_CASE = 32;
 
   /**
    * The feature id for the '<em><b>Attribute</b></em>' containment reference.
@@ -1336,7 +1269,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SWITCH_CASE__ATTRIBUTE = GENERATOR_COMMAND_FEATURE_COUNT + 0;
+  int SWITCH_CASE__ATTRIBUTE = GENERATOR_EXPRESSION_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Cases</b></em>' containment reference list.
@@ -1345,7 +1278,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SWITCH_CASE__CASES = GENERATOR_COMMAND_FEATURE_COUNT + 1;
+  int SWITCH_CASE__CASES = GENERATOR_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Default</b></em>' containment reference.
@@ -1354,7 +1287,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SWITCH_CASE__DEFAULT = GENERATOR_COMMAND_FEATURE_COUNT + 2;
+  int SWITCH_CASE__DEFAULT = GENERATOR_EXPRESSION_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Switch Case</em>' class.
@@ -1363,7 +1296,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SWITCH_CASE_FEATURE_COUNT = GENERATOR_COMMAND_FEATURE_COUNT + 3;
+  int SWITCH_CASE_FEATURE_COUNT = GENERATOR_EXPRESSION_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.CaseImpl <em>Case</em>}' class.
@@ -1373,7 +1306,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCase()
    * @generated
    */
-  int CASE = 38;
+  int CASE = 34;
 
   /**
    * The feature id for the '<em><b>Val</b></em>' containment reference.
@@ -1410,7 +1343,16 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCaseBody()
    * @generated
    */
-  int CASE_BODY = 39;
+  int CASE_BODY = 35;
+
+  /**
+   * The feature id for the '<em><b>Expressions</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CASE_BODY__EXPRESSIONS = 0;
 
   /**
    * The number of structural features of the '<em>Case Body</em>' class.
@@ -1419,7 +1361,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CASE_BODY_FEATURE_COUNT = 0;
+  int CASE_BODY_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.CollectionImpl <em>Collection</em>}' class.
@@ -1429,7 +1371,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCollection()
    * @generated
    */
-  int COLLECTION = 40;
+  int COLLECTION = 36;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1438,7 +1380,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COLLECTION__NAME = GENERATOR_COMMAND_FEATURE_COUNT + 0;
+  int COLLECTION__NAME = GENERATOR_EXPRESSION_FEATURE_COUNT + 0;
 
   /**
    * The number of structural features of the '<em>Collection</em>' class.
@@ -1447,7 +1389,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COLLECTION_FEATURE_COUNT = GENERATOR_COMMAND_FEATURE_COUNT + 1;
+  int COLLECTION_FEATURE_COUNT = GENERATOR_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.ListImpl <em>List</em>}' class.
@@ -1457,7 +1399,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getList()
    * @generated
    */
-  int LIST = 41;
+  int LIST = 37;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1485,7 +1427,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getListAdHoc()
    * @generated
    */
-  int LIST_AD_HOC = 42;
+  int LIST_AD_HOC = 38;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1522,7 +1464,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMap()
    * @generated
    */
-  int MAP = 43;
+  int MAP = 39;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1550,7 +1492,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMapAdHoc()
    * @generated
    */
-  int MAP_AD_HOC = 44;
+  int MAP_AD_HOC = 40;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1587,7 +1529,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMapTupel()
    * @generated
    */
-  int MAP_TUPEL = 45;
+  int MAP_TUPEL = 41;
 
   /**
    * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -1624,7 +1566,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForRange()
    * @generated
    */
-  int FOR_RANGE = 46;
+  int FOR_RANGE = 42;
 
   /**
    * The feature id for the '<em><b>Start</b></em>' attribute.
@@ -1661,7 +1603,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getTertiary()
    * @generated
    */
-  int TERTIARY = 47;
+  int TERTIARY = 43;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1707,7 +1649,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSecondary()
    * @generated
    */
-  int SECONDARY = 48;
+  int SECONDARY = 44;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1753,7 +1695,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPrimary()
    * @generated
    */
-  int PRIMARY = 49;
+  int PRIMARY = 45;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1799,7 +1741,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRel()
    * @generated
    */
-  int REL = 50;
+  int REL = 46;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1845,7 +1787,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNegationExpression()
    * @generated
    */
-  int NEGATION_EXPRESSION = 51;
+  int NEGATION_EXPRESSION = 47;
 
   /**
    * The feature id for the '<em><b>Expr</b></em>' containment reference.
@@ -1873,7 +1815,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getFunctionCall()
    * @generated
    */
-  int FUNCTION_CALL = 52;
+  int FUNCTION_CALL = 48;
 
   /**
    * The feature id for the '<em><b>Func</b></em>' attribute.
@@ -1910,7 +1852,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getLiteral()
    * @generated
    */
-  int LITERAL = 53;
+  int LITERAL = 49;
 
   /**
    * The number of structural features of the '<em>Literal</em>' class.
@@ -1929,7 +1871,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMathFunc()
    * @generated
    */
-  int MATH_FUNC = 54;
+  int MATH_FUNC = 50;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.PrimitiveType <em>Primitive Type</em>}' enum.
@@ -1939,7 +1881,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPrimitiveType()
    * @generated
    */
-  int PRIMITIVE_TYPE = 55;
+  int PRIMITIVE_TYPE = 51;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.RelationalOp <em>Relational Op</em>}' enum.
@@ -1949,7 +1891,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRelationalOp()
    * @generated
    */
-  int RELATIONAL_OP = 56;
+  int RELATIONAL_OP = 52;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.TertiaryOp <em>Tertiary Op</em>}' enum.
@@ -1959,7 +1901,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getTertiaryOp()
    * @generated
    */
-  int TERTIARY_OP = 57;
+  int TERTIARY_OP = 53;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.SecondaryOp <em>Secondary Op</em>}' enum.
@@ -1969,7 +1911,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSecondaryOp()
    * @generated
    */
-  int SECONDARY_OP = 58;
+  int SECONDARY_OP = 54;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.PrimaryOp <em>Primary Op</em>}' enum.
@@ -1979,7 +1921,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPrimaryOp()
    * @generated
    */
-  int PRIMARY_OP = 59;
+  int PRIMARY_OP = 55;
 
 
   /**
@@ -2546,14 +2488,14 @@ public interface MGLangPackage extends EPackage
   EReference getGenerator_Commands();
 
   /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.GeneratorCommand <em>Generator Command</em>}'.
+   * Returns the meta object for class '{@link org.mofgen.mGLang.GeneratorExpression <em>Generator Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Generator Command</em>'.
-   * @see org.mofgen.mGLang.GeneratorCommand
+   * @return the meta object for class '<em>Generator Expression</em>'.
+   * @see org.mofgen.mGLang.GeneratorExpression
    * @generated
    */
-  EClass getGeneratorCommand();
+  EClass getGeneratorExpression();
 
   /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.PatternObjectCreation <em>Pattern Object Creation</em>}'.
@@ -2757,6 +2699,17 @@ public interface MGLangPackage extends EPackage
   EClass getForBody();
 
   /**
+   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.ForBody#getCommands <em>Commands</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Commands</em>'.
+   * @see org.mofgen.mGLang.ForBody#getCommands()
+   * @see #getForBody()
+   * @generated
+   */
+  EReference getForBody_Commands();
+
+  /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.IfStatement <em>If Statement</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2767,174 +2720,101 @@ public interface MGLangPackage extends EPackage
   EClass getIfStatement();
 
   /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.SingleLineIf <em>Single Line If</em>}'.
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.IfStatement#getCond <em>Cond</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Single Line If</em>'.
-   * @see org.mofgen.mGLang.SingleLineIf
+   * @return the meta object for the containment reference '<em>Cond</em>'.
+   * @see org.mofgen.mGLang.IfStatement#getCond()
+   * @see #getIfStatement()
    * @generated
    */
-  EClass getSingleLineIf();
+  EReference getIfStatement_Cond();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.SingleLineIf#getCondition <em>Condition</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.IfStatement#getThen <em>Then</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Condition</em>'.
-   * @see org.mofgen.mGLang.SingleLineIf#getCondition()
-   * @see #getSingleLineIf()
+   * @return the meta object for the containment reference list '<em>Then</em>'.
+   * @see org.mofgen.mGLang.IfStatement#getThen()
+   * @see #getIfStatement()
    * @generated
    */
-  EReference getSingleLineIf_Condition();
+  EReference getIfStatement_Then();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.SingleLineIf#getCommand <em>Command</em>}'.
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.IfStatement#getElseIf <em>Else If</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Command</em>'.
-   * @see org.mofgen.mGLang.SingleLineIf#getCommand()
-   * @see #getSingleLineIf()
+   * @return the meta object for the containment reference '<em>Else If</em>'.
+   * @see org.mofgen.mGLang.IfStatement#getElseIf()
+   * @see #getIfStatement()
    * @generated
    */
-  EReference getSingleLineIf_Command();
+  EReference getIfStatement_ElseIf();
 
   /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.GenCommandBlock <em>Gen Command Block</em>}'.
+   * Returns the meta object for class '{@link org.mofgen.mGLang.ElseIfOrElse <em>Else If Or Else</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Gen Command Block</em>'.
-   * @see org.mofgen.mGLang.GenCommandBlock
+   * @return the meta object for class '<em>Else If Or Else</em>'.
+   * @see org.mofgen.mGLang.ElseIfOrElse
    * @generated
    */
-  EClass getGenCommandBlock();
+  EClass getElseIfOrElse();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.GenCommandBlock#getCommands <em>Commands</em>}'.
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.ElseIfOrElse#getCond <em>Cond</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Commands</em>'.
-   * @see org.mofgen.mGLang.GenCommandBlock#getCommands()
-   * @see #getGenCommandBlock()
+   * @return the meta object for the containment reference '<em>Cond</em>'.
+   * @see org.mofgen.mGLang.ElseIfOrElse#getCond()
+   * @see #getElseIfOrElse()
    * @generated
    */
-  EReference getGenCommandBlock_Commands();
+  EReference getElseIfOrElse_Cond();
 
   /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.BlockIf <em>Block If</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.ElseIfOrElse#getThen <em>Then</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Block If</em>'.
-   * @see org.mofgen.mGLang.BlockIf
+   * @return the meta object for the containment reference list '<em>Then</em>'.
+   * @see org.mofgen.mGLang.ElseIfOrElse#getThen()
+   * @see #getElseIfOrElse()
    * @generated
    */
-  EClass getBlockIf();
+  EReference getElseIfOrElse_Then();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.BlockIf#getIf <em>If</em>}'.
+   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.ElseIfOrElse#getElseIf <em>Else If</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>If</em>'.
-   * @see org.mofgen.mGLang.BlockIf#getIf()
-   * @see #getBlockIf()
+   * @return the meta object for the containment reference '<em>Else If</em>'.
+   * @see org.mofgen.mGLang.ElseIfOrElse#getElseIf()
+   * @see #getElseIfOrElse()
    * @generated
    */
-  EReference getBlockIf_If();
+  EReference getElseIfOrElse_ElseIf();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.BlockIf#getElseifs <em>Elseifs</em>}'.
+   * Returns the meta object for class '{@link org.mofgen.mGLang.ElseStatement <em>Else Statement</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Elseifs</em>'.
-   * @see org.mofgen.mGLang.BlockIf#getElseifs()
-   * @see #getBlockIf()
+   * @return the meta object for class '<em>Else Statement</em>'.
+   * @see org.mofgen.mGLang.ElseStatement
    * @generated
    */
-  EReference getBlockIf_Elseifs();
+  EClass getElseStatement();
 
   /**
-   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.BlockIf#getElse <em>Else</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.ElseStatement#getElse <em>Else</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Else</em>'.
-   * @see org.mofgen.mGLang.BlockIf#getElse()
-   * @see #getBlockIf()
+   * @return the meta object for the containment reference list '<em>Else</em>'.
+   * @see org.mofgen.mGLang.ElseStatement#getElse()
+   * @see #getElseStatement()
    * @generated
    */
-  EReference getBlockIf_Else();
-
-  /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.IfHeadAndBody <em>If Head And Body</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>If Head And Body</em>'.
-   * @see org.mofgen.mGLang.IfHeadAndBody
-   * @generated
-   */
-  EClass getIfHeadAndBody();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.IfHeadAndBody#getHead <em>Head</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Head</em>'.
-   * @see org.mofgen.mGLang.IfHeadAndBody#getHead()
-   * @see #getIfHeadAndBody()
-   * @generated
-   */
-  EReference getIfHeadAndBody_Head();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.IfHeadAndBody#getBody <em>Body</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Body</em>'.
-   * @see org.mofgen.mGLang.IfHeadAndBody#getBody()
-   * @see #getIfHeadAndBody()
-   * @generated
-   */
-  EReference getIfHeadAndBody_Body();
-
-  /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.IfHead <em>If Head</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>If Head</em>'.
-   * @see org.mofgen.mGLang.IfHead
-   * @generated
-   */
-  EClass getIfHead();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.IfHead#getCondition <em>Condition</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Condition</em>'.
-   * @see org.mofgen.mGLang.IfHead#getCondition()
-   * @see #getIfHead()
-   * @generated
-   */
-  EReference getIfHead_Condition();
-
-  /**
-   * Returns the meta object for class '{@link org.mofgen.mGLang.IfBody <em>If Body</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>If Body</em>'.
-   * @see org.mofgen.mGLang.IfBody
-   * @generated
-   */
-  EClass getIfBody();
-
-  /**
-   * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.IfBody#getCommands <em>Commands</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Commands</em>'.
-   * @see org.mofgen.mGLang.IfBody#getCommands()
-   * @see #getIfBody()
-   * @generated
-   */
-  EReference getIfBody_Commands();
+  EReference getElseStatement_Else();
 
   /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.SwitchCase <em>Switch Case</em>}'.
@@ -3030,6 +2910,17 @@ public interface MGLangPackage extends EPackage
    * @generated
    */
   EClass getCaseBody();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.CaseBody#getExpressions <em>Expressions</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Expressions</em>'.
+   * @see org.mofgen.mGLang.CaseBody#getExpressions()
+   * @see #getCaseBody()
+   * @generated
+   */
+  EReference getCaseBody_Expressions();
 
   /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.Collection <em>Collection</em>}'.
@@ -3950,14 +3841,14 @@ public interface MGLangPackage extends EPackage
     EReference GENERATOR__COMMANDS = eINSTANCE.getGenerator_Commands();
 
     /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.GeneratorCommandImpl <em>Generator Command</em>}' class.
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.GeneratorExpressionImpl <em>Generator Expression</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.GeneratorCommandImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGeneratorCommand()
+     * @see org.mofgen.mGLang.impl.GeneratorExpressionImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGeneratorExpression()
      * @generated
      */
-    EClass GENERATOR_COMMAND = eINSTANCE.getGeneratorCommand();
+    EClass GENERATOR_EXPRESSION = eINSTANCE.getGeneratorExpression();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.PatternObjectCreationImpl <em>Pattern Object Creation</em>}' class.
@@ -4128,6 +4019,14 @@ public interface MGLangPackage extends EPackage
     EClass FOR_BODY = eINSTANCE.getForBody();
 
     /**
+     * The meta object literal for the '<em><b>Commands</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FOR_BODY__COMMANDS = eINSTANCE.getForBody_Commands();
+
+    /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.IfStatementImpl <em>If Statement</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4138,144 +4037,80 @@ public interface MGLangPackage extends EPackage
     EClass IF_STATEMENT = eINSTANCE.getIfStatement();
 
     /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.SingleLineIfImpl <em>Single Line If</em>}' class.
+     * The meta object literal for the '<em><b>Cond</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.SingleLineIfImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSingleLineIf()
      * @generated
      */
-    EClass SINGLE_LINE_IF = eINSTANCE.getSingleLineIf();
+    EReference IF_STATEMENT__COND = eINSTANCE.getIfStatement_Cond();
 
     /**
-     * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Then</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference SINGLE_LINE_IF__CONDITION = eINSTANCE.getSingleLineIf_Condition();
+    EReference IF_STATEMENT__THEN = eINSTANCE.getIfStatement_Then();
 
     /**
-     * The meta object literal for the '<em><b>Command</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Else If</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference SINGLE_LINE_IF__COMMAND = eINSTANCE.getSingleLineIf_Command();
+    EReference IF_STATEMENT__ELSE_IF = eINSTANCE.getIfStatement_ElseIf();
 
     /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.GenCommandBlockImpl <em>Gen Command Block</em>}' class.
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.ElseIfOrElseImpl <em>Else If Or Else</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.GenCommandBlockImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGenCommandBlock()
+     * @see org.mofgen.mGLang.impl.ElseIfOrElseImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getElseIfOrElse()
      * @generated
      */
-    EClass GEN_COMMAND_BLOCK = eINSTANCE.getGenCommandBlock();
+    EClass ELSE_IF_OR_ELSE = eINSTANCE.getElseIfOrElse();
 
     /**
-     * The meta object literal for the '<em><b>Commands</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Cond</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference GEN_COMMAND_BLOCK__COMMANDS = eINSTANCE.getGenCommandBlock_Commands();
+    EReference ELSE_IF_OR_ELSE__COND = eINSTANCE.getElseIfOrElse_Cond();
 
     /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.BlockIfImpl <em>Block If</em>}' class.
+     * The meta object literal for the '<em><b>Then</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.BlockIfImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBlockIf()
      * @generated
      */
-    EClass BLOCK_IF = eINSTANCE.getBlockIf();
+    EReference ELSE_IF_OR_ELSE__THEN = eINSTANCE.getElseIfOrElse_Then();
 
     /**
-     * The meta object literal for the '<em><b>If</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Else If</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference BLOCK_IF__IF = eINSTANCE.getBlockIf_If();
+    EReference ELSE_IF_OR_ELSE__ELSE_IF = eINSTANCE.getElseIfOrElse_ElseIf();
 
     /**
-     * The meta object literal for the '<em><b>Elseifs</b></em>' containment reference list feature.
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.ElseStatementImpl <em>Else Statement</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.ElseStatementImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getElseStatement()
      * @generated
      */
-    EReference BLOCK_IF__ELSEIFS = eINSTANCE.getBlockIf_Elseifs();
+    EClass ELSE_STATEMENT = eINSTANCE.getElseStatement();
 
     /**
-     * The meta object literal for the '<em><b>Else</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Else</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference BLOCK_IF__ELSE = eINSTANCE.getBlockIf_Else();
-
-    /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.IfHeadAndBodyImpl <em>If Head And Body</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.IfHeadAndBodyImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getIfHeadAndBody()
-     * @generated
-     */
-    EClass IF_HEAD_AND_BODY = eINSTANCE.getIfHeadAndBody();
-
-    /**
-     * The meta object literal for the '<em><b>Head</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference IF_HEAD_AND_BODY__HEAD = eINSTANCE.getIfHeadAndBody_Head();
-
-    /**
-     * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference IF_HEAD_AND_BODY__BODY = eINSTANCE.getIfHeadAndBody_Body();
-
-    /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.IfHeadImpl <em>If Head</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.IfHeadImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getIfHead()
-     * @generated
-     */
-    EClass IF_HEAD = eINSTANCE.getIfHead();
-
-    /**
-     * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference IF_HEAD__CONDITION = eINSTANCE.getIfHead_Condition();
-
-    /**
-     * The meta object literal for the '{@link org.mofgen.mGLang.impl.IfBodyImpl <em>If Body</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.mofgen.mGLang.impl.IfBodyImpl
-     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getIfBody()
-     * @generated
-     */
-    EClass IF_BODY = eINSTANCE.getIfBody();
-
-    /**
-     * The meta object literal for the '<em><b>Commands</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference IF_BODY__COMMANDS = eINSTANCE.getIfBody_Commands();
+    EReference ELSE_STATEMENT__ELSE = eINSTANCE.getElseStatement_Else();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.SwitchCaseImpl <em>Switch Case</em>}' class.
@@ -4356,6 +4191,14 @@ public interface MGLangPackage extends EPackage
      * @generated
      */
     EClass CASE_BODY = eINSTANCE.getCaseBody();
+
+    /**
+     * The meta object literal for the '<em><b>Expressions</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CASE_BODY__EXPRESSIONS = eINSTANCE.getCaseBody_Expressions();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.CollectionImpl <em>Collection</em>}' class.

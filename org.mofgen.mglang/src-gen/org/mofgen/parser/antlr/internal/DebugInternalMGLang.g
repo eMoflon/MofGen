@@ -269,13 +269,13 @@ ruleGenerator:
 	*
 	')'
 	'{'
-	ruleGeneratorCommand
+	ruleGeneratorExpression
 	*
 	'}'
 ;
 
-// Rule GeneratorCommand
-ruleGeneratorCommand:
+// Rule GeneratorExpression
+ruleGeneratorExpression:
 	(
 		ruleForStatement
 		    |
@@ -340,47 +340,58 @@ ruleForEachHead:
 
 // Rule ForBody
 ruleForBody:
-	ruleGenCommandBlock
+	ruleGeneratorExpression
+	*
 ;
 
 // Rule IfStatement
 ruleIfStatement:
-	ruleSingleLineIf
-;
-
-// Rule SingleLineIf
-ruleSingleLineIf:
 	'if'
 	'('
 	ruleArithmeticExpression
 	')'
-	ruleGeneratorCommand
-;
-
-// Rule GenCommandBlock
-ruleGenCommandBlock:
-	ruleGeneratorCommand
-	*
-;
-
-// Rule IfHeadAndBody
-ruleIfHeadAndBody:
-	'('
-	ruleIfHead
-	')'
 	'{'
-	ruleIfBody
+	ruleGeneratorExpression
+	*
 	'}'
+	(
+		'else'
+		(
+			(ruleElseIfOrElse
+			)=>
+			ruleElseIfOrElse
+		)
+	)?
 ;
 
-// Rule IfHead
-ruleIfHead:
-	ruleArithmeticExpression
+// Rule ElseIfOrElse
+ruleElseIfOrElse:
+	(
+		'if'
+		'('
+		ruleArithmeticExpression
+		')'
+		'{'
+		ruleGeneratorExpression
+		*
+		'}'
+		'else'
+		(
+			(ruleElseIfOrElse
+			)=>
+			ruleElseIfOrElse
+		)
+		    |
+		ruleElseStatement
+	)
 ;
 
-// Rule IfBody
-ruleIfBody:
-	ruleGenCommandBlock
+// Rule ElseStatement
+ruleElseStatement:
+	'{'
+	ruleGeneratorExpression
+	*
+	'}'
 ;
 
 // Rule SwitchCase
@@ -399,7 +410,7 @@ ruleSwitchCase:
 ruleDefault:
 	'default'
 	':'
-	ruleGeneratorCommand
+	ruleGeneratorExpression
 ;
 
 // Rule Case
@@ -414,10 +425,11 @@ ruleCase:
 ruleCaseBody:
 	(
 		'{'
-		ruleGenCommandBlock
+		ruleGeneratorExpression
+		*
 		'}'
 		    |
-		ruleGeneratorCommand
+		ruleGeneratorExpression
 	)
 ;
 

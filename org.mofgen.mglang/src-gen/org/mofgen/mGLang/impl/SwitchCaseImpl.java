@@ -39,7 +39,7 @@ import org.mofgen.mGLang.SwitchCase;
  *
  * @generated
  */
-public class SwitchCaseImpl extends GeneratorCommandImpl implements SwitchCase
+public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCase
 {
   /**
    * The cached value of the '{@link #getAttribute() <em>Attribute</em>}' containment reference.

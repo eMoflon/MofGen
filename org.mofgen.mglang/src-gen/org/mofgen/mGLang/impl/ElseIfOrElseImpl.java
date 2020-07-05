@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -21,25 +22,24 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.ElseIfOrElse;
 import org.mofgen.mGLang.GeneratorExpression;
-import org.mofgen.mGLang.IfStatement;
 import org.mofgen.mGLang.MGLangPackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>If Statement</b></em>'.
+ * An implementation of the model object '<em><b>Else If Or Else</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.IfStatementImpl#getCond <em>Cond</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.IfStatementImpl#getThen <em>Then</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.IfStatementImpl#getElseIf <em>Else If</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.ElseIfOrElseImpl#getCond <em>Cond</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.ElseIfOrElseImpl#getThen <em>Then</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.ElseIfOrElseImpl#getElseIf <em>Else If</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatement
+public class ElseIfOrElseImpl extends MinimalEObjectImpl.Container implements ElseIfOrElse
 {
   /**
    * The cached value of the '{@link #getCond() <em>Cond</em>}' containment reference.
@@ -76,7 +76,7 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
    * <!-- end-user-doc -->
    * @generated
    */
-  protected IfStatementImpl()
+  protected ElseIfOrElseImpl()
   {
     super();
   }
@@ -89,7 +89,7 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
   @Override
   protected EClass eStaticClass()
   {
-    return MGLangPackage.Literals.IF_STATEMENT;
+    return MGLangPackage.Literals.ELSE_IF_OR_ELSE;
   }
 
   /**
@@ -114,7 +114,7 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
     cond = newCond;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.IF_STATEMENT__COND, oldCond, newCond);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.ELSE_IF_OR_ELSE__COND, oldCond, newCond);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -132,14 +132,14 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
     {
       NotificationChain msgs = null;
       if (cond != null)
-        msgs = ((InternalEObject)cond).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.IF_STATEMENT__COND, null, msgs);
+        msgs = ((InternalEObject)cond).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ELSE_IF_OR_ELSE__COND, null, msgs);
       if (newCond != null)
-        msgs = ((InternalEObject)newCond).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.IF_STATEMENT__COND, null, msgs);
+        msgs = ((InternalEObject)newCond).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ELSE_IF_OR_ELSE__COND, null, msgs);
       msgs = basicSetCond(newCond, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.IF_STATEMENT__COND, newCond, newCond));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.ELSE_IF_OR_ELSE__COND, newCond, newCond));
   }
 
   /**
@@ -152,7 +152,7 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
   {
     if (then == null)
     {
-      then = new EObjectContainmentEList<GeneratorExpression>(GeneratorExpression.class, this, MGLangPackage.IF_STATEMENT__THEN);
+      then = new EObjectContainmentEList<GeneratorExpression>(GeneratorExpression.class, this, MGLangPackage.ELSE_IF_OR_ELSE__THEN);
     }
     return then;
   }
@@ -179,7 +179,7 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
     elseIf = newElseIf;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.IF_STATEMENT__ELSE_IF, oldElseIf, newElseIf);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.ELSE_IF_OR_ELSE__ELSE_IF, oldElseIf, newElseIf);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -197,14 +197,14 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
     {
       NotificationChain msgs = null;
       if (elseIf != null)
-        msgs = ((InternalEObject)elseIf).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.IF_STATEMENT__ELSE_IF, null, msgs);
+        msgs = ((InternalEObject)elseIf).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ELSE_IF_OR_ELSE__ELSE_IF, null, msgs);
       if (newElseIf != null)
-        msgs = ((InternalEObject)newElseIf).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.IF_STATEMENT__ELSE_IF, null, msgs);
+        msgs = ((InternalEObject)newElseIf).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.ELSE_IF_OR_ELSE__ELSE_IF, null, msgs);
       msgs = basicSetElseIf(newElseIf, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.IF_STATEMENT__ELSE_IF, newElseIf, newElseIf));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.ELSE_IF_OR_ELSE__ELSE_IF, newElseIf, newElseIf));
   }
 
   /**
@@ -217,11 +217,11 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
   {
     switch (featureID)
     {
-      case MGLangPackage.IF_STATEMENT__COND:
+      case MGLangPackage.ELSE_IF_OR_ELSE__COND:
         return basicSetCond(null, msgs);
-      case MGLangPackage.IF_STATEMENT__THEN:
+      case MGLangPackage.ELSE_IF_OR_ELSE__THEN:
         return ((InternalEList<?>)getThen()).basicRemove(otherEnd, msgs);
-      case MGLangPackage.IF_STATEMENT__ELSE_IF:
+      case MGLangPackage.ELSE_IF_OR_ELSE__ELSE_IF:
         return basicSetElseIf(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -237,11 +237,11 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
   {
     switch (featureID)
     {
-      case MGLangPackage.IF_STATEMENT__COND:
+      case MGLangPackage.ELSE_IF_OR_ELSE__COND:
         return getCond();
-      case MGLangPackage.IF_STATEMENT__THEN:
+      case MGLangPackage.ELSE_IF_OR_ELSE__THEN:
         return getThen();
-      case MGLangPackage.IF_STATEMENT__ELSE_IF:
+      case MGLangPackage.ELSE_IF_OR_ELSE__ELSE_IF:
         return getElseIf();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -258,14 +258,14 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
   {
     switch (featureID)
     {
-      case MGLangPackage.IF_STATEMENT__COND:
+      case MGLangPackage.ELSE_IF_OR_ELSE__COND:
         setCond((ArithmeticExpression)newValue);
         return;
-      case MGLangPackage.IF_STATEMENT__THEN:
+      case MGLangPackage.ELSE_IF_OR_ELSE__THEN:
         getThen().clear();
         getThen().addAll((Collection<? extends GeneratorExpression>)newValue);
         return;
-      case MGLangPackage.IF_STATEMENT__ELSE_IF:
+      case MGLangPackage.ELSE_IF_OR_ELSE__ELSE_IF:
         setElseIf((ElseIfOrElse)newValue);
         return;
     }
@@ -282,13 +282,13 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
   {
     switch (featureID)
     {
-      case MGLangPackage.IF_STATEMENT__COND:
+      case MGLangPackage.ELSE_IF_OR_ELSE__COND:
         setCond((ArithmeticExpression)null);
         return;
-      case MGLangPackage.IF_STATEMENT__THEN:
+      case MGLangPackage.ELSE_IF_OR_ELSE__THEN:
         getThen().clear();
         return;
-      case MGLangPackage.IF_STATEMENT__ELSE_IF:
+      case MGLangPackage.ELSE_IF_OR_ELSE__ELSE_IF:
         setElseIf((ElseIfOrElse)null);
         return;
     }
@@ -305,14 +305,14 @@ public class IfStatementImpl extends GeneratorExpressionImpl implements IfStatem
   {
     switch (featureID)
     {
-      case MGLangPackage.IF_STATEMENT__COND:
+      case MGLangPackage.ELSE_IF_OR_ELSE__COND:
         return cond != null;
-      case MGLangPackage.IF_STATEMENT__THEN:
+      case MGLangPackage.ELSE_IF_OR_ELSE__THEN:
         return then != null && !then.isEmpty();
-      case MGLangPackage.IF_STATEMENT__ELSE_IF:
+      case MGLangPackage.ELSE_IF_OR_ELSE__ELSE_IF:
         return elseIf != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //IfStatementImpl
+} //ElseIfOrElseImpl

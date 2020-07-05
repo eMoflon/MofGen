@@ -127,9 +127,8 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         PatternCall patternCall = (PatternCall)theEObject;
         T result = casePatternCall(patternCall);
-        if (result == null) result = caseGeneratorCommand(patternCall);
+        if (result == null) result = caseGeneratorExpression(patternCall);
         if (result == null) result = caseDefault(patternCall);
-        if (result == null) result = caseCaseBody(patternCall);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -229,12 +228,11 @@ public class MGLangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MGLangPackage.GENERATOR_COMMAND:
+      case MGLangPackage.GENERATOR_EXPRESSION:
       {
-        GeneratorCommand generatorCommand = (GeneratorCommand)theEObject;
-        T result = caseGeneratorCommand(generatorCommand);
-        if (result == null) result = caseDefault(generatorCommand);
-        if (result == null) result = caseCaseBody(generatorCommand);
+        GeneratorExpression generatorExpression = (GeneratorExpression)theEObject;
+        T result = caseGeneratorExpression(generatorExpression);
+        if (result == null) result = caseDefault(generatorExpression);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -242,9 +240,8 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         PatternObjectCreation patternObjectCreation = (PatternObjectCreation)theEObject;
         T result = casePatternObjectCreation(patternObjectCreation);
-        if (result == null) result = caseGeneratorCommand(patternObjectCreation);
+        if (result == null) result = caseGeneratorExpression(patternObjectCreation);
         if (result == null) result = caseDefault(patternObjectCreation);
-        if (result == null) result = caseCaseBody(patternObjectCreation);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -259,9 +256,8 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         ForStatement forStatement = (ForStatement)theEObject;
         T result = caseForStatement(forStatement);
-        if (result == null) result = caseGeneratorCommand(forStatement);
+        if (result == null) result = caseGeneratorExpression(forStatement);
         if (result == null) result = caseDefault(forStatement);
-        if (result == null) result = caseCaseBody(forStatement);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -306,57 +302,23 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         IfStatement ifStatement = (IfStatement)theEObject;
         T result = caseIfStatement(ifStatement);
-        if (result == null) result = caseGeneratorCommand(ifStatement);
+        if (result == null) result = caseGeneratorExpression(ifStatement);
         if (result == null) result = caseDefault(ifStatement);
-        if (result == null) result = caseCaseBody(ifStatement);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MGLangPackage.SINGLE_LINE_IF:
+      case MGLangPackage.ELSE_IF_OR_ELSE:
       {
-        SingleLineIf singleLineIf = (SingleLineIf)theEObject;
-        T result = caseSingleLineIf(singleLineIf);
-        if (result == null) result = caseIfStatement(singleLineIf);
-        if (result == null) result = caseGeneratorCommand(singleLineIf);
-        if (result == null) result = caseDefault(singleLineIf);
-        if (result == null) result = caseCaseBody(singleLineIf);
+        ElseIfOrElse elseIfOrElse = (ElseIfOrElse)theEObject;
+        T result = caseElseIfOrElse(elseIfOrElse);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MGLangPackage.GEN_COMMAND_BLOCK:
+      case MGLangPackage.ELSE_STATEMENT:
       {
-        GenCommandBlock genCommandBlock = (GenCommandBlock)theEObject;
-        T result = caseGenCommandBlock(genCommandBlock);
-        if (result == null) result = caseForBody(genCommandBlock);
-        if (result == null) result = caseCaseBody(genCommandBlock);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MGLangPackage.BLOCK_IF:
-      {
-        BlockIf blockIf = (BlockIf)theEObject;
-        T result = caseBlockIf(blockIf);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MGLangPackage.IF_HEAD_AND_BODY:
-      {
-        IfHeadAndBody ifHeadAndBody = (IfHeadAndBody)theEObject;
-        T result = caseIfHeadAndBody(ifHeadAndBody);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MGLangPackage.IF_HEAD:
-      {
-        IfHead ifHead = (IfHead)theEObject;
-        T result = caseIfHead(ifHead);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MGLangPackage.IF_BODY:
-      {
-        IfBody ifBody = (IfBody)theEObject;
-        T result = caseIfBody(ifBody);
+        ElseStatement elseStatement = (ElseStatement)theEObject;
+        T result = caseElseStatement(elseStatement);
+        if (result == null) result = caseElseIfOrElse(elseStatement);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -364,9 +326,8 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         SwitchCase switchCase = (SwitchCase)theEObject;
         T result = caseSwitchCase(switchCase);
-        if (result == null) result = caseGeneratorCommand(switchCase);
+        if (result == null) result = caseGeneratorExpression(switchCase);
         if (result == null) result = caseDefault(switchCase);
-        if (result == null) result = caseCaseBody(switchCase);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -395,10 +356,9 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         Collection collection = (Collection)theEObject;
         T result = caseCollection(collection);
-        if (result == null) result = caseGeneratorCommand(collection);
+        if (result == null) result = caseGeneratorExpression(collection);
         if (result == null) result = caseNodeOrParameterOrCollection(collection);
         if (result == null) result = caseDefault(collection);
-        if (result == null) result = caseCaseBody(collection);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -407,10 +367,9 @@ public class MGLangSwitch<T> extends Switch<T>
         List list = (List)theEObject;
         T result = caseList(list);
         if (result == null) result = caseCollection(list);
-        if (result == null) result = caseGeneratorCommand(list);
+        if (result == null) result = caseGeneratorExpression(list);
         if (result == null) result = caseNodeOrParameterOrCollection(list);
         if (result == null) result = caseDefault(list);
-        if (result == null) result = caseCaseBody(list);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -420,10 +379,9 @@ public class MGLangSwitch<T> extends Switch<T>
         T result = caseListAdHoc(listAdHoc);
         if (result == null) result = caseList(listAdHoc);
         if (result == null) result = caseCollection(listAdHoc);
-        if (result == null) result = caseGeneratorCommand(listAdHoc);
+        if (result == null) result = caseGeneratorExpression(listAdHoc);
         if (result == null) result = caseNodeOrParameterOrCollection(listAdHoc);
         if (result == null) result = caseDefault(listAdHoc);
-        if (result == null) result = caseCaseBody(listAdHoc);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -432,10 +390,9 @@ public class MGLangSwitch<T> extends Switch<T>
         Map map = (Map)theEObject;
         T result = caseMap(map);
         if (result == null) result = caseCollection(map);
-        if (result == null) result = caseGeneratorCommand(map);
+        if (result == null) result = caseGeneratorExpression(map);
         if (result == null) result = caseNodeOrParameterOrCollection(map);
         if (result == null) result = caseDefault(map);
-        if (result == null) result = caseCaseBody(map);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -445,10 +402,9 @@ public class MGLangSwitch<T> extends Switch<T>
         T result = caseMapAdHoc(mapAdHoc);
         if (result == null) result = caseMap(mapAdHoc);
         if (result == null) result = caseCollection(mapAdHoc);
-        if (result == null) result = caseGeneratorCommand(mapAdHoc);
+        if (result == null) result = caseGeneratorExpression(mapAdHoc);
         if (result == null) result = caseNodeOrParameterOrCollection(mapAdHoc);
         if (result == null) result = caseDefault(mapAdHoc);
-        if (result == null) result = caseCaseBody(mapAdHoc);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -847,17 +803,17 @@ public class MGLangSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Generator Command</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Generator Expression</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Generator Command</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Generator Expression</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseGeneratorCommand(GeneratorCommand object)
+  public T caseGeneratorExpression(GeneratorExpression object)
   {
     return null;
   }
@@ -1007,97 +963,33 @@ public class MGLangSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Single Line If</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Else If Or Else</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Single Line If</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Else If Or Else</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseSingleLineIf(SingleLineIf object)
+  public T caseElseIfOrElse(ElseIfOrElse object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Gen Command Block</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Else Statement</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Gen Command Block</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Else Statement</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseGenCommandBlock(GenCommandBlock object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Block If</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Block If</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseBlockIf(BlockIf object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>If Head And Body</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>If Head And Body</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseIfHeadAndBody(IfHeadAndBody object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>If Head</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>If Head</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseIfHead(IfHead object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>If Body</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>If Body</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseIfBody(IfBody object)
+  public T caseElseStatement(ElseStatement object)
   {
     return null;
   }

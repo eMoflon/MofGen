@@ -15,18 +15,18 @@ import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
 import org.eclipse.xtext.serializer.sequencer.AbstractDelegatingSemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 import org.mofgen.mGLang.Assignment;
-import org.mofgen.mGLang.BlockIf;
 import org.mofgen.mGLang.Case;
+import org.mofgen.mGLang.CaseBody;
+import org.mofgen.mGLang.ElseIfOrElse;
+import org.mofgen.mGLang.ElseStatement;
+import org.mofgen.mGLang.ForBody;
 import org.mofgen.mGLang.ForEachHead;
 import org.mofgen.mGLang.ForRange;
 import org.mofgen.mGLang.ForStatement;
 import org.mofgen.mGLang.FunctionCall;
-import org.mofgen.mGLang.GenCommandBlock;
 import org.mofgen.mGLang.GeneralForHead;
 import org.mofgen.mGLang.Generator;
-import org.mofgen.mGLang.IfBody;
-import org.mofgen.mGLang.IfHead;
-import org.mofgen.mGLang.IfHeadAndBody;
+import org.mofgen.mGLang.IfStatement;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.List;
 import org.mofgen.mGLang.ListAdHoc;
@@ -54,7 +54,6 @@ import org.mofgen.mGLang.Primary;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.mGLang.Rel;
 import org.mofgen.mGLang.Secondary;
-import org.mofgen.mGLang.SingleLineIf;
 import org.mofgen.mGLang.SwitchCase;
 import org.mofgen.mGLang.Tertiary;
 import org.mofgen.services.MGLangGrammarAccess;
@@ -83,11 +82,20 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 					return; 
 				}
 				else break;
-			case MGLangPackage.BLOCK_IF:
-				sequence_BlockIf(context, (BlockIf) semanticObject); 
-				return; 
 			case MGLangPackage.CASE:
 				sequence_Case(context, (Case) semanticObject); 
+				return; 
+			case MGLangPackage.CASE_BODY:
+				sequence_CaseBody(context, (CaseBody) semanticObject); 
+				return; 
+			case MGLangPackage.ELSE_IF_OR_ELSE:
+				sequence_ElseIfOrElse(context, (ElseIfOrElse) semanticObject); 
+				return; 
+			case MGLangPackage.ELSE_STATEMENT:
+				sequence_ElseStatement(context, (ElseStatement) semanticObject); 
+				return; 
+			case MGLangPackage.FOR_BODY:
+				sequence_ForBody(context, (ForBody) semanticObject); 
 				return; 
 			case MGLangPackage.FOR_EACH_HEAD:
 				sequence_ForEachHead(context, (ForEachHead) semanticObject); 
@@ -101,23 +109,14 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 			case MGLangPackage.FUNCTION_CALL:
 				sequence_BaseExpr(context, (FunctionCall) semanticObject); 
 				return; 
-			case MGLangPackage.GEN_COMMAND_BLOCK:
-				sequence_GenCommandBlock(context, (GenCommandBlock) semanticObject); 
-				return; 
 			case MGLangPackage.GENERAL_FOR_HEAD:
 				sequence_GeneralForHead(context, (GeneralForHead) semanticObject); 
 				return; 
 			case MGLangPackage.GENERATOR:
 				sequence_Generator(context, (Generator) semanticObject); 
 				return; 
-			case MGLangPackage.IF_BODY:
-				sequence_IfBody(context, (IfBody) semanticObject); 
-				return; 
-			case MGLangPackage.IF_HEAD:
-				sequence_IfHead(context, (IfHead) semanticObject); 
-				return; 
-			case MGLangPackage.IF_HEAD_AND_BODY:
-				sequence_IfHeadAndBody(context, (IfHeadAndBody) semanticObject); 
+			case MGLangPackage.IF_STATEMENT:
+				sequence_IfStatement(context, (IfStatement) semanticObject); 
 				return; 
 			case MGLangPackage.IMPORT:
 				sequence_Import(context, (Import) semanticObject); 
@@ -203,9 +202,6 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				return; 
 			case MGLangPackage.SECONDARY:
 				sequence_SecondaryExpression(context, (Secondary) semanticObject); 
-				return; 
-			case MGLangPackage.SINGLE_LINE_IF:
-				sequence_SingleLineIf(context, (SingleLineIf) semanticObject); 
 				return; 
 			case MGLangPackage.SWITCH_CASE:
 				sequence_SwitchCase(context, (SwitchCase) semanticObject); 
@@ -331,12 +327,12 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     BlockIf returns BlockIf
+	 *     CaseBody returns CaseBody
 	 *
 	 * Constraint:
-	 *     (if=IfHeadAndBody (elseifs+=IfHeadAndBody* else=IfBody)?)
+	 *     (expressions+=GeneratorExpression+ | expressions+=GeneratorExpression)?
 	 */
-	protected void sequence_BlockIf(ISerializationContext context, BlockIf semanticObject) {
+	protected void sequence_CaseBody(ISerializationContext context, CaseBody semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -359,6 +355,43 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		feeder.accept(grammarAccess.getCaseAccess().getValArithmeticExpressionParserRuleCall_1_0(), semanticObject.getVal());
 		feeder.accept(grammarAccess.getCaseAccess().getBodyCaseBodyParserRuleCall_3_0(), semanticObject.getBody());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElseIfOrElse returns ElseIfOrElse
+	 *
+	 * Constraint:
+	 *     (cond=ArithmeticExpression then+=GeneratorExpression* elseIf=ElseIfOrElse)
+	 */
+	protected void sequence_ElseIfOrElse(ISerializationContext context, ElseIfOrElse semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ElseIfOrElse returns ElseStatement
+	 *     ElseStatement returns ElseStatement
+	 *
+	 * Constraint:
+	 *     else+=GeneratorExpression*
+	 */
+	protected void sequence_ElseStatement(ISerializationContext context, ElseStatement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ForBody returns ForBody
+	 *
+	 * Constraint:
+	 *     commands+=GeneratorExpression*
+	 */
+	protected void sequence_ForBody(ISerializationContext context, ForBody semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -410,10 +443,9 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     GeneratorCommand returns ForStatement
+	 *     GeneratorExpression returns ForStatement
 	 *     ForStatement returns ForStatement
 	 *     Default returns ForStatement
-	 *     CaseBody returns ForStatement
 	 *
 	 * Constraint:
 	 *     (head=ForHead body=ForBody)
@@ -429,20 +461,6 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		feeder.accept(grammarAccess.getForStatementAccess().getHeadForHeadParserRuleCall_1_0(), semanticObject.getHead());
 		feeder.accept(grammarAccess.getForStatementAccess().getBodyForBodyParserRuleCall_3_0(), semanticObject.getBody());
 		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ForBody returns GenCommandBlock
-	 *     GenCommandBlock returns GenCommandBlock
-	 *     CaseBody returns GenCommandBlock
-	 *
-	 * Constraint:
-	 *     commands+=GeneratorCommand*
-	 */
-	protected void sequence_GenCommandBlock(ISerializationContext context, GenCommandBlock semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -473,7 +491,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     Generator returns Generator
 	 *
 	 * Constraint:
-	 *     (params+=Parameter* commands+=GeneratorCommand*)
+	 *     (params+=Parameter* commands+=GeneratorExpression*)
 	 */
 	protected void sequence_Generator(ISerializationContext context, Generator semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -482,58 +500,15 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     IfBody returns IfBody
+	 *     GeneratorExpression returns IfStatement
+	 *     IfStatement returns IfStatement
+	 *     Default returns IfStatement
 	 *
 	 * Constraint:
-	 *     commands=GenCommandBlock
+	 *     (cond=ArithmeticExpression then+=GeneratorExpression* elseIf=ElseIfOrElse?)
 	 */
-	protected void sequence_IfBody(ISerializationContext context, IfBody semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.IF_BODY__COMMANDS) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.IF_BODY__COMMANDS));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getIfBodyAccess().getCommandsGenCommandBlockParserRuleCall_0(), semanticObject.getCommands());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     IfHeadAndBody returns IfHeadAndBody
-	 *
-	 * Constraint:
-	 *     (head=IfHead body=IfBody)
-	 */
-	protected void sequence_IfHeadAndBody(ISerializationContext context, IfHeadAndBody semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.IF_HEAD_AND_BODY__HEAD) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.IF_HEAD_AND_BODY__HEAD));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.IF_HEAD_AND_BODY__BODY) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.IF_HEAD_AND_BODY__BODY));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getIfHeadAndBodyAccess().getHeadIfHeadParserRuleCall_1_0(), semanticObject.getHead());
-		feeder.accept(grammarAccess.getIfHeadAndBodyAccess().getBodyIfBodyParserRuleCall_4_0(), semanticObject.getBody());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     IfHead returns IfHead
-	 *
-	 * Constraint:
-	 *     condition=ArithmeticExpression
-	 */
-	protected void sequence_IfHead(ISerializationContext context, IfHead semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.IF_HEAD__CONDITION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.IF_HEAD__CONDITION));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getIfHeadAccess().getConditionArithmeticExpressionParserRuleCall_0(), semanticObject.getCondition());
-		feeder.finish();
+	protected void sequence_IfStatement(ISerializationContext context, IfStatement semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -572,10 +547,9 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     GeneratorCommand returns List
+	 *     GeneratorExpression returns List
 	 *     NodeOrParameterOrCollection returns List
 	 *     Default returns List
-	 *     CaseBody returns List
 	 *     Collection returns List
 	 *     List returns List
 	 *
@@ -622,10 +596,9 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     GeneratorCommand returns Map
+	 *     GeneratorExpression returns Map
 	 *     NodeOrParameterOrCollection returns Map
 	 *     Default returns Map
-	 *     CaseBody returns Map
 	 *     Collection returns Map
 	 *     Map returns Map
 	 *
@@ -815,9 +788,8 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	/**
 	 * Contexts:
 	 *     PatternCall returns PatternCall
-	 *     GeneratorCommand returns PatternCall
+	 *     GeneratorExpression returns PatternCall
 	 *     Default returns PatternCall
-	 *     CaseBody returns PatternCall
 	 *
 	 * Constraint:
 	 *     (called=[Pattern|ID] params+=ArithmeticExpression*)
@@ -850,10 +822,9 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     GeneratorCommand returns PatternObjectCreation
+	 *     GeneratorExpression returns PatternObjectCreation
 	 *     PatternObjectCreation returns PatternObjectCreation
 	 *     Default returns PatternObjectCreation
-	 *     CaseBody returns PatternObjectCreation
 	 *
 	 * Constraint:
 	 *     (pObject=PatternObject patternCall=PatternCall)
@@ -1046,35 +1017,9 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     GeneratorCommand returns SingleLineIf
-	 *     IfStatement returns SingleLineIf
-	 *     SingleLineIf returns SingleLineIf
-	 *     Default returns SingleLineIf
-	 *     CaseBody returns SingleLineIf
-	 *
-	 * Constraint:
-	 *     (condition=ArithmeticExpression command=GeneratorCommand)
-	 */
-	protected void sequence_SingleLineIf(ISerializationContext context, SingleLineIf semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.SINGLE_LINE_IF__CONDITION) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.SINGLE_LINE_IF__CONDITION));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.SINGLE_LINE_IF__COMMAND) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.SINGLE_LINE_IF__COMMAND));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getSingleLineIfAccess().getConditionArithmeticExpressionParserRuleCall_2_0(), semanticObject.getCondition());
-		feeder.accept(grammarAccess.getSingleLineIfAccess().getCommandGeneratorCommandParserRuleCall_4_0(), semanticObject.getCommand());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     GeneratorCommand returns SwitchCase
+	 *     GeneratorExpression returns SwitchCase
 	 *     SwitchCase returns SwitchCase
 	 *     Default returns SwitchCase
-	 *     CaseBody returns SwitchCase
 	 *
 	 * Constraint:
 	 *     (attribute=ParameterRefOrMethodCall cases+=Case+ default=Default)

@@ -26,7 +26,7 @@ import org.mofgen.mGLang.NodeOrParameterOrCollection;
  *
  * @generated
  */
-public class CollectionImpl extends GeneratorCommandImpl implements Collection
+public class CollectionImpl extends GeneratorExpressionImpl implements Collection
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.

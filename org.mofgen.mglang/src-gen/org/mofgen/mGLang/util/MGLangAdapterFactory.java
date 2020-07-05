@@ -176,9 +176,9 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createGeneratorAdapter();
       }
       @Override
-      public Adapter caseGeneratorCommand(GeneratorCommand object)
+      public Adapter caseGeneratorExpression(GeneratorExpression object)
       {
-        return createGeneratorCommandAdapter();
+        return createGeneratorExpressionAdapter();
       }
       @Override
       public Adapter casePatternObjectCreation(PatternObjectCreation object)
@@ -226,34 +226,14 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createIfStatementAdapter();
       }
       @Override
-      public Adapter caseSingleLineIf(SingleLineIf object)
+      public Adapter caseElseIfOrElse(ElseIfOrElse object)
       {
-        return createSingleLineIfAdapter();
+        return createElseIfOrElseAdapter();
       }
       @Override
-      public Adapter caseGenCommandBlock(GenCommandBlock object)
+      public Adapter caseElseStatement(ElseStatement object)
       {
-        return createGenCommandBlockAdapter();
-      }
-      @Override
-      public Adapter caseBlockIf(BlockIf object)
-      {
-        return createBlockIfAdapter();
-      }
-      @Override
-      public Adapter caseIfHeadAndBody(IfHeadAndBody object)
-      {
-        return createIfHeadAndBodyAdapter();
-      }
-      @Override
-      public Adapter caseIfHead(IfHead object)
-      {
-        return createIfHeadAdapter();
-      }
-      @Override
-      public Adapter caseIfBody(IfBody object)
-      {
-        return createIfBodyAdapter();
+        return createElseStatementAdapter();
       }
       @Override
       public Adapter caseSwitchCase(SwitchCase object)
@@ -668,16 +648,16 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.GeneratorCommand <em>Generator Command</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.GeneratorExpression <em>Generator Expression</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.GeneratorCommand
+   * @see org.mofgen.mGLang.GeneratorExpression
    * @generated
    */
-  public Adapter createGeneratorCommandAdapter()
+  public Adapter createGeneratorExpressionAdapter()
   {
     return null;
   }
@@ -818,91 +798,31 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.SingleLineIf <em>Single Line If</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ElseIfOrElse <em>Else If Or Else</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.SingleLineIf
+   * @see org.mofgen.mGLang.ElseIfOrElse
    * @generated
    */
-  public Adapter createSingleLineIfAdapter()
+  public Adapter createElseIfOrElseAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.GenCommandBlock <em>Gen Command Block</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ElseStatement <em>Else Statement</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.GenCommandBlock
+   * @see org.mofgen.mGLang.ElseStatement
    * @generated
    */
-  public Adapter createGenCommandBlockAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.BlockIf <em>Block If</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.BlockIf
-   * @generated
-   */
-  public Adapter createBlockIfAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.IfHeadAndBody <em>If Head And Body</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.IfHeadAndBody
-   * @generated
-   */
-  public Adapter createIfHeadAndBodyAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.IfHead <em>If Head</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.IfHead
-   * @generated
-   */
-  public Adapter createIfHeadAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.IfBody <em>If Body</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.IfBody
-   * @generated
-   */
-  public Adapter createIfBodyAdapter()
+  public Adapter createElseStatementAdapter()
   {
     return null;
   }

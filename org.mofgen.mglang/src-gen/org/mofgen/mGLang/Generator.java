@@ -40,7 +40,7 @@ public interface Generator extends EObject
 
   /**
    * Returns the value of the '<em><b>Commands</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.GeneratorCommand}.
+   * The list contents are of type {@link org.mofgen.mGLang.GeneratorExpression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Commands</em>' containment reference list.
@@ -48,6 +48,6 @@ public interface Generator extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<GeneratorCommand> getCommands();
+  EList<GeneratorExpression> getCommands();
 
 } // Generator

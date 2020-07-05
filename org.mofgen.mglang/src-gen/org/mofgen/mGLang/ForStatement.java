@@ -21,7 +21,7 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface ForStatement extends GeneratorCommand
+public interface ForStatement extends GeneratorExpression
 {
   /**
    * Returns the value of the '<em><b>Head</b></em>' containment reference.

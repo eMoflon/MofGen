@@ -5,24 +5,24 @@ package org.mofgen.mGLang.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.mofgen.mGLang.GeneratorCommand;
+import org.mofgen.mGLang.GeneratorExpression;
 import org.mofgen.mGLang.MGLangPackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Generator Command</b></em>'.
+ * An implementation of the model object '<em><b>Generator Expression</b></em>'.
  * <!-- end-user-doc -->
  *
  * @generated
  */
-public class GeneratorCommandImpl extends DefaultImpl implements GeneratorCommand
+public class GeneratorExpressionImpl extends DefaultImpl implements GeneratorExpression
 {
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected GeneratorCommandImpl()
+  protected GeneratorExpressionImpl()
   {
     super();
   }
@@ -35,7 +35,7 @@ public class GeneratorCommandImpl extends DefaultImpl implements GeneratorComman
   @Override
   protected EClass eStaticClass()
   {
-    return MGLangPackage.Literals.GENERATOR_COMMAND;
+    return MGLangPackage.Literals.GENERATOR_EXPRESSION;
   }
 
-} //GeneratorCommandImpl
+} //GeneratorExpressionImpl

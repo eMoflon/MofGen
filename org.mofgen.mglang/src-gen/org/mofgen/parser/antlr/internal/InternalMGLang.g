@@ -1849,9 +1849,9 @@ ruleGenerator returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getGeneratorAccess().getCommandsGeneratorCommandParserRuleCall_6_0());
+					newCompositeNode(grammarAccess.getGeneratorAccess().getCommandsGeneratorExpressionParserRuleCall_6_0());
 				}
-				lv_commands_6_0=ruleGeneratorCommand
+				lv_commands_6_0=ruleGeneratorExpression
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getGeneratorRule());
@@ -1860,7 +1860,7 @@ ruleGenerator returns [EObject current=null]
 						$current,
 						"commands",
 						lv_commands_6_0,
-						"org.mofgen.MGLang.GeneratorCommand");
+						"org.mofgen.MGLang.GeneratorExpression");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -1872,15 +1872,15 @@ ruleGenerator returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleGeneratorCommand
-entryRuleGeneratorCommand returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getGeneratorCommandRule()); }
-	iv_ruleGeneratorCommand=ruleGeneratorCommand
-	{ $current=$iv_ruleGeneratorCommand.current; }
+// Entry rule entryRuleGeneratorExpression
+entryRuleGeneratorExpression returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getGeneratorExpressionRule()); }
+	iv_ruleGeneratorExpression=ruleGeneratorExpression
+	{ $current=$iv_ruleGeneratorExpression.current; }
 	EOF;
 
-// Rule GeneratorCommand
-ruleGeneratorCommand returns [EObject current=null]
+// Rule GeneratorExpression
+ruleGeneratorExpression returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -1889,7 +1889,7 @@ ruleGeneratorCommand returns [EObject current=null]
 }:
 	(
 		{
-			newCompositeNode(grammarAccess.getGeneratorCommandAccess().getForStatementParserRuleCall_0());
+			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getForStatementParserRuleCall_0());
 		}
 		this_ForStatement_0=ruleForStatement
 		{
@@ -1898,7 +1898,7 @@ ruleGeneratorCommand returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getGeneratorCommandAccess().getIfStatementParserRuleCall_1());
+			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getIfStatementParserRuleCall_1());
 		}
 		this_IfStatement_1=ruleIfStatement
 		{
@@ -1907,7 +1907,7 @@ ruleGeneratorCommand returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getGeneratorCommandAccess().getSwitchCaseParserRuleCall_2());
+			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getSwitchCaseParserRuleCall_2());
 		}
 		this_SwitchCase_2=ruleSwitchCase
 		{
@@ -1916,7 +1916,7 @@ ruleGeneratorCommand returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getGeneratorCommandAccess().getCollectionParserRuleCall_3());
+			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getCollectionParserRuleCall_3());
 		}
 		this_Collection_3=ruleCollection
 		{
@@ -1925,7 +1925,7 @@ ruleGeneratorCommand returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getGeneratorCommandAccess().getPatternCallParserRuleCall_4());
+			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getPatternCallParserRuleCall_4());
 		}
 		this_PatternCall_4=rulePatternCall
 		{
@@ -1934,7 +1934,7 @@ ruleGeneratorCommand returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getGeneratorCommandAccess().getPatternObjectCreationParserRuleCall_5());
+			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getPatternObjectCreationParserRuleCall_5());
 		}
 		this_PatternObjectCreation_5=rulePatternObjectCreation
 		{
@@ -2306,14 +2306,34 @@ ruleForBody returns [EObject current=null]
 @after {
 	leaveRule();
 }:
-	{
-		newCompositeNode(grammarAccess.getForBodyAccess().getGenCommandBlockParserRuleCall());
-	}
-	this_GenCommandBlock_0=ruleGenCommandBlock
-	{
-		$current = $this_GenCommandBlock_0.current;
-		afterParserOrEnumRuleCall();
-	}
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getForBodyAccess().getForBodyAction_0(),
+					$current);
+			}
+		)
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getForBodyAccess().getCommandsGeneratorExpressionParserRuleCall_1_0());
+				}
+				lv_commands_1_0=ruleGeneratorExpression
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getForBodyRule());
+					}
+					add(
+						$current,
+						"commands",
+						lv_commands_1_0,
+						"org.mofgen.MGLang.GeneratorExpression");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)*
+	)
 ;
 
 // Entry rule entryRuleIfStatement
@@ -2331,25 +2351,113 @@ ruleIfStatement returns [EObject current=null]
 @after {
 	leaveRule();
 }:
-	{
-		newCompositeNode(grammarAccess.getIfStatementAccess().getSingleLineIfParserRuleCall());
-	}
-	this_SingleLineIf_0=ruleSingleLineIf
-	{
-		$current = $this_SingleLineIf_0.current;
-		afterParserOrEnumRuleCall();
-	}
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getIfStatementAccess().getIfStatementAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='if'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getIfStatementAccess().getIfKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getIfStatementAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getIfStatementAccess().getCondArithmeticExpressionParserRuleCall_3_0());
+				}
+				lv_cond_3_0=ruleArithmeticExpression
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getIfStatementRule());
+					}
+					set(
+						$current,
+						"cond",
+						lv_cond_3_0,
+						"org.mofgen.MGLang.ArithmeticExpression");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+		otherlv_4=')'
+		{
+			newLeafNode(otherlv_4, grammarAccess.getIfStatementAccess().getRightParenthesisKeyword_4());
+		}
+		otherlv_5='{'
+		{
+			newLeafNode(otherlv_5, grammarAccess.getIfStatementAccess().getLeftCurlyBracketKeyword_5());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getIfStatementAccess().getThenGeneratorExpressionParserRuleCall_6_0());
+				}
+				lv_then_6_0=ruleGeneratorExpression
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getIfStatementRule());
+					}
+					add(
+						$current,
+						"then",
+						lv_then_6_0,
+						"org.mofgen.MGLang.GeneratorExpression");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)*
+		otherlv_7='}'
+		{
+			newLeafNode(otherlv_7, grammarAccess.getIfStatementAccess().getRightCurlyBracketKeyword_7());
+		}
+		(
+			otherlv_8='else'
+			{
+				newLeafNode(otherlv_8, grammarAccess.getIfStatementAccess().getElseKeyword_8_0());
+			}
+			(
+				((
+					ruleElseIfOrElse
+				)
+				)=>
+				(
+					{
+						newCompositeNode(grammarAccess.getIfStatementAccess().getElseIfElseIfOrElseParserRuleCall_8_1_0());
+					}
+					lv_elseIf_9_0=ruleElseIfOrElse
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getIfStatementRule());
+						}
+						set(
+							$current,
+							"elseIf",
+							lv_elseIf_9_0,
+							"org.mofgen.MGLang.ElseIfOrElse");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)?
+	)
 ;
 
-// Entry rule entryRuleSingleLineIf
-entryRuleSingleLineIf returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getSingleLineIfRule()); }
-	iv_ruleSingleLineIf=ruleSingleLineIf
-	{ $current=$iv_ruleSingleLineIf.current; }
+// Entry rule entryRuleElseIfOrElse
+entryRuleElseIfOrElse returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElseIfOrElseRule()); }
+	iv_ruleElseIfOrElse=ruleElseIfOrElse
+	{ $current=$iv_ruleElseIfOrElse.current; }
 	EOF;
 
-// Rule SingleLineIf
-ruleSingleLineIf returns [EObject current=null]
+// Rule ElseIfOrElse
+ruleElseIfOrElse returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -2357,68 +2465,116 @@ ruleSingleLineIf returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='if'
-		{
-			newLeafNode(otherlv_0, grammarAccess.getSingleLineIfAccess().getIfKeyword_0());
-		}
-		otherlv_1='('
-		{
-			newLeafNode(otherlv_1, grammarAccess.getSingleLineIfAccess().getLeftParenthesisKeyword_1());
-		}
 		(
+			otherlv_0='if'
+			{
+				newLeafNode(otherlv_0, grammarAccess.getElseIfOrElseAccess().getIfKeyword_0_0());
+			}
+			otherlv_1='('
+			{
+				newLeafNode(otherlv_1, grammarAccess.getElseIfOrElseAccess().getLeftParenthesisKeyword_0_1());
+			}
 			(
-				{
-					newCompositeNode(grammarAccess.getSingleLineIfAccess().getConditionArithmeticExpressionParserRuleCall_2_0());
-				}
-				lv_condition_2_0=ruleArithmeticExpression
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getSingleLineIfRule());
+				(
+					{
+						newCompositeNode(grammarAccess.getElseIfOrElseAccess().getCondArithmeticExpressionParserRuleCall_0_2_0());
 					}
-					set(
-						$current,
-						"condition",
-						lv_condition_2_0,
-						"org.mofgen.MGLang.ArithmeticExpression");
-					afterParserOrEnumRuleCall();
+					lv_cond_2_0=ruleArithmeticExpression
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getElseIfOrElseRule());
+						}
+						set(
+							$current,
+							"cond",
+							lv_cond_2_0,
+							"org.mofgen.MGLang.ArithmeticExpression");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			otherlv_3=')'
+			{
+				newLeafNode(otherlv_3, grammarAccess.getElseIfOrElseAccess().getRightParenthesisKeyword_0_3());
+			}
+			otherlv_4='{'
+			{
+				newLeafNode(otherlv_4, grammarAccess.getElseIfOrElseAccess().getLeftCurlyBracketKeyword_0_4());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getElseIfOrElseAccess().getThenGeneratorExpressionParserRuleCall_0_5_0());
+					}
+					lv_then_5_0=ruleGeneratorExpression
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getElseIfOrElseRule());
+						}
+						add(
+							$current,
+							"then",
+							lv_then_5_0,
+							"org.mofgen.MGLang.GeneratorExpression");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)*
+			otherlv_6='}'
+			{
+				newLeafNode(otherlv_6, grammarAccess.getElseIfOrElseAccess().getRightCurlyBracketKeyword_0_6());
+			}
+			(
+				otherlv_7='else'
+				{
+					newLeafNode(otherlv_7, grammarAccess.getElseIfOrElseAccess().getElseKeyword_0_7_0());
 				}
+				(
+					((
+						ruleElseIfOrElse
+					)
+					)=>
+					(
+						{
+							newCompositeNode(grammarAccess.getElseIfOrElseAccess().getElseIfElseIfOrElseParserRuleCall_0_7_1_0());
+						}
+						lv_elseIf_8_0=ruleElseIfOrElse
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getElseIfOrElseRule());
+							}
+							set(
+								$current,
+								"elseIf",
+								lv_elseIf_8_0,
+								"org.mofgen.MGLang.ElseIfOrElse");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
 			)
 		)
-		otherlv_3=')'
+		    |
 		{
-			newLeafNode(otherlv_3, grammarAccess.getSingleLineIfAccess().getRightParenthesisKeyword_3());
+			newCompositeNode(grammarAccess.getElseIfOrElseAccess().getElseStatementParserRuleCall_1());
 		}
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getSingleLineIfAccess().getCommandGeneratorCommandParserRuleCall_4_0());
-				}
-				lv_command_4_0=ruleGeneratorCommand
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getSingleLineIfRule());
-					}
-					set(
-						$current,
-						"command",
-						lv_command_4_0,
-						"org.mofgen.MGLang.GeneratorCommand");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
+		this_ElseStatement_9=ruleElseStatement
+		{
+			$current = $this_ElseStatement_9.current;
+			afterParserOrEnumRuleCall();
+		}
 	)
 ;
 
-// Entry rule entryRuleGenCommandBlock
-entryRuleGenCommandBlock returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getGenCommandBlockRule()); }
-	iv_ruleGenCommandBlock=ruleGenCommandBlock
-	{ $current=$iv_ruleGenCommandBlock.current; }
+// Entry rule entryRuleElseStatement
+entryRuleElseStatement returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getElseStatementRule()); }
+	iv_ruleElseStatement=ruleElseStatement
+	{ $current=$iv_ruleElseStatement.current; }
 	EOF;
 
-// Rule GenCommandBlock
-ruleGenCommandBlock returns [EObject current=null]
+// Rule ElseStatement
+ruleElseStatement returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -2429,174 +2585,37 @@ ruleGenCommandBlock returns [EObject current=null]
 		(
 			{
 				$current = forceCreateModelElement(
-					grammarAccess.getGenCommandBlockAccess().getGenCommandBlockAction_0(),
+					grammarAccess.getElseStatementAccess().getElseStatementAction_0(),
 					$current);
 			}
 		)
+		otherlv_1='{'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getElseStatementAccess().getLeftCurlyBracketKeyword_1());
+		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getGenCommandBlockAccess().getCommandsGeneratorCommandParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getElseStatementAccess().getElseGeneratorExpressionParserRuleCall_2_0());
 				}
-				lv_commands_1_0=ruleGeneratorCommand
+				lv_else_2_0=ruleGeneratorExpression
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getGenCommandBlockRule());
+						$current = createModelElementForParent(grammarAccess.getElseStatementRule());
 					}
 					add(
 						$current,
-						"commands",
-						lv_commands_1_0,
-						"org.mofgen.MGLang.GeneratorCommand");
+						"else",
+						lv_else_2_0,
+						"org.mofgen.MGLang.GeneratorExpression");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)*
-	)
-;
-
-// Entry rule entryRuleIfHeadAndBody
-entryRuleIfHeadAndBody returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getIfHeadAndBodyRule()); }
-	iv_ruleIfHeadAndBody=ruleIfHeadAndBody
-	{ $current=$iv_ruleIfHeadAndBody.current; }
-	EOF;
-
-// Rule IfHeadAndBody
-ruleIfHeadAndBody returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		otherlv_0='('
+		otherlv_3='}'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getIfHeadAndBodyAccess().getLeftParenthesisKeyword_0());
+			newLeafNode(otherlv_3, grammarAccess.getElseStatementAccess().getRightCurlyBracketKeyword_3());
 		}
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getIfHeadAndBodyAccess().getHeadIfHeadParserRuleCall_1_0());
-				}
-				lv_head_1_0=ruleIfHead
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getIfHeadAndBodyRule());
-					}
-					set(
-						$current,
-						"head",
-						lv_head_1_0,
-						"org.mofgen.MGLang.IfHead");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-		otherlv_2=')'
-		{
-			newLeafNode(otherlv_2, grammarAccess.getIfHeadAndBodyAccess().getRightParenthesisKeyword_2());
-		}
-		otherlv_3='{'
-		{
-			newLeafNode(otherlv_3, grammarAccess.getIfHeadAndBodyAccess().getLeftCurlyBracketKeyword_3());
-		}
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getIfHeadAndBodyAccess().getBodyIfBodyParserRuleCall_4_0());
-				}
-				lv_body_4_0=ruleIfBody
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getIfHeadAndBodyRule());
-					}
-					set(
-						$current,
-						"body",
-						lv_body_4_0,
-						"org.mofgen.MGLang.IfBody");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-		otherlv_5='}'
-		{
-			newLeafNode(otherlv_5, grammarAccess.getIfHeadAndBodyAccess().getRightCurlyBracketKeyword_5());
-		}
-	)
-;
-
-// Entry rule entryRuleIfHead
-entryRuleIfHead returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getIfHeadRule()); }
-	iv_ruleIfHead=ruleIfHead
-	{ $current=$iv_ruleIfHead.current; }
-	EOF;
-
-// Rule IfHead
-ruleIfHead returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			{
-				newCompositeNode(grammarAccess.getIfHeadAccess().getConditionArithmeticExpressionParserRuleCall_0());
-			}
-			lv_condition_0_0=ruleArithmeticExpression
-			{
-				if ($current==null) {
-					$current = createModelElementForParent(grammarAccess.getIfHeadRule());
-				}
-				set(
-					$current,
-					"condition",
-					lv_condition_0_0,
-					"org.mofgen.MGLang.ArithmeticExpression");
-				afterParserOrEnumRuleCall();
-			}
-		)
-	)
-;
-
-// Entry rule entryRuleIfBody
-entryRuleIfBody returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getIfBodyRule()); }
-	iv_ruleIfBody=ruleIfBody
-	{ $current=$iv_ruleIfBody.current; }
-	EOF;
-
-// Rule IfBody
-ruleIfBody returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			{
-				newCompositeNode(grammarAccess.getIfBodyAccess().getCommandsGenCommandBlockParserRuleCall_0());
-			}
-			lv_commands_0_0=ruleGenCommandBlock
-			{
-				if ($current==null) {
-					$current = createModelElementForParent(grammarAccess.getIfBodyRule());
-				}
-				set(
-					$current,
-					"commands",
-					lv_commands_0_0,
-					"org.mofgen.MGLang.GenCommandBlock");
-				afterParserOrEnumRuleCall();
-			}
-		)
 	)
 ;
 
@@ -2717,11 +2736,11 @@ ruleDefault returns [EObject current=null]
 			newLeafNode(otherlv_1, grammarAccess.getDefaultAccess().getColonKeyword_1());
 		}
 		{
-			newCompositeNode(grammarAccess.getDefaultAccess().getGeneratorCommandParserRuleCall_2());
+			newCompositeNode(grammarAccess.getDefaultAccess().getGeneratorExpressionParserRuleCall_2());
 		}
-		this_GeneratorCommand_2=ruleGeneratorCommand
+		this_GeneratorExpression_2=ruleGeneratorExpression
 		{
-			$current = $this_GeneratorCommand_2.current;
+			$current = $this_GeneratorExpression_2.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
@@ -2809,32 +2828,61 @@ ruleCaseBody returns [EObject current=null]
 }:
 	(
 		(
-			otherlv_0='{'
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getCaseBodyAccess().getCaseBodyAction_0_0(),
+						$current);
+				}
+			)
+			otherlv_1='{'
 			{
-				newLeafNode(otherlv_0, grammarAccess.getCaseBodyAccess().getLeftCurlyBracketKeyword_0_0());
+				newLeafNode(otherlv_1, grammarAccess.getCaseBodyAccess().getLeftCurlyBracketKeyword_0_1());
 			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getCaseBodyAccess().getExpressionsGeneratorExpressionParserRuleCall_0_2_0());
+					}
+					lv_expressions_2_0=ruleGeneratorExpression
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getCaseBodyRule());
+						}
+						add(
+							$current,
+							"expressions",
+							lv_expressions_2_0,
+							"org.mofgen.MGLang.GeneratorExpression");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)*
+			otherlv_3='}'
 			{
-				newCompositeNode(grammarAccess.getCaseBodyAccess().getGenCommandBlockParserRuleCall_0_1());
-			}
-			this_GenCommandBlock_1=ruleGenCommandBlock
-			{
-				$current = $this_GenCommandBlock_1.current;
-				afterParserOrEnumRuleCall();
-			}
-			otherlv_2='}'
-			{
-				newLeafNode(otherlv_2, grammarAccess.getCaseBodyAccess().getRightCurlyBracketKeyword_0_2());
+				newLeafNode(otherlv_3, grammarAccess.getCaseBodyAccess().getRightCurlyBracketKeyword_0_3());
 			}
 		)
 		    |
-		{
-			newCompositeNode(grammarAccess.getCaseBodyAccess().getGeneratorCommandParserRuleCall_1());
-		}
-		this_GeneratorCommand_3=ruleGeneratorCommand
-		{
-			$current = $this_GeneratorCommand_3.current;
-			afterParserOrEnumRuleCall();
-		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getCaseBodyAccess().getExpressionsGeneratorExpressionParserRuleCall_1_0());
+				}
+				lv_expressions_4_0=ruleGeneratorExpression
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getCaseBodyRule());
+					}
+					add(
+						$current,
+						"expressions",
+						lv_expressions_4_0,
+						"org.mofgen.MGLang.GeneratorExpression");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
 	)
 ;
 

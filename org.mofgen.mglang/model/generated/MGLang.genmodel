@@ -108,7 +108,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Generator/params"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Generator/commands"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//GeneratorCommand"/>
+    <genClasses ecoreClass="MGLang.ecore#//GeneratorExpression"/>
     <genClasses ecoreClass="MGLang.ecore#//PatternObjectCreation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternObjectCreation/pObject"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternObjectCreation/patternCall"/>
@@ -134,29 +134,21 @@
     <genClasses ecoreClass="MGLang.ecore#//NodeOrParameterOrCollection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//NodeOrParameterOrCollection/name"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//ForBody"/>
-    <genClasses ecoreClass="MGLang.ecore#//IfStatement"/>
-    <genClasses ecoreClass="MGLang.ecore#//SingleLineIf">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//SingleLineIf/condition"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//SingleLineIf/command"/>
+    <genClasses ecoreClass="MGLang.ecore#//ForBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ForBody/commands"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//GenCommandBlock">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenCommandBlock/commands"/>
+    <genClasses ecoreClass="MGLang.ecore#//IfStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//IfStatement/cond"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//IfStatement/then"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//IfStatement/elseIf"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//BlockIf">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//BlockIf/if"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//BlockIf/elseifs"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//BlockIf/else"/>
+    <genClasses ecoreClass="MGLang.ecore#//ElseIfOrElse">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ElseIfOrElse/cond"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ElseIfOrElse/then"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ElseIfOrElse/elseIf"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//IfHeadAndBody">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//IfHeadAndBody/head"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//IfHeadAndBody/body"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//IfHead">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//IfHead/condition"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//IfBody">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//IfBody/commands"/>
+    <genClasses ecoreClass="MGLang.ecore#//ElseStatement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ElseStatement/else"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//SwitchCase">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//SwitchCase/attribute"/>
@@ -168,7 +160,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Case/val"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Case/body"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//CaseBody"/>
+    <genClasses ecoreClass="MGLang.ecore#//CaseBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//CaseBody/expressions"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Collection"/>
     <genClasses ecoreClass="MGLang.ecore#//List"/>
     <genClasses ecoreClass="MGLang.ecore#//ListAdHoc">

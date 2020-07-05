@@ -30,7 +30,7 @@ import org.mofgen.mGLang.MGLangPackage;
  *
  * @generated
  */
-public class ForStatementImpl extends GeneratorCommandImpl implements ForStatement
+public class ForStatementImpl extends GeneratorExpressionImpl implements ForStatement
 {
   /**
    * The cached value of the '{@link #getHead() <em>Head</em>}' containment reference.

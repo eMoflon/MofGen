@@ -86,7 +86,7 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.METHOD_CALL: return createMethodCall();
       case MGLangPackage.ARITHMETIC_EXPRESSION: return createArithmeticExpression();
       case MGLangPackage.GENERATOR: return createGenerator();
-      case MGLangPackage.GENERATOR_COMMAND: return createGeneratorCommand();
+      case MGLangPackage.GENERATOR_EXPRESSION: return createGeneratorExpression();
       case MGLangPackage.PATTERN_OBJECT_CREATION: return createPatternObjectCreation();
       case MGLangPackage.PATTERN_OBJECT: return createPatternObject();
       case MGLangPackage.FOR_STATEMENT: return createForStatement();
@@ -96,12 +96,8 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION: return createNodeOrParameterOrCollection();
       case MGLangPackage.FOR_BODY: return createForBody();
       case MGLangPackage.IF_STATEMENT: return createIfStatement();
-      case MGLangPackage.SINGLE_LINE_IF: return createSingleLineIf();
-      case MGLangPackage.GEN_COMMAND_BLOCK: return createGenCommandBlock();
-      case MGLangPackage.BLOCK_IF: return createBlockIf();
-      case MGLangPackage.IF_HEAD_AND_BODY: return createIfHeadAndBody();
-      case MGLangPackage.IF_HEAD: return createIfHead();
-      case MGLangPackage.IF_BODY: return createIfBody();
+      case MGLangPackage.ELSE_IF_OR_ELSE: return createElseIfOrElse();
+      case MGLangPackage.ELSE_STATEMENT: return createElseStatement();
       case MGLangPackage.SWITCH_CASE: return createSwitchCase();
       case MGLangPackage.DEFAULT: return createDefault();
       case MGLangPackage.CASE: return createCase();
@@ -425,10 +421,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public GeneratorCommand createGeneratorCommand()
+  public GeneratorExpression createGeneratorExpression()
   {
-    GeneratorCommandImpl generatorCommand = new GeneratorCommandImpl();
-    return generatorCommand;
+    GeneratorExpressionImpl generatorExpression = new GeneratorExpressionImpl();
+    return generatorExpression;
   }
 
   /**
@@ -545,10 +541,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public SingleLineIf createSingleLineIf()
+  public ElseIfOrElse createElseIfOrElse()
   {
-    SingleLineIfImpl singleLineIf = new SingleLineIfImpl();
-    return singleLineIf;
+    ElseIfOrElseImpl elseIfOrElse = new ElseIfOrElseImpl();
+    return elseIfOrElse;
   }
 
   /**
@@ -557,58 +553,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public GenCommandBlock createGenCommandBlock()
+  public ElseStatement createElseStatement()
   {
-    GenCommandBlockImpl genCommandBlock = new GenCommandBlockImpl();
-    return genCommandBlock;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public BlockIf createBlockIf()
-  {
-    BlockIfImpl blockIf = new BlockIfImpl();
-    return blockIf;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public IfHeadAndBody createIfHeadAndBody()
-  {
-    IfHeadAndBodyImpl ifHeadAndBody = new IfHeadAndBodyImpl();
-    return ifHeadAndBody;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public IfHead createIfHead()
-  {
-    IfHeadImpl ifHead = new IfHeadImpl();
-    return ifHead;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public IfBody createIfBody()
-  {
-    IfBodyImpl ifBody = new IfBodyImpl();
-    return ifBody;
+    ElseStatementImpl elseStatement = new ElseStatementImpl();
+    return elseStatement;
   }
 
   /**

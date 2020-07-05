@@ -30,7 +30,7 @@ import org.mofgen.mGLang.PatternObjectCreation;
  *
  * @generated
  */
-public class PatternObjectCreationImpl extends GeneratorCommandImpl implements PatternObjectCreation
+public class PatternObjectCreationImpl extends GeneratorExpressionImpl implements PatternObjectCreation
 {
   /**
    * The cached value of the '{@link #getPObject() <em>PObject</em>}' containment reference.

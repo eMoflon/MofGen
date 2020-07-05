@@ -15,41 +15,41 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.mofgen.mGLang.GenCommandBlock;
-import org.mofgen.mGLang.GeneratorCommand;
+import org.mofgen.mGLang.ElseStatement;
+import org.mofgen.mGLang.GeneratorExpression;
 import org.mofgen.mGLang.MGLangPackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Gen Command Block</b></em>'.
+ * An implementation of the model object '<em><b>Else Statement</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.GenCommandBlockImpl#getCommands <em>Commands</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.ElseStatementImpl#getElse <em>Else</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class GenCommandBlockImpl extends ForBodyImpl implements GenCommandBlock
+public class ElseStatementImpl extends ElseIfOrElseImpl implements ElseStatement
 {
   /**
-   * The cached value of the '{@link #getCommands() <em>Commands</em>}' containment reference list.
+   * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getCommands()
+   * @see #getElse()
    * @generated
    * @ordered
    */
-  protected EList<GeneratorCommand> commands;
+  protected EList<GeneratorExpression> else_;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected GenCommandBlockImpl()
+  protected ElseStatementImpl()
   {
     super();
   }
@@ -62,7 +62,7 @@ public class GenCommandBlockImpl extends ForBodyImpl implements GenCommandBlock
   @Override
   protected EClass eStaticClass()
   {
-    return MGLangPackage.Literals.GEN_COMMAND_BLOCK;
+    return MGLangPackage.Literals.ELSE_STATEMENT;
   }
 
   /**
@@ -71,13 +71,13 @@ public class GenCommandBlockImpl extends ForBodyImpl implements GenCommandBlock
    * @generated
    */
   @Override
-  public EList<GeneratorCommand> getCommands()
+  public EList<GeneratorExpression> getElse()
   {
-    if (commands == null)
+    if (else_ == null)
     {
-      commands = new EObjectContainmentEList<GeneratorCommand>(GeneratorCommand.class, this, MGLangPackage.GEN_COMMAND_BLOCK__COMMANDS);
+      else_ = new EObjectContainmentEList<GeneratorExpression>(GeneratorExpression.class, this, MGLangPackage.ELSE_STATEMENT__ELSE);
     }
-    return commands;
+    return else_;
   }
 
   /**
@@ -90,8 +90,8 @@ public class GenCommandBlockImpl extends ForBodyImpl implements GenCommandBlock
   {
     switch (featureID)
     {
-      case MGLangPackage.GEN_COMMAND_BLOCK__COMMANDS:
-        return ((InternalEList<?>)getCommands()).basicRemove(otherEnd, msgs);
+      case MGLangPackage.ELSE_STATEMENT__ELSE:
+        return ((InternalEList<?>)getElse()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -106,8 +106,8 @@ public class GenCommandBlockImpl extends ForBodyImpl implements GenCommandBlock
   {
     switch (featureID)
     {
-      case MGLangPackage.GEN_COMMAND_BLOCK__COMMANDS:
-        return getCommands();
+      case MGLangPackage.ELSE_STATEMENT__ELSE:
+        return getElse();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -123,9 +123,9 @@ public class GenCommandBlockImpl extends ForBodyImpl implements GenCommandBlock
   {
     switch (featureID)
     {
-      case MGLangPackage.GEN_COMMAND_BLOCK__COMMANDS:
-        getCommands().clear();
-        getCommands().addAll((Collection<? extends GeneratorCommand>)newValue);
+      case MGLangPackage.ELSE_STATEMENT__ELSE:
+        getElse().clear();
+        getElse().addAll((Collection<? extends GeneratorExpression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -141,8 +141,8 @@ public class GenCommandBlockImpl extends ForBodyImpl implements GenCommandBlock
   {
     switch (featureID)
     {
-      case MGLangPackage.GEN_COMMAND_BLOCK__COMMANDS:
-        getCommands().clear();
+      case MGLangPackage.ELSE_STATEMENT__ELSE:
+        getElse().clear();
         return;
     }
     super.eUnset(featureID);
@@ -158,10 +158,10 @@ public class GenCommandBlockImpl extends ForBodyImpl implements GenCommandBlock
   {
     switch (featureID)
     {
-      case MGLangPackage.GEN_COMMAND_BLOCK__COMMANDS:
-        return commands != null && !commands.isEmpty();
+      case MGLangPackage.ELSE_STATEMENT__ELSE:
+        return else_ != null && !else_.isEmpty();
     }
     return super.eIsSet(featureID);
   }
 
-} //GenCommandBlockImpl
+} //ElseStatementImpl

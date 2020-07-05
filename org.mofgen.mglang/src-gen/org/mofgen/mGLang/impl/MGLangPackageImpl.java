@@ -13,24 +13,21 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.Assignment;
-import org.mofgen.mGLang.BlockIf;
 import org.mofgen.mGLang.Case;
 import org.mofgen.mGLang.CaseBody;
 import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.Default;
+import org.mofgen.mGLang.ElseIfOrElse;
+import org.mofgen.mGLang.ElseStatement;
 import org.mofgen.mGLang.ForBody;
 import org.mofgen.mGLang.ForEachHead;
 import org.mofgen.mGLang.ForHead;
 import org.mofgen.mGLang.ForRange;
 import org.mofgen.mGLang.ForStatement;
 import org.mofgen.mGLang.FunctionCall;
-import org.mofgen.mGLang.GenCommandBlock;
 import org.mofgen.mGLang.GeneralForHead;
 import org.mofgen.mGLang.Generator;
-import org.mofgen.mGLang.GeneratorCommand;
-import org.mofgen.mGLang.IfBody;
-import org.mofgen.mGLang.IfHead;
-import org.mofgen.mGLang.IfHeadAndBody;
+import org.mofgen.mGLang.GeneratorExpression;
 import org.mofgen.mGLang.IfStatement;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.List;
@@ -69,7 +66,6 @@ import org.mofgen.mGLang.Rel;
 import org.mofgen.mGLang.RelationalOp;
 import org.mofgen.mGLang.Secondary;
 import org.mofgen.mGLang.SecondaryOp;
-import org.mofgen.mGLang.SingleLineIf;
 import org.mofgen.mGLang.SwitchCase;
 import org.mofgen.mGLang.Tertiary;
 import org.mofgen.mGLang.TertiaryOp;
@@ -227,7 +223,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass generatorCommandEClass = null;
+  private EClass generatorExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -297,42 +293,14 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass singleLineIfEClass = null;
+  private EClass elseIfOrElseEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass genCommandBlockEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass blockIfEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass ifHeadAndBodyEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass ifHeadEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass ifBodyEClass = null;
+  private EClass elseStatementEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1154,9 +1122,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getGeneratorCommand()
+  public EClass getGeneratorExpression()
   {
-    return generatorCommandEClass;
+    return generatorExpressionEClass;
   }
 
   /**
@@ -1374,6 +1342,17 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
+  public EReference getForBody_Commands()
+  {
+    return (EReference)forBodyEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getIfStatement()
   {
     return ifStatementEClass;
@@ -1385,9 +1364,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getSingleLineIf()
+  public EReference getIfStatement_Cond()
   {
-    return singleLineIfEClass;
+    return (EReference)ifStatementEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1396,9 +1375,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getSingleLineIf_Condition()
+  public EReference getIfStatement_Then()
   {
-    return (EReference)singleLineIfEClass.getEStructuralFeatures().get(0);
+    return (EReference)ifStatementEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1407,9 +1386,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getSingleLineIf_Command()
+  public EReference getIfStatement_ElseIf()
   {
-    return (EReference)singleLineIfEClass.getEStructuralFeatures().get(1);
+    return (EReference)ifStatementEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1418,9 +1397,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getGenCommandBlock()
+  public EClass getElseIfOrElse()
   {
-    return genCommandBlockEClass;
+    return elseIfOrElseEClass;
   }
 
   /**
@@ -1429,9 +1408,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getGenCommandBlock_Commands()
+  public EReference getElseIfOrElse_Cond()
   {
-    return (EReference)genCommandBlockEClass.getEStructuralFeatures().get(0);
+    return (EReference)elseIfOrElseEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1440,9 +1419,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getBlockIf()
+  public EReference getElseIfOrElse_Then()
   {
-    return blockIfEClass;
+    return (EReference)elseIfOrElseEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1451,9 +1430,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getBlockIf_If()
+  public EReference getElseIfOrElse_ElseIf()
   {
-    return (EReference)blockIfEClass.getEStructuralFeatures().get(0);
+    return (EReference)elseIfOrElseEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1462,9 +1441,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getBlockIf_Elseifs()
+  public EClass getElseStatement()
   {
-    return (EReference)blockIfEClass.getEStructuralFeatures().get(1);
+    return elseStatementEClass;
   }
 
   /**
@@ -1473,86 +1452,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getBlockIf_Else()
+  public EReference getElseStatement_Else()
   {
-    return (EReference)blockIfEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getIfHeadAndBody()
-  {
-    return ifHeadAndBodyEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getIfHeadAndBody_Head()
-  {
-    return (EReference)ifHeadAndBodyEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getIfHeadAndBody_Body()
-  {
-    return (EReference)ifHeadAndBodyEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getIfHead()
-  {
-    return ifHeadEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getIfHead_Condition()
-  {
-    return (EReference)ifHeadEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getIfBody()
-  {
-    return ifBodyEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getIfBody_Commands()
-  {
-    return (EReference)ifBodyEClass.getEStructuralFeatures().get(0);
+    return (EReference)elseStatementEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1652,6 +1554,17 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
   public EClass getCaseBody()
   {
     return caseBodyEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getCaseBody_Expressions()
+  {
+    return (EReference)caseBodyEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2209,7 +2122,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(generatorEClass, GENERATOR__PARAMS);
     createEReference(generatorEClass, GENERATOR__COMMANDS);
 
-    generatorCommandEClass = createEClass(GENERATOR_COMMAND);
+    generatorExpressionEClass = createEClass(GENERATOR_EXPRESSION);
 
     patternObjectCreationEClass = createEClass(PATTERN_OBJECT_CREATION);
     createEReference(patternObjectCreationEClass, PATTERN_OBJECT_CREATION__POBJECT);
@@ -2237,30 +2150,20 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEAttribute(nodeOrParameterOrCollectionEClass, NODE_OR_PARAMETER_OR_COLLECTION__NAME);
 
     forBodyEClass = createEClass(FOR_BODY);
+    createEReference(forBodyEClass, FOR_BODY__COMMANDS);
 
     ifStatementEClass = createEClass(IF_STATEMENT);
+    createEReference(ifStatementEClass, IF_STATEMENT__COND);
+    createEReference(ifStatementEClass, IF_STATEMENT__THEN);
+    createEReference(ifStatementEClass, IF_STATEMENT__ELSE_IF);
 
-    singleLineIfEClass = createEClass(SINGLE_LINE_IF);
-    createEReference(singleLineIfEClass, SINGLE_LINE_IF__CONDITION);
-    createEReference(singleLineIfEClass, SINGLE_LINE_IF__COMMAND);
+    elseIfOrElseEClass = createEClass(ELSE_IF_OR_ELSE);
+    createEReference(elseIfOrElseEClass, ELSE_IF_OR_ELSE__COND);
+    createEReference(elseIfOrElseEClass, ELSE_IF_OR_ELSE__THEN);
+    createEReference(elseIfOrElseEClass, ELSE_IF_OR_ELSE__ELSE_IF);
 
-    genCommandBlockEClass = createEClass(GEN_COMMAND_BLOCK);
-    createEReference(genCommandBlockEClass, GEN_COMMAND_BLOCK__COMMANDS);
-
-    blockIfEClass = createEClass(BLOCK_IF);
-    createEReference(blockIfEClass, BLOCK_IF__IF);
-    createEReference(blockIfEClass, BLOCK_IF__ELSEIFS);
-    createEReference(blockIfEClass, BLOCK_IF__ELSE);
-
-    ifHeadAndBodyEClass = createEClass(IF_HEAD_AND_BODY);
-    createEReference(ifHeadAndBodyEClass, IF_HEAD_AND_BODY__HEAD);
-    createEReference(ifHeadAndBodyEClass, IF_HEAD_AND_BODY__BODY);
-
-    ifHeadEClass = createEClass(IF_HEAD);
-    createEReference(ifHeadEClass, IF_HEAD__CONDITION);
-
-    ifBodyEClass = createEClass(IF_BODY);
-    createEReference(ifBodyEClass, IF_BODY__COMMANDS);
+    elseStatementEClass = createEClass(ELSE_STATEMENT);
+    createEReference(elseStatementEClass, ELSE_STATEMENT__ELSE);
 
     switchCaseEClass = createEClass(SWITCH_CASE);
     createEReference(switchCaseEClass, SWITCH_CASE__ATTRIBUTE);
@@ -2274,6 +2177,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(caseEClass, CASE__BODY);
 
     caseBodyEClass = createEClass(CASE_BODY);
+    createEReference(caseBodyEClass, CASE_BODY__EXPRESSIONS);
 
     collectionEClass = createEClass(COLLECTION);
 
@@ -2363,7 +2267,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
 
     // Add supertypes to classes
     nodeEClass.getESuperTypes().add(this.getNodeOrParameterOrCollection());
-    patternCallEClass.getESuperTypes().add(this.getGeneratorCommand());
+    patternCallEClass.getESuperTypes().add(this.getGeneratorExpression());
     patternNodeReferenceEClass.getESuperTypes().add(this.getNodeReferenceOrAssignment());
     assignmentEClass.getESuperTypes().add(this.getNodeReferenceOrAssignment());
     parameterEClass.getESuperTypes().add(this.getNodeOrParameterOrCollection());
@@ -2372,18 +2276,15 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     parameterRefOrMethodCallEClass.getESuperTypes().add(this.getArithmeticExpression());
     parameterRefEClass.getESuperTypes().add(this.getParameterRefOrMethodCall());
     methodCallEClass.getESuperTypes().add(this.getParameterRefOrMethodCall());
-    generatorCommandEClass.getESuperTypes().add(this.getDefault());
-    generatorCommandEClass.getESuperTypes().add(this.getCaseBody());
-    patternObjectCreationEClass.getESuperTypes().add(this.getGeneratorCommand());
-    forStatementEClass.getESuperTypes().add(this.getGeneratorCommand());
+    generatorExpressionEClass.getESuperTypes().add(this.getDefault());
+    patternObjectCreationEClass.getESuperTypes().add(this.getGeneratorExpression());
+    forStatementEClass.getESuperTypes().add(this.getGeneratorExpression());
     generalForHeadEClass.getESuperTypes().add(this.getForHead());
     forEachHeadEClass.getESuperTypes().add(this.getForHead());
-    ifStatementEClass.getESuperTypes().add(this.getGeneratorCommand());
-    singleLineIfEClass.getESuperTypes().add(this.getIfStatement());
-    genCommandBlockEClass.getESuperTypes().add(this.getForBody());
-    genCommandBlockEClass.getESuperTypes().add(this.getCaseBody());
-    switchCaseEClass.getESuperTypes().add(this.getGeneratorCommand());
-    collectionEClass.getESuperTypes().add(this.getGeneratorCommand());
+    ifStatementEClass.getESuperTypes().add(this.getGeneratorExpression());
+    elseStatementEClass.getESuperTypes().add(this.getElseIfOrElse());
+    switchCaseEClass.getESuperTypes().add(this.getGeneratorExpression());
+    collectionEClass.getESuperTypes().add(this.getGeneratorExpression());
     collectionEClass.getESuperTypes().add(this.getNodeOrParameterOrCollection());
     listEClass.getESuperTypes().add(this.getCollection());
     listAdHocEClass.getESuperTypes().add(this.getList());
@@ -2469,9 +2370,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
 
     initEClass(generatorEClass, Generator.class, "Generator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getGenerator_Params(), this.getParameter(), null, "params", null, 0, -1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getGenerator_Commands(), this.getGeneratorCommand(), null, "commands", null, 0, -1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getGenerator_Commands(), this.getGeneratorExpression(), null, "commands", null, 0, -1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(generatorCommandEClass, GeneratorCommand.class, "GeneratorCommand", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(generatorExpressionEClass, GeneratorExpression.class, "GeneratorExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(patternObjectCreationEClass, PatternObjectCreation.class, "PatternObjectCreation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getPatternObjectCreation_PObject(), this.getPatternObject(), null, "pObject", null, 0, 1, PatternObjectCreation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2499,30 +2400,20 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEAttribute(getNodeOrParameterOrCollection_Name(), ecorePackage.getEString(), "name", null, 0, 1, NodeOrParameterOrCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(forBodyEClass, ForBody.class, "ForBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getForBody_Commands(), this.getGeneratorExpression(), null, "commands", null, 0, -1, ForBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(ifStatementEClass, IfStatement.class, "IfStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getIfStatement_Cond(), this.getArithmeticExpression(), null, "cond", null, 0, 1, IfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getIfStatement_Then(), this.getGeneratorExpression(), null, "then", null, 0, -1, IfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getIfStatement_ElseIf(), this.getElseIfOrElse(), null, "elseIf", null, 0, 1, IfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(singleLineIfEClass, SingleLineIf.class, "SingleLineIf", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getSingleLineIf_Condition(), this.getArithmeticExpression(), null, "condition", null, 0, 1, SingleLineIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getSingleLineIf_Command(), this.getGeneratorCommand(), null, "command", null, 0, 1, SingleLineIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(elseIfOrElseEClass, ElseIfOrElse.class, "ElseIfOrElse", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getElseIfOrElse_Cond(), this.getArithmeticExpression(), null, "cond", null, 0, 1, ElseIfOrElse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getElseIfOrElse_Then(), this.getGeneratorExpression(), null, "then", null, 0, -1, ElseIfOrElse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getElseIfOrElse_ElseIf(), this.getElseIfOrElse(), null, "elseIf", null, 0, 1, ElseIfOrElse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(genCommandBlockEClass, GenCommandBlock.class, "GenCommandBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getGenCommandBlock_Commands(), this.getGeneratorCommand(), null, "commands", null, 0, -1, GenCommandBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(blockIfEClass, BlockIf.class, "BlockIf", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getBlockIf_If(), this.getIfHeadAndBody(), null, "if", null, 0, 1, BlockIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBlockIf_Elseifs(), this.getIfHeadAndBody(), null, "elseifs", null, 0, -1, BlockIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBlockIf_Else(), this.getIfBody(), null, "else", null, 0, 1, BlockIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(ifHeadAndBodyEClass, IfHeadAndBody.class, "IfHeadAndBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getIfHeadAndBody_Head(), this.getIfHead(), null, "head", null, 0, 1, IfHeadAndBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getIfHeadAndBody_Body(), this.getIfBody(), null, "body", null, 0, 1, IfHeadAndBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(ifHeadEClass, IfHead.class, "IfHead", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getIfHead_Condition(), this.getArithmeticExpression(), null, "condition", null, 0, 1, IfHead.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(ifBodyEClass, IfBody.class, "IfBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getIfBody_Commands(), this.getGenCommandBlock(), null, "commands", null, 0, 1, IfBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(elseStatementEClass, ElseStatement.class, "ElseStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getElseStatement_Else(), this.getGeneratorExpression(), null, "else", null, 0, -1, ElseStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(switchCaseEClass, SwitchCase.class, "SwitchCase", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSwitchCase_Attribute(), this.getParameterRefOrMethodCall(), null, "attribute", null, 0, 1, SwitchCase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2536,6 +2427,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getCase_Body(), this.getCaseBody(), null, "body", null, 0, 1, Case.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(caseBodyEClass, CaseBody.class, "CaseBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCaseBody_Expressions(), this.getGeneratorExpression(), null, "expressions", null, 0, -1, CaseBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(collectionEClass, Collection.class, "Collection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

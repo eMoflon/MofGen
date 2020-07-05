@@ -103,10 +103,10 @@ enum PrimitiveType:
 Generator:
 	{Generator} 'gen' '('
 	(params+=Parameter)*
-	')' '{' (commands+=GeneratorCommand)* '}';
+	')' '{' (commands+=GeneratorExpression)* '}';
 
 	//TODO Wie hier patterns wie "examplePattern" und PatternObjects dazu mittels "ExamplePattern" ermöglichen? Eventuell in Scoping einklinken, alle Patterns holen und dann in PatternObject übersetzen?
-GeneratorCommand: //Only serves as super class for all possible commands within generator
+GeneratorExpression: //Only serves as super class for all possible commands within generator
 	ForStatement | IfStatement | SwitchCase | Collection | PatternCall | PatternObjectCreation;
 
 PatternObjectCreation:
@@ -131,42 +131,40 @@ NodeOrParameterOrCollection:
 	Node | Parameter | Collection;
 
 ForBody:
-	GenCommandBlock;
-
-IfStatement:
-	SingleLineIf //| BlockIf
+	{ForBody} (commands += GeneratorExpression)*
 ;
 
-SingleLineIf:
-	'if' '(' condition=ArithmeticExpression ')' command=GeneratorCommand;
+IfStatement:
+	{IfStatement} 'if' '(' cond = ArithmeticExpression ')' '{'
+		(then += GeneratorExpression)*
+	'}'
+	('else' => elseIf=ElseIfOrElse )?
+;
 
-GenCommandBlock:
-	{GenCommandBlock} (commands+=GeneratorCommand)*;
+ElseIfOrElse:
+	('if' '(' cond = ArithmeticExpression ')' '{'
+		(then += GeneratorExpression)*
+	'}'
+	('else' => elseIf = ElseIfOrElse)) | (ElseStatement)
+;
 
-//TODO If-Recursion
-BlockIf:
-	'if' if=IfHeadAndBody (('else' 'if' elseifs+=IfHeadAndBody)* ('else' else=IfBody))?;
-
-IfHeadAndBody:
-	'(' head=IfHead ')' '{' body=IfBody '}';
-
-IfHead:
-	condition=ArithmeticExpression;
-
-IfBody:
-	commands=GenCommandBlock;
+ElseStatement:
+	{ElseStatement} '{'
+		(else += GeneratorExpression)*
+	'}'
+;
 
 SwitchCase:
 	'switch' '(' attribute=ParameterRefOrMethodCall ')' '{' (cases+=Case)+ default=Default;
 
 Default:
-	'default' ':' GeneratorCommand;
+	'default' ':' GeneratorExpression;
 
 Case:
 	'case' val=ArithmeticExpression ':' body=CaseBody;
 
 CaseBody:
-	'{' GenCommandBlock '}' | GeneratorCommand;
+	{CaseBody} '{' (expressions += GeneratorExpression)* '}' | expressions += GeneratorExpression;
 
 Collection:
 	List | Map;
