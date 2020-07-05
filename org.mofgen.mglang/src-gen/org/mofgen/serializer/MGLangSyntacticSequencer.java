@@ -10,7 +10,6 @@ import org.eclipse.xtext.IGrammarAccess;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.AbstractElementAlias;
-import org.eclipse.xtext.serializer.analysis.GrammarAlias.GroupAlias;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.TokenAlias;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynNavigable;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
@@ -21,22 +20,22 @@ import org.mofgen.services.MGLangGrammarAccess;
 public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected MGLangGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_BaseBoolean_LeftParenthesisKeyword_1_0_a;
-	protected AbstractElementAlias match_BaseBoolean_LeftParenthesisKeyword_1_0_p;
-	protected AbstractElementAlias match_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q;
+	protected AbstractElementAlias match_BaseExpr_LeftParenthesisKeyword_0_0_a;
+	protected AbstractElementAlias match_BaseExpr_LeftParenthesisKeyword_0_0_p;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (MGLangGrammarAccess) access;
-		match_BaseBoolean_LeftParenthesisKeyword_1_0_a = new TokenAlias(true, true, grammarAccess.getBaseBooleanAccess().getLeftParenthesisKeyword_1_0());
-		match_BaseBoolean_LeftParenthesisKeyword_1_0_p = new TokenAlias(true, false, grammarAccess.getBaseBooleanAccess().getLeftParenthesisKeyword_1_0());
-		match_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getGenPatternCallAccess().getLeftParenthesisKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getGenPatternCallAccess().getRightParenthesisKeyword_1_2()));
+		match_BaseExpr_LeftParenthesisKeyword_0_0_a = new TokenAlias(true, true, grammarAccess.getBaseExprAccess().getLeftParenthesisKeyword_0_0());
+		match_BaseExpr_LeftParenthesisKeyword_0_0_p = new TokenAlias(true, false, grammarAccess.getBaseExprAccess().getLeftParenthesisKeyword_0_0());
 	}
 	
 	@Override
 	protected String getUnassignedRuleCallToken(EObject semanticObject, RuleCall ruleCall, INode node) {
 		if (ruleCall.getRule() == grammarAccess.getASSIGNMENT_OPRule())
 			return getASSIGNMENT_OPToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getLiteralRule())
+			return getLiteralToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
@@ -50,18 +49,26 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 		return "=";
 	}
 	
+	/**
+	 * Literal:
+	 * 	BooleanLiteral | StringLiteral | NumberLiteral;
+	 */
+	protected String getLiteralToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "true";
+	}
+	
 	@Override
 	protected void emitUnassignedTokens(EObject semanticObject, ISynTransition transition, INode fromNode, INode toNode) {
 		if (transition.getAmbiguousSyntaxes().isEmpty()) return;
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if (match_BaseBoolean_LeftParenthesisKeyword_1_0_a.equals(syntax))
-				emit_BaseBoolean_LeftParenthesisKeyword_1_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_BaseBoolean_LeftParenthesisKeyword_1_0_p.equals(syntax))
-				emit_BaseBoolean_LeftParenthesisKeyword_1_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q.equals(syntax))
-				emit_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			if (match_BaseExpr_LeftParenthesisKeyword_0_0_a.equals(syntax))
+				emit_BaseExpr_LeftParenthesisKeyword_0_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_BaseExpr_LeftParenthesisKeyword_0_0_p.equals(syntax))
+				emit_BaseExpr_LeftParenthesisKeyword_0_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -71,14 +78,17 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     '('*
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) '!' '(' expr=BooleanExpression
-	 *     (rule start) (ambiguity) lhs=ParameterOrMethodCall
-	 *     (rule start) (ambiguity) value=Boolean
-	 *     (rule start) (ambiguity) {And.left=}
-	 *     (rule start) (ambiguity) {Or.left=}
-	 *     (rule start) (ambiguity) {Xor.left=}
+	 *     (rule start) (ambiguity) '!' expr=BaseExpr
+	 *     (rule start) (ambiguity) Literal (rule start)
+	 *     (rule start) (ambiguity) calledNode=[Node|ID]
+	 *     (rule start) (ambiguity) func=MathFunc
+	 *     (rule start) (ambiguity) ref=[Parameter|ID]
+	 *     (rule start) (ambiguity) {Primary.left=}
+	 *     (rule start) (ambiguity) {Rel.left=}
+	 *     (rule start) (ambiguity) {Secondary.left=}
+	 *     (rule start) (ambiguity) {Tertiary.left=}
 	 */
-	protected void emit_BaseBoolean_LeftParenthesisKeyword_1_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_BaseExpr_LeftParenthesisKeyword_0_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -87,22 +97,12 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     '('+
 	 *
 	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) {And.left=}
-	 *     (rule start) (ambiguity) {Or.left=}
-	 *     (rule start) (ambiguity) {Xor.left=}
+	 *     (rule start) (ambiguity) {Primary.left=}
+	 *     (rule start) (ambiguity) {Rel.left=}
+	 *     (rule start) (ambiguity) {Secondary.left=}
+	 *     (rule start) (ambiguity) {Tertiary.left=}
 	 */
-	protected void emit_BaseBoolean_LeftParenthesisKeyword_1_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     ('(' ')')?
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     calledPattern=[Pattern|ID] (ambiguity) (rule end)
-	 */
-	protected void emit_GenPatternCall___LeftParenthesisKeyword_1_0_RightParenthesisKeyword_1_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_BaseExpr_LeftParenthesisKeyword_0_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

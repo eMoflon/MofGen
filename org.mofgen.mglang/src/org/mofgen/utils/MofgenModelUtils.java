@@ -38,6 +38,8 @@ public class MofgenModelUtils {
 		file.getImports().forEach(i -> {
 			loadEcoreModel(i.getName()).ifPresent(m -> classes.addAll(getElements(m, EClass.class)));
 		});
+		
+
 		return classes;
 	}
 

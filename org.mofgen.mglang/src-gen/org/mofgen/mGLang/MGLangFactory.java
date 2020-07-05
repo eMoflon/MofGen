@@ -60,6 +60,15 @@ public interface MGLangFactory extends EFactory
   PatternReturn createPatternReturn();
 
   /**
+   * Returns a new object of class '<em>Param Manipulation</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Param Manipulation</em>'.
+   * @generated
+   */
+  ParamManipulation createParamManipulation();
+
+  /**
    * Returns a new object of class '<em>Node</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -69,13 +78,13 @@ public interface MGLangFactory extends EFactory
   Node createNode();
 
   /**
-   * Returns a new object of class '<em>Node Constructor</em>'.
+   * Returns a new object of class '<em>Node Content</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Node Constructor</em>'.
+   * @return a new object of class '<em>Node Content</em>'.
    * @generated
    */
-  NodeConstructor createNodeConstructor();
+  NodeContent createNodeContent();
 
   /**
    * Returns a new object of class '<em>Pattern Call</em>'.
@@ -141,22 +150,22 @@ public interface MGLangFactory extends EFactory
   PrimitiveParameter createPrimitiveParameter();
 
   /**
-   * Returns a new object of class '<em>Object Parameter</em>'.
+   * Returns a new object of class '<em>Parameter Node</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Object Parameter</em>'.
+   * @return a new object of class '<em>Parameter Node</em>'.
    * @generated
    */
-  ObjectParameter createObjectParameter();
+  ParameterNode createParameterNode();
 
   /**
-   * Returns a new object of class '<em>Parameter Or Method Call</em>'.
+   * Returns a new object of class '<em>Parameter Ref Or Method Call</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Parameter Or Method Call</em>'.
+   * @return a new object of class '<em>Parameter Ref Or Method Call</em>'.
    * @generated
    */
-  ParameterOrMethodCall createParameterOrMethodCall();
+  ParameterRefOrMethodCall createParameterRefOrMethodCall();
 
   /**
    * Returns a new object of class '<em>Parameter Ref</em>'.
@@ -177,40 +186,13 @@ public interface MGLangFactory extends EFactory
   MethodCall createMethodCall();
 
   /**
-   * Returns a new object of class '<em>Boolean Expression</em>'.
+   * Returns a new object of class '<em>Arithmetic Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Boolean Expression</em>'.
+   * @return a new object of class '<em>Arithmetic Expression</em>'.
    * @generated
    */
-  BooleanExpression createBooleanExpression();
-
-  /**
-   * Returns a new object of class '<em>Number Literal</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Number Literal</em>'.
-   * @generated
-   */
-  NumberLiteral createNumberLiteral();
-
-  /**
-   * Returns a new object of class '<em>String Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>String Expression</em>'.
-   * @generated
-   */
-  StringExpression createStringExpression();
-
-  /**
-   * Returns a new object of class '<em>STRING</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>STRING</em>'.
-   * @generated
-   */
-  STRING createSTRING();
+  ArithmeticExpression createArithmeticExpression();
 
   /**
    * Returns a new object of class '<em>Generator</em>'.
@@ -222,15 +204,6 @@ public interface MGLangFactory extends EFactory
   Generator createGenerator();
 
   /**
-   * Returns a new object of class '<em>Generator Element</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Generator Element</em>'.
-   * @generated
-   */
-  GeneratorElement createGeneratorElement();
-
-  /**
    * Returns a new object of class '<em>Generator Command</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -238,15 +211,6 @@ public interface MGLangFactory extends EFactory
    * @generated
    */
   GeneratorCommand createGeneratorCommand();
-
-  /**
-   * Returns a new object of class '<em>Gen Pattern Call</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Gen Pattern Call</em>'.
-   * @generated
-   */
-  GenPatternCall createGenPatternCall();
 
   /**
    * Returns a new object of class '<em>Pattern Object Creation</em>'.
@@ -267,31 +231,211 @@ public interface MGLangFactory extends EFactory
   PatternObject createPatternObject();
 
   /**
-   * Returns a new object of class '<em>For Loop</em>'.
+   * Returns a new object of class '<em>For Statement</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>For Loop</em>'.
+   * @return a new object of class '<em>For Statement</em>'.
    * @generated
    */
-  ForLoop createForLoop();
+  ForStatement createForStatement();
 
   /**
-   * Returns a new object of class '<em>For Condition</em>'.
+   * Returns a new object of class '<em>For Head</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>For Condition</em>'.
+   * @return a new object of class '<em>For Head</em>'.
    * @generated
    */
-  ForCondition createForCondition();
+  ForHead createForHead();
 
   /**
-   * Returns a new object of class '<em>For Each Collection</em>'.
+   * Returns a new object of class '<em>General For Head</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>For Each Collection</em>'.
+   * @return a new object of class '<em>General For Head</em>'.
    * @generated
    */
-  ForEachCollection createForEachCollection();
+  GeneralForHead createGeneralForHead();
+
+  /**
+   * Returns a new object of class '<em>For Each Head</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>For Each Head</em>'.
+   * @generated
+   */
+  ForEachHead createForEachHead();
+
+  /**
+   * Returns a new object of class '<em>Node Or Parameter Or Collection</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Node Or Parameter Or Collection</em>'.
+   * @generated
+   */
+  NodeOrParameterOrCollection createNodeOrParameterOrCollection();
+
+  /**
+   * Returns a new object of class '<em>For Body</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>For Body</em>'.
+   * @generated
+   */
+  ForBody createForBody();
+
+  /**
+   * Returns a new object of class '<em>If Statement</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>If Statement</em>'.
+   * @generated
+   */
+  IfStatement createIfStatement();
+
+  /**
+   * Returns a new object of class '<em>Single Line If</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Single Line If</em>'.
+   * @generated
+   */
+  SingleLineIf createSingleLineIf();
+
+  /**
+   * Returns a new object of class '<em>Gen Command Block</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Gen Command Block</em>'.
+   * @generated
+   */
+  GenCommandBlock createGenCommandBlock();
+
+  /**
+   * Returns a new object of class '<em>Block If</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Block If</em>'.
+   * @generated
+   */
+  BlockIf createBlockIf();
+
+  /**
+   * Returns a new object of class '<em>If Head And Body</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>If Head And Body</em>'.
+   * @generated
+   */
+  IfHeadAndBody createIfHeadAndBody();
+
+  /**
+   * Returns a new object of class '<em>If Head</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>If Head</em>'.
+   * @generated
+   */
+  IfHead createIfHead();
+
+  /**
+   * Returns a new object of class '<em>If Body</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>If Body</em>'.
+   * @generated
+   */
+  IfBody createIfBody();
+
+  /**
+   * Returns a new object of class '<em>Switch Case</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Switch Case</em>'.
+   * @generated
+   */
+  SwitchCase createSwitchCase();
+
+  /**
+   * Returns a new object of class '<em>Default</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Default</em>'.
+   * @generated
+   */
+  Default createDefault();
+
+  /**
+   * Returns a new object of class '<em>Case</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Case</em>'.
+   * @generated
+   */
+  Case createCase();
+
+  /**
+   * Returns a new object of class '<em>Case Body</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Case Body</em>'.
+   * @generated
+   */
+  CaseBody createCaseBody();
+
+  /**
+   * Returns a new object of class '<em>Collection</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Collection</em>'.
+   * @generated
+   */
+  Collection createCollection();
+
+  /**
+   * Returns a new object of class '<em>List</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>List</em>'.
+   * @generated
+   */
+  List createList();
+
+  /**
+   * Returns a new object of class '<em>List Ad Hoc</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>List Ad Hoc</em>'.
+   * @generated
+   */
+  ListAdHoc createListAdHoc();
+
+  /**
+   * Returns a new object of class '<em>Map</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Map</em>'.
+   * @generated
+   */
+  Map createMap();
+
+  /**
+   * Returns a new object of class '<em>Map Ad Hoc</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Map Ad Hoc</em>'.
+   * @generated
+   */
+  MapAdHoc createMapAdHoc();
+
+  /**
+   * Returns a new object of class '<em>Map Tupel</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Map Tupel</em>'.
+   * @generated
+   */
+  MapTupel createMapTupel();
 
   /**
    * Returns a new object of class '<em>For Range</em>'.
@@ -303,58 +447,67 @@ public interface MGLangFactory extends EFactory
   ForRange createForRange();
 
   /**
-   * Returns a new object of class '<em>Or</em>'.
+   * Returns a new object of class '<em>Tertiary</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Or</em>'.
+   * @return a new object of class '<em>Tertiary</em>'.
    * @generated
    */
-  Or createOr();
+  Tertiary createTertiary();
 
   /**
-   * Returns a new object of class '<em>Xor</em>'.
+   * Returns a new object of class '<em>Secondary</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Xor</em>'.
+   * @return a new object of class '<em>Secondary</em>'.
    * @generated
    */
-  Xor createXor();
+  Secondary createSecondary();
 
   /**
-   * Returns a new object of class '<em>And</em>'.
+   * Returns a new object of class '<em>Primary</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>And</em>'.
+   * @return a new object of class '<em>Primary</em>'.
    * @generated
    */
-  And createAnd();
+  Primary createPrimary();
 
   /**
-   * Returns a new object of class '<em>Negated Boolean</em>'.
+   * Returns a new object of class '<em>Rel</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Negated Boolean</em>'.
+   * @return a new object of class '<em>Rel</em>'.
    * @generated
    */
-  NegatedBoolean createNegatedBoolean();
+  Rel createRel();
 
   /**
-   * Returns a new object of class '<em>Boolean Literal</em>'.
+   * Returns a new object of class '<em>Negation Expression</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Boolean Literal</em>'.
+   * @return a new object of class '<em>Negation Expression</em>'.
    * @generated
    */
-  BooleanLiteral createBooleanLiteral();
+  NegationExpression createNegationExpression();
 
   /**
-   * Returns a new object of class '<em>Concat</em>'.
+   * Returns a new object of class '<em>Function Call</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Concat</em>'.
+   * @return a new object of class '<em>Function Call</em>'.
    * @generated
    */
-  Concat createConcat();
+  FunctionCall createFunctionCall();
+
+  /**
+   * Returns a new object of class '<em>Literal</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Literal</em>'.
+   * @generated
+   */
+  Literal createLiteral();
 
   /**
    * Returns the package supported by this factory.

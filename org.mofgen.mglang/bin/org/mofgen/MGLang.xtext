@@ -3,7 +3,6 @@ grammar org.mofgen.MGLang with org.eclipse.xtext.common.Terminals
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate mGLang "http://www.mofgen.org/MGLang"
 
-// TODO: Arithmetics von Re.action auslagern und dann mit in eMoflon-Projekt packen und importieren, wo es benötigt wird?
 MofgenFile:
 	(imports+=Import)*
 	(patterns+=Pattern |
@@ -14,128 +13,101 @@ Import:
 
 Pattern:
 //(abstract?='abstract')? // 'Abstract' necessary? TODO
-	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (nodes+=Node)* '}'
-	(return=PatternReturn)?;
+	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (((colls+=Collection)*)? & ((nodes+=Node)*)? & ((paramManipulations+=ParamManipulation)*)?)'}' (return=PatternReturn)?;
 
 PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
 
-Node:
-	type=[ecore::EClass] name=ID (createdBy=(NodeConstructor | PatternCall))?;
+ParamManipulation:
+	param=[ParameterNode] content=NodeContent
+;
 
-NodeConstructor:
-	{NodeConstructor} '{' (refsAssigns+=NodeReferenceOrAssignment)* '}';
+Node:
+	type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP createdBy=PatternCall))?;
+
+NodeContent:
+	{NodeContent} '{' (refsAssigns+=NodeReferenceOrAssignment)* '}';
 
 PatternCall:
-	called=[Pattern] '(' (params+=StringExpression)* ')';
+	called=[Pattern] '(' (params+=ArithmeticExpression)* ')';
 
 NodeReferenceOrAssignment:
-	(PatternNodeReference | Assignment) ('[' condition=BooleanExpression ']')?;
+	(PatternNodeReference | Assignment) ('[' condition=ArithmeticExpression ']')?;
 
 PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
-	//TODO: "doc -entries-> entry" fügt einen entry in entries hinzu oder weist entries objekt entry zu? Das führt zu zweideutigkeiten so
 
 Assignment:
-	target=[ecore::EAttribute] ASSIGNMENT_OP value=StringExpression;
+	target=[ecore::EAttribute] ASSIGNMENT_OP value=ArithmeticExpression;
 	//TODO make Enum Assignments possible
 
 NodeAttributeCall:
 	node=[Node] '.' attribute=[ecore::EAttribute];
 
 Parameter:
-	PrimitiveParameter | ObjectParameter
-;
+	PrimitiveParameter | ParameterNode;
 
 PrimitiveParameter:
-	type=PrimitiveType name=ID
-;
+	type=PrimitiveType name=ID;
 
-ObjectParameter:
-	type=[ecore::EClassifier] name=ID
-;
+ParameterNode:
+	type=[ecore::EClassifier] name=ID;
 
-ParameterOrMethodCall:
-	ParameterRef | MethodCall
-;
+ParameterRefOrMethodCall:
+	ParameterRef | MethodCall;
 
 ParameterRef:
 	ref=[Parameter] //TODO Scoping
 ;
 
 MethodCall: //TODO Scoping
-	calledNode=[Node] '.' method=[ecore::EOperation]
-;
+	calledNode=[Node] '.' method=[ecore::EOperation];
 
+ArithmeticExpression:
+	TertiaryExpression;
 
-BooleanExpression:
-	BooleanOr
-;
+TertiaryExpression returns ArithmeticExpression:
+	SecondaryExpression ({Tertiary.left=current} op=TertiaryOp right=SecondaryExpression)*;
 
-RelationExpression returns BooleanExpression:
-	lhs=ParameterOrMethodCall relation=RelationalOp rhs=ParameterOrMethodCall
-;
+SecondaryExpression returns ArithmeticExpression:
+	PrimaryExpr ({Secondary.left=current} op=SecondaryOp right=PrimaryExpr)*;
 
-BooleanOr returns BooleanExpression:
-	BooleanXor ({Or.left=current} '||' right=(BooleanXor))*
-;
+PrimaryExpr returns ArithmeticExpression:
+	RelationExpression ({Primary.left=current} op=PrimaryOp right=RelationExpression)*;
 
-BooleanXor returns BooleanExpression:
-	BooleanAnd ({Xor.left=current} '^' right=(BooleanAnd))*
-;
+RelationExpression returns ArithmeticExpression:
+	BaseExpr ({Rel.left=current} relation=RelationalOp right=BaseExpr)*;
 
-BooleanAnd returns BooleanExpression:
-	BaseBoolean ({And.left=current} '&&' right=(BaseBoolean))*
-;
+BaseExpr returns ArithmeticExpression:
+	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '(' expr=ArithmeticExpression ')' | {Literal} Literal |
+	ParameterRefOrMethodCall;
 
-BaseBoolean returns BooleanExpression:
-	{NegatedBoolean} '!' '(' expr=BooleanExpression ')' | '(' BooleanExpression ')' | {BooleanLiteral} value=Boolean | RelationExpression
-;
+Literal:
+	BooleanLiteral | StringLiteral | NumberLiteral;
 
+BooleanLiteral returns ecore::EBoolean:
+	TRUE | FALSE;
 
-enum Boolean:
-	TRUE='true' | FALSE='false'
-;
+StringLiteral returns ecore::EString:
+	STRING;
 
-NumberLiteral:
-	value=NUMBER
-;
-	
-@Override
-terminal INT returns ecore::EInt: ('0'..'9')+;
-
-terminal NUMBER:
-	('-')? INT ('.' INT)?
-;
-
-StringExpression:
-	StringConcatenation
-;
-
-StringConcatenation returns STRING:
-	StringLiteral ({Concat.left=current} '+' right=StringConcatenation)?
-;
-
-StringLiteral returns STRING:
-	value=STRING
-;
+NumberLiteral returns ecore::EDouble:
+	INT ('.' INT)?; //TODO: Negative Numbers?
+enum MathFunc:
+	SQRT='sqrt' | ABS='abs';
 
 enum PrimitiveType:
-	INT='int' | CHAR='char' | DOUBLE = 'double'
+	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' //TODO: String as Primitive? (and therefore also better lowercase?)
 ;
 
 Generator:
 	{Generator} 'gen' '('
-	// TODO	
-	')' '{' (commands+=GeneratorElement)* '}';
+	(params+=Parameter)*
+	')' '{' (commands+=GeneratorCommand)* '}';
 
-GeneratorElement:
-	GeneratorCommand | ForLoop;
-
+	//TODO Wie hier patterns wie "examplePattern" und PatternObjects dazu mittels "ExamplePattern" ermöglichen? Eventuell in Scoping einklinken, alle Patterns holen und dann in PatternObject übersetzen?
 GeneratorCommand: //Only serves as super class for all possible commands within generator
-	PatternCall | PatternObjectCreation; //TODO Wie hier patterns wie "examplePattern" und PatternObjects dazu mittels "ExamplePattern" ermöglichen? Eventuell in Scoping einklinken, alle Patterns holen und dann in PatternObject übersetzen?
-GenPatternCall:
-	calledPattern=[Pattern] ('(' (params+=PatternObject)* ')')?;
+	ForStatement | IfStatement | SwitchCase | Collection | PatternCall | PatternObjectCreation;
 
 PatternObjectCreation:
 	pObject=PatternObject ASSIGNMENT_OP patternCall=PatternCall;
@@ -143,19 +115,86 @@ PatternObjectCreation:
 PatternObject:
 	type=[Pattern] name=ID;
 
-ForLoop:
-	'for' iteratorVar=ID 'in' iteratingCondition=ForCondition '{'
-	(commands+=GeneratorCommand)*
-	'}';
+ForStatement:
+	'for' head=ForHead '{' body=ForBody '}';
 
-ForCondition:
-	ForEachCollection | ForRange;
+ForHead:
+	GeneralForHead | ForEachHead;
 
-ForEachCollection:
-	coll=NodeAttributeCall;
+GeneralForHead:
+	iteratorVar=ID 'in' range=ForRange;
+
+ForEachHead:
+	src=[NodeOrParameterOrCollection] '-' ref=[ecore::EReference] '->' iteratorVar=ID;
+
+NodeOrParameterOrCollection:
+	Node | Parameter | Collection;
+
+ForBody:
+	GenCommandBlock;
+
+IfStatement:
+	SingleLineIf //| BlockIf
+;
+
+SingleLineIf:
+	'if' '(' condition=ArithmeticExpression ')' command=GeneratorCommand;
+
+GenCommandBlock:
+	{GenCommandBlock} (commands+=GeneratorCommand)*;
+
+//TODO If-Recursion
+BlockIf:
+	'if' if=IfHeadAndBody (('else' 'if' elseifs+=IfHeadAndBody)* ('else' else=IfBody))?;
+
+IfHeadAndBody:
+	'(' head=IfHead ')' '{' body=IfBody '}';
+
+IfHead:
+	condition=ArithmeticExpression;
+
+IfBody:
+	commands=GenCommandBlock;
+
+SwitchCase:
+	'switch' '(' attribute=ParameterRefOrMethodCall ')' '{' (cases+=Case)+ default=Default;
+
+Default:
+	'default' ':' GeneratorCommand;
+
+Case:
+	'case' val=ArithmeticExpression ':' body=CaseBody;
+
+CaseBody:
+	'{' GenCommandBlock '}' | GeneratorCommand;
+
+Collection:
+	List | Map;
+
+List:
+	'List' name=ID (ASSIGNMENT_OP ListAdHoc);
+
+ListAdHoc:
+	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
+;
+
+Map:
+	'Map' name=ID (ASSIGNMENT_OP MapAdHoc);
+
+MapAdHoc:
+	'[' entries+=MapTupel (',' entries+=MapTupel)* ']';
+
+MapTupel:
+	'(' key=Literal ',' value=ArithmeticExpression ')';
 
 ForRange:
 	start=INT ':' end=INT;
+
+terminal TRUE returns ecore::EBoolean:
+	'true';
+
+terminal FALSE returns ecore::EBoolean:
+	'false';
 
 enum RelationalOp:
 	GREATER='>' |
@@ -165,5 +204,22 @@ enum RelationalOp:
 	SMALLER_OR_EQUAL='<=' |
 	SMALLER='<';
 
+enum TertiaryOp:
+	PLUS='+' |
+	MINUS='-' |
+	OR='||';
+
+enum SecondaryOp:
+	MOD='%' |
+	XOR='^';
+
+enum PrimaryOp:
+	MUL='*' |
+	DIV='/' |
+	AND='&&';
+
 terminal ASSIGNMENT_OP:
 	'=';
+
+terminal NEWLINE:
+	'\n';

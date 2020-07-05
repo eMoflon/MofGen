@@ -11,46 +11,68 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
-import org.mofgen.mGLang.And;
+import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.Assignment;
-import org.mofgen.mGLang.BooleanExpression;
-import org.mofgen.mGLang.BooleanLiteral;
-import org.mofgen.mGLang.Concat;
-import org.mofgen.mGLang.ForCondition;
-import org.mofgen.mGLang.ForEachCollection;
-import org.mofgen.mGLang.ForLoop;
+import org.mofgen.mGLang.BlockIf;
+import org.mofgen.mGLang.Case;
+import org.mofgen.mGLang.CaseBody;
+import org.mofgen.mGLang.Collection;
+import org.mofgen.mGLang.Default;
+import org.mofgen.mGLang.ForBody;
+import org.mofgen.mGLang.ForEachHead;
+import org.mofgen.mGLang.ForHead;
 import org.mofgen.mGLang.ForRange;
-import org.mofgen.mGLang.GenPatternCall;
+import org.mofgen.mGLang.ForStatement;
+import org.mofgen.mGLang.FunctionCall;
+import org.mofgen.mGLang.GenCommandBlock;
+import org.mofgen.mGLang.GeneralForHead;
 import org.mofgen.mGLang.Generator;
 import org.mofgen.mGLang.GeneratorCommand;
-import org.mofgen.mGLang.GeneratorElement;
+import org.mofgen.mGLang.IfBody;
+import org.mofgen.mGLang.IfHead;
+import org.mofgen.mGLang.IfHeadAndBody;
+import org.mofgen.mGLang.IfStatement;
 import org.mofgen.mGLang.Import;
+import org.mofgen.mGLang.List;
+import org.mofgen.mGLang.ListAdHoc;
+import org.mofgen.mGLang.Literal;
 import org.mofgen.mGLang.MGLangFactory;
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.Map;
+import org.mofgen.mGLang.MapAdHoc;
+import org.mofgen.mGLang.MapTupel;
+import org.mofgen.mGLang.MathFunc;
 import org.mofgen.mGLang.MethodCall;
 import org.mofgen.mGLang.MofgenFile;
-import org.mofgen.mGLang.NegatedBoolean;
+import org.mofgen.mGLang.NegationExpression;
 import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.NodeAttributeCall;
-import org.mofgen.mGLang.NodeConstructor;
+import org.mofgen.mGLang.NodeContent;
+import org.mofgen.mGLang.NodeOrParameterOrCollection;
 import org.mofgen.mGLang.NodeReferenceOrAssignment;
-import org.mofgen.mGLang.NumberLiteral;
-import org.mofgen.mGLang.ObjectParameter;
-import org.mofgen.mGLang.Or;
+import org.mofgen.mGLang.ParamManipulation;
 import org.mofgen.mGLang.Parameter;
-import org.mofgen.mGLang.ParameterOrMethodCall;
+import org.mofgen.mGLang.ParameterNode;
 import org.mofgen.mGLang.ParameterRef;
+import org.mofgen.mGLang.ParameterRefOrMethodCall;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternCall;
 import org.mofgen.mGLang.PatternNodeReference;
 import org.mofgen.mGLang.PatternObject;
 import org.mofgen.mGLang.PatternObjectCreation;
 import org.mofgen.mGLang.PatternReturn;
+import org.mofgen.mGLang.Primary;
+import org.mofgen.mGLang.PrimaryOp;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.mGLang.PrimitiveType;
+import org.mofgen.mGLang.Rel;
 import org.mofgen.mGLang.RelationalOp;
-import org.mofgen.mGLang.StringExpression;
-import org.mofgen.mGLang.Xor;
+import org.mofgen.mGLang.Secondary;
+import org.mofgen.mGLang.SecondaryOp;
+import org.mofgen.mGLang.SingleLineIf;
+import org.mofgen.mGLang.SwitchCase;
+import org.mofgen.mGLang.Tertiary;
+import org.mofgen.mGLang.TertiaryOp;
 
 /**
  * <!-- begin-user-doc -->
@@ -93,6 +115,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass paramManipulationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass nodeEClass = null;
 
   /**
@@ -100,7 +129,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass nodeConstructorEClass = null;
+  private EClass nodeContentEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -156,14 +185,14 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass objectParameterEClass = null;
+  private EClass parameterNodeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass parameterOrMethodCallEClass = null;
+  private EClass parameterRefOrMethodCallEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -184,28 +213,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass booleanExpressionEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass numberLiteralEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass stringExpressionEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass stringEClass = null;
+  private EClass arithmeticExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -219,21 +227,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass generatorElementEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass generatorCommandEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass genPatternCallEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -254,21 +248,161 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass forLoopEClass = null;
+  private EClass forStatementEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass forConditionEClass = null;
+  private EClass forHeadEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass forEachCollectionEClass = null;
+  private EClass generalForHeadEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass forEachHeadEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass nodeOrParameterOrCollectionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass forBodyEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ifStatementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass singleLineIfEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass genCommandBlockEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass blockIfEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ifHeadAndBodyEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ifHeadEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ifBodyEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass switchCaseEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass defaultEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass caseEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass caseBodyEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass collectionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass listEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass listAdHocEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass mapEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass mapAdHocEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass mapTupelEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -282,49 +416,56 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass orEClass = null;
+  private EClass tertiaryEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass xorEClass = null;
+  private EClass secondaryEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass andEClass = null;
+  private EClass primaryEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass negatedBooleanEClass = null;
+  private EClass relEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass booleanLiteralEClass = null;
+  private EClass negationExpressionEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass concatEClass = null;
+  private EClass functionCallEClass = null;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  private EEnum booleanEEnum = null;
+  private EClass literalEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum mathFuncEEnum = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -339,6 +480,27 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   private EEnum relationalOpEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum tertiaryOpEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum secondaryOpEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum primaryOpEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -519,7 +681,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getPattern_Nodes()
+  public EReference getPattern_Colls()
   {
     return (EReference)patternEClass.getEStructuralFeatures().get(2);
   }
@@ -530,9 +692,31 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getPattern_Return()
+  public EReference getPattern_Nodes()
   {
     return (EReference)patternEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getPattern_ParamManipulations()
+  {
+    return (EReference)patternEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getPattern_Return()
+  {
+    return (EReference)patternEClass.getEStructuralFeatures().get(5);
   }
 
   /**
@@ -563,6 +747,39 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
+  public EClass getParamManipulation()
+  {
+    return paramManipulationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getParamManipulation_Param()
+  {
+    return (EReference)paramManipulationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getParamManipulation_Content()
+  {
+    return (EReference)paramManipulationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getNode()
   {
     return nodeEClass;
@@ -585,20 +802,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getNode_Name()
-  {
-    return (EAttribute)nodeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EReference getNode_CreatedBy()
   {
-    return (EReference)nodeEClass.getEStructuralFeatures().get(2);
+    return (EReference)nodeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -607,9 +813,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getNodeConstructor()
+  public EClass getNodeContent()
   {
-    return nodeConstructorEClass;
+    return nodeContentEClass;
   }
 
   /**
@@ -618,9 +824,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getNodeConstructor_RefsAssigns()
+  public EReference getNodeContent_RefsAssigns()
   {
-    return (EReference)nodeConstructorEClass.getEStructuralFeatures().get(0);
+    return (EReference)nodeContentEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -794,17 +1000,6 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getParameter_Name()
-  {
-    return (EAttribute)parameterEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EClass getPrimitiveParameter()
   {
     return primitiveParameterEClass;
@@ -827,9 +1022,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getObjectParameter()
+  public EClass getParameterNode()
   {
-    return objectParameterEClass;
+    return parameterNodeEClass;
   }
 
   /**
@@ -838,9 +1033,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getObjectParameter_Type()
+  public EReference getParameterNode_Type()
   {
-    return (EReference)objectParameterEClass.getEStructuralFeatures().get(0);
+    return (EReference)parameterNodeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -849,9 +1044,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getParameterOrMethodCall()
+  public EClass getParameterRefOrMethodCall()
   {
-    return parameterOrMethodCallEClass;
+    return parameterRefOrMethodCallEClass;
   }
 
   /**
@@ -915,97 +1110,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getBooleanExpression()
+  public EClass getArithmeticExpression()
   {
-    return booleanExpressionEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getBooleanExpression_Lhs()
-  {
-    return (EReference)booleanExpressionEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getBooleanExpression_Relation()
-  {
-    return (EAttribute)booleanExpressionEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getBooleanExpression_Rhs()
-  {
-    return (EReference)booleanExpressionEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getNumberLiteral()
-  {
-    return numberLiteralEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getNumberLiteral_Value()
-  {
-    return (EAttribute)numberLiteralEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getStringExpression()
-  {
-    return stringExpressionEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getSTRING()
-  {
-    return stringEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EAttribute getSTRING_Value()
-  {
-    return (EAttribute)stringEClass.getEStructuralFeatures().get(0);
+    return arithmeticExpressionEClass;
   }
 
   /**
@@ -1025,7 +1132,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getGenerator_Commands()
+  public EReference getGenerator_Params()
   {
     return (EReference)generatorEClass.getEStructuralFeatures().get(0);
   }
@@ -1036,9 +1143,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getGeneratorElement()
+  public EReference getGenerator_Commands()
   {
-    return generatorElementEClass;
+    return (EReference)generatorEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1050,39 +1157,6 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
   public EClass getGeneratorCommand()
   {
     return generatorCommandEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EClass getGenPatternCall()
-  {
-    return genPatternCallEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getGenPatternCall_CalledPattern()
-  {
-    return (EReference)genPatternCallEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getGenPatternCall_Params()
-  {
-    return (EReference)genPatternCallEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1157,9 +1231,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getForLoop()
+  public EClass getForStatement()
   {
-    return forLoopEClass;
+    return forStatementEClass;
   }
 
   /**
@@ -1168,9 +1242,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getForLoop_IteratorVar()
+  public EReference getForStatement_Head()
   {
-    return (EAttribute)forLoopEClass.getEStructuralFeatures().get(0);
+    return (EReference)forStatementEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1179,9 +1253,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getForLoop_IteratingCondition()
+  public EReference getForStatement_Body()
   {
-    return (EReference)forLoopEClass.getEStructuralFeatures().get(1);
+    return (EReference)forStatementEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1190,9 +1264,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getForLoop_Commands()
+  public EClass getForHead()
   {
-    return (EReference)forLoopEClass.getEStructuralFeatures().get(2);
+    return forHeadEClass;
   }
 
   /**
@@ -1201,9 +1275,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getForCondition()
+  public EAttribute getForHead_IteratorVar()
   {
-    return forConditionEClass;
+    return (EAttribute)forHeadEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1212,9 +1286,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getForEachCollection()
+  public EClass getGeneralForHead()
   {
-    return forEachCollectionEClass;
+    return generalForHeadEClass;
   }
 
   /**
@@ -1223,9 +1297,471 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getForEachCollection_Coll()
+  public EReference getGeneralForHead_Range()
   {
-    return (EReference)forEachCollectionEClass.getEStructuralFeatures().get(0);
+    return (EReference)generalForHeadEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getForEachHead()
+  {
+    return forEachHeadEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getForEachHead_Src()
+  {
+    return (EReference)forEachHeadEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getForEachHead_Ref()
+  {
+    return (EReference)forEachHeadEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getNodeOrParameterOrCollection()
+  {
+    return nodeOrParameterOrCollectionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getNodeOrParameterOrCollection_Name()
+  {
+    return (EAttribute)nodeOrParameterOrCollectionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getForBody()
+  {
+    return forBodyEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getIfStatement()
+  {
+    return ifStatementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getSingleLineIf()
+  {
+    return singleLineIfEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSingleLineIf_Condition()
+  {
+    return (EReference)singleLineIfEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSingleLineIf_Command()
+  {
+    return (EReference)singleLineIfEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getGenCommandBlock()
+  {
+    return genCommandBlockEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getGenCommandBlock_Commands()
+  {
+    return (EReference)genCommandBlockEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getBlockIf()
+  {
+    return blockIfEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getBlockIf_If()
+  {
+    return (EReference)blockIfEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getBlockIf_Elseifs()
+  {
+    return (EReference)blockIfEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getBlockIf_Else()
+  {
+    return (EReference)blockIfEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getIfHeadAndBody()
+  {
+    return ifHeadAndBodyEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getIfHeadAndBody_Head()
+  {
+    return (EReference)ifHeadAndBodyEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getIfHeadAndBody_Body()
+  {
+    return (EReference)ifHeadAndBodyEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getIfHead()
+  {
+    return ifHeadEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getIfHead_Condition()
+  {
+    return (EReference)ifHeadEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getIfBody()
+  {
+    return ifBodyEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getIfBody_Commands()
+  {
+    return (EReference)ifBodyEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getSwitchCase()
+  {
+    return switchCaseEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSwitchCase_Attribute()
+  {
+    return (EReference)switchCaseEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSwitchCase_Cases()
+  {
+    return (EReference)switchCaseEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getSwitchCase_Default()
+  {
+    return (EReference)switchCaseEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getDefault()
+  {
+    return defaultEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getCase()
+  {
+    return caseEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getCase_Val()
+  {
+    return (EReference)caseEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getCase_Body()
+  {
+    return (EReference)caseEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getCaseBody()
+  {
+    return caseBodyEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getCollection()
+  {
+    return collectionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getList()
+  {
+    return listEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getListAdHoc()
+  {
+    return listAdHocEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getListAdHoc_Elements()
+  {
+    return (EAttribute)listAdHocEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getMap()
+  {
+    return mapEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getMapAdHoc()
+  {
+    return mapAdHocEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getMapAdHoc_Entries()
+  {
+    return (EReference)mapAdHocEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getMapTupel()
+  {
+    return mapTupelEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getMapTupel_Key()
+  {
+    return (EAttribute)mapTupelEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getMapTupel_Value()
+  {
+    return (EReference)mapTupelEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1267,9 +1803,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getOr()
+  public EClass getTertiary()
   {
-    return orEClass;
+    return tertiaryEClass;
   }
 
   /**
@@ -1278,9 +1814,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getOr_Left()
+  public EReference getTertiary_Left()
   {
-    return (EReference)orEClass.getEStructuralFeatures().get(0);
+    return (EReference)tertiaryEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1289,9 +1825,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getOr_Right()
+  public EAttribute getTertiary_Op()
   {
-    return (EReference)orEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)tertiaryEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1300,9 +1836,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getXor()
+  public EReference getTertiary_Right()
   {
-    return xorEClass;
+    return (EReference)tertiaryEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1311,9 +1847,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getXor_Left()
+  public EClass getSecondary()
   {
-    return (EReference)xorEClass.getEStructuralFeatures().get(0);
+    return secondaryEClass;
   }
 
   /**
@@ -1322,9 +1858,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getXor_Right()
+  public EReference getSecondary_Left()
   {
-    return (EReference)xorEClass.getEStructuralFeatures().get(1);
+    return (EReference)secondaryEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1333,9 +1869,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getAnd()
+  public EAttribute getSecondary_Op()
   {
-    return andEClass;
+    return (EAttribute)secondaryEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1344,9 +1880,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getAnd_Left()
+  public EReference getSecondary_Right()
   {
-    return (EReference)andEClass.getEStructuralFeatures().get(0);
+    return (EReference)secondaryEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1355,9 +1891,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getAnd_Right()
+  public EClass getPrimary()
   {
-    return (EReference)andEClass.getEStructuralFeatures().get(1);
+    return primaryEClass;
   }
 
   /**
@@ -1366,9 +1902,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getNegatedBoolean()
+  public EReference getPrimary_Left()
   {
-    return negatedBooleanEClass;
+    return (EReference)primaryEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1377,9 +1913,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getNegatedBoolean_Expr()
+  public EAttribute getPrimary_Op()
   {
-    return (EReference)negatedBooleanEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)primaryEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1388,9 +1924,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getBooleanLiteral()
+  public EReference getPrimary_Right()
   {
-    return booleanLiteralEClass;
+    return (EReference)primaryEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1399,9 +1935,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getBooleanLiteral_Value()
+  public EClass getRel()
   {
-    return (EAttribute)booleanLiteralEClass.getEStructuralFeatures().get(0);
+    return relEClass;
   }
 
   /**
@@ -1410,9 +1946,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getConcat()
+  public EReference getRel_Left()
   {
-    return concatEClass;
+    return (EReference)relEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1421,9 +1957,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getConcat_Left()
+  public EAttribute getRel_Relation()
   {
-    return (EReference)concatEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)relEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1432,9 +1968,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getConcat_Right()
+  public EReference getRel_Right()
   {
-    return (EReference)concatEClass.getEStructuralFeatures().get(1);
+    return (EReference)relEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1443,9 +1979,75 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EEnum getBoolean()
+  public EClass getNegationExpression()
   {
-    return booleanEEnum;
+    return negationExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getNegationExpression_Expr()
+  {
+    return (EReference)negationExpressionEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getFunctionCall()
+  {
+    return functionCallEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getFunctionCall_Func()
+  {
+    return (EAttribute)functionCallEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getFunctionCall_Expr()
+  {
+    return (EReference)functionCallEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getLiteral()
+  {
+    return literalEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EEnum getMathFunc()
+  {
+    return mathFuncEEnum;
   }
 
   /**
@@ -1468,6 +2070,39 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
   public EEnum getRelationalOp()
   {
     return relationalOpEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EEnum getTertiaryOp()
+  {
+    return tertiaryOpEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EEnum getSecondaryOp()
+  {
+    return secondaryOpEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EEnum getPrimaryOp()
+  {
+    return primaryOpEEnum;
   }
 
   /**
@@ -1513,19 +2148,24 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     patternEClass = createEClass(PATTERN);
     createEAttribute(patternEClass, PATTERN__NAME);
     createEReference(patternEClass, PATTERN__PARAMETERS);
+    createEReference(patternEClass, PATTERN__COLLS);
     createEReference(patternEClass, PATTERN__NODES);
+    createEReference(patternEClass, PATTERN__PARAM_MANIPULATIONS);
     createEReference(patternEClass, PATTERN__RETURN);
 
     patternReturnEClass = createEClass(PATTERN_RETURN);
     createEReference(patternReturnEClass, PATTERN_RETURN__RETURN_VALUE);
 
+    paramManipulationEClass = createEClass(PARAM_MANIPULATION);
+    createEReference(paramManipulationEClass, PARAM_MANIPULATION__PARAM);
+    createEReference(paramManipulationEClass, PARAM_MANIPULATION__CONTENT);
+
     nodeEClass = createEClass(NODE);
     createEReference(nodeEClass, NODE__TYPE);
-    createEAttribute(nodeEClass, NODE__NAME);
     createEReference(nodeEClass, NODE__CREATED_BY);
 
-    nodeConstructorEClass = createEClass(NODE_CONSTRUCTOR);
-    createEReference(nodeConstructorEClass, NODE_CONSTRUCTOR__REFS_ASSIGNS);
+    nodeContentEClass = createEClass(NODE_CONTENT);
+    createEReference(nodeContentEClass, NODE_CONTENT__REFS_ASSIGNS);
 
     patternCallEClass = createEClass(PATTERN_CALL);
     createEReference(patternCallEClass, PATTERN_CALL__CALLED);
@@ -1547,15 +2187,14 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(nodeAttributeCallEClass, NODE_ATTRIBUTE_CALL__ATTRIBUTE);
 
     parameterEClass = createEClass(PARAMETER);
-    createEAttribute(parameterEClass, PARAMETER__NAME);
 
     primitiveParameterEClass = createEClass(PRIMITIVE_PARAMETER);
     createEAttribute(primitiveParameterEClass, PRIMITIVE_PARAMETER__TYPE);
 
-    objectParameterEClass = createEClass(OBJECT_PARAMETER);
-    createEReference(objectParameterEClass, OBJECT_PARAMETER__TYPE);
+    parameterNodeEClass = createEClass(PARAMETER_NODE);
+    createEReference(parameterNodeEClass, PARAMETER_NODE__TYPE);
 
-    parameterOrMethodCallEClass = createEClass(PARAMETER_OR_METHOD_CALL);
+    parameterRefOrMethodCallEClass = createEClass(PARAMETER_REF_OR_METHOD_CALL);
 
     parameterRefEClass = createEClass(PARAMETER_REF);
     createEReference(parameterRefEClass, PARAMETER_REF__REF);
@@ -1564,29 +2203,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(methodCallEClass, METHOD_CALL__CALLED_NODE);
     createEReference(methodCallEClass, METHOD_CALL__METHOD);
 
-    booleanExpressionEClass = createEClass(BOOLEAN_EXPRESSION);
-    createEReference(booleanExpressionEClass, BOOLEAN_EXPRESSION__LHS);
-    createEAttribute(booleanExpressionEClass, BOOLEAN_EXPRESSION__RELATION);
-    createEReference(booleanExpressionEClass, BOOLEAN_EXPRESSION__RHS);
-
-    numberLiteralEClass = createEClass(NUMBER_LITERAL);
-    createEAttribute(numberLiteralEClass, NUMBER_LITERAL__VALUE);
-
-    stringExpressionEClass = createEClass(STRING_EXPRESSION);
-
-    stringEClass = createEClass(STRING);
-    createEAttribute(stringEClass, STRING__VALUE);
+    arithmeticExpressionEClass = createEClass(ARITHMETIC_EXPRESSION);
 
     generatorEClass = createEClass(GENERATOR);
+    createEReference(generatorEClass, GENERATOR__PARAMS);
     createEReference(generatorEClass, GENERATOR__COMMANDS);
 
-    generatorElementEClass = createEClass(GENERATOR_ELEMENT);
-
     generatorCommandEClass = createEClass(GENERATOR_COMMAND);
-
-    genPatternCallEClass = createEClass(GEN_PATTERN_CALL);
-    createEReference(genPatternCallEClass, GEN_PATTERN_CALL__CALLED_PATTERN);
-    createEReference(genPatternCallEClass, GEN_PATTERN_CALL__PARAMS);
 
     patternObjectCreationEClass = createEClass(PATTERN_OBJECT_CREATION);
     createEReference(patternObjectCreationEClass, PATTERN_OBJECT_CREATION__POBJECT);
@@ -1596,46 +2219,118 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(patternObjectEClass, PATTERN_OBJECT__TYPE);
     createEAttribute(patternObjectEClass, PATTERN_OBJECT__NAME);
 
-    forLoopEClass = createEClass(FOR_LOOP);
-    createEAttribute(forLoopEClass, FOR_LOOP__ITERATOR_VAR);
-    createEReference(forLoopEClass, FOR_LOOP__ITERATING_CONDITION);
-    createEReference(forLoopEClass, FOR_LOOP__COMMANDS);
+    forStatementEClass = createEClass(FOR_STATEMENT);
+    createEReference(forStatementEClass, FOR_STATEMENT__HEAD);
+    createEReference(forStatementEClass, FOR_STATEMENT__BODY);
 
-    forConditionEClass = createEClass(FOR_CONDITION);
+    forHeadEClass = createEClass(FOR_HEAD);
+    createEAttribute(forHeadEClass, FOR_HEAD__ITERATOR_VAR);
 
-    forEachCollectionEClass = createEClass(FOR_EACH_COLLECTION);
-    createEReference(forEachCollectionEClass, FOR_EACH_COLLECTION__COLL);
+    generalForHeadEClass = createEClass(GENERAL_FOR_HEAD);
+    createEReference(generalForHeadEClass, GENERAL_FOR_HEAD__RANGE);
+
+    forEachHeadEClass = createEClass(FOR_EACH_HEAD);
+    createEReference(forEachHeadEClass, FOR_EACH_HEAD__SRC);
+    createEReference(forEachHeadEClass, FOR_EACH_HEAD__REF);
+
+    nodeOrParameterOrCollectionEClass = createEClass(NODE_OR_PARAMETER_OR_COLLECTION);
+    createEAttribute(nodeOrParameterOrCollectionEClass, NODE_OR_PARAMETER_OR_COLLECTION__NAME);
+
+    forBodyEClass = createEClass(FOR_BODY);
+
+    ifStatementEClass = createEClass(IF_STATEMENT);
+
+    singleLineIfEClass = createEClass(SINGLE_LINE_IF);
+    createEReference(singleLineIfEClass, SINGLE_LINE_IF__CONDITION);
+    createEReference(singleLineIfEClass, SINGLE_LINE_IF__COMMAND);
+
+    genCommandBlockEClass = createEClass(GEN_COMMAND_BLOCK);
+    createEReference(genCommandBlockEClass, GEN_COMMAND_BLOCK__COMMANDS);
+
+    blockIfEClass = createEClass(BLOCK_IF);
+    createEReference(blockIfEClass, BLOCK_IF__IF);
+    createEReference(blockIfEClass, BLOCK_IF__ELSEIFS);
+    createEReference(blockIfEClass, BLOCK_IF__ELSE);
+
+    ifHeadAndBodyEClass = createEClass(IF_HEAD_AND_BODY);
+    createEReference(ifHeadAndBodyEClass, IF_HEAD_AND_BODY__HEAD);
+    createEReference(ifHeadAndBodyEClass, IF_HEAD_AND_BODY__BODY);
+
+    ifHeadEClass = createEClass(IF_HEAD);
+    createEReference(ifHeadEClass, IF_HEAD__CONDITION);
+
+    ifBodyEClass = createEClass(IF_BODY);
+    createEReference(ifBodyEClass, IF_BODY__COMMANDS);
+
+    switchCaseEClass = createEClass(SWITCH_CASE);
+    createEReference(switchCaseEClass, SWITCH_CASE__ATTRIBUTE);
+    createEReference(switchCaseEClass, SWITCH_CASE__CASES);
+    createEReference(switchCaseEClass, SWITCH_CASE__DEFAULT);
+
+    defaultEClass = createEClass(DEFAULT);
+
+    caseEClass = createEClass(CASE);
+    createEReference(caseEClass, CASE__VAL);
+    createEReference(caseEClass, CASE__BODY);
+
+    caseBodyEClass = createEClass(CASE_BODY);
+
+    collectionEClass = createEClass(COLLECTION);
+
+    listEClass = createEClass(LIST);
+
+    listAdHocEClass = createEClass(LIST_AD_HOC);
+    createEAttribute(listAdHocEClass, LIST_AD_HOC__ELEMENTS);
+
+    mapEClass = createEClass(MAP);
+
+    mapAdHocEClass = createEClass(MAP_AD_HOC);
+    createEReference(mapAdHocEClass, MAP_AD_HOC__ENTRIES);
+
+    mapTupelEClass = createEClass(MAP_TUPEL);
+    createEAttribute(mapTupelEClass, MAP_TUPEL__KEY);
+    createEReference(mapTupelEClass, MAP_TUPEL__VALUE);
 
     forRangeEClass = createEClass(FOR_RANGE);
     createEAttribute(forRangeEClass, FOR_RANGE__START);
     createEAttribute(forRangeEClass, FOR_RANGE__END);
 
-    orEClass = createEClass(OR);
-    createEReference(orEClass, OR__LEFT);
-    createEReference(orEClass, OR__RIGHT);
+    tertiaryEClass = createEClass(TERTIARY);
+    createEReference(tertiaryEClass, TERTIARY__LEFT);
+    createEAttribute(tertiaryEClass, TERTIARY__OP);
+    createEReference(tertiaryEClass, TERTIARY__RIGHT);
 
-    xorEClass = createEClass(XOR);
-    createEReference(xorEClass, XOR__LEFT);
-    createEReference(xorEClass, XOR__RIGHT);
+    secondaryEClass = createEClass(SECONDARY);
+    createEReference(secondaryEClass, SECONDARY__LEFT);
+    createEAttribute(secondaryEClass, SECONDARY__OP);
+    createEReference(secondaryEClass, SECONDARY__RIGHT);
 
-    andEClass = createEClass(AND);
-    createEReference(andEClass, AND__LEFT);
-    createEReference(andEClass, AND__RIGHT);
+    primaryEClass = createEClass(PRIMARY);
+    createEReference(primaryEClass, PRIMARY__LEFT);
+    createEAttribute(primaryEClass, PRIMARY__OP);
+    createEReference(primaryEClass, PRIMARY__RIGHT);
 
-    negatedBooleanEClass = createEClass(NEGATED_BOOLEAN);
-    createEReference(negatedBooleanEClass, NEGATED_BOOLEAN__EXPR);
+    relEClass = createEClass(REL);
+    createEReference(relEClass, REL__LEFT);
+    createEAttribute(relEClass, REL__RELATION);
+    createEReference(relEClass, REL__RIGHT);
 
-    booleanLiteralEClass = createEClass(BOOLEAN_LITERAL);
-    createEAttribute(booleanLiteralEClass, BOOLEAN_LITERAL__VALUE);
+    negationExpressionEClass = createEClass(NEGATION_EXPRESSION);
+    createEReference(negationExpressionEClass, NEGATION_EXPRESSION__EXPR);
 
-    concatEClass = createEClass(CONCAT);
-    createEReference(concatEClass, CONCAT__LEFT);
-    createEReference(concatEClass, CONCAT__RIGHT);
+    functionCallEClass = createEClass(FUNCTION_CALL);
+    createEAttribute(functionCallEClass, FUNCTION_CALL__FUNC);
+    createEReference(functionCallEClass, FUNCTION_CALL__EXPR);
+
+    literalEClass = createEClass(LITERAL);
 
     // Create enums
-    booleanEEnum = createEEnum(BOOLEAN);
+    mathFuncEEnum = createEEnum(MATH_FUNC);
     primitiveTypeEEnum = createEEnum(PRIMITIVE_TYPE);
     relationalOpEEnum = createEEnum(RELATIONAL_OP);
+    tertiaryOpEEnum = createEEnum(TERTIARY_OP);
+    secondaryOpEEnum = createEEnum(SECONDARY_OP);
+    primaryOpEEnum = createEEnum(PRIMARY_OP);
   }
 
   /**
@@ -1667,25 +2362,40 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
+    nodeEClass.getESuperTypes().add(this.getNodeOrParameterOrCollection());
     patternCallEClass.getESuperTypes().add(this.getGeneratorCommand());
     patternNodeReferenceEClass.getESuperTypes().add(this.getNodeReferenceOrAssignment());
     assignmentEClass.getESuperTypes().add(this.getNodeReferenceOrAssignment());
+    parameterEClass.getESuperTypes().add(this.getNodeOrParameterOrCollection());
     primitiveParameterEClass.getESuperTypes().add(this.getParameter());
-    objectParameterEClass.getESuperTypes().add(this.getParameter());
-    parameterRefEClass.getESuperTypes().add(this.getParameterOrMethodCall());
-    methodCallEClass.getESuperTypes().add(this.getParameterOrMethodCall());
-    stringEClass.getESuperTypes().add(this.getStringExpression());
-    generatorCommandEClass.getESuperTypes().add(this.getGeneratorElement());
+    parameterNodeEClass.getESuperTypes().add(this.getParameter());
+    parameterRefOrMethodCallEClass.getESuperTypes().add(this.getArithmeticExpression());
+    parameterRefEClass.getESuperTypes().add(this.getParameterRefOrMethodCall());
+    methodCallEClass.getESuperTypes().add(this.getParameterRefOrMethodCall());
+    generatorCommandEClass.getESuperTypes().add(this.getDefault());
+    generatorCommandEClass.getESuperTypes().add(this.getCaseBody());
     patternObjectCreationEClass.getESuperTypes().add(this.getGeneratorCommand());
-    forLoopEClass.getESuperTypes().add(this.getGeneratorElement());
-    forEachCollectionEClass.getESuperTypes().add(this.getForCondition());
-    forRangeEClass.getESuperTypes().add(this.getForCondition());
-    orEClass.getESuperTypes().add(this.getBooleanExpression());
-    xorEClass.getESuperTypes().add(this.getBooleanExpression());
-    andEClass.getESuperTypes().add(this.getBooleanExpression());
-    negatedBooleanEClass.getESuperTypes().add(this.getBooleanExpression());
-    booleanLiteralEClass.getESuperTypes().add(this.getBooleanExpression());
-    concatEClass.getESuperTypes().add(this.getSTRING());
+    forStatementEClass.getESuperTypes().add(this.getGeneratorCommand());
+    generalForHeadEClass.getESuperTypes().add(this.getForHead());
+    forEachHeadEClass.getESuperTypes().add(this.getForHead());
+    ifStatementEClass.getESuperTypes().add(this.getGeneratorCommand());
+    singleLineIfEClass.getESuperTypes().add(this.getIfStatement());
+    genCommandBlockEClass.getESuperTypes().add(this.getForBody());
+    genCommandBlockEClass.getESuperTypes().add(this.getCaseBody());
+    switchCaseEClass.getESuperTypes().add(this.getGeneratorCommand());
+    collectionEClass.getESuperTypes().add(this.getGeneratorCommand());
+    collectionEClass.getESuperTypes().add(this.getNodeOrParameterOrCollection());
+    listEClass.getESuperTypes().add(this.getCollection());
+    listAdHocEClass.getESuperTypes().add(this.getList());
+    mapEClass.getESuperTypes().add(this.getCollection());
+    mapAdHocEClass.getESuperTypes().add(this.getMap());
+    tertiaryEClass.getESuperTypes().add(this.getArithmeticExpression());
+    secondaryEClass.getESuperTypes().add(this.getArithmeticExpression());
+    primaryEClass.getESuperTypes().add(this.getArithmeticExpression());
+    relEClass.getESuperTypes().add(this.getArithmeticExpression());
+    negationExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
+    functionCallEClass.getESuperTypes().add(this.getArithmeticExpression());
+    literalEClass.getESuperTypes().add(this.getArithmeticExpression());
 
     // Initialize classes and features; add operations and parameters
     initEClass(mofgenFileEClass, MofgenFile.class, "MofgenFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1700,26 +2410,31 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEClass(patternEClass, Pattern.class, "Pattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getPattern_Name(), ecorePackage.getEString(), "name", null, 0, 1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPattern_Parameters(), this.getParameter(), null, "parameters", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPattern_Colls(), this.getCollection(), null, "colls", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPattern_Nodes(), this.getNode(), null, "nodes", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPattern_ParamManipulations(), this.getParamManipulation(), null, "paramManipulations", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPattern_Return(), this.getPatternReturn(), null, "return", null, 0, 1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(patternReturnEClass, PatternReturn.class, "PatternReturn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getPatternReturn_ReturnValue(), this.getNode(), null, "returnValue", null, 0, 1, PatternReturn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(paramManipulationEClass, ParamManipulation.class, "ParamManipulation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getParamManipulation_Param(), this.getParameterNode(), null, "param", null, 0, 1, ParamManipulation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getParamManipulation_Content(), this.getNodeContent(), null, "content", null, 0, 1, ParamManipulation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNode_Type(), ecorePackage.getEClass(), null, "type", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getNode_Name(), ecorePackage.getEString(), "name", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getNode_CreatedBy(), ecorePackage.getEObject(), null, "createdBy", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(nodeConstructorEClass, NodeConstructor.class, "NodeConstructor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNodeConstructor_RefsAssigns(), this.getNodeReferenceOrAssignment(), null, "refsAssigns", null, 0, -1, NodeConstructor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(nodeContentEClass, NodeContent.class, "NodeContent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNodeContent_RefsAssigns(), this.getNodeReferenceOrAssignment(), null, "refsAssigns", null, 0, -1, NodeContent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(patternCallEClass, PatternCall.class, "PatternCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getPatternCall_Called(), this.getPattern(), null, "called", null, 0, 1, PatternCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPatternCall_Params(), this.getStringExpression(), null, "params", null, 0, -1, PatternCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPatternCall_Params(), this.getArithmeticExpression(), null, "params", null, 0, -1, PatternCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeReferenceOrAssignmentEClass, NodeReferenceOrAssignment.class, "NodeReferenceOrAssignment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNodeReferenceOrAssignment_Condition(), this.getBooleanExpression(), null, "condition", null, 0, 1, NodeReferenceOrAssignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNodeReferenceOrAssignment_Condition(), this.getArithmeticExpression(), null, "condition", null, 0, 1, NodeReferenceOrAssignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(patternNodeReferenceEClass, PatternNodeReference.class, "PatternNodeReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getPatternNodeReference_Type(), ecorePackage.getEReference(), null, "type", null, 0, 1, PatternNodeReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1727,22 +2442,21 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
 
     initEClass(assignmentEClass, Assignment.class, "Assignment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getAssignment_Target(), ecorePackage.getEAttribute(), null, "target", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAssignment_Value(), this.getStringExpression(), null, "value", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAssignment_Value(), this.getArithmeticExpression(), null, "value", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeAttributeCallEClass, NodeAttributeCall.class, "NodeAttributeCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNodeAttributeCall_Node(), this.getNode(), null, "node", null, 0, 1, NodeAttributeCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getNodeAttributeCall_Attribute(), ecorePackage.getEAttribute(), null, "attribute", null, 0, 1, NodeAttributeCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getParameter_Name(), ecorePackage.getEString(), "name", null, 0, 1, Parameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(primitiveParameterEClass, PrimitiveParameter.class, "PrimitiveParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getPrimitiveParameter_Type(), this.getPrimitiveType(), "type", null, 0, 1, PrimitiveParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(objectParameterEClass, ObjectParameter.class, "ObjectParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getObjectParameter_Type(), ecorePackage.getEClassifier(), null, "type", null, 0, 1, ObjectParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(parameterNodeEClass, ParameterNode.class, "ParameterNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getParameterNode_Type(), ecorePackage.getEClassifier(), null, "type", null, 0, 1, ParameterNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(parameterOrMethodCallEClass, ParameterOrMethodCall.class, "ParameterOrMethodCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(parameterRefOrMethodCallEClass, ParameterRefOrMethodCall.class, "ParameterRefOrMethodCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(parameterRefEClass, ParameterRef.class, "ParameterRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getParameterRef_Ref(), this.getParameter(), null, "ref", null, 0, 1, ParameterRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1751,29 +2465,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getMethodCall_CalledNode(), this.getNode(), null, "calledNode", null, 0, 1, MethodCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMethodCall_Method(), ecorePackage.getEOperation(), null, "method", null, 0, 1, MethodCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(booleanExpressionEClass, BooleanExpression.class, "BooleanExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getBooleanExpression_Lhs(), this.getParameterOrMethodCall(), null, "lhs", null, 0, 1, BooleanExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getBooleanExpression_Relation(), this.getRelationalOp(), "relation", null, 0, 1, BooleanExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getBooleanExpression_Rhs(), this.getParameterOrMethodCall(), null, "rhs", null, 0, 1, BooleanExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(numberLiteralEClass, NumberLiteral.class, "NumberLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getNumberLiteral_Value(), ecorePackage.getEString(), "value", null, 0, 1, NumberLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(stringExpressionEClass, StringExpression.class, "StringExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(stringEClass, org.mofgen.mGLang.STRING.class, "STRING", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getSTRING_Value(), ecorePackage.getEString(), "value", null, 0, 1, org.mofgen.mGLang.STRING.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(arithmeticExpressionEClass, ArithmeticExpression.class, "ArithmeticExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(generatorEClass, Generator.class, "Generator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getGenerator_Commands(), this.getGeneratorElement(), null, "commands", null, 0, -1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(generatorElementEClass, GeneratorElement.class, "GeneratorElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getGenerator_Params(), this.getParameter(), null, "params", null, 0, -1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getGenerator_Commands(), this.getGeneratorCommand(), null, "commands", null, 0, -1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(generatorCommandEClass, GeneratorCommand.class, "GeneratorCommand", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-    initEClass(genPatternCallEClass, GenPatternCall.class, "GenPatternCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getGenPatternCall_CalledPattern(), this.getPattern(), null, "calledPattern", null, 0, 1, GenPatternCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getGenPatternCall_Params(), this.getPatternObject(), null, "params", null, 0, -1, GenPatternCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(patternObjectCreationEClass, PatternObjectCreation.class, "PatternObjectCreation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getPatternObjectCreation_PObject(), this.getPatternObject(), null, "pObject", null, 0, 1, PatternObjectCreation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1783,51 +2481,121 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getPatternObject_Type(), this.getPattern(), null, "type", null, 0, 1, PatternObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getPatternObject_Name(), ecorePackage.getEString(), "name", null, 0, 1, PatternObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(forLoopEClass, ForLoop.class, "ForLoop", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getForLoop_IteratorVar(), ecorePackage.getEString(), "iteratorVar", null, 0, 1, ForLoop.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getForLoop_IteratingCondition(), this.getForCondition(), null, "iteratingCondition", null, 0, 1, ForLoop.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getForLoop_Commands(), this.getGeneratorCommand(), null, "commands", null, 0, -1, ForLoop.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(forStatementEClass, ForStatement.class, "ForStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getForStatement_Head(), this.getForHead(), null, "head", null, 0, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForStatement_Body(), this.getForBody(), null, "body", null, 0, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(forConditionEClass, ForCondition.class, "ForCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(forHeadEClass, ForHead.class, "ForHead", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getForHead_IteratorVar(), ecorePackage.getEString(), "iteratorVar", null, 0, 1, ForHead.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(forEachCollectionEClass, ForEachCollection.class, "ForEachCollection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getForEachCollection_Coll(), this.getNodeAttributeCall(), null, "coll", null, 0, 1, ForEachCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(generalForHeadEClass, GeneralForHead.class, "GeneralForHead", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getGeneralForHead_Range(), this.getForRange(), null, "range", null, 0, 1, GeneralForHead.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(forEachHeadEClass, ForEachHead.class, "ForEachHead", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getForEachHead_Src(), this.getNodeOrParameterOrCollection(), null, "src", null, 0, 1, ForEachHead.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForEachHead_Ref(), ecorePackage.getEReference(), null, "ref", null, 0, 1, ForEachHead.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(nodeOrParameterOrCollectionEClass, NodeOrParameterOrCollection.class, "NodeOrParameterOrCollection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getNodeOrParameterOrCollection_Name(), ecorePackage.getEString(), "name", null, 0, 1, NodeOrParameterOrCollection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(forBodyEClass, ForBody.class, "ForBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(ifStatementEClass, IfStatement.class, "IfStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(singleLineIfEClass, SingleLineIf.class, "SingleLineIf", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSingleLineIf_Condition(), this.getArithmeticExpression(), null, "condition", null, 0, 1, SingleLineIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSingleLineIf_Command(), this.getGeneratorCommand(), null, "command", null, 0, 1, SingleLineIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(genCommandBlockEClass, GenCommandBlock.class, "GenCommandBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getGenCommandBlock_Commands(), this.getGeneratorCommand(), null, "commands", null, 0, -1, GenCommandBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(blockIfEClass, BlockIf.class, "BlockIf", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getBlockIf_If(), this.getIfHeadAndBody(), null, "if", null, 0, 1, BlockIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBlockIf_Elseifs(), this.getIfHeadAndBody(), null, "elseifs", null, 0, -1, BlockIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBlockIf_Else(), this.getIfBody(), null, "else", null, 0, 1, BlockIf.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(ifHeadAndBodyEClass, IfHeadAndBody.class, "IfHeadAndBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getIfHeadAndBody_Head(), this.getIfHead(), null, "head", null, 0, 1, IfHeadAndBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getIfHeadAndBody_Body(), this.getIfBody(), null, "body", null, 0, 1, IfHeadAndBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(ifHeadEClass, IfHead.class, "IfHead", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getIfHead_Condition(), this.getArithmeticExpression(), null, "condition", null, 0, 1, IfHead.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(ifBodyEClass, IfBody.class, "IfBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getIfBody_Commands(), this.getGenCommandBlock(), null, "commands", null, 0, 1, IfBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(switchCaseEClass, SwitchCase.class, "SwitchCase", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSwitchCase_Attribute(), this.getParameterRefOrMethodCall(), null, "attribute", null, 0, 1, SwitchCase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSwitchCase_Cases(), this.getCase(), null, "cases", null, 0, -1, SwitchCase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSwitchCase_Default(), this.getDefault(), null, "default", null, 0, 1, SwitchCase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(defaultEClass, Default.class, "Default", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(caseEClass, Case.class, "Case", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCase_Val(), this.getArithmeticExpression(), null, "val", null, 0, 1, Case.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCase_Body(), this.getCaseBody(), null, "body", null, 0, 1, Case.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(caseBodyEClass, CaseBody.class, "CaseBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(collectionEClass, Collection.class, "Collection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(listEClass, List.class, "List", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(listAdHocEClass, ListAdHoc.class, "ListAdHoc", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getListAdHoc_Elements(), ecorePackage.getEString(), "elements", null, 0, -1, ListAdHoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(mapEClass, Map.class, "Map", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(mapAdHocEClass, MapAdHoc.class, "MapAdHoc", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getMapAdHoc_Entries(), this.getMapTupel(), null, "entries", null, 0, -1, MapAdHoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(mapTupelEClass, MapTupel.class, "MapTupel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getMapTupel_Key(), ecorePackage.getEString(), "key", null, 0, 1, MapTupel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapTupel_Value(), this.getArithmeticExpression(), null, "value", null, 0, 1, MapTupel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(forRangeEClass, ForRange.class, "ForRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getForRange_Start(), ecorePackage.getEInt(), "start", null, 0, 1, ForRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getForRange_End(), ecorePackage.getEInt(), "end", null, 0, 1, ForRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(orEClass, Or.class, "Or", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getOr_Left(), this.getBooleanExpression(), null, "left", null, 0, 1, Or.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getOr_Right(), this.getBooleanExpression(), null, "right", null, 0, 1, Or.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(tertiaryEClass, Tertiary.class, "Tertiary", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getTertiary_Left(), this.getArithmeticExpression(), null, "left", null, 0, 1, Tertiary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTertiary_Op(), this.getTertiaryOp(), "op", null, 0, 1, Tertiary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTertiary_Right(), this.getArithmeticExpression(), null, "right", null, 0, 1, Tertiary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(xorEClass, Xor.class, "Xor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getXor_Left(), this.getBooleanExpression(), null, "left", null, 0, 1, Xor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getXor_Right(), this.getBooleanExpression(), null, "right", null, 0, 1, Xor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(secondaryEClass, Secondary.class, "Secondary", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSecondary_Left(), this.getArithmeticExpression(), null, "left", null, 0, 1, Secondary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSecondary_Op(), this.getSecondaryOp(), "op", null, 0, 1, Secondary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getSecondary_Right(), this.getArithmeticExpression(), null, "right", null, 0, 1, Secondary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(andEClass, And.class, "And", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAnd_Left(), this.getBooleanExpression(), null, "left", null, 0, 1, And.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAnd_Right(), this.getBooleanExpression(), null, "right", null, 0, 1, And.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(primaryEClass, Primary.class, "Primary", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getPrimary_Left(), this.getArithmeticExpression(), null, "left", null, 0, 1, Primary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getPrimary_Op(), this.getPrimaryOp(), "op", null, 0, 1, Primary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPrimary_Right(), this.getArithmeticExpression(), null, "right", null, 0, 1, Primary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(negatedBooleanEClass, NegatedBoolean.class, "NegatedBoolean", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNegatedBoolean_Expr(), this.getBooleanExpression(), null, "expr", null, 0, 1, NegatedBoolean.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(relEClass, Rel.class, "Rel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRel_Left(), this.getArithmeticExpression(), null, "left", null, 0, 1, Rel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRel_Relation(), this.getRelationalOp(), "relation", null, 0, 1, Rel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRel_Right(), this.getArithmeticExpression(), null, "right", null, 0, 1, Rel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(booleanLiteralEClass, BooleanLiteral.class, "BooleanLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBooleanLiteral_Value(), this.getBoolean(), "value", null, 0, 1, BooleanLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(negationExpressionEClass, NegationExpression.class, "NegationExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNegationExpression_Expr(), this.getArithmeticExpression(), null, "expr", null, 0, 1, NegationExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(concatEClass, Concat.class, "Concat", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getConcat_Left(), this.getSTRING(), null, "left", null, 0, 1, Concat.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getConcat_Right(), this.getSTRING(), null, "right", null, 0, 1, Concat.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(functionCallEClass, FunctionCall.class, "FunctionCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getFunctionCall_Func(), this.getMathFunc(), "func", null, 0, 1, FunctionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFunctionCall_Expr(), this.getArithmeticExpression(), null, "expr", null, 0, 1, FunctionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(literalEClass, Literal.class, "Literal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     // Initialize enums and add enum literals
-    initEEnum(booleanEEnum, org.mofgen.mGLang.Boolean.class, "Boolean");
-    addEEnumLiteral(booleanEEnum, org.mofgen.mGLang.Boolean.TRUE);
-    addEEnumLiteral(booleanEEnum, org.mofgen.mGLang.Boolean.FALSE);
+    initEEnum(mathFuncEEnum, MathFunc.class, "MathFunc");
+    addEEnumLiteral(mathFuncEEnum, MathFunc.SQRT);
+    addEEnumLiteral(mathFuncEEnum, MathFunc.ABS);
 
     initEEnum(primitiveTypeEEnum, PrimitiveType.class, "PrimitiveType");
     addEEnumLiteral(primitiveTypeEEnum, PrimitiveType.INT);
     addEEnumLiteral(primitiveTypeEEnum, PrimitiveType.CHAR);
     addEEnumLiteral(primitiveTypeEEnum, PrimitiveType.DOUBLE);
+    addEEnumLiteral(primitiveTypeEEnum, PrimitiveType.STRING);
 
     initEEnum(relationalOpEEnum, RelationalOp.class, "RelationalOp");
     addEEnumLiteral(relationalOpEEnum, RelationalOp.GREATER);
@@ -1836,6 +2604,20 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     addEEnumLiteral(relationalOpEEnum, RelationalOp.UNEQUAL);
     addEEnumLiteral(relationalOpEEnum, RelationalOp.SMALLER_OR_EQUAL);
     addEEnumLiteral(relationalOpEEnum, RelationalOp.SMALLER);
+
+    initEEnum(tertiaryOpEEnum, TertiaryOp.class, "TertiaryOp");
+    addEEnumLiteral(tertiaryOpEEnum, TertiaryOp.PLUS);
+    addEEnumLiteral(tertiaryOpEEnum, TertiaryOp.MINUS);
+    addEEnumLiteral(tertiaryOpEEnum, TertiaryOp.OR);
+
+    initEEnum(secondaryOpEEnum, SecondaryOp.class, "SecondaryOp");
+    addEEnumLiteral(secondaryOpEEnum, SecondaryOp.MOD);
+    addEEnumLiteral(secondaryOpEEnum, SecondaryOp.XOR);
+
+    initEEnum(primaryOpEEnum, PrimaryOp.class, "PrimaryOp");
+    addEEnumLiteral(primaryOpEEnum, PrimaryOp.MUL);
+    addEEnumLiteral(primaryOpEEnum, PrimaryOp.DIV);
+    addEEnumLiteral(primaryOpEEnum, PrimaryOp.AND);
 
     // Create resource
     createResource(eNS_URI);

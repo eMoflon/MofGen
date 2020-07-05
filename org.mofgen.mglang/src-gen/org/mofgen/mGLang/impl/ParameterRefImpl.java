@@ -27,7 +27,7 @@ import org.mofgen.mGLang.ParameterRef;
  *
  * @generated
  */
-public class ParameterRefImpl extends ParameterOrMethodCallImpl implements ParameterRef
+public class ParameterRefImpl extends ParameterRefOrMethodCallImpl implements ParameterRef
 {
   /**
    * The cached value of the '{@link #getRef() <em>Ref</em>}' reference.

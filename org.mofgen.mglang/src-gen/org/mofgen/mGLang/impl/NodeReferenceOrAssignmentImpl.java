@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.mofgen.mGLang.BooleanExpression;
+import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.NodeReferenceOrAssignment;
 
@@ -39,7 +39,7 @@ public class NodeReferenceOrAssignmentImpl extends MinimalEObjectImpl.Container 
    * @generated
    * @ordered
    */
-  protected BooleanExpression condition;
+  protected ArithmeticExpression condition;
 
   /**
    * <!-- begin-user-doc -->
@@ -68,7 +68,7 @@ public class NodeReferenceOrAssignmentImpl extends MinimalEObjectImpl.Container 
    * @generated
    */
   @Override
-  public BooleanExpression getCondition()
+  public ArithmeticExpression getCondition()
   {
     return condition;
   }
@@ -78,9 +78,9 @@ public class NodeReferenceOrAssignmentImpl extends MinimalEObjectImpl.Container 
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetCondition(BooleanExpression newCondition, NotificationChain msgs)
+  public NotificationChain basicSetCondition(ArithmeticExpression newCondition, NotificationChain msgs)
   {
-    BooleanExpression oldCondition = condition;
+    ArithmeticExpression oldCondition = condition;
     condition = newCondition;
     if (eNotificationRequired())
     {
@@ -96,7 +96,7 @@ public class NodeReferenceOrAssignmentImpl extends MinimalEObjectImpl.Container 
    * @generated
    */
   @Override
-  public void setCondition(BooleanExpression newCondition)
+  public void setCondition(ArithmeticExpression newCondition)
   {
     if (newCondition != condition)
     {
@@ -155,7 +155,7 @@ public class NodeReferenceOrAssignmentImpl extends MinimalEObjectImpl.Container 
     switch (featureID)
     {
       case MGLangPackage.NODE_REFERENCE_OR_ASSIGNMENT__CONDITION:
-        setCondition((BooleanExpression)newValue);
+        setCondition((ArithmeticExpression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -172,7 +172,7 @@ public class NodeReferenceOrAssignmentImpl extends MinimalEObjectImpl.Container 
     switch (featureID)
     {
       case MGLangPackage.NODE_REFERENCE_OR_ASSIGNMENT__CONDITION:
-        setCondition((BooleanExpression)null);
+        setCondition((ArithmeticExpression)null);
         return;
     }
     super.eUnset(featureID);

@@ -15,7 +15,7 @@ import org.mofgen.mGLang.MGLangPackage;
  *
  * @generated
  */
-public class GeneratorCommandImpl extends GeneratorElementImpl implements GeneratorCommand
+public class GeneratorCommandImpl extends DefaultImpl implements GeneratorCommand
 {
   /**
    * <!-- begin-user-doc -->

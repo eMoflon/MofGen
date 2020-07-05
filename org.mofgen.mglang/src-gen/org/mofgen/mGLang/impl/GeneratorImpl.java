@@ -18,8 +18,9 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.mofgen.mGLang.Generator;
-import org.mofgen.mGLang.GeneratorElement;
+import org.mofgen.mGLang.GeneratorCommand;
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.Parameter;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,6 +30,7 @@ import org.mofgen.mGLang.MGLangPackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.mofgen.mGLang.impl.GeneratorImpl#getParams <em>Params</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.GeneratorImpl#getCommands <em>Commands</em>}</li>
  * </ul>
  *
@@ -37,6 +39,16 @@ import org.mofgen.mGLang.MGLangPackage;
 public class GeneratorImpl extends MinimalEObjectImpl.Container implements Generator
 {
   /**
+   * The cached value of the '{@link #getParams() <em>Params</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getParams()
+   * @generated
+   * @ordered
+   */
+  protected EList<Parameter> params;
+
+  /**
    * The cached value of the '{@link #getCommands() <em>Commands</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -44,7 +56,7 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
    * @generated
    * @ordered
    */
-  protected EList<GeneratorElement> commands;
+  protected EList<GeneratorCommand> commands;
 
   /**
    * <!-- begin-user-doc -->
@@ -73,11 +85,26 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
    * @generated
    */
   @Override
-  public EList<GeneratorElement> getCommands()
+  public EList<Parameter> getParams()
+  {
+    if (params == null)
+    {
+      params = new EObjectContainmentEList<Parameter>(Parameter.class, this, MGLangPackage.GENERATOR__PARAMS);
+    }
+    return params;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EList<GeneratorCommand> getCommands()
   {
     if (commands == null)
     {
-      commands = new EObjectContainmentEList<GeneratorElement>(GeneratorElement.class, this, MGLangPackage.GENERATOR__COMMANDS);
+      commands = new EObjectContainmentEList<GeneratorCommand>(GeneratorCommand.class, this, MGLangPackage.GENERATOR__COMMANDS);
     }
     return commands;
   }
@@ -92,6 +119,8 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
   {
     switch (featureID)
     {
+      case MGLangPackage.GENERATOR__PARAMS:
+        return ((InternalEList<?>)getParams()).basicRemove(otherEnd, msgs);
       case MGLangPackage.GENERATOR__COMMANDS:
         return ((InternalEList<?>)getCommands()).basicRemove(otherEnd, msgs);
     }
@@ -108,6 +137,8 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
   {
     switch (featureID)
     {
+      case MGLangPackage.GENERATOR__PARAMS:
+        return getParams();
       case MGLangPackage.GENERATOR__COMMANDS:
         return getCommands();
     }
@@ -125,9 +156,13 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
   {
     switch (featureID)
     {
+      case MGLangPackage.GENERATOR__PARAMS:
+        getParams().clear();
+        getParams().addAll((Collection<? extends Parameter>)newValue);
+        return;
       case MGLangPackage.GENERATOR__COMMANDS:
         getCommands().clear();
-        getCommands().addAll((Collection<? extends GeneratorElement>)newValue);
+        getCommands().addAll((Collection<? extends GeneratorCommand>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -143,6 +178,9 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
   {
     switch (featureID)
     {
+      case MGLangPackage.GENERATOR__PARAMS:
+        getParams().clear();
+        return;
       case MGLangPackage.GENERATOR__COMMANDS:
         getCommands().clear();
         return;
@@ -160,6 +198,8 @@ public class GeneratorImpl extends MinimalEObjectImpl.Container implements Gener
   {
     switch (featureID)
     {
+      case MGLangPackage.GENERATOR__PARAMS:
+        return params != null && !params.isEmpty();
       case MGLangPackage.GENERATOR__COMMANDS:
         return commands != null && !commands.isEmpty();
     }

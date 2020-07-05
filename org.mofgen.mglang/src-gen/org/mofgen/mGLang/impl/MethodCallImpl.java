@@ -29,7 +29,7 @@ import org.mofgen.mGLang.Node;
  *
  * @generated
  */
-public class MethodCallImpl extends ParameterOrMethodCallImpl implements MethodCall
+public class MethodCallImpl extends ParameterRefOrMethodCallImpl implements MethodCall
 {
   /**
    * The cached value of the '{@link #getCalledNode() <em>Called Node</em>}' reference.

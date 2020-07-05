@@ -20,7 +20,7 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface ParameterRef extends ParameterOrMethodCall
+public interface ParameterRef extends ParameterRefOrMethodCall
 {
   /**
    * Returns the value of the '<em><b>Ref</b></em>' reference.

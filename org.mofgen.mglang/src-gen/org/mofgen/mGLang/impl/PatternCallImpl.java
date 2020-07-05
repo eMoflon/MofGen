@@ -18,10 +18,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternCall;
-import org.mofgen.mGLang.StringExpression;
 
 /**
  * <!-- begin-user-doc -->
@@ -57,7 +57,7 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
    * @generated
    * @ordered
    */
-  protected EList<StringExpression> params;
+  protected EList<ArithmeticExpression> params;
 
   /**
    * <!-- begin-user-doc -->
@@ -131,11 +131,11 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
    * @generated
    */
   @Override
-  public EList<StringExpression> getParams()
+  public EList<ArithmeticExpression> getParams()
   {
     if (params == null)
     {
-      params = new EObjectContainmentEList<StringExpression>(StringExpression.class, this, MGLangPackage.PATTERN_CALL__PARAMS);
+      params = new EObjectContainmentEList<ArithmeticExpression>(ArithmeticExpression.class, this, MGLangPackage.PATTERN_CALL__PARAMS);
     }
     return params;
   }
@@ -191,7 +191,7 @@ public class PatternCallImpl extends GeneratorCommandImpl implements PatternCall
         return;
       case MGLangPackage.PATTERN_CALL__PARAMS:
         getParams().clear();
-        getParams().addAll((Collection<? extends StringExpression>)newValue);
+        getParams().addAll((Collection<? extends ArithmeticExpression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

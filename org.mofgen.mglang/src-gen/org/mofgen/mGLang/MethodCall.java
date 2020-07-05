@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EOperation;
  * @model
  * @generated
  */
-public interface MethodCall extends ParameterOrMethodCall
+public interface MethodCall extends ParameterRefOrMethodCall
 {
   /**
    * Returns the value of the '<em><b>Called Node</b></em>' reference.

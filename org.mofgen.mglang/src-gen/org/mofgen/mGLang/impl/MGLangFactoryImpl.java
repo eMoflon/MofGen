@@ -12,47 +12,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-import org.mofgen.mGLang.And;
-import org.mofgen.mGLang.Assignment;
-import org.mofgen.mGLang.BooleanExpression;
-import org.mofgen.mGLang.BooleanLiteral;
-import org.mofgen.mGLang.Concat;
-import org.mofgen.mGLang.ForCondition;
-import org.mofgen.mGLang.ForEachCollection;
-import org.mofgen.mGLang.ForLoop;
-import org.mofgen.mGLang.ForRange;
-import org.mofgen.mGLang.GenPatternCall;
-import org.mofgen.mGLang.Generator;
-import org.mofgen.mGLang.GeneratorCommand;
-import org.mofgen.mGLang.GeneratorElement;
-import org.mofgen.mGLang.Import;
-import org.mofgen.mGLang.MGLangFactory;
-import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.MethodCall;
-import org.mofgen.mGLang.MofgenFile;
-import org.mofgen.mGLang.NegatedBoolean;
-import org.mofgen.mGLang.Node;
-import org.mofgen.mGLang.NodeAttributeCall;
-import org.mofgen.mGLang.NodeConstructor;
-import org.mofgen.mGLang.NodeReferenceOrAssignment;
-import org.mofgen.mGLang.NumberLiteral;
-import org.mofgen.mGLang.ObjectParameter;
-import org.mofgen.mGLang.Or;
-import org.mofgen.mGLang.Parameter;
-import org.mofgen.mGLang.ParameterOrMethodCall;
-import org.mofgen.mGLang.ParameterRef;
-import org.mofgen.mGLang.Pattern;
-import org.mofgen.mGLang.PatternCall;
-import org.mofgen.mGLang.PatternNodeReference;
-import org.mofgen.mGLang.PatternObject;
-import org.mofgen.mGLang.PatternObjectCreation;
-import org.mofgen.mGLang.PatternReturn;
-import org.mofgen.mGLang.PrimitiveParameter;
-import org.mofgen.mGLang.PrimitiveType;
-import org.mofgen.mGLang.RelationalOp;
-import org.mofgen.mGLang.STRING;
-import org.mofgen.mGLang.StringExpression;
-import org.mofgen.mGLang.Xor;
+import org.mofgen.mGLang.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -110,8 +70,9 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.IMPORT: return createImport();
       case MGLangPackage.PATTERN: return createPattern();
       case MGLangPackage.PATTERN_RETURN: return createPatternReturn();
+      case MGLangPackage.PARAM_MANIPULATION: return createParamManipulation();
       case MGLangPackage.NODE: return createNode();
-      case MGLangPackage.NODE_CONSTRUCTOR: return createNodeConstructor();
+      case MGLangPackage.NODE_CONTENT: return createNodeContent();
       case MGLangPackage.PATTERN_CALL: return createPatternCall();
       case MGLangPackage.NODE_REFERENCE_OR_ASSIGNMENT: return createNodeReferenceOrAssignment();
       case MGLangPackage.PATTERN_NODE_REFERENCE: return createPatternNodeReference();
@@ -119,30 +80,46 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.NODE_ATTRIBUTE_CALL: return createNodeAttributeCall();
       case MGLangPackage.PARAMETER: return createParameter();
       case MGLangPackage.PRIMITIVE_PARAMETER: return createPrimitiveParameter();
-      case MGLangPackage.OBJECT_PARAMETER: return createObjectParameter();
-      case MGLangPackage.PARAMETER_OR_METHOD_CALL: return createParameterOrMethodCall();
+      case MGLangPackage.PARAMETER_NODE: return createParameterNode();
+      case MGLangPackage.PARAMETER_REF_OR_METHOD_CALL: return createParameterRefOrMethodCall();
       case MGLangPackage.PARAMETER_REF: return createParameterRef();
       case MGLangPackage.METHOD_CALL: return createMethodCall();
-      case MGLangPackage.BOOLEAN_EXPRESSION: return createBooleanExpression();
-      case MGLangPackage.NUMBER_LITERAL: return createNumberLiteral();
-      case MGLangPackage.STRING_EXPRESSION: return createStringExpression();
-      case MGLangPackage.STRING: return createSTRING();
+      case MGLangPackage.ARITHMETIC_EXPRESSION: return createArithmeticExpression();
       case MGLangPackage.GENERATOR: return createGenerator();
-      case MGLangPackage.GENERATOR_ELEMENT: return createGeneratorElement();
       case MGLangPackage.GENERATOR_COMMAND: return createGeneratorCommand();
-      case MGLangPackage.GEN_PATTERN_CALL: return createGenPatternCall();
       case MGLangPackage.PATTERN_OBJECT_CREATION: return createPatternObjectCreation();
       case MGLangPackage.PATTERN_OBJECT: return createPatternObject();
-      case MGLangPackage.FOR_LOOP: return createForLoop();
-      case MGLangPackage.FOR_CONDITION: return createForCondition();
-      case MGLangPackage.FOR_EACH_COLLECTION: return createForEachCollection();
+      case MGLangPackage.FOR_STATEMENT: return createForStatement();
+      case MGLangPackage.FOR_HEAD: return createForHead();
+      case MGLangPackage.GENERAL_FOR_HEAD: return createGeneralForHead();
+      case MGLangPackage.FOR_EACH_HEAD: return createForEachHead();
+      case MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION: return createNodeOrParameterOrCollection();
+      case MGLangPackage.FOR_BODY: return createForBody();
+      case MGLangPackage.IF_STATEMENT: return createIfStatement();
+      case MGLangPackage.SINGLE_LINE_IF: return createSingleLineIf();
+      case MGLangPackage.GEN_COMMAND_BLOCK: return createGenCommandBlock();
+      case MGLangPackage.BLOCK_IF: return createBlockIf();
+      case MGLangPackage.IF_HEAD_AND_BODY: return createIfHeadAndBody();
+      case MGLangPackage.IF_HEAD: return createIfHead();
+      case MGLangPackage.IF_BODY: return createIfBody();
+      case MGLangPackage.SWITCH_CASE: return createSwitchCase();
+      case MGLangPackage.DEFAULT: return createDefault();
+      case MGLangPackage.CASE: return createCase();
+      case MGLangPackage.CASE_BODY: return createCaseBody();
+      case MGLangPackage.COLLECTION: return createCollection();
+      case MGLangPackage.LIST: return createList();
+      case MGLangPackage.LIST_AD_HOC: return createListAdHoc();
+      case MGLangPackage.MAP: return createMap();
+      case MGLangPackage.MAP_AD_HOC: return createMapAdHoc();
+      case MGLangPackage.MAP_TUPEL: return createMapTupel();
       case MGLangPackage.FOR_RANGE: return createForRange();
-      case MGLangPackage.OR: return createOr();
-      case MGLangPackage.XOR: return createXor();
-      case MGLangPackage.AND: return createAnd();
-      case MGLangPackage.NEGATED_BOOLEAN: return createNegatedBoolean();
-      case MGLangPackage.BOOLEAN_LITERAL: return createBooleanLiteral();
-      case MGLangPackage.CONCAT: return createConcat();
+      case MGLangPackage.TERTIARY: return createTertiary();
+      case MGLangPackage.SECONDARY: return createSecondary();
+      case MGLangPackage.PRIMARY: return createPrimary();
+      case MGLangPackage.REL: return createRel();
+      case MGLangPackage.NEGATION_EXPRESSION: return createNegationExpression();
+      case MGLangPackage.FUNCTION_CALL: return createFunctionCall();
+      case MGLangPackage.LITERAL: return createLiteral();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -158,12 +135,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     switch (eDataType.getClassifierID())
     {
-      case MGLangPackage.BOOLEAN:
-        return createBooleanFromString(eDataType, initialValue);
+      case MGLangPackage.MATH_FUNC:
+        return createMathFuncFromString(eDataType, initialValue);
       case MGLangPackage.PRIMITIVE_TYPE:
         return createPrimitiveTypeFromString(eDataType, initialValue);
       case MGLangPackage.RELATIONAL_OP:
         return createRelationalOpFromString(eDataType, initialValue);
+      case MGLangPackage.TERTIARY_OP:
+        return createTertiaryOpFromString(eDataType, initialValue);
+      case MGLangPackage.SECONDARY_OP:
+        return createSecondaryOpFromString(eDataType, initialValue);
+      case MGLangPackage.PRIMARY_OP:
+        return createPrimaryOpFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -179,12 +162,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     switch (eDataType.getClassifierID())
     {
-      case MGLangPackage.BOOLEAN:
-        return convertBooleanToString(eDataType, instanceValue);
+      case MGLangPackage.MATH_FUNC:
+        return convertMathFuncToString(eDataType, instanceValue);
       case MGLangPackage.PRIMITIVE_TYPE:
         return convertPrimitiveTypeToString(eDataType, instanceValue);
       case MGLangPackage.RELATIONAL_OP:
         return convertRelationalOpToString(eDataType, instanceValue);
+      case MGLangPackage.TERTIARY_OP:
+        return convertTertiaryOpToString(eDataType, instanceValue);
+      case MGLangPackage.SECONDARY_OP:
+        return convertSecondaryOpToString(eDataType, instanceValue);
+      case MGLangPackage.PRIMARY_OP:
+        return convertPrimaryOpToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -244,6 +233,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
+  public ParamManipulation createParamManipulation()
+  {
+    ParamManipulationImpl paramManipulation = new ParamManipulationImpl();
+    return paramManipulation;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Node createNode()
   {
     NodeImpl node = new NodeImpl();
@@ -256,10 +257,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public NodeConstructor createNodeConstructor()
+  public NodeContent createNodeContent()
   {
-    NodeConstructorImpl nodeConstructor = new NodeConstructorImpl();
-    return nodeConstructor;
+    NodeContentImpl nodeContent = new NodeContentImpl();
+    return nodeContent;
   }
 
   /**
@@ -352,10 +353,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public ObjectParameter createObjectParameter()
+  public ParameterNode createParameterNode()
   {
-    ObjectParameterImpl objectParameter = new ObjectParameterImpl();
-    return objectParameter;
+    ParameterNodeImpl parameterNode = new ParameterNodeImpl();
+    return parameterNode;
   }
 
   /**
@@ -364,10 +365,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public ParameterOrMethodCall createParameterOrMethodCall()
+  public ParameterRefOrMethodCall createParameterRefOrMethodCall()
   {
-    ParameterOrMethodCallImpl parameterOrMethodCall = new ParameterOrMethodCallImpl();
-    return parameterOrMethodCall;
+    ParameterRefOrMethodCallImpl parameterRefOrMethodCall = new ParameterRefOrMethodCallImpl();
+    return parameterRefOrMethodCall;
   }
 
   /**
@@ -400,46 +401,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public BooleanExpression createBooleanExpression()
+  public ArithmeticExpression createArithmeticExpression()
   {
-    BooleanExpressionImpl booleanExpression = new BooleanExpressionImpl();
-    return booleanExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public NumberLiteral createNumberLiteral()
-  {
-    NumberLiteralImpl numberLiteral = new NumberLiteralImpl();
-    return numberLiteral;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public StringExpression createStringExpression()
-  {
-    StringExpressionImpl stringExpression = new StringExpressionImpl();
-    return stringExpression;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public STRING createSTRING()
-  {
-    STRINGImpl string = new STRINGImpl();
-    return string;
+    ArithmeticExpressionImpl arithmeticExpression = new ArithmeticExpressionImpl();
+    return arithmeticExpression;
   }
 
   /**
@@ -460,34 +425,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public GeneratorElement createGeneratorElement()
-  {
-    GeneratorElementImpl generatorElement = new GeneratorElementImpl();
-    return generatorElement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public GeneratorCommand createGeneratorCommand()
   {
     GeneratorCommandImpl generatorCommand = new GeneratorCommandImpl();
     return generatorCommand;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public GenPatternCall createGenPatternCall()
-  {
-    GenPatternCallImpl genPatternCall = new GenPatternCallImpl();
-    return genPatternCall;
   }
 
   /**
@@ -520,10 +461,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public ForLoop createForLoop()
+  public ForStatement createForStatement()
   {
-    ForLoopImpl forLoop = new ForLoopImpl();
-    return forLoop;
+    ForStatementImpl forStatement = new ForStatementImpl();
+    return forStatement;
   }
 
   /**
@@ -532,10 +473,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public ForCondition createForCondition()
+  public ForHead createForHead()
   {
-    ForConditionImpl forCondition = new ForConditionImpl();
-    return forCondition;
+    ForHeadImpl forHead = new ForHeadImpl();
+    return forHead;
   }
 
   /**
@@ -544,10 +485,250 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public ForEachCollection createForEachCollection()
+  public GeneralForHead createGeneralForHead()
   {
-    ForEachCollectionImpl forEachCollection = new ForEachCollectionImpl();
-    return forEachCollection;
+    GeneralForHeadImpl generalForHead = new GeneralForHeadImpl();
+    return generalForHead;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ForEachHead createForEachHead()
+  {
+    ForEachHeadImpl forEachHead = new ForEachHeadImpl();
+    return forEachHead;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NodeOrParameterOrCollection createNodeOrParameterOrCollection()
+  {
+    NodeOrParameterOrCollectionImpl nodeOrParameterOrCollection = new NodeOrParameterOrCollectionImpl();
+    return nodeOrParameterOrCollection;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ForBody createForBody()
+  {
+    ForBodyImpl forBody = new ForBodyImpl();
+    return forBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public IfStatement createIfStatement()
+  {
+    IfStatementImpl ifStatement = new IfStatementImpl();
+    return ifStatement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SingleLineIf createSingleLineIf()
+  {
+    SingleLineIfImpl singleLineIf = new SingleLineIfImpl();
+    return singleLineIf;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public GenCommandBlock createGenCommandBlock()
+  {
+    GenCommandBlockImpl genCommandBlock = new GenCommandBlockImpl();
+    return genCommandBlock;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public BlockIf createBlockIf()
+  {
+    BlockIfImpl blockIf = new BlockIfImpl();
+    return blockIf;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public IfHeadAndBody createIfHeadAndBody()
+  {
+    IfHeadAndBodyImpl ifHeadAndBody = new IfHeadAndBodyImpl();
+    return ifHeadAndBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public IfHead createIfHead()
+  {
+    IfHeadImpl ifHead = new IfHeadImpl();
+    return ifHead;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public IfBody createIfBody()
+  {
+    IfBodyImpl ifBody = new IfBodyImpl();
+    return ifBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SwitchCase createSwitchCase()
+  {
+    SwitchCaseImpl switchCase = new SwitchCaseImpl();
+    return switchCase;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Default createDefault()
+  {
+    DefaultImpl default_ = new DefaultImpl();
+    return default_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Case createCase()
+  {
+    CaseImpl case_ = new CaseImpl();
+    return case_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public CaseBody createCaseBody()
+  {
+    CaseBodyImpl caseBody = new CaseBodyImpl();
+    return caseBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Collection createCollection()
+  {
+    CollectionImpl collection = new CollectionImpl();
+    return collection;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public List createList()
+  {
+    ListImpl list = new ListImpl();
+    return list;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ListAdHoc createListAdHoc()
+  {
+    ListAdHocImpl listAdHoc = new ListAdHocImpl();
+    return listAdHoc;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Map createMap()
+  {
+    MapImpl map = new MapImpl();
+    return map;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public MapAdHoc createMapAdHoc()
+  {
+    MapAdHocImpl mapAdHoc = new MapAdHocImpl();
+    return mapAdHoc;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public MapTupel createMapTupel()
+  {
+    MapTupelImpl mapTupel = new MapTupelImpl();
+    return mapTupel;
   }
 
   /**
@@ -568,10 +749,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public Or createOr()
+  public Tertiary createTertiary()
   {
-    OrImpl or = new OrImpl();
-    return or;
+    TertiaryImpl tertiary = new TertiaryImpl();
+    return tertiary;
   }
 
   /**
@@ -580,10 +761,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public Xor createXor()
+  public Secondary createSecondary()
   {
-    XorImpl xor = new XorImpl();
-    return xor;
+    SecondaryImpl secondary = new SecondaryImpl();
+    return secondary;
   }
 
   /**
@@ -592,10 +773,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public And createAnd()
+  public Primary createPrimary()
   {
-    AndImpl and = new AndImpl();
-    return and;
+    PrimaryImpl primary = new PrimaryImpl();
+    return primary;
   }
 
   /**
@@ -604,10 +785,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public NegatedBoolean createNegatedBoolean()
+  public Rel createRel()
   {
-    NegatedBooleanImpl negatedBoolean = new NegatedBooleanImpl();
-    return negatedBoolean;
+    RelImpl rel = new RelImpl();
+    return rel;
   }
 
   /**
@@ -616,10 +797,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public BooleanLiteral createBooleanLiteral()
+  public NegationExpression createNegationExpression()
   {
-    BooleanLiteralImpl booleanLiteral = new BooleanLiteralImpl();
-    return booleanLiteral;
+    NegationExpressionImpl negationExpression = new NegationExpressionImpl();
+    return negationExpression;
   }
 
   /**
@@ -628,10 +809,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public Concat createConcat()
+  public FunctionCall createFunctionCall()
   {
-    ConcatImpl concat = new ConcatImpl();
-    return concat;
+    FunctionCallImpl functionCall = new FunctionCallImpl();
+    return functionCall;
   }
 
   /**
@@ -639,9 +820,21 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public org.mofgen.mGLang.Boolean createBooleanFromString(EDataType eDataType, String initialValue)
+  @Override
+  public Literal createLiteral()
   {
-    org.mofgen.mGLang.Boolean result = org.mofgen.mGLang.Boolean.get(initialValue);
+    LiteralImpl literal = new LiteralImpl();
+    return literal;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MathFunc createMathFuncFromString(EDataType eDataType, String initialValue)
+  {
+    MathFunc result = MathFunc.get(initialValue);
     if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
     return result;
   }
@@ -651,7 +844,7 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public String convertBooleanToString(EDataType eDataType, Object instanceValue)
+  public String convertMathFuncToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }
@@ -696,6 +889,72 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   public String convertRelationalOpToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public TertiaryOp createTertiaryOpFromString(EDataType eDataType, String initialValue)
+  {
+    TertiaryOp result = TertiaryOp.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertTertiaryOpToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SecondaryOp createSecondaryOpFromString(EDataType eDataType, String initialValue)
+  {
+    SecondaryOp result = SecondaryOp.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertSecondaryOpToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public PrimaryOp createPrimaryOpFromString(EDataType eDataType, String initialValue)
+  {
+    PrimaryOp result = PrimaryOp.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertPrimaryOpToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

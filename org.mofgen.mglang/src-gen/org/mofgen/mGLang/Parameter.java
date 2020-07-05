@@ -3,46 +3,17 @@
  */
 package org.mofgen.mGLang;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Parameter</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * </p>
- * <ul>
- *   <li>{@link org.mofgen.mGLang.Parameter#getName <em>Name</em>}</li>
- * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getParameter()
  * @model
  * @generated
  */
-public interface Parameter extends EObject
+public interface Parameter extends NodeOrParameterOrCollection
 {
-  /**
-   * Returns the value of the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Name</em>' attribute.
-   * @see #setName(String)
-   * @see org.mofgen.mGLang.MGLangPackage#getParameter_Name()
-   * @model
-   * @generated
-   */
-  String getName();
-
-  /**
-   * Sets the value of the '{@link org.mofgen.mGLang.Parameter#getName <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Name</em>' attribute.
-   * @see #getName()
-   * @generated
-   */
-  void setName(String value);
-
 } // Parameter

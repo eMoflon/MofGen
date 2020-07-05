@@ -14,6 +14,6 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface GeneratorCommand extends GeneratorElement
+public interface GeneratorCommand extends Default, CaseBody
 {
 } // GeneratorCommand

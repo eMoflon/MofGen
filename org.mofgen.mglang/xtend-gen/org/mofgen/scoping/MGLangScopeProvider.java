@@ -15,6 +15,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
 import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.mofgen.mGLang.Assignment;
@@ -23,8 +24,9 @@ import org.mofgen.mGLang.MethodCall;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.NodeAttributeCall;
-import org.mofgen.mGLang.ObjectParameter;
+import org.mofgen.mGLang.NodeOrParameterOrCollection;
 import org.mofgen.mGLang.Parameter;
+import org.mofgen.mGLang.ParameterNode;
 import org.mofgen.mGLang.ParameterRef;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternNodeReference;
@@ -135,16 +137,25 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   public IScope getScopeForNodeAssignmentType(final Assignment ass) {
     final Node srcNode = EcoreUtil2.<Node>getContainerOfType(ass, Node.class);
     final MofgenFile file = this.getRootFile(ass);
-    final Function1<EClass, Boolean> _function = (EClass c) -> {
-      EClass _type = srcNode.getType();
-      return Boolean.valueOf(Objects.equal(c, _type));
-    };
-    final Iterable<EClass> clazzez = IterableExtensions.<EClass>filter(MofgenModelUtils.getClasses(file), _function);
-    boolean _isEmpty = IterableExtensions.isEmpty(clazzez);
-    if (_isEmpty) {
-      return IScope.NULLSCOPE;
-    } else {
-      return Scopes.scopeFor((((EClass[])Conversions.unwrapArray(clazzez, EClass.class))[0]).getEAllAttributes());
+    final ArrayList<EClass> clazzez = MofgenModelUtils.getClasses(file);
+    try {
+      final Function1<EClass, Boolean> _function = (EClass c) -> {
+        EClass _type = srcNode.getType();
+        return Boolean.valueOf(Objects.equal(c, _type));
+      };
+      final Iterable<EClass> filteredClazzez = IterableExtensions.<EClass>filter(clazzez, _function);
+      boolean _isEmpty = IterableExtensions.isEmpty(filteredClazzez);
+      if (_isEmpty) {
+        return IScope.NULLSCOPE;
+      } else {
+        return Scopes.scopeFor((((EClass[])Conversions.unwrapArray(filteredClazzez, EClass.class))[0]).getEAllAttributes());
+      }
+    } catch (final Throwable _t) {
+      if (_t instanceof NullPointerException) {
+        return IScope.NULLSCOPE;
+      } else {
+        throw Exceptions.sneakyThrow(_t);
+      }
     }
   }
   
@@ -156,9 +167,9 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   
   public IScope getScopeForMethodCallNode(final MethodCall mc) {
     final Pattern pattern = EcoreUtil2.<Pattern>getContainerOfType(mc, Pattern.class);
-    final Iterable<ObjectParameter> params = Iterables.<ObjectParameter>filter(pattern.getParameters(), ObjectParameter.class);
+    final Iterable<ParameterNode> params = Iterables.<ParameterNode>filter(pattern.getParameters(), ParameterNode.class);
     final EList<Node> nodes = pattern.getNodes();
-    Iterable<EObject> _plus = Iterables.<EObject>concat(params, nodes);
+    Iterable<NodeOrParameterOrCollection> _plus = Iterables.<NodeOrParameterOrCollection>concat(params, nodes);
     return Scopes.scopeFor(_plus);
   }
   
@@ -174,11 +185,13 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   }
   
   public boolean isReferenceType(final EObject context, final EReference reference) {
-    return ((context instanceof PatternNodeReference) && Objects.equal(reference, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE));
+    return ((context instanceof PatternNodeReference) && 
+      Objects.equal(reference, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE));
   }
   
   public boolean isReferenceTarget(final EObject context, final EReference reference) {
-    return ((context instanceof PatternNodeReference) && Objects.equal(reference, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TARGET));
+    return ((context instanceof PatternNodeReference) && 
+      Objects.equal(reference, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TARGET));
   }
   
   public boolean isNodeCreation(final EObject context, final EReference reference) {
@@ -190,7 +203,8 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   }
   
   public boolean isNodeAttributeCallAttribute(final EObject context, final EReference reference) {
-    return ((context instanceof NodeAttributeCall) && Objects.equal(reference, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE));
+    return ((context instanceof NodeAttributeCall) && 
+      Objects.equal(reference, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE));
   }
   
   public boolean isNodeAttributeAssignmentType(final EObject context, final EReference reference) {

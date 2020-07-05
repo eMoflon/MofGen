@@ -36,8 +36,15 @@ rulePattern:
 	)?
 	')'
 	'{'
+	(ruleCollection
+	*
+	    |
 	ruleNode
 	*
+	    |
+	ruleParamManipulation
+	*
+	)*
 	'}'
 	rulePatternReturn
 	?
@@ -53,18 +60,26 @@ rulePatternReturn:
 	)?
 ;
 
+// Rule ParamManipulation
+ruleParamManipulation:
+	RULE_ID
+	ruleNodeContent
+;
+
 // Rule Node
 ruleNode:
 	RULE_ID
 	RULE_ID
 	(
-		ruleNodeConstructor
-		    |rulePatternCall
+		ruleNodeContent
+		    |
+		RULE_ASSIGNMENT_OP
+		rulePatternCall
 	)?
 ;
 
-// Rule NodeConstructor
-ruleNodeConstructor:
+// Rule NodeContent
+ruleNodeContent:
 	'{'
 	ruleNodeReferenceOrAssignment
 	*
@@ -75,7 +90,7 @@ ruleNodeConstructor:
 rulePatternCall:
 	RULE_ID
 	'('
-	ruleStringExpression
+	ruleArithmeticExpression
 	*
 	')'
 ;
@@ -89,7 +104,7 @@ ruleNodeReferenceOrAssignment:
 	)
 	(
 		'['
-		ruleBooleanExpression
+		ruleArithmeticExpression
 		']'
 	)?
 ;
@@ -105,14 +120,7 @@ rulePatternNodeReference:
 ruleAssignment:
 	RULE_ID
 	RULE_ASSIGNMENT_OP
-	ruleStringExpression
-;
-
-// Rule NodeAttributeCall
-ruleNodeAttributeCall:
-	RULE_ID
-	'.'
-	RULE_ID
+	ruleArithmeticExpression
 ;
 
 // Rule Parameter
@@ -120,7 +128,7 @@ ruleParameter:
 	(
 		rulePrimitiveParameter
 		    |
-		ruleObjectParameter
+		ruleParameterNode
 	)
 ;
 
@@ -130,14 +138,14 @@ rulePrimitiveParameter:
 	RULE_ID
 ;
 
-// Rule ObjectParameter
-ruleObjectParameter:
+// Rule ParameterNode
+ruleParameterNode:
 	RULE_ID
 	RULE_ID
 ;
 
-// Rule ParameterOrMethodCall
-ruleParameterOrMethodCall:
+// Rule ParameterRefOrMethodCall
+ruleParameterRefOrMethodCall:
 	(
 		ruleParameterRef
 		    |
@@ -157,75 +165,86 @@ ruleMethodCall:
 	RULE_ID
 ;
 
-// Rule BooleanExpression
-ruleBooleanExpression:
-	ruleBooleanOr
+// Rule ArithmeticExpression
+ruleArithmeticExpression:
+	ruleTertiaryExpression
+;
+
+// Rule TertiaryExpression
+ruleTertiaryExpression:
+	ruleSecondaryExpression
+	(
+		ruleTertiaryOp
+		ruleSecondaryExpression
+	)*
+;
+
+// Rule SecondaryExpression
+ruleSecondaryExpression:
+	rulePrimaryExpr
+	(
+		ruleSecondaryOp
+		rulePrimaryExpr
+	)*
+;
+
+// Rule PrimaryExpr
+rulePrimaryExpr:
+	ruleRelationExpression
+	(
+		rulePrimaryOp
+		ruleRelationExpression
+	)*
 ;
 
 // Rule RelationExpression
 ruleRelationExpression:
-	ruleParameterOrMethodCall
-	ruleRelationalOp
-	ruleParameterOrMethodCall
-;
-
-// Rule BooleanOr
-ruleBooleanOr:
-	ruleBooleanXor
+	ruleBaseExpr
 	(
-		'||'
-		ruleBooleanXor
+		ruleRelationalOp
+		ruleBaseExpr
 	)*
 ;
 
-// Rule BooleanXor
-ruleBooleanXor:
-	ruleBooleanAnd
+// Rule BaseExpr
+ruleBaseExpr:
 	(
-		'^'
-		ruleBooleanAnd
-	)*
-;
-
-// Rule BooleanAnd
-ruleBooleanAnd:
-	ruleBaseBoolean
-	(
-		'&&'
-		ruleBaseBoolean
-	)*
-;
-
-// Rule BaseBoolean
-ruleBaseBoolean:
-	(
+		'('
+		ruleArithmeticExpression
+		')'
+		    |
 		'!'
+		ruleBaseExpr
+		    |
+		ruleMathFunc
 		'('
-		ruleBooleanExpression
+		ruleArithmeticExpression
 		')'
 		    |
-		'('
-		ruleBooleanExpression
-		')'
+		ruleLiteral
 		    |
-		ruleBoolean
-		    |
-		ruleRelationExpression
+		ruleParameterRefOrMethodCall
 	)
 ;
 
-// Rule StringExpression
-ruleStringExpression:
-	ruleStringConcatenation
+// Rule Literal
+ruleLiteral:
+	(
+		ruleBooleanLiteral
+		    |
+		ruleStringLiteral
+		    |
+		ruleNumberLiteral
+	)
 ;
 
-// Rule StringConcatenation
-ruleStringConcatenation:
-	ruleStringLiteral
+// Rule BooleanLiteral
+ruleBooleanLiteral:
 	(
-		'+'
-		ruleStringConcatenation
-	)?
+		RULE_TRUE
+		    |
+		RULE_FALSE
+	)
 ;
 
 // Rule StringLiteral
@@ -233,29 +252,39 @@ ruleStringLiteral:
 	RULE_STRING
 ;
 
+// Rule NumberLiteral
+ruleNumberLiteral:
+	RULE_INT
+	(
+		'.'
+		RULE_INT
+	)?
+;
+
 // Rule Generator
 ruleGenerator:
 	'gen'
 	'('
+	ruleParameter
+	*
 	')'
 	'{'
-	ruleGeneratorElement
+	ruleGeneratorCommand
 	*
 	'}'
-;
-
-// Rule GeneratorElement
-ruleGeneratorElement:
-	(
-		ruleGeneratorCommand
-		    |
-		ruleForLoop
-	)
 ;
 
 // Rule GeneratorCommand
 ruleGeneratorCommand:
 	(
+		ruleForStatement
+		    |
+		ruleIfStatement
+		    |
+		ruleSwitchCase
+		    |
+		ruleCollection
+		    |
 		rulePatternCall
 		    |
 		rulePatternObjectCreation
@@ -275,30 +304,177 @@ rulePatternObject:
 	RULE_ID
 ;
 
-// Rule ForLoop
-ruleForLoop:
+// Rule ForStatement
+ruleForStatement:
 	'for'
-	RULE_ID
-	'in'
-	ruleForCondition
+	ruleForHead
 	'{'
-	ruleGeneratorCommand
-	*
+	ruleForBody
 	'}'
 ;
 
-// Rule ForCondition
-ruleForCondition:
+// Rule ForHead
+ruleForHead:
 	(
-		ruleForEachCollection
+		ruleGeneralForHead
 		    |
-		ruleForRange
+		ruleForEachHead
 	)
 ;
 
-// Rule ForEachCollection
-ruleForEachCollection:
-	ruleNodeAttributeCall
+// Rule GeneralForHead
+ruleGeneralForHead:
+	RULE_ID
+	'in'
+	ruleForRange
+;
+
+// Rule ForEachHead
+ruleForEachHead:
+	RULE_ID
+	'-'
+	RULE_ID
+	'->'
+	RULE_ID
+;
+
+// Rule ForBody
+ruleForBody:
+	ruleGenCommandBlock
+;
+
+// Rule IfStatement
+ruleIfStatement:
+	ruleSingleLineIf
+;
+
+// Rule SingleLineIf
+ruleSingleLineIf:
+	'if'
+	'('
+	ruleArithmeticExpression
+	')'
+	ruleGeneratorCommand
+;
+
+// Rule GenCommandBlock
+ruleGenCommandBlock:
+	ruleGeneratorCommand
+	*
+;
+
+// Rule IfHeadAndBody
+ruleIfHeadAndBody:
+	'('
+	ruleIfHead
+	')'
+	'{'
+	ruleIfBody
+	'}'
+;
+
+// Rule IfHead
+ruleIfHead:
+	ruleArithmeticExpression
+;
+
+// Rule IfBody
+ruleIfBody:
+	ruleGenCommandBlock
+;
+
+// Rule SwitchCase
+ruleSwitchCase:
+	'switch'
+	'('
+	ruleParameterRefOrMethodCall
+	')'
+	'{'
+	ruleCase
+	+
+	ruleDefault
+;
+
+// Rule Default
+ruleDefault:
+	'default'
+	':'
+	ruleGeneratorCommand
+;
+
+// Rule Case
+ruleCase:
+	'case'
+	ruleArithmeticExpression
+	':'
+	ruleCaseBody
+;
+
+// Rule CaseBody
+ruleCaseBody:
+	(
+		'{'
+		ruleGenCommandBlock
+		'}'
+		    |
+		ruleGeneratorCommand
+	)
+;
+
+// Rule Collection
+ruleCollection:
+	(
+		ruleList
+		    |
+		ruleMap
+	)
+;
+
+// Rule List
+ruleList:
+	'List'
+	RULE_ID
+	RULE_ASSIGNMENT_OP
+	ruleListAdHoc
+;
+
+// Rule ListAdHoc
+ruleListAdHoc:
+	'['
+	ruleLiteral
+	(
+		','
+		ruleLiteral
+	)*
+	']'
+;
+
+// Rule Map
+ruleMap:
+	'Map'
+	RULE_ID
+	RULE_ASSIGNMENT_OP
+	ruleMapAdHoc
+;
+
+// Rule MapAdHoc
+ruleMapAdHoc:
+	'['
+	ruleMapTupel
+	(
+		','
+		ruleMapTupel
+	)*
+	']'
+;
+
+// Rule MapTupel
+ruleMapTupel:
+	'('
+	ruleLiteral
+	','
+	ruleArithmeticExpression
+	')'
 ;
 
 // Rule ForRange
@@ -308,12 +484,12 @@ ruleForRange:
 	RULE_INT
 ;
 
-// Rule Boolean
-ruleBoolean:
+// Rule MathFunc
+ruleMathFunc:
 	(
-		'true'
+		'sqrt'
 		    |
-		'false'
+		'abs'
 	)
 ;
 
@@ -325,6 +501,8 @@ rulePrimitiveType:
 		'char'
 		    |
 		'double'
+		    |
+		'String'
 	)
 ;
 
@@ -345,13 +523,48 @@ ruleRelationalOp:
 	)
 ;
 
-RULE_INT : ('0'..'9')+;
+// Rule TertiaryOp
+ruleTertiaryOp:
+	(
+		'+'
+		    |
+		'-'
+		    |
+		'||'
+	)
+;
 
-RULE_NUMBER : '-'? RULE_INT ('.' RULE_INT)?;
+// Rule SecondaryOp
+ruleSecondaryOp:
+	(
+		'%'
+		    |
+		'^'
+	)
+;
+
+// Rule PrimaryOp
+rulePrimaryOp:
+	(
+		'*'
+		    |
+		'/'
+		    |
+		'&&'
+	)
+;
+
+RULE_TRUE : 'true';
+
+RULE_FALSE : 'false';
 
 RULE_ASSIGNMENT_OP : '=';
 
+RULE_NEWLINE : '\n';
+
 RULE_ID : '^'? ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+
+RULE_INT : ('0'..'9')+;
 
 RULE_STRING : ('"' ('\\' .|~(('\\'|'"')))* '"'|'\'' ('\\' .|~(('\\'|'\'')))* '\'');
 

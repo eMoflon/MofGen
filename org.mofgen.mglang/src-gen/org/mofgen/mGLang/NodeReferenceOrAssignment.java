@@ -28,12 +28,12 @@ public interface NodeReferenceOrAssignment extends EObject
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Condition</em>' containment reference.
-   * @see #setCondition(BooleanExpression)
+   * @see #setCondition(ArithmeticExpression)
    * @see org.mofgen.mGLang.MGLangPackage#getNodeReferenceOrAssignment_Condition()
    * @model containment="true"
    * @generated
    */
-  BooleanExpression getCondition();
+  ArithmeticExpression getCondition();
 
   /**
    * Sets the value of the '{@link org.mofgen.mGLang.NodeReferenceOrAssignment#getCondition <em>Condition</em>}' containment reference.
@@ -43,6 +43,6 @@ public interface NodeReferenceOrAssignment extends EObject
    * @see #getCondition()
    * @generated
    */
-  void setCondition(BooleanExpression value);
+  void setCondition(ArithmeticExpression value);
 
 } // NodeReferenceOrAssignment

@@ -18,7 +18,9 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.Pattern#getName <em>Name</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.Pattern#getColls <em>Colls</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getNodes <em>Nodes</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.Pattern#getParamManipulations <em>Param Manipulations</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getReturn <em>Return</em>}</li>
  * </ul>
  *
@@ -63,6 +65,18 @@ public interface Pattern extends EObject
   EList<Parameter> getParameters();
 
   /**
+   * Returns the value of the '<em><b>Colls</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.Collection}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Colls</em>' containment reference list.
+   * @see org.mofgen.mGLang.MGLangPackage#getPattern_Colls()
+   * @model containment="true"
+   * @generated
+   */
+  EList<Collection> getColls();
+
+  /**
    * Returns the value of the '<em><b>Nodes</b></em>' containment reference list.
    * The list contents are of type {@link org.mofgen.mGLang.Node}.
    * <!-- begin-user-doc -->
@@ -73,6 +87,18 @@ public interface Pattern extends EObject
    * @generated
    */
   EList<Node> getNodes();
+
+  /**
+   * Returns the value of the '<em><b>Param Manipulations</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.ParamManipulation}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Param Manipulations</em>' containment reference list.
+   * @see org.mofgen.mGLang.MGLangPackage#getPattern_ParamManipulations()
+   * @model containment="true"
+   * @generated
+   */
+  EList<ParamManipulation> getParamManipulations();
 
   /**
    * Returns the value of the '<em><b>Return</b></em>' containment reference.

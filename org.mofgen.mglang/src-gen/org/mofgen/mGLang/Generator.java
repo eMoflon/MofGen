@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.mofgen.mGLang.Generator#getParams <em>Params</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Generator#getCommands <em>Commands</em>}</li>
  * </ul>
  *
@@ -26,8 +27,20 @@ import org.eclipse.emf.ecore.EObject;
 public interface Generator extends EObject
 {
   /**
+   * Returns the value of the '<em><b>Params</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.Parameter}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Params</em>' containment reference list.
+   * @see org.mofgen.mGLang.MGLangPackage#getGenerator_Params()
+   * @model containment="true"
+   * @generated
+   */
+  EList<Parameter> getParams();
+
+  /**
    * Returns the value of the '<em><b>Commands</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.GeneratorElement}.
+   * The list contents are of type {@link org.mofgen.mGLang.GeneratorCommand}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Commands</em>' containment reference list.
@@ -35,6 +48,6 @@ public interface Generator extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<GeneratorElement> getCommands();
+  EList<GeneratorCommand> getCommands();
 
 } // Generator

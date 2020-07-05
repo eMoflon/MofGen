@@ -12,9 +12,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.Assignment;
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.StringExpression;
 
 /**
  * <!-- begin-user-doc -->
@@ -50,7 +50,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    * @ordered
    */
-  protected StringExpression value;
+  protected ArithmeticExpression value;
 
   /**
    * <!-- begin-user-doc -->
@@ -124,7 +124,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    */
   @Override
-  public StringExpression getValue()
+  public ArithmeticExpression getValue()
   {
     return value;
   }
@@ -134,9 +134,9 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetValue(StringExpression newValue, NotificationChain msgs)
+  public NotificationChain basicSetValue(ArithmeticExpression newValue, NotificationChain msgs)
   {
-    StringExpression oldValue = value;
+    ArithmeticExpression oldValue = value;
     value = newValue;
     if (eNotificationRequired())
     {
@@ -152,7 +152,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
    * @generated
    */
   @Override
-  public void setValue(StringExpression newValue)
+  public void setValue(ArithmeticExpression newValue)
   {
     if (newValue != value)
     {
@@ -217,7 +217,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
         setTarget((EAttribute)newValue);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
-        setValue((StringExpression)newValue);
+        setValue((ArithmeticExpression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -237,7 +237,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Ass
         setTarget((EAttribute)null);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
-        setValue((StringExpression)null);
+        setValue((ArithmeticExpression)null);
         return;
     }
     super.eUnset(featureID);

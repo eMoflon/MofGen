@@ -48,7 +48,17 @@ public enum PrimitiveType implements Enumerator
    * @generated
    * @ordered
    */
-  DOUBLE(2, "DOUBLE", "double");
+  DOUBLE(2, "DOUBLE", "double"),
+
+  /**
+   * The '<em><b>STRING</b></em>' literal object.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #STRING_VALUE
+   * @generated
+   * @ordered
+   */
+  STRING(3, "STRING", "String");
 
   /**
    * The '<em><b>INT</b></em>' literal value.
@@ -84,6 +94,17 @@ public enum PrimitiveType implements Enumerator
   public static final int DOUBLE_VALUE = 2;
 
   /**
+   * The '<em><b>STRING</b></em>' literal value.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #STRING
+   * @model literal="String"
+   * @generated
+   * @ordered
+   */
+  public static final int STRING_VALUE = 3;
+
+  /**
    * An array of all the '<em><b>Primitive Type</b></em>' enumerators.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -95,6 +116,7 @@ public enum PrimitiveType implements Enumerator
       INT,
       CHAR,
       DOUBLE,
+      STRING,
     };
 
   /**
@@ -162,6 +184,7 @@ public enum PrimitiveType implements Enumerator
       case INT_VALUE: return INT;
       case CHAR_VALUE: return CHAR;
       case DOUBLE_VALUE: return DOUBLE;
+      case STRING_VALUE: return STRING;
     }
     return null;
   }

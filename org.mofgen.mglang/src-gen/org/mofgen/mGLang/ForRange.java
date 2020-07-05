@@ -3,6 +3,7 @@
  */
 package org.mofgen.mGLang;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +22,7 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface ForRange extends ForCondition
+public interface ForRange extends EObject
 {
   /**
    * Returns the value of the '<em><b>Start</b></em>' attribute.
