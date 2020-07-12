@@ -151,6 +151,11 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createRefOrCallAdapter();
       }
       @Override
+      public Adapter caseRefOrCall2(RefOrCall2 object)
+      {
+        return createRefOrCall2Adapter();
+      }
+      @Override
       public Adapter caseGenerator(Generator object)
       {
         return createGeneratorAdapter();
@@ -563,6 +568,21 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createRefOrCallAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.RefOrCall2 <em>Ref Or Call2</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.RefOrCall2
+   * @generated
+   */
+  public Adapter createRefOrCall2Adapter()
   {
     return null;
   }

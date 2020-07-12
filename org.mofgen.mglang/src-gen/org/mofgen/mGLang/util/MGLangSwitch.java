@@ -184,6 +184,7 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         RefOrCall refOrCall = (RefOrCall)theEObject;
         T result = caseRefOrCall(refOrCall);
+        if (result == null) result = caseRefOrCall2(refOrCall);
         if (result == null) result = caseListAssignment(refOrCall);
         if (result == null) result = caseMapAssignment(refOrCall);
         if (result == null) result = caseArithmeticExpression(refOrCall);
@@ -192,6 +193,13 @@ public class MGLangSwitch<T> extends Switch<T>
         if (result == null) result = caseCollection(refOrCall);
         if (result == null) result = caseGeneratorExpression(refOrCall);
         if (result == null) result = caseRefType(refOrCall);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MGLangPackage.REF_OR_CALL2:
+      {
+        RefOrCall2 refOrCall2 = (RefOrCall2)theEObject;
+        T result = caseRefOrCall2(refOrCall2);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -716,6 +724,22 @@ public class MGLangSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseRefOrCall(RefOrCall object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Ref Or Call2</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Ref Or Call2</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRefOrCall2(RefOrCall2 object)
   {
     return null;
   }

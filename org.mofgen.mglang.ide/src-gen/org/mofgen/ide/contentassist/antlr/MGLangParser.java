@@ -31,7 +31,7 @@ public class MGLangParser extends AbstractContentAssistParser {
 		}
 		
 		private static void init(ImmutableMap.Builder<AbstractElement, String> builder, MGLangGrammarAccess grammarAccess) {
-			builder.put(grammarAccess.getMofgenFileAccess().getAlternatives_1(), "rule__MofgenFile__Alternatives_1");
+			builder.put(grammarAccess.getMofgenFileAccess().getAlternatives_2(), "rule__MofgenFile__Alternatives_2");
 			builder.put(grammarAccess.getNodeAccess().getAlternatives_2(), "rule__Node__Alternatives_2");
 			builder.put(grammarAccess.getNodeReferenceOrAssignmentAccess().getAlternatives(), "rule__NodeReferenceOrAssignment__Alternatives");
 			builder.put(grammarAccess.getParameterAccess().getAlternatives(), "rule__Parameter__Alternatives");
@@ -71,6 +71,10 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getParameterNodeAccess().getGroup(), "rule__ParameterNode__Group__0");
 			builder.put(grammarAccess.getRefOrCallAccess().getGroup(), "rule__RefOrCall__Group__0");
 			builder.put(grammarAccess.getRefOrCallAccess().getGroup_1(), "rule__RefOrCall__Group_1__0");
+			builder.put(grammarAccess.getRefOrCallAccess().getGroup_1_3(), "rule__RefOrCall__Group_1_3__0");
+			builder.put(grammarAccess.getRefOrCallAccess().getGroup_1_3_2(), "rule__RefOrCall__Group_1_3_2__0");
+			builder.put(grammarAccess.getRefOrCall2Access().getGroup(), "rule__RefOrCall2__Group__0");
+			builder.put(grammarAccess.getRefOrCall2Access().getGroup_1(), "rule__RefOrCall2__Group_1__0");
 			builder.put(grammarAccess.getGeneratorAccess().getGroup(), "rule__Generator__Group__0");
 			builder.put(grammarAccess.getPatternObjectCreationAccess().getGroup(), "rule__PatternObjectCreation__Group__0");
 			builder.put(grammarAccess.getPatternObjectAccess().getGroup(), "rule__PatternObject__Group__0");
@@ -111,8 +115,9 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getNumberLiteralAccess().getGroup(), "rule__NumberLiteral__Group__0");
 			builder.put(grammarAccess.getNumberLiteralAccess().getGroup_1(), "rule__NumberLiteral__Group_1__0");
 			builder.put(grammarAccess.getMofgenFileAccess().getImportsAssignment_0(), "rule__MofgenFile__ImportsAssignment_0");
-			builder.put(grammarAccess.getMofgenFileAccess().getPatternsAssignment_1_0(), "rule__MofgenFile__PatternsAssignment_1_0");
-			builder.put(grammarAccess.getMofgenFileAccess().getGeneratorsAssignment_1_1(), "rule__MofgenFile__GeneratorsAssignment_1_1");
+			builder.put(grammarAccess.getMofgenFileAccess().getConfigAssignment_1(), "rule__MofgenFile__ConfigAssignment_1");
+			builder.put(grammarAccess.getMofgenFileAccess().getPatternsAssignment_2_0(), "rule__MofgenFile__PatternsAssignment_2_0");
+			builder.put(grammarAccess.getMofgenFileAccess().getGeneratorsAssignment_2_1(), "rule__MofgenFile__GeneratorsAssignment_2_1");
 			builder.put(grammarAccess.getImportAccess().getNameAssignment_1(), "rule__Import__NameAssignment_1");
 			builder.put(grammarAccess.getImportAccess().getAliasAssignment_3(), "rule__Import__AliasAssignment_3");
 			builder.put(grammarAccess.getPatternAccess().getNameAssignment_1(), "rule__Pattern__NameAssignment_1");
@@ -143,6 +148,10 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getParameterNodeAccess().getNameAssignment_1(), "rule__ParameterNode__NameAssignment_1");
 			builder.put(grammarAccess.getRefOrCallAccess().getRefAssignment_0(), "rule__RefOrCall__RefAssignment_0");
 			builder.put(grammarAccess.getRefOrCallAccess().getRefAssignment_1_2(), "rule__RefOrCall__RefAssignment_1_2");
+			builder.put(grammarAccess.getRefOrCallAccess().getParamsAssignment_1_3_1(), "rule__RefOrCall__ParamsAssignment_1_3_1");
+			builder.put(grammarAccess.getRefOrCallAccess().getParamsAssignment_1_3_2_1(), "rule__RefOrCall__ParamsAssignment_1_3_2_1");
+			builder.put(grammarAccess.getRefOrCall2Access().getRefAssignment_0(), "rule__RefOrCall2__RefAssignment_0");
+			builder.put(grammarAccess.getRefOrCall2Access().getRefAssignment_1_2(), "rule__RefOrCall2__RefAssignment_1_2");
 			builder.put(grammarAccess.getGeneratorAccess().getParamsAssignment_3(), "rule__Generator__ParamsAssignment_3");
 			builder.put(grammarAccess.getGeneratorAccess().getCommandsAssignment_6(), "rule__Generator__CommandsAssignment_6");
 			builder.put(grammarAccess.getPatternObjectCreationAccess().getPObjectAssignment_0(), "rule__PatternObjectCreation__PObjectAssignment_0");

@@ -33,18 +33,21 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cImportsAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cImportsImportParserRuleCall_0_0 = (RuleCall)cImportsAssignment_0.eContents().get(0);
-		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
-		private final Assignment cPatternsAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
-		private final RuleCall cPatternsPatternParserRuleCall_1_0_0 = (RuleCall)cPatternsAssignment_1_0.eContents().get(0);
-		private final Assignment cGeneratorsAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
-		private final RuleCall cGeneratorsGeneratorParserRuleCall_1_1_0 = (RuleCall)cGeneratorsAssignment_1_1.eContents().get(0);
+		private final Assignment cConfigAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cConfigConfigParserRuleCall_1_0 = (RuleCall)cConfigAssignment_1.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Assignment cPatternsAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
+		private final RuleCall cPatternsPatternParserRuleCall_2_0_0 = (RuleCall)cPatternsAssignment_2_0.eContents().get(0);
+		private final Assignment cGeneratorsAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
+		private final RuleCall cGeneratorsGeneratorParserRuleCall_2_1_0 = (RuleCall)cGeneratorsAssignment_2_1.eContents().get(0);
 		
 		////TODO: How to get map and list methods? EList and EMap are not accessible. => Create Map and List from separate Ecore Model? --> Probably best thus they are directly usable....
 		//MofgenFile:
-		//	imports+=Import* (patterns+=Pattern | generators+=Generator)*;
+		//	imports+=Import*
+		//	config=Config (patterns+=Pattern | generators+=Generator)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//imports+=Import* (patterns+=Pattern | generators+=Generator)*
+		//imports+=Import* config=Config (patterns+=Pattern | generators+=Generator)*
 		public Group getGroup() { return cGroup; }
 		
 		//imports+=Import*
@@ -53,20 +56,26 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//Import
 		public RuleCall getImportsImportParserRuleCall_0_0() { return cImportsImportParserRuleCall_0_0; }
 		
+		//config=Config
+		public Assignment getConfigAssignment_1() { return cConfigAssignment_1; }
+		
+		//Config
+		public RuleCall getConfigConfigParserRuleCall_1_0() { return cConfigConfigParserRuleCall_1_0; }
+		
 		//(patterns+=Pattern | generators+=Generator)*
-		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
 		
 		//patterns+=Pattern
-		public Assignment getPatternsAssignment_1_0() { return cPatternsAssignment_1_0; }
+		public Assignment getPatternsAssignment_2_0() { return cPatternsAssignment_2_0; }
 		
 		//Pattern
-		public RuleCall getPatternsPatternParserRuleCall_1_0_0() { return cPatternsPatternParserRuleCall_1_0_0; }
+		public RuleCall getPatternsPatternParserRuleCall_2_0_0() { return cPatternsPatternParserRuleCall_2_0_0; }
 		
 		//generators+=Generator
-		public Assignment getGeneratorsAssignment_1_1() { return cGeneratorsAssignment_1_1; }
+		public Assignment getGeneratorsAssignment_2_1() { return cGeneratorsAssignment_2_1; }
 		
 		//Generator
-		public RuleCall getGeneratorsGeneratorParserRuleCall_1_1_0() { return cGeneratorsGeneratorParserRuleCall_1_1_0; }
+		public RuleCall getGeneratorsGeneratorParserRuleCall_2_1_0() { return cGeneratorsGeneratorParserRuleCall_2_1_0; }
 	}
 	public class ImportElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Import");
@@ -102,6 +111,17 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//ID
 		public RuleCall getAliasIDTerminalRuleCall_3_0() { return cAliasIDTerminalRuleCall_3_0; }
+	}
+	public class ConfigElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Config");
+		private final Keyword c___Keyword = (Keyword)rule.eContents().get(1);
+		
+		//Config:
+		//	'___';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'___'
+		public Keyword get___Keyword() { return c___Keyword; }
 	}
 	public class PatternElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Pattern");
@@ -608,9 +628,100 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cRefAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final CrossReference cRefETypedElementCrossReference_1_2_0 = (CrossReference)cRefAssignment_1_2.eContents().get(0);
 		private final RuleCall cRefETypedElementIDTerminalRuleCall_1_2_0_1 = (RuleCall)cRefETypedElementCrossReference_1_2_0.eContents().get(1);
+		private final Group cGroup_1_3 = (Group)cGroup_1.eContents().get(3);
+		private final Keyword cLeftParenthesisKeyword_1_3_0 = (Keyword)cGroup_1_3.eContents().get(0);
+		private final Assignment cParamsAssignment_1_3_1 = (Assignment)cGroup_1_3.eContents().get(1);
+		private final RuleCall cParamsNodeParserRuleCall_1_3_1_0 = (RuleCall)cParamsAssignment_1_3_1.eContents().get(0);
+		private final Group cGroup_1_3_2 = (Group)cGroup_1_3.eContents().get(2);
+		private final Keyword cCommaKeyword_1_3_2_0 = (Keyword)cGroup_1_3_2.eContents().get(0);
+		private final Assignment cParamsAssignment_1_3_2_1 = (Assignment)cGroup_1_3_2.eContents().get(1);
+		private final RuleCall cParamsNodeParserRuleCall_1_3_2_1_0 = (RuleCall)cParamsAssignment_1_3_2_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_1_3_3 = (Keyword)cGroup_1_3.eContents().get(3);
 		
+		////RefOrCall:
+		////	ref=[RefType] ({RefOrCall.target = current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
+		////	// TODO: parameter lists for EOperations?
+		////;
 		//RefOrCall:
+		//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params+=Node (',' params+=Node)*
+		//	')')?)* // Making Eoperations, attributes and reference accessible
+		//	// TODO: parameter lists for EOperations?
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params+=Node (',' params+=Node)* ')')?)*
+		public Group getGroup() { return cGroup; }
+		
+		//ref=[RefType]
+		public Assignment getRefAssignment_0() { return cRefAssignment_0; }
+		
+		//[RefType]
+		public CrossReference getRefRefTypeCrossReference_0_0() { return cRefRefTypeCrossReference_0_0; }
+		
+		//ID
+		public RuleCall getRefRefTypeIDTerminalRuleCall_0_0_1() { return cRefRefTypeIDTerminalRuleCall_0_0_1; }
+		
+		//({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params+=Node (',' params+=Node)* ')')?)*
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//{RefOrCall.target=current}
+		public Action getRefOrCallTargetAction_1_0() { return cRefOrCallTargetAction_1_0; }
+		
+		//'.'
+		public Keyword getFullStopKeyword_1_1() { return cFullStopKeyword_1_1; }
+		
+		//ref=[ecore::ETypedElement]
+		public Assignment getRefAssignment_1_2() { return cRefAssignment_1_2; }
+		
+		//[ecore::ETypedElement]
+		public CrossReference getRefETypedElementCrossReference_1_2_0() { return cRefETypedElementCrossReference_1_2_0; }
+		
+		//ID
+		public RuleCall getRefETypedElementIDTerminalRuleCall_1_2_0_1() { return cRefETypedElementIDTerminalRuleCall_1_2_0_1; }
+		
+		//('(' params+=Node (',' params+=Node)* ')')?
+		public Group getGroup_1_3() { return cGroup_1_3; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_1_3_0() { return cLeftParenthesisKeyword_1_3_0; }
+		
+		//params+=Node
+		public Assignment getParamsAssignment_1_3_1() { return cParamsAssignment_1_3_1; }
+		
+		//Node
+		public RuleCall getParamsNodeParserRuleCall_1_3_1_0() { return cParamsNodeParserRuleCall_1_3_1_0; }
+		
+		//(',' params+=Node)*
+		public Group getGroup_1_3_2() { return cGroup_1_3_2; }
+		
+		//','
+		public Keyword getCommaKeyword_1_3_2_0() { return cCommaKeyword_1_3_2_0; }
+		
+		//params+=Node
+		public Assignment getParamsAssignment_1_3_2_1() { return cParamsAssignment_1_3_2_1; }
+		
+		//Node
+		public RuleCall getParamsNodeParserRuleCall_1_3_2_1_0() { return cParamsNodeParserRuleCall_1_3_2_1_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_1_3_3() { return cRightParenthesisKeyword_1_3_3; }
+	}
+	public class RefOrCall2Elements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.RefOrCall2");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cRefAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final CrossReference cRefRefTypeCrossReference_0_0 = (CrossReference)cRefAssignment_0.eContents().get(0);
+		private final RuleCall cRefRefTypeIDTerminalRuleCall_0_0_1 = (RuleCall)cRefRefTypeCrossReference_0_0.eContents().get(1);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Action cRefOrCallTargetAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Keyword cFullStopKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final Assignment cRefAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final CrossReference cRefETypedElementCrossReference_1_2_0 = (CrossReference)cRefAssignment_1_2.eContents().get(0);
+		private final RuleCall cRefETypedElementIDTerminalRuleCall_1_2_0_1 = (RuleCall)cRefETypedElementCrossReference_1_2_0.eContents().get(1);
+		
+		//RefOrCall2:
 		//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
+		//	// TODO: parameter lists for EOperations?
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -2117,6 +2228,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	private final MofgenFileElements pMofgenFile;
 	private final ImportElements pImport;
+	private final ConfigElements pConfig;
 	private final PatternElements pPattern;
 	private final PatternReturnElements pPatternReturn;
 	private final ParamManipulationElements pParamManipulation;
@@ -2130,6 +2242,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	private final PrimitiveParameterElements pPrimitiveParameter;
 	private final ParameterNodeElements pParameterNode;
 	private final RefOrCallElements pRefOrCall;
+	private final RefOrCall2Elements pRefOrCall2;
 	private final GeneratorElements pGenerator;
 	private final GeneratorExpressionElements pGeneratorExpression;
 	private final PatternObjectCreationElements pPatternObjectCreation;
@@ -2188,6 +2301,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		this.gaTerminals = gaTerminals;
 		this.pMofgenFile = new MofgenFileElements();
 		this.pImport = new ImportElements();
+		this.pConfig = new ConfigElements();
 		this.pPattern = new PatternElements();
 		this.pPatternReturn = new PatternReturnElements();
 		this.pParamManipulation = new ParamManipulationElements();
@@ -2201,6 +2315,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		this.pPrimitiveParameter = new PrimitiveParameterElements();
 		this.pParameterNode = new ParameterNodeElements();
 		this.pRefOrCall = new RefOrCallElements();
+		this.pRefOrCall2 = new RefOrCall2Elements();
 		this.pGenerator = new GeneratorElements();
 		this.pGeneratorExpression = new GeneratorExpressionElements();
 		this.pPatternObjectCreation = new PatternObjectCreationElements();
@@ -2278,7 +2393,8 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	////TODO: How to get map and list methods? EList and EMap are not accessible. => Create Map and List from separate Ecore Model? --> Probably best thus they are directly usable....
 	//MofgenFile:
-	//	imports+=Import* (patterns+=Pattern | generators+=Generator)*;
+	//	imports+=Import*
+	//	config=Config (patterns+=Pattern | generators+=Generator)*;
 	public MofgenFileElements getMofgenFileAccess() {
 		return pMofgenFile;
 	}
@@ -2295,6 +2411,16 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getImportRule() {
 		return getImportAccess().getRule();
+	}
+	
+	//Config:
+	//	'___';
+	public ConfigElements getConfigAccess() {
+		return pConfig;
+	}
+	
+	public ParserRule getConfigRule() {
+		return getConfigAccess().getRule();
 	}
 	
 	//Pattern: //(abstract?='abstract')? // 'Abstract' necessary? TODO
@@ -2419,8 +2545,14 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getParameterNodeAccess().getRule();
 	}
 	
+	////RefOrCall:
+	////	ref=[RefType] ({RefOrCall.target = current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
+	////	// TODO: parameter lists for EOperations?
+	////;
 	//RefOrCall:
-	//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
+	//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params+=Node (',' params+=Node)*
+	//	')')?)* // Making Eoperations, attributes and reference accessible
+	//	// TODO: parameter lists for EOperations?
 	//;
 	public RefOrCallElements getRefOrCallAccess() {
 		return pRefOrCall;
@@ -2428,6 +2560,18 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getRefOrCallRule() {
 		return getRefOrCallAccess().getRule();
+	}
+	
+	//RefOrCall2:
+	//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
+	//	// TODO: parameter lists for EOperations?
+	//;
+	public RefOrCall2Elements getRefOrCall2Access() {
+		return pRefOrCall2;
+	}
+	
+	public ParserRule getRefOrCall2Rule() {
+		return getRefOrCall2Access().getRule();
 	}
 	
 	//Generator:

@@ -40,6 +40,7 @@
     </genEnums>
     <genClasses ecoreClass="MGLang.ecore#//MofgenFile">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/imports"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//MofgenFile/config"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/patterns"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/generators"/>
     </genClasses>
@@ -91,8 +92,11 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ParameterNode/type"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//RefOrCall">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/ref"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/params"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//RefOrCall2">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall2/ref"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Generator">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Generator/params"/>

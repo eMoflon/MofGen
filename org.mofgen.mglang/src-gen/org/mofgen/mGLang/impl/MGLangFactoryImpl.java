@@ -81,6 +81,7 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.PRIMITIVE_PARAMETER: return createPrimitiveParameter();
       case MGLangPackage.PARAMETER_NODE: return createParameterNode();
       case MGLangPackage.REF_OR_CALL: return createRefOrCall();
+      case MGLangPackage.REF_OR_CALL2: return createRefOrCall2();
       case MGLangPackage.GENERATOR: return createGenerator();
       case MGLangPackage.GENERATOR_EXPRESSION: return createGeneratorExpression();
       case MGLangPackage.PATTERN_OBJECT_CREATION: return createPatternObjectCreation();
@@ -352,6 +353,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     RefOrCallImpl refOrCall = new RefOrCallImpl();
     return refOrCall;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public RefOrCall2 createRefOrCall2()
+  {
+    RefOrCall2Impl refOrCall2 = new RefOrCall2Impl();
+    return refOrCall2;
   }
 
   /**

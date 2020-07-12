@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link org.mofgen.mGLang.MofgenFile#getImports <em>Imports</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.MofgenFile#getConfig <em>Config</em>}</li>
  *   <li>{@link org.mofgen.mGLang.MofgenFile#getPatterns <em>Patterns</em>}</li>
  *   <li>{@link org.mofgen.mGLang.MofgenFile#getGenerators <em>Generators</em>}</li>
  * </ul>
@@ -38,6 +39,28 @@ public interface MofgenFile extends EObject
    * @generated
    */
   EList<Import> getImports();
+
+  /**
+   * Returns the value of the '<em><b>Config</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Config</em>' attribute.
+   * @see #setConfig(String)
+   * @see org.mofgen.mGLang.MGLangPackage#getMofgenFile_Config()
+   * @model
+   * @generated
+   */
+  String getConfig();
+
+  /**
+   * Sets the value of the '{@link org.mofgen.mGLang.MofgenFile#getConfig <em>Config</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Config</em>' attribute.
+   * @see #getConfig()
+   * @generated
+   */
+  void setConfig(String value);
 
   /**
    * Returns the value of the '<em><b>Patterns</b></em>' containment reference list.

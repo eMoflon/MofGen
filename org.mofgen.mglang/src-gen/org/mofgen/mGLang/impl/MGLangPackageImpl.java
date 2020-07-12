@@ -59,6 +59,7 @@ import org.mofgen.mGLang.PrimaryOp;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.mGLang.PrimitiveType;
 import org.mofgen.mGLang.RefOrCall;
+import org.mofgen.mGLang.RefOrCall2;
 import org.mofgen.mGLang.RefType;
 import org.mofgen.mGLang.Rel;
 import org.mofgen.mGLang.RelationalOp;
@@ -181,6 +182,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   private EClass refOrCallEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass refOrCall2EClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -553,9 +561,20 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
+  public EAttribute getMofgenFile_Config()
+  {
+    return (EAttribute)mofgenFileEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EReference getMofgenFile_Patterns()
   {
-    return (EReference)mofgenFileEClass.getEStructuralFeatures().get(1);
+    return (EReference)mofgenFileEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -566,7 +585,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
   @Override
   public EReference getMofgenFile_Generators()
   {
-    return (EReference)mofgenFileEClass.getEStructuralFeatures().get(2);
+    return (EReference)mofgenFileEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -982,7 +1001,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getRefOrCall_Ref()
+  public EReference getRefOrCall_Target()
   {
     return (EReference)refOrCallEClass.getEStructuralFeatures().get(0);
   }
@@ -993,9 +1012,31 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getRefOrCall_Target()
+  public EReference getRefOrCall_Params()
   {
     return (EReference)refOrCallEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getRefOrCall2()
+  {
+    return refOrCall2EClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getRefOrCall2_Ref()
+  {
+    return (EReference)refOrCall2EClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1966,6 +2007,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     // Create classes and their features
     mofgenFileEClass = createEClass(MOFGEN_FILE);
     createEReference(mofgenFileEClass, MOFGEN_FILE__IMPORTS);
+    createEAttribute(mofgenFileEClass, MOFGEN_FILE__CONFIG);
     createEReference(mofgenFileEClass, MOFGEN_FILE__PATTERNS);
     createEReference(mofgenFileEClass, MOFGEN_FILE__GENERATORS);
 
@@ -2019,8 +2061,11 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(parameterNodeEClass, PARAMETER_NODE__TYPE);
 
     refOrCallEClass = createEClass(REF_OR_CALL);
-    createEReference(refOrCallEClass, REF_OR_CALL__REF);
     createEReference(refOrCallEClass, REF_OR_CALL__TARGET);
+    createEReference(refOrCallEClass, REF_OR_CALL__PARAMS);
+
+    refOrCall2EClass = createEClass(REF_OR_CALL2);
+    createEReference(refOrCall2EClass, REF_OR_CALL2__REF);
 
     generatorEClass = createEClass(GENERATOR);
     createEReference(generatorEClass, GENERATOR__PARAMS);
@@ -2180,6 +2225,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     parameterEClass.getESuperTypes().add(this.getRefType());
     primitiveParameterEClass.getESuperTypes().add(this.getParameter());
     parameterNodeEClass.getESuperTypes().add(this.getParameter());
+    refOrCallEClass.getESuperTypes().add(this.getRefOrCall2());
     refOrCallEClass.getESuperTypes().add(this.getListAssignment());
     refOrCallEClass.getESuperTypes().add(this.getMapAssignment());
     refOrCallEClass.getESuperTypes().add(this.getArithmeticExpression());
@@ -2210,6 +2256,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     // Initialize classes and features; add operations and parameters
     initEClass(mofgenFileEClass, MofgenFile.class, "MofgenFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMofgenFile_Imports(), this.getImport(), null, "imports", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getMofgenFile_Config(), ecorePackage.getEString(), "config", null, 0, 1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMofgenFile_Patterns(), this.getPattern(), null, "patterns", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMofgenFile_Generators(), this.getGenerator(), null, "generators", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2263,8 +2310,11 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getParameterNode_Type(), ecorePackage.getEClassifier(), null, "type", null, 0, 1, ParameterNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(refOrCallEClass, RefOrCall.class, "RefOrCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRefOrCall_Ref(), ecorePackage.getEObject(), null, "ref", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRefOrCall_Target(), this.getRefOrCall(), null, "target", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRefOrCall_Target(), this.getRefOrCall2(), null, "target", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRefOrCall_Params(), this.getNode(), null, "params", null, 0, -1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(refOrCall2EClass, RefOrCall2.class, "RefOrCall2", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRefOrCall2_Ref(), ecorePackage.getEObject(), null, "ref", null, 0, 1, RefOrCall2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(generatorEClass, Generator.class, "Generator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getGenerator_Params(), this.getParameter(), null, "params", null, 0, -1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

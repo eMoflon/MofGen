@@ -4,6 +4,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="MofgenFile">
     <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
         eType="#//Import" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="config" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="patterns" upperBound="-1"
         eType="#//Pattern" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="generators" upperBound="-1"
@@ -67,10 +68,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="ParameterNode" eSuperTypes="#//Parameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//ListAssignment #//MapAssignment #//ArithmeticExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//RefOrCall"
+  <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//RefOrCall2 #//ListAssignment #//MapAssignment #//ArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//RefOrCall2"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
+        eType="#//Node" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RefOrCall2">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Generator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"

@@ -3,7 +3,7 @@
  */
 package org.mofgen.mGLang;
 
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,49 +14,27 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.RefOrCall#getRef <em>Ref</em>}</li>
  *   <li>{@link org.mofgen.mGLang.RefOrCall#getTarget <em>Target</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.RefOrCall#getParams <em>Params</em>}</li>
  * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getRefOrCall()
  * @model
  * @generated
  */
-public interface RefOrCall extends ListAssignment, MapAssignment, ArithmeticExpression
+public interface RefOrCall extends RefOrCall2, ListAssignment, MapAssignment, ArithmeticExpression
 {
-  /**
-   * Returns the value of the '<em><b>Ref</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Ref</em>' reference.
-   * @see #setRef(EObject)
-   * @see org.mofgen.mGLang.MGLangPackage#getRefOrCall_Ref()
-   * @model
-   * @generated
-   */
-  EObject getRef();
-
-  /**
-   * Sets the value of the '{@link org.mofgen.mGLang.RefOrCall#getRef <em>Ref</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Ref</em>' reference.
-   * @see #getRef()
-   * @generated
-   */
-  void setRef(EObject value);
-
   /**
    * Returns the value of the '<em><b>Target</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Target</em>' containment reference.
-   * @see #setTarget(RefOrCall)
+   * @see #setTarget(RefOrCall2)
    * @see org.mofgen.mGLang.MGLangPackage#getRefOrCall_Target()
    * @model containment="true"
    * @generated
    */
-  RefOrCall getTarget();
+  RefOrCall2 getTarget();
 
   /**
    * Sets the value of the '{@link org.mofgen.mGLang.RefOrCall#getTarget <em>Target</em>}' containment reference.
@@ -66,6 +44,18 @@ public interface RefOrCall extends ListAssignment, MapAssignment, ArithmeticExpr
    * @see #getTarget()
    * @generated
    */
-  void setTarget(RefOrCall value);
+  void setTarget(RefOrCall2 value);
+
+  /**
+   * Returns the value of the '<em><b>Params</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.Node}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Params</em>' containment reference list.
+   * @see org.mofgen.mGLang.MGLangPackage#getRefOrCall_Params()
+   * @model containment="true"
+   * @generated
+   */
+  EList<Node> getParams();
 
 } // RefOrCall

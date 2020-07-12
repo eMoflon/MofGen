@@ -3,17 +3,32 @@
  */
 package org.mofgen.mGLang.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.mofgen.mGLang.ArithmeticExpression;
+import org.mofgen.mGLang.GeneratorExpression;
+import org.mofgen.mGLang.List;
+import org.mofgen.mGLang.ListAssignment;
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.Map;
+import org.mofgen.mGLang.MapAssignment;
+import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.RefOrCall;
+import org.mofgen.mGLang.RefOrCall2;
+import org.mofgen.mGLang.RefType;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,23 +38,34 @@ import org.mofgen.mGLang.RefOrCall;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getRef <em>Ref</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getTarget <em>Target</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getParams <em>Params</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
+public class RefOrCallImpl extends RefOrCall2Impl implements RefOrCall
 {
   /**
-   * The cached value of the '{@link #getRef() <em>Ref</em>}' reference.
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getRef()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected EObject ref;
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getTarget() <em>Target</em>}' containment reference.
@@ -49,7 +75,17 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    * @ordered
    */
-  protected RefOrCall target;
+  protected RefOrCall2 target;
+
+  /**
+   * The cached value of the '{@link #getParams() <em>Params</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getParams()
+   * @generated
+   * @ordered
+   */
+  protected EList<Node> params;
 
   /**
    * <!-- begin-user-doc -->
@@ -78,29 +114,9 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    */
   @Override
-  public EObject getRef()
+  public String getName()
   {
-    if (ref != null && ref.eIsProxy())
-    {
-      InternalEObject oldRef = (InternalEObject)ref;
-      ref = eResolveProxy(oldRef);
-      if (ref != oldRef)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.REF_OR_CALL__REF, oldRef, ref));
-      }
-    }
-    return ref;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EObject basicGetRef()
-  {
-    return ref;
+    return name;
   }
 
   /**
@@ -109,12 +125,12 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    */
   @Override
-  public void setRef(EObject newRef)
+  public void setName(String newName)
   {
-    EObject oldRef = ref;
-    ref = newRef;
+    String oldName = name;
+    name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.REF_OR_CALL__REF, oldRef, ref));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.REF_OR_CALL__NAME, oldName, name));
   }
 
   /**
@@ -123,7 +139,7 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    */
   @Override
-  public RefOrCall getTarget()
+  public RefOrCall2 getTarget()
   {
     return target;
   }
@@ -133,9 +149,9 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetTarget(RefOrCall newTarget, NotificationChain msgs)
+  public NotificationChain basicSetTarget(RefOrCall2 newTarget, NotificationChain msgs)
   {
-    RefOrCall oldTarget = target;
+    RefOrCall2 oldTarget = target;
     target = newTarget;
     if (eNotificationRequired())
     {
@@ -151,7 +167,7 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    */
   @Override
-  public void setTarget(RefOrCall newTarget)
+  public void setTarget(RefOrCall2 newTarget)
   {
     if (newTarget != target)
     {
@@ -173,12 +189,29 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    */
   @Override
+  public EList<Node> getParams()
+  {
+    if (params == null)
+    {
+      params = new EObjectContainmentEList<Node>(Node.class, this, MGLangPackage.REF_OR_CALL__PARAMS);
+    }
+    return params;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
     {
       case MGLangPackage.REF_OR_CALL__TARGET:
         return basicSetTarget(null, msgs);
+      case MGLangPackage.REF_OR_CALL__PARAMS:
+        return ((InternalEList<?>)getParams()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -193,11 +226,12 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
   {
     switch (featureID)
     {
-      case MGLangPackage.REF_OR_CALL__REF:
-        if (resolve) return getRef();
-        return basicGetRef();
+      case MGLangPackage.REF_OR_CALL__NAME:
+        return getName();
       case MGLangPackage.REF_OR_CALL__TARGET:
         return getTarget();
+      case MGLangPackage.REF_OR_CALL__PARAMS:
+        return getParams();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -207,16 +241,21 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case MGLangPackage.REF_OR_CALL__REF:
-        setRef((EObject)newValue);
+      case MGLangPackage.REF_OR_CALL__NAME:
+        setName((String)newValue);
         return;
       case MGLangPackage.REF_OR_CALL__TARGET:
-        setTarget((RefOrCall)newValue);
+        setTarget((RefOrCall2)newValue);
+        return;
+      case MGLangPackage.REF_OR_CALL__PARAMS:
+        getParams().clear();
+        getParams().addAll((Collection<? extends Node>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -232,11 +271,14 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
   {
     switch (featureID)
     {
-      case MGLangPackage.REF_OR_CALL__REF:
-        setRef((EObject)null);
+      case MGLangPackage.REF_OR_CALL__NAME:
+        setName(NAME_EDEFAULT);
         return;
       case MGLangPackage.REF_OR_CALL__TARGET:
-        setTarget((RefOrCall)null);
+        setTarget((RefOrCall2)null);
+        return;
+      case MGLangPackage.REF_OR_CALL__PARAMS:
+        getParams().clear();
         return;
     }
     super.eUnset(featureID);
@@ -252,12 +294,167 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
   {
     switch (featureID)
     {
-      case MGLangPackage.REF_OR_CALL__REF:
-        return ref != null;
+      case MGLangPackage.REF_OR_CALL__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case MGLangPackage.REF_OR_CALL__TARGET:
         return target != null;
+      case MGLangPackage.REF_OR_CALL__PARAMS:
+        return params != null && !params.isEmpty();
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+  {
+    if (baseClass == GeneratorExpression.class)
+    {
+      switch (derivedFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == RefType.class)
+    {
+      switch (derivedFeatureID)
+      {
+        case MGLangPackage.REF_OR_CALL__NAME: return MGLangPackage.REF_TYPE__NAME;
+        default: return -1;
+      }
+    }
+    if (baseClass == org.mofgen.mGLang.Collection.class)
+    {
+      switch (derivedFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == List.class)
+    {
+      switch (derivedFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == ListAssignment.class)
+    {
+      switch (derivedFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == Map.class)
+    {
+      switch (derivedFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == MapAssignment.class)
+    {
+      switch (derivedFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == ArithmeticExpression.class)
+    {
+      switch (derivedFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+  {
+    if (baseClass == GeneratorExpression.class)
+    {
+      switch (baseFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == RefType.class)
+    {
+      switch (baseFeatureID)
+      {
+        case MGLangPackage.REF_TYPE__NAME: return MGLangPackage.REF_OR_CALL__NAME;
+        default: return -1;
+      }
+    }
+    if (baseClass == org.mofgen.mGLang.Collection.class)
+    {
+      switch (baseFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == List.class)
+    {
+      switch (baseFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == ListAssignment.class)
+    {
+      switch (baseFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == Map.class)
+    {
+      switch (baseFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == MapAssignment.class)
+    {
+      switch (baseFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    if (baseClass == ArithmeticExpression.class)
+    {
+      switch (baseFeatureID)
+      {
+        default: return -1;
+      }
+    }
+    return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
   }
 
 } //RefOrCallImpl

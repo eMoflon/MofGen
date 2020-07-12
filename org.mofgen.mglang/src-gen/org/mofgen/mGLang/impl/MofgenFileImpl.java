@@ -5,6 +5,7 @@ package org.mofgen.mGLang.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -12,6 +13,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -32,6 +34,7 @@ import org.mofgen.mGLang.Pattern;
  * </p>
  * <ul>
  *   <li>{@link org.mofgen.mGLang.impl.MofgenFileImpl#getImports <em>Imports</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.MofgenFileImpl#getConfig <em>Config</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.MofgenFileImpl#getPatterns <em>Patterns</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.MofgenFileImpl#getGenerators <em>Generators</em>}</li>
  * </ul>
@@ -49,6 +52,26 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
    * @ordered
    */
   protected EList<Import> imports;
+
+  /**
+   * The default value of the '{@link #getConfig() <em>Config</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getConfig()
+   * @generated
+   * @ordered
+   */
+  protected static final String CONFIG_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getConfig() <em>Config</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getConfig()
+   * @generated
+   * @ordered
+   */
+  protected String config = CONFIG_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getPatterns() <em>Patterns</em>}' containment reference list.
@@ -104,6 +127,31 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
       imports = new EObjectContainmentEList<Import>(Import.class, this, MGLangPackage.MOFGEN_FILE__IMPORTS);
     }
     return imports;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String getConfig()
+  {
+    return config;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setConfig(String newConfig)
+  {
+    String oldConfig = config;
+    config = newConfig;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.MOFGEN_FILE__CONFIG, oldConfig, config));
   }
 
   /**
@@ -168,6 +216,8 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
     {
       case MGLangPackage.MOFGEN_FILE__IMPORTS:
         return getImports();
+      case MGLangPackage.MOFGEN_FILE__CONFIG:
+        return getConfig();
       case MGLangPackage.MOFGEN_FILE__PATTERNS:
         return getPatterns();
       case MGLangPackage.MOFGEN_FILE__GENERATORS:
@@ -190,6 +240,9 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
       case MGLangPackage.MOFGEN_FILE__IMPORTS:
         getImports().clear();
         getImports().addAll((Collection<? extends Import>)newValue);
+        return;
+      case MGLangPackage.MOFGEN_FILE__CONFIG:
+        setConfig((String)newValue);
         return;
       case MGLangPackage.MOFGEN_FILE__PATTERNS:
         getPatterns().clear();
@@ -216,6 +269,9 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
       case MGLangPackage.MOFGEN_FILE__IMPORTS:
         getImports().clear();
         return;
+      case MGLangPackage.MOFGEN_FILE__CONFIG:
+        setConfig(CONFIG_EDEFAULT);
+        return;
       case MGLangPackage.MOFGEN_FILE__PATTERNS:
         getPatterns().clear();
         return;
@@ -238,12 +294,31 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
     {
       case MGLangPackage.MOFGEN_FILE__IMPORTS:
         return imports != null && !imports.isEmpty();
+      case MGLangPackage.MOFGEN_FILE__CONFIG:
+        return CONFIG_EDEFAULT == null ? config != null : !CONFIG_EDEFAULT.equals(config);
       case MGLangPackage.MOFGEN_FILE__PATTERNS:
         return patterns != null && !patterns.isEmpty();
       case MGLangPackage.MOFGEN_FILE__GENERATORS:
         return generators != null && !generators.isEmpty();
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (config: ");
+    result.append(config);
+    result.append(')');
+    return result.toString();
   }
 
 } //MofgenFileImpl

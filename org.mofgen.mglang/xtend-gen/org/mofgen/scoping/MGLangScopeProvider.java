@@ -32,6 +32,7 @@ import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternNodeReference;
 import org.mofgen.mGLang.RefOrCall;
+import org.mofgen.mGLang.RefOrCall2;
 import org.mofgen.mGLang.RefType;
 import org.mofgen.scoping.AbstractMGLangScopeProvider;
 import org.mofgen.utils.MofgenModelUtils;
@@ -158,7 +159,7 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   }
   
   public IScope getScopeForRefOrCall(final RefOrCall r) {
-    RefOrCall _target = r.getTarget();
+    RefOrCall2 _target = r.getTarget();
     boolean _tripleEquals = (_target == null);
     if (_tripleEquals) {
       final Pattern pattern = EcoreUtil2.<Pattern>getContainerOfType(r, Pattern.class);
@@ -181,7 +182,7 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
       Iterable<RefType> _plus = Iterables.<RefType>concat(params, patternNodes);
       return Scopes.scopeFor(_plus);
     } else {
-      final RefOrCall trg = r.getTarget();
+      final RefOrCall2 trg = r.getTarget();
       final EClass refClass = trg.getRef().eClass();
       final EList<EOperation> ops = refClass.getEAllOperations();
       final EList<EAttribute> attrs = refClass.getEAllAttributes();

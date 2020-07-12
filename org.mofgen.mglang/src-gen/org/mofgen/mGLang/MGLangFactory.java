@@ -159,6 +159,15 @@ public interface MGLangFactory extends EFactory
   RefOrCall createRefOrCall();
 
   /**
+   * Returns a new object of class '<em>Ref Or Call2</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Ref Or Call2</em>'.
+   * @generated
+   */
+  RefOrCall2 createRefOrCall2();
+
+  /**
    * Returns a new object of class '<em>Generator</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

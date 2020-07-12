@@ -6,11 +6,16 @@ generate mGLang "http://www.mofgen.org/MGLang"
 //TODO: How to get map and list methods? EList and EMap are not accessible. => Create Map and List from separate Ecore Model? --> Probably best thus they are directly usable....
 MofgenFile:
 	(imports+=Import)*
+	(config = Config)
 	(patterns+=Pattern |
 	generators+=Generator)*;
 
 Import:
 	'import' name=STRING 'as' alias=ID;
+
+Config:
+	'___'
+;
 
 Pattern:
 //(abstract?='abstract')? // 'Abstract' necessary? TODO
@@ -52,8 +57,10 @@ PrimitiveParameter:
 ParameterNode:
 	type=[ecore::EClassifier] name=ID;
 
+
 RefOrCall:
 	ref=[RefType] ({RefOrCall.target = current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
+	// TODO: parameter lists for EOperations?
 ;
 
 Generator:
@@ -136,8 +143,6 @@ MapTupel:
 
 ForRange:
 	start=INT ':' end=INT;
-
-
 
 
 	//======================================Arithmetics============================================

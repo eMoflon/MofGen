@@ -49,6 +49,7 @@ import org.mofgen.mGLang.PatternReturn;
 import org.mofgen.mGLang.Primary;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.mGLang.RefOrCall;
+import org.mofgen.mGLang.RefOrCall2;
 import org.mofgen.mGLang.Rel;
 import org.mofgen.mGLang.Secondary;
 import org.mofgen.mGLang.SwitchCase;
@@ -187,7 +188,31 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				sequence_PrimitiveParameter(context, (PrimitiveParameter) semanticObject); 
 				return; 
 			case MGLangPackage.REF_OR_CALL:
-				sequence_RefOrCall(context, (RefOrCall) semanticObject); 
+				if (rule == grammarAccess.getRefOrCall2Rule()
+						|| action == grammarAccess.getRefOrCall2Access().getRefOrCallTargetAction_1_0()) {
+					sequence_RefOrCall2(context, (RefOrCall) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getRefOrCallRule()
+						|| action == grammarAccess.getRefOrCallAccess().getRefOrCallTargetAction_1_0()
+						|| rule == grammarAccess.getListAssignmentRule()
+						|| rule == grammarAccess.getMapAssignmentRule()
+						|| rule == grammarAccess.getArithmeticExpressionRule()
+						|| rule == grammarAccess.getTertiaryExpressionRule()
+						|| action == grammarAccess.getTertiaryExpressionAccess().getTertiaryLeftAction_1_0()
+						|| rule == grammarAccess.getSecondaryExpressionRule()
+						|| action == grammarAccess.getSecondaryExpressionAccess().getSecondaryLeftAction_1_0()
+						|| rule == grammarAccess.getPrimaryExprRule()
+						|| action == grammarAccess.getPrimaryExprAccess().getPrimaryLeftAction_1_0()
+						|| rule == grammarAccess.getRelationExpressionRule()
+						|| action == grammarAccess.getRelationExpressionAccess().getRelLeftAction_1_0()
+						|| rule == grammarAccess.getBaseExprRule()) {
+					sequence_RefOrCall(context, (RefOrCall) semanticObject); 
+					return; 
+				}
+				else break;
+			case MGLangPackage.REF_OR_CALL2:
+				sequence_RefOrCall2(context, (RefOrCall2) semanticObject); 
 				return; 
 			case MGLangPackage.REL:
 				sequence_RelationExpression(context, (Rel) semanticObject); 
@@ -536,7 +561,10 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	//     List returns List
 	//
 	// Constraint:
-	//     (name=ID (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID]) | (elements+=Literal elements+=Literal*)))
+	//     (
+	//         name=ID 
+	//         (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID] (params+=Node params+=Node*)?) | (elements+=Literal elements+=Literal*))
+	//     )
 	//
 	// protected void sequence_List_ListAdHoc_RefOrCall(ISerializationContext context, List semanticObject) { }
 	
@@ -596,7 +624,10 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	//     Map returns Map
 	//
 	// Constraint:
-	//     (name=ID (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID]) | (entries+=MapTupel entries+=MapTupel*)))
+	//     (
+	//         name=ID 
+	//         (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID] (params+=Node params+=Node*)?) | (entries+=MapTupel entries+=MapTupel*))
+	//     )
 	//
 	// protected void sequence_Map_MapAdHoc_RefOrCall(ISerializationContext context, Map semanticObject) { }
 	
@@ -605,7 +636,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     MofgenFile returns MofgenFile
 	 *
 	 * Constraint:
-	 *     (imports+=Import+ | (imports+=Import+ (patterns+=Pattern | generators+=Generator)+))?
+	 *     (imports+=Import* config=Config (patterns+=Pattern | generators+=Generator)*)
 	 */
 	protected void sequence_MofgenFile(ISerializationContext context, MofgenFile semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -846,6 +877,47 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     RefOrCall2 returns RefOrCall
+	 *     RefOrCall2.RefOrCall_1_0 returns RefOrCall
+	 *
+	 * Constraint:
+	 *     (target=RefOrCall2_RefOrCall_1_0 ref=[ETypedElement|ID])
+	 */
+	protected void sequence_RefOrCall2(ISerializationContext context, RefOrCall semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.REF_OR_CALL__TARGET) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.REF_OR_CALL__TARGET));
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.REF_OR_CALL2__REF) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.REF_OR_CALL2__REF));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getRefOrCall2Access().getRefOrCallTargetAction_1_0(), semanticObject.getTarget());
+		feeder.accept(grammarAccess.getRefOrCall2Access().getRefETypedElementIDTerminalRuleCall_1_2_0_1(), semanticObject.eGet(MGLangPackage.Literals.REF_OR_CALL2__REF, false));
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     RefOrCall2 returns RefOrCall2
+	 *     RefOrCall2.RefOrCall_1_0 returns RefOrCall2
+	 *
+	 * Constraint:
+	 *     ref=[RefType|ID]
+	 */
+	protected void sequence_RefOrCall2(ISerializationContext context, RefOrCall2 semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.REF_OR_CALL2__REF) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.REF_OR_CALL2__REF));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getRefOrCall2Access().getRefRefTypeIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.REF_OR_CALL2__REF, false));
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     RefOrCall returns RefOrCall
 	 *     RefOrCall.RefOrCall_1_0 returns RefOrCall
 	 *     ListAssignment returns RefOrCall
@@ -862,7 +934,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     BaseExpr returns RefOrCall
 	 *
 	 * Constraint:
-	 *     (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID]))
+	 *     (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID] (params+=Node params+=Node*)?))
 	 */
 	protected void sequence_RefOrCall(ISerializationContext context, RefOrCall semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

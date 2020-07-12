@@ -7,6 +7,7 @@ grammar DebugInternalMGLang;
 ruleMofgenFile:
 	ruleImport
 	*
+	ruleConfig
 	(
 		rulePattern
 		    |
@@ -20,6 +21,11 @@ ruleImport:
 	RULE_STRING
 	'as'
 	RULE_ID
+;
+
+// Rule Config
+ruleConfig:
+	'___'
 ;
 
 // Rule Pattern
@@ -148,6 +154,15 @@ ruleRefOrCall:
 	(
 		'.'
 		RULE_ID
+		(
+			'('
+			ruleNode
+			(
+				','
+				ruleNode
+			)*
+			')'
+		)?
 	)*
 ;
 
