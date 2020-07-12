@@ -605,16 +605,16 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Action cRefOrCallTargetAction_1_0 = (Action)cGroup_1.eContents().get(0);
 		private final Keyword cFullStopKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
-		private final Assignment cCalledAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
-		private final CrossReference cCalledETypedElementCrossReference_1_2_0 = (CrossReference)cCalledAssignment_1_2.eContents().get(0);
-		private final RuleCall cCalledETypedElementIDTerminalRuleCall_1_2_0_1 = (RuleCall)cCalledETypedElementCrossReference_1_2_0.eContents().get(1);
+		private final Assignment cRefAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final CrossReference cRefETypedElementCrossReference_1_2_0 = (CrossReference)cRefAssignment_1_2.eContents().get(0);
+		private final RuleCall cRefETypedElementIDTerminalRuleCall_1_2_0_1 = (RuleCall)cRefETypedElementCrossReference_1_2_0.eContents().get(1);
 		
 		//RefOrCall:
-		//	ref=[RefType] ({RefOrCall.target=current} '.' called=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
+		//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ref=[RefType] ({RefOrCall.target=current} '.' called=[ecore::ETypedElement])*
+		//ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement])*
 		public Group getGroup() { return cGroup; }
 		
 		//ref=[RefType]
@@ -626,7 +626,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getRefRefTypeIDTerminalRuleCall_0_0_1() { return cRefRefTypeIDTerminalRuleCall_0_0_1; }
 		
-		//({RefOrCall.target=current} '.' called=[ecore::ETypedElement])*
+		//({RefOrCall.target=current} '.' ref=[ecore::ETypedElement])*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//{RefOrCall.target=current}
@@ -635,14 +635,14 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//'.'
 		public Keyword getFullStopKeyword_1_1() { return cFullStopKeyword_1_1; }
 		
-		//called=[ecore::ETypedElement]
-		public Assignment getCalledAssignment_1_2() { return cCalledAssignment_1_2; }
+		//ref=[ecore::ETypedElement]
+		public Assignment getRefAssignment_1_2() { return cRefAssignment_1_2; }
 		
 		//[ecore::ETypedElement]
-		public CrossReference getCalledETypedElementCrossReference_1_2_0() { return cCalledETypedElementCrossReference_1_2_0; }
+		public CrossReference getRefETypedElementCrossReference_1_2_0() { return cRefETypedElementCrossReference_1_2_0; }
 		
 		//ID
-		public RuleCall getCalledETypedElementIDTerminalRuleCall_1_2_0_1() { return cCalledETypedElementIDTerminalRuleCall_1_2_0_1; }
+		public RuleCall getRefETypedElementIDTerminalRuleCall_1_2_0_1() { return cRefETypedElementIDTerminalRuleCall_1_2_0_1; }
 	}
 	public class GeneratorElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Generator");
@@ -2420,7 +2420,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//RefOrCall:
-	//	ref=[RefType] ({RefOrCall.target=current} '.' called=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
+	//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
 	//;
 	public RefOrCallElements getRefOrCallAccess() {
 		return pRefOrCall;

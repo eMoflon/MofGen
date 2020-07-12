@@ -68,10 +68,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//ListAssignment #//MapAssignment #//ArithmeticExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//RefType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//RefOrCall"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="called" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//ETypedElement"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Generator">
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"

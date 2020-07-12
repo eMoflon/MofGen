@@ -2925,7 +2925,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             	    					
             	    otherlv_3=(Token)match(input,RULE_ID,FOLLOW_16); 
 
-            	    						newLeafNode(otherlv_3, grammarAccess.getRefOrCallAccess().getCalledETypedElementCrossReference_1_2_0());
+            	    						newLeafNode(otherlv_3, grammarAccess.getRefOrCallAccess().getRefETypedElementCrossReference_1_2_0());
             	    					
 
             	    }

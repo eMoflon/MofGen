@@ -536,7 +536,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	//     List returns List
 	//
 	// Constraint:
-	//     (name=ID (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 called=[ETypedElement|ID]) | (elements+=Literal elements+=Literal*)))
+	//     (name=ID (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID]) | (elements+=Literal elements+=Literal*)))
 	//
 	// protected void sequence_List_ListAdHoc_RefOrCall(ISerializationContext context, List semanticObject) { }
 	
@@ -596,7 +596,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	//     Map returns Map
 	//
 	// Constraint:
-	//     (name=ID (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 called=[ETypedElement|ID]) | (entries+=MapTupel entries+=MapTupel*)))
+	//     (name=ID (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID]) | (entries+=MapTupel entries+=MapTupel*)))
 	//
 	// protected void sequence_Map_MapAdHoc_RefOrCall(ISerializationContext context, Map semanticObject) { }
 	
@@ -862,7 +862,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     BaseExpr returns RefOrCall
 	 *
 	 * Constraint:
-	 *     (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 called=[ETypedElement|ID]))
+	 *     (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID]))
 	 */
 	protected void sequence_RefOrCall(ISerializationContext context, RefOrCall semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

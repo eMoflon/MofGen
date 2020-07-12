@@ -11777,26 +11777,26 @@ public class InternalMGLangParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__RefOrCall__Group_1__2__Impl"
-    // InternalMGLang.g:3404:1: rule__RefOrCall__Group_1__2__Impl : ( ( rule__RefOrCall__CalledAssignment_1_2 ) ) ;
+    // InternalMGLang.g:3404:1: rule__RefOrCall__Group_1__2__Impl : ( ( rule__RefOrCall__RefAssignment_1_2 ) ) ;
     public final void rule__RefOrCall__Group_1__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalMGLang.g:3408:1: ( ( ( rule__RefOrCall__CalledAssignment_1_2 ) ) )
-            // InternalMGLang.g:3409:1: ( ( rule__RefOrCall__CalledAssignment_1_2 ) )
+            // InternalMGLang.g:3408:1: ( ( ( rule__RefOrCall__RefAssignment_1_2 ) ) )
+            // InternalMGLang.g:3409:1: ( ( rule__RefOrCall__RefAssignment_1_2 ) )
             {
-            // InternalMGLang.g:3409:1: ( ( rule__RefOrCall__CalledAssignment_1_2 ) )
-            // InternalMGLang.g:3410:2: ( rule__RefOrCall__CalledAssignment_1_2 )
+            // InternalMGLang.g:3409:1: ( ( rule__RefOrCall__RefAssignment_1_2 ) )
+            // InternalMGLang.g:3410:2: ( rule__RefOrCall__RefAssignment_1_2 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getRefOrCallAccess().getCalledAssignment_1_2()); 
+               before(grammarAccess.getRefOrCallAccess().getRefAssignment_1_2()); 
             }
-            // InternalMGLang.g:3411:2: ( rule__RefOrCall__CalledAssignment_1_2 )
-            // InternalMGLang.g:3411:3: rule__RefOrCall__CalledAssignment_1_2
+            // InternalMGLang.g:3411:2: ( rule__RefOrCall__RefAssignment_1_2 )
+            // InternalMGLang.g:3411:3: rule__RefOrCall__RefAssignment_1_2
             {
             pushFollow(FOLLOW_2);
-            rule__RefOrCall__CalledAssignment_1_2();
+            rule__RefOrCall__RefAssignment_1_2();
 
             state._fsp--;
             if (state.failed) return ;
@@ -11804,7 +11804,7 @@ public class InternalMGLangParser extends AbstractInternalContentAssistParser {
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getRefOrCallAccess().getCalledAssignment_1_2()); 
+               after(grammarAccess.getRefOrCallAccess().getRefAssignment_1_2()); 
             }
 
             }
@@ -24914,9 +24914,9 @@ public class InternalMGLangParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__RefOrCall__RefAssignment_0"
 
 
-    // $ANTLR start "rule__RefOrCall__CalledAssignment_1_2"
-    // InternalMGLang.g:7571:1: rule__RefOrCall__CalledAssignment_1_2 : ( ( RULE_ID ) ) ;
-    public final void rule__RefOrCall__CalledAssignment_1_2() throws RecognitionException {
+    // $ANTLR start "rule__RefOrCall__RefAssignment_1_2"
+    // InternalMGLang.g:7571:1: rule__RefOrCall__RefAssignment_1_2 : ( ( RULE_ID ) ) ;
+    public final void rule__RefOrCall__RefAssignment_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -24928,23 +24928,23 @@ public class InternalMGLangParser extends AbstractInternalContentAssistParser {
             // InternalMGLang.g:7577:3: ( RULE_ID )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getRefOrCallAccess().getCalledETypedElementCrossReference_1_2_0()); 
+               before(grammarAccess.getRefOrCallAccess().getRefETypedElementCrossReference_1_2_0()); 
             }
             // InternalMGLang.g:7578:3: ( RULE_ID )
             // InternalMGLang.g:7579:4: RULE_ID
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getRefOrCallAccess().getCalledETypedElementIDTerminalRuleCall_1_2_0_1()); 
+               before(grammarAccess.getRefOrCallAccess().getRefETypedElementIDTerminalRuleCall_1_2_0_1()); 
             }
             match(input,RULE_ID,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getRefOrCallAccess().getCalledETypedElementIDTerminalRuleCall_1_2_0_1()); 
+               after(grammarAccess.getRefOrCallAccess().getRefETypedElementIDTerminalRuleCall_1_2_0_1()); 
             }
 
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getRefOrCallAccess().getCalledETypedElementCrossReference_1_2_0()); 
+               after(grammarAccess.getRefOrCallAccess().getRefETypedElementCrossReference_1_2_0()); 
             }
 
             }
@@ -24964,7 +24964,7 @@ public class InternalMGLangParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__RefOrCall__CalledAssignment_1_2"
+    // $ANTLR end "rule__RefOrCall__RefAssignment_1_2"
 
 
     // $ANTLR start "rule__Generator__ParamsAssignment_3"

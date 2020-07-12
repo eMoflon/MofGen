@@ -93,7 +93,6 @@
     <genClasses ecoreClass="MGLang.ecore#//RefOrCall">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/ref"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/target"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/called"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Generator">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Generator/params"/>

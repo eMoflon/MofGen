@@ -1004,17 +1004,6 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getRefOrCall_Called()
-  {
-    return (EReference)refOrCallEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EClass getGenerator()
   {
     return generatorEClass;
@@ -2032,7 +2021,6 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     refOrCallEClass = createEClass(REF_OR_CALL);
     createEReference(refOrCallEClass, REF_OR_CALL__REF);
     createEReference(refOrCallEClass, REF_OR_CALL__TARGET);
-    createEReference(refOrCallEClass, REF_OR_CALL__CALLED);
 
     generatorEClass = createEClass(GENERATOR);
     createEReference(generatorEClass, GENERATOR__PARAMS);
@@ -2275,9 +2263,8 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getParameterNode_Type(), ecorePackage.getEClassifier(), null, "type", null, 0, 1, ParameterNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(refOrCallEClass, RefOrCall.class, "RefOrCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRefOrCall_Ref(), this.getRefType(), null, "ref", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRefOrCall_Ref(), ecorePackage.getEObject(), null, "ref", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRefOrCall_Target(), this.getRefOrCall(), null, "target", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRefOrCall_Called(), ecorePackage.getETypedElement(), null, "called", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(generatorEClass, Generator.class, "Generator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getGenerator_Params(), this.getParameter(), null, "params", null, 0, -1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

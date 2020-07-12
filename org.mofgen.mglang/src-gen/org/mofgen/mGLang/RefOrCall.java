@@ -3,7 +3,7 @@
  */
 package org.mofgen.mGLang;
 
-import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.ETypedElement;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.RefOrCall#getRef <em>Ref</em>}</li>
  *   <li>{@link org.mofgen.mGLang.RefOrCall#getTarget <em>Target</em>}</li>
- *   <li>{@link org.mofgen.mGLang.RefOrCall#getCalled <em>Called</em>}</li>
  * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getRefOrCall()
@@ -30,12 +29,12 @@ public interface RefOrCall extends ListAssignment, MapAssignment, ArithmeticExpr
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref</em>' reference.
-   * @see #setRef(RefType)
+   * @see #setRef(EObject)
    * @see org.mofgen.mGLang.MGLangPackage#getRefOrCall_Ref()
    * @model
    * @generated
    */
-  RefType getRef();
+  EObject getRef();
 
   /**
    * Sets the value of the '{@link org.mofgen.mGLang.RefOrCall#getRef <em>Ref</em>}' reference.
@@ -45,7 +44,7 @@ public interface RefOrCall extends ListAssignment, MapAssignment, ArithmeticExpr
    * @see #getRef()
    * @generated
    */
-  void setRef(RefType value);
+  void setRef(EObject value);
 
   /**
    * Returns the value of the '<em><b>Target</b></em>' containment reference.
@@ -68,27 +67,5 @@ public interface RefOrCall extends ListAssignment, MapAssignment, ArithmeticExpr
    * @generated
    */
   void setTarget(RefOrCall value);
-
-  /**
-   * Returns the value of the '<em><b>Called</b></em>' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Called</em>' reference.
-   * @see #setCalled(ETypedElement)
-   * @see org.mofgen.mGLang.MGLangPackage#getRefOrCall_Called()
-   * @model
-   * @generated
-   */
-  ETypedElement getCalled();
-
-  /**
-   * Sets the value of the '{@link org.mofgen.mGLang.RefOrCall#getCalled <em>Called</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Called</em>' reference.
-   * @see #getCalled()
-   * @generated
-   */
-  void setCalled(ETypedElement value);
 
 } // RefOrCall

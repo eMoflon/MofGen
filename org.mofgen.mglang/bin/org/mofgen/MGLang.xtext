@@ -53,7 +53,7 @@ ParameterNode:
 	type=[ecore::EClassifier] name=ID;
 
 RefOrCall:
-	ref=[RefType] ({RefOrCall.target = current} '.' called=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
+	ref=[RefType] ({RefOrCall.target = current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
 ;
 
 Generator:

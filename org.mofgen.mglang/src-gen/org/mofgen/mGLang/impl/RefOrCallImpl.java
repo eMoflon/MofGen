@@ -7,14 +7,13 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.RefOrCall;
-import org.mofgen.mGLang.RefType;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +25,6 @@ import org.mofgen.mGLang.RefType;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getRef <em>Ref</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getTarget <em>Target</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getCalled <em>Called</em>}</li>
  * </ul>
  *
  * @generated
@@ -41,7 +39,7 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    * @ordered
    */
-  protected RefType ref;
+  protected EObject ref;
 
   /**
    * The cached value of the '{@link #getTarget() <em>Target</em>}' containment reference.
@@ -52,16 +50,6 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @ordered
    */
   protected RefOrCall target;
-
-  /**
-   * The cached value of the '{@link #getCalled() <em>Called</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getCalled()
-   * @generated
-   * @ordered
-   */
-  protected ETypedElement called;
 
   /**
    * <!-- begin-user-doc -->
@@ -90,12 +78,12 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    */
   @Override
-  public RefType getRef()
+  public EObject getRef()
   {
     if (ref != null && ref.eIsProxy())
     {
       InternalEObject oldRef = (InternalEObject)ref;
-      ref = (RefType)eResolveProxy(oldRef);
+      ref = eResolveProxy(oldRef);
       if (ref != oldRef)
       {
         if (eNotificationRequired())
@@ -110,7 +98,7 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * <!-- end-user-doc -->
    * @generated
    */
-  public RefType basicGetRef()
+  public EObject basicGetRef()
   {
     return ref;
   }
@@ -121,9 +109,9 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    */
   @Override
-  public void setRef(RefType newRef)
+  public void setRef(EObject newRef)
   {
-    RefType oldRef = ref;
+    EObject oldRef = ref;
     ref = newRef;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.REF_OR_CALL__REF, oldRef, ref));
@@ -185,51 +173,6 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    */
   @Override
-  public ETypedElement getCalled()
-  {
-    if (called != null && called.eIsProxy())
-    {
-      InternalEObject oldCalled = (InternalEObject)called;
-      called = (ETypedElement)eResolveProxy(oldCalled);
-      if (called != oldCalled)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.REF_OR_CALL__CALLED, oldCalled, called));
-      }
-    }
-    return called;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ETypedElement basicGetCalled()
-  {
-    return called;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setCalled(ETypedElement newCalled)
-  {
-    ETypedElement oldCalled = called;
-    called = newCalled;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.REF_OR_CALL__CALLED, oldCalled, called));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
@@ -255,9 +198,6 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
         return basicGetRef();
       case MGLangPackage.REF_OR_CALL__TARGET:
         return getTarget();
-      case MGLangPackage.REF_OR_CALL__CALLED:
-        if (resolve) return getCalled();
-        return basicGetCalled();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -273,13 +213,10 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
     switch (featureID)
     {
       case MGLangPackage.REF_OR_CALL__REF:
-        setRef((RefType)newValue);
+        setRef((EObject)newValue);
         return;
       case MGLangPackage.REF_OR_CALL__TARGET:
         setTarget((RefOrCall)newValue);
-        return;
-      case MGLangPackage.REF_OR_CALL__CALLED:
-        setCalled((ETypedElement)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -296,13 +233,10 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
     switch (featureID)
     {
       case MGLangPackage.REF_OR_CALL__REF:
-        setRef((RefType)null);
+        setRef((EObject)null);
         return;
       case MGLangPackage.REF_OR_CALL__TARGET:
         setTarget((RefOrCall)null);
-        return;
-      case MGLangPackage.REF_OR_CALL__CALLED:
-        setCalled((ETypedElement)null);
         return;
     }
     super.eUnset(featureID);
@@ -322,8 +256,6 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
         return ref != null;
       case MGLangPackage.REF_OR_CALL__TARGET:
         return target != null;
-      case MGLangPackage.REF_OR_CALL__CALLED:
-        return called != null;
     }
     return super.eIsSet(featureID);
   }
