@@ -29,7 +29,7 @@ import org.mofgen.mGLang.Node;
  *
  * @generated
  */
-public class NodeImpl extends NodeOrParameterOrCollectionImpl implements Node
+public class NodeImpl extends RefTypeImpl implements Node
 {
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' reference.

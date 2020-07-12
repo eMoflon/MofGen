@@ -7,21 +7,21 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Node Or Parameter Or Collection</b></em>'.
+ * A representation of the model object '<em><b>Ref Type</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.NodeOrParameterOrCollection#getName <em>Name</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.RefType#getName <em>Name</em>}</li>
  * </ul>
  *
- * @see org.mofgen.mGLang.MGLangPackage#getNodeOrParameterOrCollection()
+ * @see org.mofgen.mGLang.MGLangPackage#getRefType()
  * @model
  * @generated
  */
-public interface NodeOrParameterOrCollection extends EObject
+public interface RefType extends EObject
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -29,14 +29,14 @@ public interface NodeOrParameterOrCollection extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see org.mofgen.mGLang.MGLangPackage#getNodeOrParameterOrCollection_Name()
+   * @see org.mofgen.mGLang.MGLangPackage#getRefType_Name()
    * @model
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.NodeOrParameterOrCollection#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link org.mofgen.mGLang.RefType#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -45,4 +45,4 @@ public interface NodeOrParameterOrCollection extends EObject
    */
   void setName(String value);
 
-} // NodeOrParameterOrCollection
+} // RefType

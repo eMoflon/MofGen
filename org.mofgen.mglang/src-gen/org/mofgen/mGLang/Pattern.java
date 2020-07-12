@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.mofgen.mGLang.Pattern#getColls <em>Colls</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getNodes <em>Nodes</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getParamManipulations <em>Param Manipulations</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.Pattern#getSwitches <em>Switches</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getReturn <em>Return</em>}</li>
  * </ul>
  *
@@ -99,6 +100,18 @@ public interface Pattern extends EObject
    * @generated
    */
   EList<ParamManipulation> getParamManipulations();
+
+  /**
+   * Returns the value of the '<em><b>Switches</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.Switch}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Switches</em>' containment reference list.
+   * @see org.mofgen.mGLang.MGLangPackage#getPattern_Switches()
+   * @model containment="true"
+   * @generated
+   */
+  EList<Switch> getSwitches();
 
   /**
    * Returns the value of the '<em><b>Return</b></em>' containment reference.

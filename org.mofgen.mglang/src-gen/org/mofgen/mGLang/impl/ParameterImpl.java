@@ -15,7 +15,7 @@ import org.mofgen.mGLang.Parameter;
  *
  * @generated
  */
-public class ParameterImpl extends NodeOrParameterOrCollectionImpl implements Parameter
+public class ParameterImpl extends RefTypeImpl implements Parameter
 {
   /**
    * <!-- begin-user-doc -->

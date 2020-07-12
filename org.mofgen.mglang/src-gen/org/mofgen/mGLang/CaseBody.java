@@ -5,8 +5,6 @@ package org.mofgen.mGLang;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Case Body</b></em>'.
@@ -23,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface CaseBody extends EObject
+public interface CaseBody extends Default
 {
   /**
    * Returns the value of the '<em><b>Expressions</b></em>' containment reference list.

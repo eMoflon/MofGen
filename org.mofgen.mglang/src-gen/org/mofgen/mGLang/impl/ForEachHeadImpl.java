@@ -4,6 +4,7 @@
 package org.mofgen.mGLang.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
@@ -13,7 +14,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.mofgen.mGLang.ForEachHead;
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.NodeOrParameterOrCollection;
+import org.mofgen.mGLang.RefOrCall;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,7 +25,7 @@ import org.mofgen.mGLang.NodeOrParameterOrCollection;
  * </p>
  * <ul>
  *   <li>{@link org.mofgen.mGLang.impl.ForEachHeadImpl#getSrc <em>Src</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.ForEachHeadImpl#getRef <em>Ref</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.ForEachHeadImpl#getEref <em>Eref</em>}</li>
  * </ul>
  *
  * @generated
@@ -32,24 +33,24 @@ import org.mofgen.mGLang.NodeOrParameterOrCollection;
 public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
 {
   /**
-   * The cached value of the '{@link #getSrc() <em>Src</em>}' reference.
+   * The cached value of the '{@link #getSrc() <em>Src</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getSrc()
    * @generated
    * @ordered
    */
-  protected NodeOrParameterOrCollection src;
+  protected RefOrCall src;
 
   /**
-   * The cached value of the '{@link #getRef() <em>Ref</em>}' reference.
+   * The cached value of the '{@link #getEref() <em>Eref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getRef()
+   * @see #getEref()
    * @generated
    * @ordered
    */
-  protected EReference ref;
+  protected EReference eref;
 
   /**
    * <!-- begin-user-doc -->
@@ -78,27 +79,7 @@ public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
    * @generated
    */
   @Override
-  public NodeOrParameterOrCollection getSrc()
-  {
-    if (src != null && src.eIsProxy())
-    {
-      InternalEObject oldSrc = (InternalEObject)src;
-      src = (NodeOrParameterOrCollection)eResolveProxy(oldSrc);
-      if (src != oldSrc)
-      {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.FOR_EACH_HEAD__SRC, oldSrc, src));
-      }
-    }
-    return src;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NodeOrParameterOrCollection basicGetSrc()
+  public RefOrCall getSrc()
   {
     return src;
   }
@@ -108,13 +89,16 @@ public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setSrc(NodeOrParameterOrCollection newSrc)
+  public NotificationChain basicSetSrc(RefOrCall newSrc, NotificationChain msgs)
   {
-    NodeOrParameterOrCollection oldSrc = src;
+    RefOrCall oldSrc = src;
     src = newSrc;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_EACH_HEAD__SRC, oldSrc, src));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_EACH_HEAD__SRC, oldSrc, newSrc);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
   }
 
   /**
@@ -123,19 +107,41 @@ public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
    * @generated
    */
   @Override
-  public EReference getRef()
+  public void setSrc(RefOrCall newSrc)
   {
-    if (ref != null && ref.eIsProxy())
+    if (newSrc != src)
     {
-      InternalEObject oldRef = (InternalEObject)ref;
-      ref = (EReference)eResolveProxy(oldRef);
-      if (ref != oldRef)
+      NotificationChain msgs = null;
+      if (src != null)
+        msgs = ((InternalEObject)src).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.FOR_EACH_HEAD__SRC, null, msgs);
+      if (newSrc != null)
+        msgs = ((InternalEObject)newSrc).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.FOR_EACH_HEAD__SRC, null, msgs);
+      msgs = basicSetSrc(newSrc, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_EACH_HEAD__SRC, newSrc, newSrc));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getEref()
+  {
+    if (eref != null && eref.eIsProxy())
+    {
+      InternalEObject oldEref = (InternalEObject)eref;
+      eref = (EReference)eResolveProxy(oldEref);
+      if (eref != oldEref)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.FOR_EACH_HEAD__REF, oldRef, ref));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.FOR_EACH_HEAD__EREF, oldEref, eref));
       }
     }
-    return ref;
+    return eref;
   }
 
   /**
@@ -143,9 +149,9 @@ public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference basicGetRef()
+  public EReference basicGetEref()
   {
-    return ref;
+    return eref;
   }
 
   /**
@@ -154,12 +160,28 @@ public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
    * @generated
    */
   @Override
-  public void setRef(EReference newRef)
+  public void setEref(EReference newEref)
   {
-    EReference oldRef = ref;
-    ref = newRef;
+    EReference oldEref = eref;
+    eref = newEref;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_EACH_HEAD__REF, oldRef, ref));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_EACH_HEAD__EREF, oldEref, eref));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.FOR_EACH_HEAD__SRC:
+        return basicSetSrc(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -173,11 +195,10 @@ public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
     switch (featureID)
     {
       case MGLangPackage.FOR_EACH_HEAD__SRC:
-        if (resolve) return getSrc();
-        return basicGetSrc();
-      case MGLangPackage.FOR_EACH_HEAD__REF:
-        if (resolve) return getRef();
-        return basicGetRef();
+        return getSrc();
+      case MGLangPackage.FOR_EACH_HEAD__EREF:
+        if (resolve) return getEref();
+        return basicGetEref();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -193,10 +214,10 @@ public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
     switch (featureID)
     {
       case MGLangPackage.FOR_EACH_HEAD__SRC:
-        setSrc((NodeOrParameterOrCollection)newValue);
+        setSrc((RefOrCall)newValue);
         return;
-      case MGLangPackage.FOR_EACH_HEAD__REF:
-        setRef((EReference)newValue);
+      case MGLangPackage.FOR_EACH_HEAD__EREF:
+        setEref((EReference)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -213,10 +234,10 @@ public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
     switch (featureID)
     {
       case MGLangPackage.FOR_EACH_HEAD__SRC:
-        setSrc((NodeOrParameterOrCollection)null);
+        setSrc((RefOrCall)null);
         return;
-      case MGLangPackage.FOR_EACH_HEAD__REF:
-        setRef((EReference)null);
+      case MGLangPackage.FOR_EACH_HEAD__EREF:
+        setEref((EReference)null);
         return;
     }
     super.eUnset(featureID);
@@ -234,8 +255,8 @@ public class ForEachHeadImpl extends ForHeadImpl implements ForEachHead
     {
       case MGLangPackage.FOR_EACH_HEAD__SRC:
         return src != null;
-      case MGLangPackage.FOR_EACH_HEAD__REF:
-        return ref != null;
+      case MGLangPackage.FOR_EACH_HEAD__EREF:
+        return eref != null;
     }
     return super.eIsSet(featureID);
   }

@@ -27,7 +27,7 @@ import org.mofgen.mGLang.MGLangPackage;
  *
  * @generated
  */
-public class ListAdHocImpl extends ListImpl implements ListAdHoc
+public class ListAdHocImpl extends ListAssignmentImpl implements ListAdHoc
 {
   /**
    * The cached value of the '{@link #getElements() <em>Elements</em>}' attribute list.

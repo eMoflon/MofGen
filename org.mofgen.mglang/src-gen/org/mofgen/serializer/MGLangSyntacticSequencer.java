@@ -36,6 +36,8 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 			return getASSIGNMENT_OPToken(semanticObject, ruleCall, node);
 		else if (ruleCall.getRule() == grammarAccess.getLiteralRule())
 			return getLiteralToken(semanticObject, ruleCall, node);
+		else if (ruleCall.getRule() == grammarAccess.getNEWLINERule())
+			return getNEWLINEToken(semanticObject, ruleCall, node);
 		return "";
 	}
 	
@@ -59,6 +61,16 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 		return "true";
 	}
 	
+	/**
+	 * terminal NEWLINE:
+	 * 	'\n';
+	 */
+	protected String getNEWLINEToken(EObject semanticObject, RuleCall ruleCall, INode node) {
+		if (node != null)
+			return getTokenText(node);
+		return "\n";
+	}
+	
 	@Override
 	protected void emitUnassignedTokens(EObject semanticObject, ISynTransition transition, INode fromNode, INode toNode) {
 		if (transition.getAmbiguousSyntaxes().isEmpty()) return;
@@ -80,10 +92,10 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     (rule start) (ambiguity) '!' expr=BaseExpr
 	 *     (rule start) (ambiguity) Literal (rule start)
-	 *     (rule start) (ambiguity) calledNode=[Node|ID]
 	 *     (rule start) (ambiguity) func=MathFunc
-	 *     (rule start) (ambiguity) ref=[Parameter|ID]
+	 *     (rule start) (ambiguity) ref=[RefType|ID]
 	 *     (rule start) (ambiguity) {Primary.left=}
+	 *     (rule start) (ambiguity) {RefOrCall.target=}
 	 *     (rule start) (ambiguity) {Rel.left=}
 	 *     (rule start) (ambiguity) {Secondary.left=}
 	 *     (rule start) (ambiguity) {Tertiary.left=}

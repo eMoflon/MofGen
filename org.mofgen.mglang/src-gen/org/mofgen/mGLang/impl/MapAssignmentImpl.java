@@ -6,23 +6,23 @@ package org.mofgen.mGLang.impl;
 import org.eclipse.emf.ecore.EClass;
 
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.ParameterRefOrMethodCall;
+import org.mofgen.mGLang.MapAssignment;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Parameter Ref Or Method Call</b></em>'.
+ * An implementation of the model object '<em><b>Map Assignment</b></em>'.
  * <!-- end-user-doc -->
  *
  * @generated
  */
-public class ParameterRefOrMethodCallImpl extends ArithmeticExpressionImpl implements ParameterRefOrMethodCall
+public class MapAssignmentImpl extends MapImpl implements MapAssignment
 {
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ParameterRefOrMethodCallImpl()
+  protected MapAssignmentImpl()
   {
     super();
   }
@@ -35,7 +35,7 @@ public class ParameterRefOrMethodCallImpl extends ArithmeticExpressionImpl imple
   @Override
   protected EClass eStaticClass()
   {
-    return MGLangPackage.Literals.PARAMETER_REF_OR_METHOD_CALL;
+    return MGLangPackage.Literals.MAP_ASSIGNMENT;
   }
 
-} //ParameterRefOrMethodCallImpl
+} //MapAssignmentImpl

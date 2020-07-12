@@ -123,15 +123,6 @@ public interface MGLangFactory extends EFactory
   Assignment createAssignment();
 
   /**
-   * Returns a new object of class '<em>Node Attribute Call</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Node Attribute Call</em>'.
-   * @generated
-   */
-  NodeAttributeCall createNodeAttributeCall();
-
-  /**
    * Returns a new object of class '<em>Parameter</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -159,40 +150,13 @@ public interface MGLangFactory extends EFactory
   ParameterNode createParameterNode();
 
   /**
-   * Returns a new object of class '<em>Parameter Ref Or Method Call</em>'.
+   * Returns a new object of class '<em>Ref Or Call</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Parameter Ref Or Method Call</em>'.
+   * @return a new object of class '<em>Ref Or Call</em>'.
    * @generated
    */
-  ParameterRefOrMethodCall createParameterRefOrMethodCall();
-
-  /**
-   * Returns a new object of class '<em>Parameter Ref</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Parameter Ref</em>'.
-   * @generated
-   */
-  ParameterRef createParameterRef();
-
-  /**
-   * Returns a new object of class '<em>Method Call</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Method Call</em>'.
-   * @generated
-   */
-  MethodCall createMethodCall();
-
-  /**
-   * Returns a new object of class '<em>Arithmetic Expression</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Arithmetic Expression</em>'.
-   * @generated
-   */
-  ArithmeticExpression createArithmeticExpression();
+  RefOrCall createRefOrCall();
 
   /**
    * Returns a new object of class '<em>Generator</em>'.
@@ -267,13 +231,13 @@ public interface MGLangFactory extends EFactory
   ForEachHead createForEachHead();
 
   /**
-   * Returns a new object of class '<em>Node Or Parameter Or Collection</em>'.
+   * Returns a new object of class '<em>Ref Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Node Or Parameter Or Collection</em>'.
+   * @return a new object of class '<em>Ref Type</em>'.
    * @generated
    */
-  NodeOrParameterOrCollection createNodeOrParameterOrCollection();
+  RefType createRefType();
 
   /**
    * Returns a new object of class '<em>For Body</em>'.
@@ -285,40 +249,31 @@ public interface MGLangFactory extends EFactory
   ForBody createForBody();
 
   /**
-   * Returns a new object of class '<em>If Statement</em>'.
+   * Returns a new object of class '<em>Switch</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>If Statement</em>'.
+   * @return a new object of class '<em>Switch</em>'.
    * @generated
    */
-  IfStatement createIfStatement();
+  Switch createSwitch();
 
   /**
-   * Returns a new object of class '<em>Else If Or Else</em>'.
+   * Returns a new object of class '<em>If Else Switch</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Else If Or Else</em>'.
+   * @return a new object of class '<em>If Else Switch</em>'.
    * @generated
    */
-  ElseIfOrElse createElseIfOrElse();
+  IfElseSwitch createIfElseSwitch();
 
   /**
-   * Returns a new object of class '<em>Else Statement</em>'.
+   * Returns a new object of class '<em>If Else Case</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Else Statement</em>'.
+   * @return a new object of class '<em>If Else Case</em>'.
    * @generated
    */
-  ElseStatement createElseStatement();
-
-  /**
-   * Returns a new object of class '<em>Switch Case</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Switch Case</em>'.
-   * @generated
-   */
-  SwitchCase createSwitchCase();
+  IfElseCase createIfElseCase();
 
   /**
    * Returns a new object of class '<em>Default</em>'.
@@ -328,6 +283,15 @@ public interface MGLangFactory extends EFactory
    * @generated
    */
   Default createDefault();
+
+  /**
+   * Returns a new object of class '<em>Switch Case</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Switch Case</em>'.
+   * @generated
+   */
+  SwitchCase createSwitchCase();
 
   /**
    * Returns a new object of class '<em>Case</em>'.
@@ -366,6 +330,15 @@ public interface MGLangFactory extends EFactory
   List createList();
 
   /**
+   * Returns a new object of class '<em>List Assignment</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>List Assignment</em>'.
+   * @generated
+   */
+  ListAssignment createListAssignment();
+
+  /**
    * Returns a new object of class '<em>List Ad Hoc</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -382,6 +355,15 @@ public interface MGLangFactory extends EFactory
    * @generated
    */
   Map createMap();
+
+  /**
+   * Returns a new object of class '<em>Map Assignment</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Map Assignment</em>'.
+   * @generated
+   */
+  MapAssignment createMapAssignment();
 
   /**
    * Returns a new object of class '<em>Map Ad Hoc</em>'.
@@ -409,6 +391,15 @@ public interface MGLangFactory extends EFactory
    * @generated
    */
   ForRange createForRange();
+
+  /**
+   * Returns a new object of class '<em>Arithmetic Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Arithmetic Expression</em>'.
+   * @generated
+   */
+  ArithmeticExpression createArithmeticExpression();
 
   /**
    * Returns a new object of class '<em>Tertiary</em>'.

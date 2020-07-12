@@ -3,6 +3,7 @@ grammar org.mofgen.MGLang with org.eclipse.xtext.common.Terminals
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate mGLang "http://www.mofgen.org/MGLang"
 
+//TODO: How to get map and list methods? EList and EMap are not accessible. => Create Map and List from separate Ecore Model? --> Probably best thus they are directly usable....
 MofgenFile:
 	(imports+=Import)*
 	(patterns+=Pattern |
@@ -13,14 +14,14 @@ Import:
 
 Pattern:
 //(abstract?='abstract')? // 'Abstract' necessary? TODO
-	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (((colls+=Collection)*)? & ((nodes+=Node)*)? & ((paramManipulations+=ParamManipulation)*)?)'}' (return=PatternReturn)?;
+	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (((colls+=Collection)*)? &
+	((nodes+=Node)*)? & ((paramManipulations+=ParamManipulation)*)? & ((switches+=Switch)*)?) '}' (return=PatternReturn)?;
 
 PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
 
 ParamManipulation:
-	param=[ParameterNode] content=NodeContent
-;
+	param=[ParameterNode] content=NodeContent;
 
 Node:
 	type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP createdBy=PatternCall))?;
@@ -32,7 +33,8 @@ PatternCall:
 	called=[Pattern] '(' (params+=ArithmeticExpression)* ')';
 
 NodeReferenceOrAssignment:
-	(PatternNodeReference | Assignment) ('[' condition=ArithmeticExpression ']')?;
+	(PatternNodeReference | Assignment)
+;
 
 PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
@@ -40,9 +42,6 @@ PatternNodeReference:
 Assignment:
 	target=[ecore::EAttribute] ASSIGNMENT_OP value=ArithmeticExpression;
 	//TODO make Enum Assignments possible
-
-NodeAttributeCall:
-	node=[Node] '.' attribute=[ecore::EAttribute];
 
 Parameter:
 	PrimitiveParameter | ParameterNode;
@@ -53,16 +52,95 @@ PrimitiveParameter:
 ParameterNode:
 	type=[ecore::EClassifier] name=ID;
 
-ParameterRefOrMethodCall:
-	ParameterRef | MethodCall;
-
-ParameterRef:
-	ref=[Parameter] //TODO Scoping
+RefOrCall:
+	ref=[RefType] ({RefOrCall.target = current} '.' called=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
 ;
 
-MethodCall: //TODO Scoping
-	calledNode=[Node] '.' method=[ecore::EOperation];
+Generator:
+	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
+	//TODO Wie hier patterns wie "examplePattern" und PatternObjects dazu mittels "ExamplePattern" ermöglichen? Eventuell in Scoping einklinken, alle Patterns holen und dann in PatternObject übersetzen?
+GeneratorExpression: //Only serves as super class for all possible commands within generator
+	ForStatement | Switch | Collection | PatternCall | PatternObjectCreation;
+
+PatternObjectCreation:
+	pObject=PatternObject ASSIGNMENT_OP patternCall=PatternCall;
+
+PatternObject:
+	type=[Pattern] name=ID;
+
+ForStatement:
+	'for' head=ForHead '{' body=ForBody '}';
+
+ForHead:
+	GeneralForHead | ForEachHead;
+
+GeneralForHead:
+	iteratorVar=ID 'in' range=ForRange;
+
+ForEachHead:
+	src=RefOrCall '-' eref=[ecore::EReference] '->' iteratorVar=ID;
+
+RefType:
+	Node | Parameter | Collection;
+
+ForBody:
+	{ForBody} (commands+=GeneratorExpression)*;
+
+Switch:
+	IfElseSwitch | SwitchCase
+;
+
+IfElseSwitch:
+	'switch' '{' (cases+=IfElseCase)+ (default=Default)? '}';
+
+IfElseCase:
+	'case' val=ArithmeticExpression ':' body=CaseBody;
+
+Default:
+	'default' ':' CaseBody;
+
+SwitchCase:
+	'switch' '(' attribute=RefOrCall ')' '{' (cases+=Case)+ (default=Default)? '}';
+
+Case:
+	'case' node = Node ('when' when=ArithmeticExpression)? ':' body=CaseBody;
+
+CaseBody:
+	{CaseBody} '{' (expressions+=GeneratorExpression)* '}' | (expressions+=GeneratorExpression NEWLINE); //TODO: Test Newline?
+	
+Collection:
+	List | Map;
+
+List:
+	'List' name=ID (ASSIGNMENT_OP ListAssignment);
+
+ListAssignment:
+	ListAdHoc | RefOrCall;
+
+ListAdHoc:
+	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
+;
+
+Map:
+	'Map' name=ID (ASSIGNMENT_OP MapAssignment);
+
+MapAssignment:
+	MapAdHoc | RefOrCall;
+
+MapAdHoc:
+	'[' entries+=MapTupel (',' entries+=MapTupel)* ']';
+
+MapTupel:
+	'(' key=Literal ',' value=ArithmeticExpression ')';
+
+ForRange:
+	start=INT ':' end=INT;
+
+
+
+
+	//======================================Arithmetics============================================
 ArithmeticExpression:
 	TertiaryExpression;
 
@@ -79,8 +157,9 @@ RelationExpression returns ArithmeticExpression:
 	BaseExpr ({Rel.left=current} relation=RelationalOp right=BaseExpr)*;
 
 BaseExpr returns ArithmeticExpression:
-	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '(' expr=ArithmeticExpression ')' | {Literal} Literal |
-	ParameterRefOrMethodCall;
+	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
+	expr=ArithmeticExpression ')' | {Literal} Literal |
+	RefOrCall;
 
 Literal:
 	BooleanLiteral | StringLiteral | NumberLiteral;
@@ -99,94 +178,6 @@ enum MathFunc:
 enum PrimitiveType:
 	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' //TODO: String as Primitive? (and therefore also better lowercase?)
 ;
-
-Generator:
-	{Generator} 'gen' '('
-	(params+=Parameter)*
-	')' '{' (commands+=GeneratorExpression)* '}';
-
-	//TODO Wie hier patterns wie "examplePattern" und PatternObjects dazu mittels "ExamplePattern" ermöglichen? Eventuell in Scoping einklinken, alle Patterns holen und dann in PatternObject übersetzen?
-GeneratorExpression: //Only serves as super class for all possible commands within generator
-	ForStatement | IfStatement | SwitchCase | Collection | PatternCall | PatternObjectCreation;
-
-PatternObjectCreation:
-	pObject=PatternObject ASSIGNMENT_OP patternCall=PatternCall;
-
-PatternObject:
-	type=[Pattern] name=ID;
-
-ForStatement:
-	'for' head=ForHead '{' body=ForBody '}';
-
-ForHead:
-	GeneralForHead | ForEachHead;
-
-GeneralForHead:
-	iteratorVar=ID 'in' range=ForRange;
-
-ForEachHead:
-	src=[NodeOrParameterOrCollection] '-' ref=[ecore::EReference] '->' iteratorVar=ID;
-
-NodeOrParameterOrCollection:
-	Node | Parameter | Collection;
-
-ForBody:
-	{ForBody} (commands += GeneratorExpression)*
-;
-
-IfStatement:
-	{IfStatement} 'if' '(' cond = ArithmeticExpression ')' '{'
-		(then += GeneratorExpression)*
-	'}'
-	('else' => elseIf=ElseIfOrElse )?
-;
-
-ElseIfOrElse:
-	('if' '(' cond = ArithmeticExpression ')' '{'
-		(then += GeneratorExpression)*
-	'}'
-	('else' => elseIf = ElseIfOrElse)) | (ElseStatement)
-;
-
-ElseStatement:
-	{ElseStatement} '{'
-		(else += GeneratorExpression)*
-	'}'
-;
-
-SwitchCase:
-	'switch' '(' attribute=ParameterRefOrMethodCall ')' '{' (cases+=Case)+ default=Default;
-
-Default:
-	'default' ':' GeneratorExpression;
-
-Case:
-	'case' val=ArithmeticExpression ':' body=CaseBody;
-
-CaseBody:
-	{CaseBody} '{' (expressions += GeneratorExpression)* '}' | expressions += GeneratorExpression;
-
-Collection:
-	List | Map;
-
-List:
-	'List' name=ID (ASSIGNMENT_OP ListAdHoc);
-
-ListAdHoc:
-	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
-;
-
-Map:
-	'Map' name=ID (ASSIGNMENT_OP MapAdHoc);
-
-MapAdHoc:
-	'[' entries+=MapTupel (',' entries+=MapTupel)* ']';
-
-MapTupel:
-	'(' key=Literal ',' value=ArithmeticExpression ')';
-
-ForRange:
-	start=INT ':' end=INT;
 
 terminal TRUE returns ecore::EBoolean:
 	'true';

@@ -44,6 +44,9 @@ rulePattern:
 	    |
 	ruleParamManipulation
 	*
+	    |
+	ruleSwitch
+	*
 	)*
 	'}'
 	rulePatternReturn
@@ -102,11 +105,6 @@ ruleNodeReferenceOrAssignment:
 		    |
 		ruleAssignment
 	)
-	(
-		'['
-		ruleArithmeticExpression
-		']'
-	)?
 ;
 
 // Rule PatternNodeReference
@@ -144,25 +142,249 @@ ruleParameterNode:
 	RULE_ID
 ;
 
-// Rule ParameterRefOrMethodCall
-ruleParameterRefOrMethodCall:
+// Rule RefOrCall
+ruleRefOrCall:
+	RULE_ID
 	(
-		ruleParameterRef
+		'.'
+		RULE_ID
+	)*
+;
+
+// Rule Generator
+ruleGenerator:
+	'gen'
+	'('
+	ruleParameter
+	*
+	')'
+	'{'
+	ruleGeneratorExpression
+	*
+	'}'
+;
+
+// Rule GeneratorExpression
+ruleGeneratorExpression:
+	(
+		ruleForStatement
 		    |
-		ruleMethodCall
+		ruleSwitch
+		    |
+		ruleCollection
+		    |
+		rulePatternCall
+		    |
+		rulePatternObjectCreation
 	)
 ;
 
-// Rule ParameterRef
-ruleParameterRef:
+// Rule PatternObjectCreation
+rulePatternObjectCreation:
+	rulePatternObject
+	RULE_ASSIGNMENT_OP
+	rulePatternCall
+;
+
+// Rule PatternObject
+rulePatternObject:
+	RULE_ID
 	RULE_ID
 ;
 
-// Rule MethodCall
-ruleMethodCall:
+// Rule ForStatement
+ruleForStatement:
+	'for'
+	ruleForHead
+	'{'
+	ruleForBody
+	'}'
+;
+
+// Rule ForHead
+ruleForHead:
+	(
+		ruleGeneralForHead
+		    |
+		ruleForEachHead
+	)
+;
+
+// Rule GeneralForHead
+ruleGeneralForHead:
 	RULE_ID
-	'.'
+	'in'
+	ruleForRange
+;
+
+// Rule ForEachHead
+ruleForEachHead:
+	ruleRefOrCall
+	'-'
 	RULE_ID
+	'->'
+	RULE_ID
+;
+
+// Rule ForBody
+ruleForBody:
+	ruleGeneratorExpression
+	*
+;
+
+// Rule Switch
+ruleSwitch:
+	(
+		ruleIfElseSwitch
+		    |
+		ruleSwitchCase
+	)
+;
+
+// Rule IfElseSwitch
+ruleIfElseSwitch:
+	'switch'
+	'{'
+	ruleIfElseCase
+	+
+	ruleDefault
+	?
+	'}'
+;
+
+// Rule IfElseCase
+ruleIfElseCase:
+	'case'
+	ruleArithmeticExpression
+	':'
+	ruleCaseBody
+;
+
+// Rule Default
+ruleDefault:
+	'default'
+	':'
+	ruleCaseBody
+;
+
+// Rule SwitchCase
+ruleSwitchCase:
+	'switch'
+	'('
+	ruleRefOrCall
+	')'
+	'{'
+	ruleCase
+	+
+	ruleDefault
+	?
+	'}'
+;
+
+// Rule Case
+ruleCase:
+	'case'
+	ruleNode
+	(
+		'when'
+		ruleArithmeticExpression
+	)?
+	':'
+	ruleCaseBody
+;
+
+// Rule CaseBody
+ruleCaseBody:
+	(
+		'{'
+		ruleGeneratorExpression
+		*
+		'}'
+		    |
+		ruleGeneratorExpression
+		RULE_NEWLINE
+	)
+;
+
+// Rule Collection
+ruleCollection:
+	(
+		ruleList
+		    |
+		ruleMap
+	)
+;
+
+// Rule List
+ruleList:
+	'List'
+	RULE_ID
+	RULE_ASSIGNMENT_OP
+	ruleListAssignment
+;
+
+// Rule ListAssignment
+ruleListAssignment:
+	(
+		ruleListAdHoc
+		    |
+		ruleRefOrCall
+	)
+;
+
+// Rule ListAdHoc
+ruleListAdHoc:
+	'['
+	ruleLiteral
+	(
+		','
+		ruleLiteral
+	)*
+	']'
+;
+
+// Rule Map
+ruleMap:
+	'Map'
+	RULE_ID
+	RULE_ASSIGNMENT_OP
+	ruleMapAssignment
+;
+
+// Rule MapAssignment
+ruleMapAssignment:
+	(
+		ruleMapAdHoc
+		    |
+		ruleRefOrCall
+	)
+;
+
+// Rule MapAdHoc
+ruleMapAdHoc:
+	'['
+	ruleMapTupel
+	(
+		','
+		ruleMapTupel
+	)*
+	']'
+;
+
+// Rule MapTupel
+ruleMapTupel:
+	'('
+	ruleLiteral
+	','
+	ruleArithmeticExpression
+	')'
+;
+
+// Rule ForRange
+ruleForRange:
+	RULE_INT
+	':'
+	RULE_INT
 ;
 
 // Rule ArithmeticExpression
@@ -223,7 +445,7 @@ ruleBaseExpr:
 		    |
 		ruleLiteral
 		    |
-		ruleParameterRefOrMethodCall
+		ruleRefOrCall
 	)
 ;
 
@@ -259,241 +481,6 @@ ruleNumberLiteral:
 		'.'
 		RULE_INT
 	)?
-;
-
-// Rule Generator
-ruleGenerator:
-	'gen'
-	'('
-	ruleParameter
-	*
-	')'
-	'{'
-	ruleGeneratorExpression
-	*
-	'}'
-;
-
-// Rule GeneratorExpression
-ruleGeneratorExpression:
-	(
-		ruleForStatement
-		    |
-		ruleIfStatement
-		    |
-		ruleSwitchCase
-		    |
-		ruleCollection
-		    |
-		rulePatternCall
-		    |
-		rulePatternObjectCreation
-	)
-;
-
-// Rule PatternObjectCreation
-rulePatternObjectCreation:
-	rulePatternObject
-	RULE_ASSIGNMENT_OP
-	rulePatternCall
-;
-
-// Rule PatternObject
-rulePatternObject:
-	RULE_ID
-	RULE_ID
-;
-
-// Rule ForStatement
-ruleForStatement:
-	'for'
-	ruleForHead
-	'{'
-	ruleForBody
-	'}'
-;
-
-// Rule ForHead
-ruleForHead:
-	(
-		ruleGeneralForHead
-		    |
-		ruleForEachHead
-	)
-;
-
-// Rule GeneralForHead
-ruleGeneralForHead:
-	RULE_ID
-	'in'
-	ruleForRange
-;
-
-// Rule ForEachHead
-ruleForEachHead:
-	RULE_ID
-	'-'
-	RULE_ID
-	'->'
-	RULE_ID
-;
-
-// Rule ForBody
-ruleForBody:
-	ruleGeneratorExpression
-	*
-;
-
-// Rule IfStatement
-ruleIfStatement:
-	'if'
-	'('
-	ruleArithmeticExpression
-	')'
-	'{'
-	ruleGeneratorExpression
-	*
-	'}'
-	(
-		'else'
-		(
-			(ruleElseIfOrElse
-			)=>
-			ruleElseIfOrElse
-		)
-	)?
-;
-
-// Rule ElseIfOrElse
-ruleElseIfOrElse:
-	(
-		'if'
-		'('
-		ruleArithmeticExpression
-		')'
-		'{'
-		ruleGeneratorExpression
-		*
-		'}'
-		'else'
-		(
-			(ruleElseIfOrElse
-			)=>
-			ruleElseIfOrElse
-		)
-		    |
-		ruleElseStatement
-	)
-;
-
-// Rule ElseStatement
-ruleElseStatement:
-	'{'
-	ruleGeneratorExpression
-	*
-	'}'
-;
-
-// Rule SwitchCase
-ruleSwitchCase:
-	'switch'
-	'('
-	ruleParameterRefOrMethodCall
-	')'
-	'{'
-	ruleCase
-	+
-	ruleDefault
-;
-
-// Rule Default
-ruleDefault:
-	'default'
-	':'
-	ruleGeneratorExpression
-;
-
-// Rule Case
-ruleCase:
-	'case'
-	ruleArithmeticExpression
-	':'
-	ruleCaseBody
-;
-
-// Rule CaseBody
-ruleCaseBody:
-	(
-		'{'
-		ruleGeneratorExpression
-		*
-		'}'
-		    |
-		ruleGeneratorExpression
-	)
-;
-
-// Rule Collection
-ruleCollection:
-	(
-		ruleList
-		    |
-		ruleMap
-	)
-;
-
-// Rule List
-ruleList:
-	'List'
-	RULE_ID
-	RULE_ASSIGNMENT_OP
-	ruleListAdHoc
-;
-
-// Rule ListAdHoc
-ruleListAdHoc:
-	'['
-	ruleLiteral
-	(
-		','
-		ruleLiteral
-	)*
-	']'
-;
-
-// Rule Map
-ruleMap:
-	'Map'
-	RULE_ID
-	RULE_ASSIGNMENT_OP
-	ruleMapAdHoc
-;
-
-// Rule MapAdHoc
-ruleMapAdHoc:
-	'['
-	ruleMapTupel
-	(
-		','
-		ruleMapTupel
-	)*
-	']'
-;
-
-// Rule MapTupel
-ruleMapTupel:
-	'('
-	ruleLiteral
-	','
-	ruleArithmeticExpression
-	')'
-;
-
-// Rule ForRange
-ruleForRange:
-	RULE_INT
-	':'
-	RULE_INT
 ;
 
 // Rule MathFunc

@@ -12,8 +12,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -34,7 +32,7 @@ import org.mofgen.mGLang.MGLangPackage;
  *
  * @generated
  */
-public class CaseBodyImpl extends MinimalEObjectImpl.Container implements CaseBody
+public class CaseBodyImpl extends DefaultImpl implements CaseBody
 {
   /**
    * The cached value of the '{@link #getExpressions() <em>Expressions</em>}' containment reference list.

@@ -19,9 +19,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.mofgen.mGLang.Case;
-import org.mofgen.mGLang.Default;
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.ParameterRefOrMethodCall;
+import org.mofgen.mGLang.RefOrCall;
 import org.mofgen.mGLang.SwitchCase;
 
 /**
@@ -34,12 +33,11 @@ import org.mofgen.mGLang.SwitchCase;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.impl.SwitchCaseImpl#getAttribute <em>Attribute</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.SwitchCaseImpl#getCases <em>Cases</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.SwitchCaseImpl#getDefault <em>Default</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCase
+public class SwitchCaseImpl extends SwitchImpl implements SwitchCase
 {
   /**
    * The cached value of the '{@link #getAttribute() <em>Attribute</em>}' containment reference.
@@ -49,7 +47,7 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
    * @generated
    * @ordered
    */
-  protected ParameterRefOrMethodCall attribute;
+  protected RefOrCall attribute;
 
   /**
    * The cached value of the '{@link #getCases() <em>Cases</em>}' containment reference list.
@@ -60,16 +58,6 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
    * @ordered
    */
   protected EList<Case> cases;
-
-  /**
-   * The cached value of the '{@link #getDefault() <em>Default</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getDefault()
-   * @generated
-   * @ordered
-   */
-  protected Default default_;
 
   /**
    * <!-- begin-user-doc -->
@@ -98,7 +86,7 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
    * @generated
    */
   @Override
-  public ParameterRefOrMethodCall getAttribute()
+  public RefOrCall getAttribute()
   {
     return attribute;
   }
@@ -108,9 +96,9 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetAttribute(ParameterRefOrMethodCall newAttribute, NotificationChain msgs)
+  public NotificationChain basicSetAttribute(RefOrCall newAttribute, NotificationChain msgs)
   {
-    ParameterRefOrMethodCall oldAttribute = attribute;
+    RefOrCall oldAttribute = attribute;
     attribute = newAttribute;
     if (eNotificationRequired())
     {
@@ -126,7 +114,7 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
    * @generated
    */
   @Override
-  public void setAttribute(ParameterRefOrMethodCall newAttribute)
+  public void setAttribute(RefOrCall newAttribute)
   {
     if (newAttribute != attribute)
     {
@@ -163,56 +151,6 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
    * @generated
    */
   @Override
-  public Default getDefault()
-  {
-    return default_;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetDefault(Default newDefault, NotificationChain msgs)
-  {
-    Default oldDefault = default_;
-    default_ = newDefault;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.SWITCH_CASE__DEFAULT, oldDefault, newDefault);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setDefault(Default newDefault)
-  {
-    if (newDefault != default_)
-    {
-      NotificationChain msgs = null;
-      if (default_ != null)
-        msgs = ((InternalEObject)default_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.SWITCH_CASE__DEFAULT, null, msgs);
-      if (newDefault != null)
-        msgs = ((InternalEObject)newDefault).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.SWITCH_CASE__DEFAULT, null, msgs);
-      msgs = basicSetDefault(newDefault, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.SWITCH_CASE__DEFAULT, newDefault, newDefault));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
@@ -221,8 +159,6 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
         return basicSetAttribute(null, msgs);
       case MGLangPackage.SWITCH_CASE__CASES:
         return ((InternalEList<?>)getCases()).basicRemove(otherEnd, msgs);
-      case MGLangPackage.SWITCH_CASE__DEFAULT:
-        return basicSetDefault(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -241,8 +177,6 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
         return getAttribute();
       case MGLangPackage.SWITCH_CASE__CASES:
         return getCases();
-      case MGLangPackage.SWITCH_CASE__DEFAULT:
-        return getDefault();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -259,14 +193,11 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
     switch (featureID)
     {
       case MGLangPackage.SWITCH_CASE__ATTRIBUTE:
-        setAttribute((ParameterRefOrMethodCall)newValue);
+        setAttribute((RefOrCall)newValue);
         return;
       case MGLangPackage.SWITCH_CASE__CASES:
         getCases().clear();
         getCases().addAll((Collection<? extends Case>)newValue);
-        return;
-      case MGLangPackage.SWITCH_CASE__DEFAULT:
-        setDefault((Default)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -283,13 +214,10 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
     switch (featureID)
     {
       case MGLangPackage.SWITCH_CASE__ATTRIBUTE:
-        setAttribute((ParameterRefOrMethodCall)null);
+        setAttribute((RefOrCall)null);
         return;
       case MGLangPackage.SWITCH_CASE__CASES:
         getCases().clear();
-        return;
-      case MGLangPackage.SWITCH_CASE__DEFAULT:
-        setDefault((Default)null);
         return;
     }
     super.eUnset(featureID);
@@ -309,8 +237,6 @@ public class SwitchCaseImpl extends GeneratorExpressionImpl implements SwitchCas
         return attribute != null;
       case MGLangPackage.SWITCH_CASE__CASES:
         return cases != null && !cases.isEmpty();
-      case MGLangPackage.SWITCH_CASE__DEFAULT:
-        return default_ != null;
     }
     return super.eIsSet(featureID);
   }

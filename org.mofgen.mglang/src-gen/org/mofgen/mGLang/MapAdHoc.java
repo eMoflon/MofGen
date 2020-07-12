@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface MapAdHoc extends Map
+public interface MapAdHoc extends MapAssignment
 {
   /**
    * Returns the value of the '<em><b>Entries</b></em>' containment reference list.

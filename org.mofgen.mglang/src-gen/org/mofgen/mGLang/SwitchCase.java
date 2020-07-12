@@ -16,26 +16,25 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.SwitchCase#getAttribute <em>Attribute</em>}</li>
  *   <li>{@link org.mofgen.mGLang.SwitchCase#getCases <em>Cases</em>}</li>
- *   <li>{@link org.mofgen.mGLang.SwitchCase#getDefault <em>Default</em>}</li>
  * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getSwitchCase()
  * @model
  * @generated
  */
-public interface SwitchCase extends GeneratorExpression
+public interface SwitchCase extends Switch
 {
   /**
    * Returns the value of the '<em><b>Attribute</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Attribute</em>' containment reference.
-   * @see #setAttribute(ParameterRefOrMethodCall)
+   * @see #setAttribute(RefOrCall)
    * @see org.mofgen.mGLang.MGLangPackage#getSwitchCase_Attribute()
    * @model containment="true"
    * @generated
    */
-  ParameterRefOrMethodCall getAttribute();
+  RefOrCall getAttribute();
 
   /**
    * Sets the value of the '{@link org.mofgen.mGLang.SwitchCase#getAttribute <em>Attribute</em>}' containment reference.
@@ -45,7 +44,7 @@ public interface SwitchCase extends GeneratorExpression
    * @see #getAttribute()
    * @generated
    */
-  void setAttribute(ParameterRefOrMethodCall value);
+  void setAttribute(RefOrCall value);
 
   /**
    * Returns the value of the '<em><b>Cases</b></em>' containment reference list.
@@ -58,27 +57,5 @@ public interface SwitchCase extends GeneratorExpression
    * @generated
    */
   EList<Case> getCases();
-
-  /**
-   * Returns the value of the '<em><b>Default</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Default</em>' containment reference.
-   * @see #setDefault(Default)
-   * @see org.mofgen.mGLang.MGLangPackage#getSwitchCase_Default()
-   * @model containment="true"
-   * @generated
-   */
-  Default getDefault();
-
-  /**
-   * Sets the value of the '{@link org.mofgen.mGLang.SwitchCase#getDefault <em>Default</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Default</em>' containment reference.
-   * @see #getDefault()
-   * @generated
-   */
-  void setDefault(Default value);
 
 } // SwitchCase

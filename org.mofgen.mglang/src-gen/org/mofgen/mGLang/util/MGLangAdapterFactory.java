@@ -131,11 +131,6 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createAssignmentAdapter();
       }
       @Override
-      public Adapter caseNodeAttributeCall(NodeAttributeCall object)
-      {
-        return createNodeAttributeCallAdapter();
-      }
-      @Override
       public Adapter caseParameter(Parameter object)
       {
         return createParameterAdapter();
@@ -151,24 +146,9 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createParameterNodeAdapter();
       }
       @Override
-      public Adapter caseParameterRefOrMethodCall(ParameterRefOrMethodCall object)
+      public Adapter caseRefOrCall(RefOrCall object)
       {
-        return createParameterRefOrMethodCallAdapter();
-      }
-      @Override
-      public Adapter caseParameterRef(ParameterRef object)
-      {
-        return createParameterRefAdapter();
-      }
-      @Override
-      public Adapter caseMethodCall(MethodCall object)
-      {
-        return createMethodCallAdapter();
-      }
-      @Override
-      public Adapter caseArithmeticExpression(ArithmeticExpression object)
-      {
-        return createArithmeticExpressionAdapter();
+        return createRefOrCallAdapter();
       }
       @Override
       public Adapter caseGenerator(Generator object)
@@ -211,9 +191,9 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createForEachHeadAdapter();
       }
       @Override
-      public Adapter caseNodeOrParameterOrCollection(NodeOrParameterOrCollection object)
+      public Adapter caseRefType(RefType object)
       {
-        return createNodeOrParameterOrCollectionAdapter();
+        return createRefTypeAdapter();
       }
       @Override
       public Adapter caseForBody(ForBody object)
@@ -221,29 +201,29 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createForBodyAdapter();
       }
       @Override
-      public Adapter caseIfStatement(IfStatement object)
+      public Adapter caseSwitch(Switch object)
       {
-        return createIfStatementAdapter();
+        return createSwitchAdapter();
       }
       @Override
-      public Adapter caseElseIfOrElse(ElseIfOrElse object)
+      public Adapter caseIfElseSwitch(IfElseSwitch object)
       {
-        return createElseIfOrElseAdapter();
+        return createIfElseSwitchAdapter();
       }
       @Override
-      public Adapter caseElseStatement(ElseStatement object)
+      public Adapter caseIfElseCase(IfElseCase object)
       {
-        return createElseStatementAdapter();
-      }
-      @Override
-      public Adapter caseSwitchCase(SwitchCase object)
-      {
-        return createSwitchCaseAdapter();
+        return createIfElseCaseAdapter();
       }
       @Override
       public Adapter caseDefault(Default object)
       {
         return createDefaultAdapter();
+      }
+      @Override
+      public Adapter caseSwitchCase(SwitchCase object)
+      {
+        return createSwitchCaseAdapter();
       }
       @Override
       public Adapter caseCase(Case object)
@@ -266,6 +246,11 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createListAdapter();
       }
       @Override
+      public Adapter caseListAssignment(ListAssignment object)
+      {
+        return createListAssignmentAdapter();
+      }
+      @Override
       public Adapter caseListAdHoc(ListAdHoc object)
       {
         return createListAdHocAdapter();
@@ -274,6 +259,11 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
       public Adapter caseMap(Map object)
       {
         return createMapAdapter();
+      }
+      @Override
+      public Adapter caseMapAssignment(MapAssignment object)
+      {
+        return createMapAssignmentAdapter();
       }
       @Override
       public Adapter caseMapAdHoc(MapAdHoc object)
@@ -289,6 +279,11 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
       public Adapter caseForRange(ForRange object)
       {
         return createForRangeAdapter();
+      }
+      @Override
+      public Adapter caseArithmeticExpression(ArithmeticExpression object)
+      {
+        return createArithmeticExpressionAdapter();
       }
       @Override
       public Adapter caseTertiary(Tertiary object)
@@ -513,21 +508,6 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.NodeAttributeCall <em>Node Attribute Call</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.NodeAttributeCall
-   * @generated
-   */
-  public Adapter createNodeAttributeCallAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.Parameter <em>Parameter</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -573,61 +553,16 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ParameterRefOrMethodCall <em>Parameter Ref Or Method Call</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.RefOrCall <em>Ref Or Call</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.ParameterRefOrMethodCall
+   * @see org.mofgen.mGLang.RefOrCall
    * @generated
    */
-  public Adapter createParameterRefOrMethodCallAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ParameterRef <em>Parameter Ref</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.ParameterRef
-   * @generated
-   */
-  public Adapter createParameterRefAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.MethodCall <em>Method Call</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.MethodCall
-   * @generated
-   */
-  public Adapter createMethodCallAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ArithmeticExpression <em>Arithmetic Expression</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.ArithmeticExpression
-   * @generated
-   */
-  public Adapter createArithmeticExpressionAdapter()
+  public Adapter createRefOrCallAdapter()
   {
     return null;
   }
@@ -753,16 +688,16 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.NodeOrParameterOrCollection <em>Node Or Parameter Or Collection</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.RefType <em>Ref Type</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.NodeOrParameterOrCollection
+   * @see org.mofgen.mGLang.RefType
    * @generated
    */
-  public Adapter createNodeOrParameterOrCollectionAdapter()
+  public Adapter createRefTypeAdapter()
   {
     return null;
   }
@@ -783,61 +718,46 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.IfStatement <em>If Statement</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.Switch <em>Switch</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.IfStatement
+   * @see org.mofgen.mGLang.Switch
    * @generated
    */
-  public Adapter createIfStatementAdapter()
+  public Adapter createSwitchAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ElseIfOrElse <em>Else If Or Else</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.IfElseSwitch <em>If Else Switch</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.ElseIfOrElse
+   * @see org.mofgen.mGLang.IfElseSwitch
    * @generated
    */
-  public Adapter createElseIfOrElseAdapter()
+  public Adapter createIfElseSwitchAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ElseStatement <em>Else Statement</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.IfElseCase <em>If Else Case</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.ElseStatement
+   * @see org.mofgen.mGLang.IfElseCase
    * @generated
    */
-  public Adapter createElseStatementAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.SwitchCase <em>Switch Case</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.SwitchCase
-   * @generated
-   */
-  public Adapter createSwitchCaseAdapter()
+  public Adapter createIfElseCaseAdapter()
   {
     return null;
   }
@@ -853,6 +773,21 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createDefaultAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.SwitchCase <em>Switch Case</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.SwitchCase
+   * @generated
+   */
+  public Adapter createSwitchCaseAdapter()
   {
     return null;
   }
@@ -918,6 +853,21 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ListAssignment <em>List Assignment</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.ListAssignment
+   * @generated
+   */
+  public Adapter createListAssignmentAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ListAdHoc <em>List Ad Hoc</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -943,6 +893,21 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createMapAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.MapAssignment <em>Map Assignment</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.MapAssignment
+   * @generated
+   */
+  public Adapter createMapAssignmentAdapter()
   {
     return null;
   }
@@ -988,6 +953,21 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createForRangeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.ArithmeticExpression <em>Arithmetic Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.ArithmeticExpression
+   * @generated
+   */
+  public Adapter createArithmeticExpressionAdapter()
   {
     return null;
   }

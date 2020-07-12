@@ -77,14 +77,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.NODE_REFERENCE_OR_ASSIGNMENT: return createNodeReferenceOrAssignment();
       case MGLangPackage.PATTERN_NODE_REFERENCE: return createPatternNodeReference();
       case MGLangPackage.ASSIGNMENT: return createAssignment();
-      case MGLangPackage.NODE_ATTRIBUTE_CALL: return createNodeAttributeCall();
       case MGLangPackage.PARAMETER: return createParameter();
       case MGLangPackage.PRIMITIVE_PARAMETER: return createPrimitiveParameter();
       case MGLangPackage.PARAMETER_NODE: return createParameterNode();
-      case MGLangPackage.PARAMETER_REF_OR_METHOD_CALL: return createParameterRefOrMethodCall();
-      case MGLangPackage.PARAMETER_REF: return createParameterRef();
-      case MGLangPackage.METHOD_CALL: return createMethodCall();
-      case MGLangPackage.ARITHMETIC_EXPRESSION: return createArithmeticExpression();
+      case MGLangPackage.REF_OR_CALL: return createRefOrCall();
       case MGLangPackage.GENERATOR: return createGenerator();
       case MGLangPackage.GENERATOR_EXPRESSION: return createGeneratorExpression();
       case MGLangPackage.PATTERN_OBJECT_CREATION: return createPatternObjectCreation();
@@ -93,22 +89,25 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.FOR_HEAD: return createForHead();
       case MGLangPackage.GENERAL_FOR_HEAD: return createGeneralForHead();
       case MGLangPackage.FOR_EACH_HEAD: return createForEachHead();
-      case MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION: return createNodeOrParameterOrCollection();
+      case MGLangPackage.REF_TYPE: return createRefType();
       case MGLangPackage.FOR_BODY: return createForBody();
-      case MGLangPackage.IF_STATEMENT: return createIfStatement();
-      case MGLangPackage.ELSE_IF_OR_ELSE: return createElseIfOrElse();
-      case MGLangPackage.ELSE_STATEMENT: return createElseStatement();
-      case MGLangPackage.SWITCH_CASE: return createSwitchCase();
+      case MGLangPackage.SWITCH: return createSwitch();
+      case MGLangPackage.IF_ELSE_SWITCH: return createIfElseSwitch();
+      case MGLangPackage.IF_ELSE_CASE: return createIfElseCase();
       case MGLangPackage.DEFAULT: return createDefault();
+      case MGLangPackage.SWITCH_CASE: return createSwitchCase();
       case MGLangPackage.CASE: return createCase();
       case MGLangPackage.CASE_BODY: return createCaseBody();
       case MGLangPackage.COLLECTION: return createCollection();
       case MGLangPackage.LIST: return createList();
+      case MGLangPackage.LIST_ASSIGNMENT: return createListAssignment();
       case MGLangPackage.LIST_AD_HOC: return createListAdHoc();
       case MGLangPackage.MAP: return createMap();
+      case MGLangPackage.MAP_ASSIGNMENT: return createMapAssignment();
       case MGLangPackage.MAP_AD_HOC: return createMapAdHoc();
       case MGLangPackage.MAP_TUPEL: return createMapTupel();
       case MGLangPackage.FOR_RANGE: return createForRange();
+      case MGLangPackage.ARITHMETIC_EXPRESSION: return createArithmeticExpression();
       case MGLangPackage.TERTIARY: return createTertiary();
       case MGLangPackage.SECONDARY: return createSecondary();
       case MGLangPackage.PRIMARY: return createPrimary();
@@ -313,18 +312,6 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public NodeAttributeCall createNodeAttributeCall()
-  {
-    NodeAttributeCallImpl nodeAttributeCall = new NodeAttributeCallImpl();
-    return nodeAttributeCall;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public Parameter createParameter()
   {
     ParameterImpl parameter = new ParameterImpl();
@@ -361,46 +348,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public ParameterRefOrMethodCall createParameterRefOrMethodCall()
+  public RefOrCall createRefOrCall()
   {
-    ParameterRefOrMethodCallImpl parameterRefOrMethodCall = new ParameterRefOrMethodCallImpl();
-    return parameterRefOrMethodCall;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public ParameterRef createParameterRef()
-  {
-    ParameterRefImpl parameterRef = new ParameterRefImpl();
-    return parameterRef;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public MethodCall createMethodCall()
-  {
-    MethodCallImpl methodCall = new MethodCallImpl();
-    return methodCall;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public ArithmeticExpression createArithmeticExpression()
-  {
-    ArithmeticExpressionImpl arithmeticExpression = new ArithmeticExpressionImpl();
-    return arithmeticExpression;
+    RefOrCallImpl refOrCall = new RefOrCallImpl();
+    return refOrCall;
   }
 
   /**
@@ -505,10 +456,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public NodeOrParameterOrCollection createNodeOrParameterOrCollection()
+  public RefType createRefType()
   {
-    NodeOrParameterOrCollectionImpl nodeOrParameterOrCollection = new NodeOrParameterOrCollectionImpl();
-    return nodeOrParameterOrCollection;
+    RefTypeImpl refType = new RefTypeImpl();
+    return refType;
   }
 
   /**
@@ -529,10 +480,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public IfStatement createIfStatement()
+  public Switch createSwitch()
   {
-    IfStatementImpl ifStatement = new IfStatementImpl();
-    return ifStatement;
+    SwitchImpl switch_ = new SwitchImpl();
+    return switch_;
   }
 
   /**
@@ -541,10 +492,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public ElseIfOrElse createElseIfOrElse()
+  public IfElseSwitch createIfElseSwitch()
   {
-    ElseIfOrElseImpl elseIfOrElse = new ElseIfOrElseImpl();
-    return elseIfOrElse;
+    IfElseSwitchImpl ifElseSwitch = new IfElseSwitchImpl();
+    return ifElseSwitch;
   }
 
   /**
@@ -553,22 +504,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public ElseStatement createElseStatement()
+  public IfElseCase createIfElseCase()
   {
-    ElseStatementImpl elseStatement = new ElseStatementImpl();
-    return elseStatement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public SwitchCase createSwitchCase()
-  {
-    SwitchCaseImpl switchCase = new SwitchCaseImpl();
-    return switchCase;
+    IfElseCaseImpl ifElseCase = new IfElseCaseImpl();
+    return ifElseCase;
   }
 
   /**
@@ -581,6 +520,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     DefaultImpl default_ = new DefaultImpl();
     return default_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public SwitchCase createSwitchCase()
+  {
+    SwitchCaseImpl switchCase = new SwitchCaseImpl();
+    return switchCase;
   }
 
   /**
@@ -637,6 +588,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
+  public ListAssignment createListAssignment()
+  {
+    ListAssignmentImpl listAssignment = new ListAssignmentImpl();
+    return listAssignment;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public ListAdHoc createListAdHoc()
   {
     ListAdHocImpl listAdHoc = new ListAdHocImpl();
@@ -653,6 +616,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     MapImpl map = new MapImpl();
     return map;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public MapAssignment createMapAssignment()
+  {
+    MapAssignmentImpl mapAssignment = new MapAssignmentImpl();
+    return mapAssignment;
   }
 
   /**
@@ -689,6 +664,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     ForRangeImpl forRange = new ForRangeImpl();
     return forRange;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ArithmeticExpression createArithmeticExpression()
+  {
+    ArithmeticExpressionImpl arithmeticExpression = new ArithmeticExpressionImpl();
+    return arithmeticExpression;
   }
 
   /**

@@ -24,6 +24,7 @@ import org.mofgen.mGLang.ParamManipulation;
 import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternReturn;
+import org.mofgen.mGLang.Switch;
 
 /**
  * <!-- begin-user-doc -->
@@ -38,6 +39,7 @@ import org.mofgen.mGLang.PatternReturn;
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getColls <em>Colls</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getNodes <em>Nodes</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getParamManipulations <em>Param Manipulations</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getSwitches <em>Switches</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getReturn <em>Return</em>}</li>
  * </ul>
  *
@@ -104,6 +106,16 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
    * @ordered
    */
   protected EList<ParamManipulation> paramManipulations;
+
+  /**
+   * The cached value of the '{@link #getSwitches() <em>Switches</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSwitches()
+   * @generated
+   * @ordered
+   */
+  protected EList<Switch> switches;
 
   /**
    * The cached value of the '{@link #getReturn() <em>Return</em>}' containment reference.
@@ -227,6 +239,21 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
    * @generated
    */
   @Override
+  public EList<Switch> getSwitches()
+  {
+    if (switches == null)
+    {
+      switches = new EObjectContainmentEList<Switch>(Switch.class, this, MGLangPackage.PATTERN__SWITCHES);
+    }
+    return switches;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public PatternReturn getReturn()
   {
     return return_;
@@ -289,6 +316,8 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return ((InternalEList<?>)getNodes()).basicRemove(otherEnd, msgs);
       case MGLangPackage.PATTERN__PARAM_MANIPULATIONS:
         return ((InternalEList<?>)getParamManipulations()).basicRemove(otherEnd, msgs);
+      case MGLangPackage.PATTERN__SWITCHES:
+        return ((InternalEList<?>)getSwitches()).basicRemove(otherEnd, msgs);
       case MGLangPackage.PATTERN__RETURN:
         return basicSetReturn(null, msgs);
     }
@@ -315,6 +344,8 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return getNodes();
       case MGLangPackage.PATTERN__PARAM_MANIPULATIONS:
         return getParamManipulations();
+      case MGLangPackage.PATTERN__SWITCHES:
+        return getSwitches();
       case MGLangPackage.PATTERN__RETURN:
         return getReturn();
     }
@@ -351,6 +382,10 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         getParamManipulations().clear();
         getParamManipulations().addAll((java.util.Collection<? extends ParamManipulation>)newValue);
         return;
+      case MGLangPackage.PATTERN__SWITCHES:
+        getSwitches().clear();
+        getSwitches().addAll((java.util.Collection<? extends Switch>)newValue);
+        return;
       case MGLangPackage.PATTERN__RETURN:
         setReturn((PatternReturn)newValue);
         return;
@@ -383,6 +418,9 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
       case MGLangPackage.PATTERN__PARAM_MANIPULATIONS:
         getParamManipulations().clear();
         return;
+      case MGLangPackage.PATTERN__SWITCHES:
+        getSwitches().clear();
+        return;
       case MGLangPackage.PATTERN__RETURN:
         setReturn((PatternReturn)null);
         return;
@@ -410,6 +448,8 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return nodes != null && !nodes.isEmpty();
       case MGLangPackage.PATTERN__PARAM_MANIPULATIONS:
         return paramManipulations != null && !paramManipulations.isEmpty();
+      case MGLangPackage.PATTERN__SWITCHES:
+        return switches != null && !switches.isEmpty();
       case MGLangPackage.PATTERN__RETURN:
         return return_ != null;
     }

@@ -32,7 +32,7 @@ import org.mofgen.mGLang.MapTupel;
  *
  * @generated
  */
-public class MapAdHocImpl extends MapImpl implements MapAdHoc
+public class MapAdHocImpl extends MapAssignmentImpl implements MapAdHoc
 {
   /**
    * The cached value of the '{@link #getEntries() <em>Entries</em>}' containment reference list.

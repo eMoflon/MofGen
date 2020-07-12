@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EReference;
  * </p>
  * <ul>
  *   <li>{@link org.mofgen.mGLang.ForEachHead#getSrc <em>Src</em>}</li>
- *   <li>{@link org.mofgen.mGLang.ForEachHead#getRef <em>Ref</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.ForEachHead#getEref <em>Eref</em>}</li>
  * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getForEachHead()
@@ -25,47 +25,47 @@ import org.eclipse.emf.ecore.EReference;
 public interface ForEachHead extends ForHead
 {
   /**
-   * Returns the value of the '<em><b>Src</b></em>' reference.
+   * Returns the value of the '<em><b>Src</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Src</em>' reference.
-   * @see #setSrc(NodeOrParameterOrCollection)
+   * @return the value of the '<em>Src</em>' containment reference.
+   * @see #setSrc(RefOrCall)
    * @see org.mofgen.mGLang.MGLangPackage#getForEachHead_Src()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  NodeOrParameterOrCollection getSrc();
+  RefOrCall getSrc();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.ForEachHead#getSrc <em>Src</em>}' reference.
+   * Sets the value of the '{@link org.mofgen.mGLang.ForEachHead#getSrc <em>Src</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Src</em>' reference.
+   * @param value the new value of the '<em>Src</em>' containment reference.
    * @see #getSrc()
    * @generated
    */
-  void setSrc(NodeOrParameterOrCollection value);
+  void setSrc(RefOrCall value);
 
   /**
-   * Returns the value of the '<em><b>Ref</b></em>' reference.
+   * Returns the value of the '<em><b>Eref</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Ref</em>' reference.
-   * @see #setRef(EReference)
-   * @see org.mofgen.mGLang.MGLangPackage#getForEachHead_Ref()
+   * @return the value of the '<em>Eref</em>' reference.
+   * @see #setEref(EReference)
+   * @see org.mofgen.mGLang.MGLangPackage#getForEachHead_Eref()
    * @model
    * @generated
    */
-  EReference getRef();
+  EReference getEref();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.ForEachHead#getRef <em>Ref</em>}' reference.
+   * Sets the value of the '{@link org.mofgen.mGLang.ForEachHead#getEref <em>Eref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Ref</em>' reference.
-   * @see #getRef()
+   * @param value the new value of the '<em>Eref</em>' reference.
+   * @see #getEref()
    * @generated
    */
-  void setRef(EReference value);
+  void setEref(EReference value);
 
 } // ForEachHead

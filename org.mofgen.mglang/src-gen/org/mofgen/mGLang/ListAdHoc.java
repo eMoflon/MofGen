@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface ListAdHoc extends List
+public interface ListAdHoc extends ListAssignment
 {
   /**
    * Returns the value of the '<em><b>Elements</b></em>' attribute list.

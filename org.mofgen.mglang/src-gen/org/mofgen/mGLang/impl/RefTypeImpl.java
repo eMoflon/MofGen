@@ -11,22 +11,22 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.NodeOrParameterOrCollection;
+import org.mofgen.mGLang.RefType;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Node Or Parameter Or Collection</b></em>'.
+ * An implementation of the model object '<em><b>Ref Type</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.NodeOrParameterOrCollectionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.RefTypeImpl#getName <em>Name</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class NodeOrParameterOrCollectionImpl extends MinimalEObjectImpl.Container implements NodeOrParameterOrCollection
+public class RefTypeImpl extends MinimalEObjectImpl.Container implements RefType
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -53,7 +53,7 @@ public class NodeOrParameterOrCollectionImpl extends MinimalEObjectImpl.Containe
    * <!-- end-user-doc -->
    * @generated
    */
-  protected NodeOrParameterOrCollectionImpl()
+  protected RefTypeImpl()
   {
     super();
   }
@@ -66,7 +66,7 @@ public class NodeOrParameterOrCollectionImpl extends MinimalEObjectImpl.Containe
   @Override
   protected EClass eStaticClass()
   {
-    return MGLangPackage.Literals.NODE_OR_PARAMETER_OR_COLLECTION;
+    return MGLangPackage.Literals.REF_TYPE;
   }
 
   /**
@@ -91,7 +91,7 @@ public class NodeOrParameterOrCollectionImpl extends MinimalEObjectImpl.Containe
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.REF_TYPE__NAME, oldName, name));
   }
 
   /**
@@ -104,7 +104,7 @@ public class NodeOrParameterOrCollectionImpl extends MinimalEObjectImpl.Containe
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION__NAME:
+      case MGLangPackage.REF_TYPE__NAME:
         return getName();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -120,7 +120,7 @@ public class NodeOrParameterOrCollectionImpl extends MinimalEObjectImpl.Containe
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION__NAME:
+      case MGLangPackage.REF_TYPE__NAME:
         setName((String)newValue);
         return;
     }
@@ -137,7 +137,7 @@ public class NodeOrParameterOrCollectionImpl extends MinimalEObjectImpl.Containe
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION__NAME:
+      case MGLangPackage.REF_TYPE__NAME:
         setName(NAME_EDEFAULT);
         return;
     }
@@ -154,7 +154,7 @@ public class NodeOrParameterOrCollectionImpl extends MinimalEObjectImpl.Containe
   {
     switch (featureID)
     {
-      case MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION__NAME:
+      case MGLangPackage.REF_TYPE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     }
     return super.eIsSet(featureID);
@@ -177,4 +177,4 @@ public class NodeOrParameterOrCollectionImpl extends MinimalEObjectImpl.Containe
     return result.toString();
   }
 
-} //NodeOrParameterOrCollectionImpl
+} //RefTypeImpl

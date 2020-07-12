@@ -14,11 +14,11 @@ import org.eclipse.xtext.scoping.IScope
 import org.mofgen.mGLang.Node
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.Assignment
-import org.mofgen.mGLang.NodeAttributeCall
-import org.mofgen.mGLang.ParameterRef
 import org.mofgen.mGLang.Pattern
-import org.mofgen.mGLang.MethodCall
+import org.mofgen.mGLang.RefOrCall
+import org.mofgen.mGLang.Case
 import org.mofgen.mGLang.ParameterNode
+import org.eclipse.emf.ecore.EClass
 
 /**
  * This class contains custom scoping description.
@@ -28,6 +28,7 @@ import org.mofgen.mGLang.ParameterNode
  */
 class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
+	// TODO: Scoping for calls / refs within case-bodies shadowing the outer scope
 	override getScope(EObject context, EReference reference) {
 		if (isNodeCreation(context, reference)) {
 			return getScopeForNodeCreationType(context as Node)
@@ -38,23 +39,14 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isReferenceTarget(context, reference)) {
 			return getScopeForReferenceTarget(context as PatternNodeReference)
 		}
-		if (isNodeAttributeCallObject(context, reference)) {
-			return getScopeForNodeAttributeCallObject(context as NodeAttributeCall)
-		}
-		if (isNodeAttributeCallAttribute(context, reference)) {
-			return getScopeForNodeAttributeCallAttribute(context as NodeAttributeCall)
-		}
 		if (isNodeAttributeAssignmentType(context, reference)) {
 			return getScopeForNodeAssignmentType(context as Assignment)
 		}
-		if (isParameterRef(context, reference)) {
-			return getScopeForParameterRef(context as ParameterRef)
+		if (isRefOrCallRef(context, reference)) {
+			return getScopeForRefOrCallRef(context as RefOrCall)
 		}
-		if (isMethodCallNode(context, reference)) {
-			return getScopeForMethodCallNode(context as MethodCall)
-		}
-		if (isMethodCallMethod(context, reference)) {
-			return getScopeForMethodCallMethod(context as MethodCall)
+		if (isRefOrCallCalled(context, reference)) {
+			return getScopeForRefOrCallCalled(context as RefOrCall)
 		}
 
 		return super.getScope(context, reference)
@@ -90,21 +82,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return getScopeForAllNodes(ref)
 	}
 
-	def getScopeForNodeAttributeCallObject(NodeAttributeCall call) {
-		return getScopeForAllNodes(call)
-	}
-
-	def getScopeForNodeAttributeCallAttribute(NodeAttributeCall call) {
-		val objType = call.node.type
-		val file = getRootFile(call)
-		val clazzez = MofgenModelUtils.getClasses(file).filter[c|c == objType]
-		if (clazzez.isEmpty) {
-			return IScope.NULLSCOPE
-		} else {
-			return Scopes.scopeFor(clazzez.get(0).EAllAttributes)
-		}
-	}
-
 	def getScopeForNodeAssignmentType(Assignment ass) {
 		val srcNode = EcoreUtil2.getContainerOfType(ass, Node)
 		val file = getRootFile(ass)
@@ -122,26 +99,76 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	}
 
-	def getScopeForParameterRef(ParameterRef ref) {
+	def getScopeForRefOrCallRef(RefOrCall r) {
 		// get parameters of above Pattern
-		val pattern = EcoreUtil2.getContainerOfType(ref, Pattern)
+		val pattern = EcoreUtil2.getContainerOfType(r, Pattern)
 		val params = pattern.parameters
-		return Scopes.scopeFor(params)
+
+		// get nodes of pattern
+		val patternNodes = pattern.nodes
+		// get nodes of casts in above case-heads (remove names from pattern-nodes eventually)
+		val shadowingNodes = getEventuallyShadowingNodes(r)
+		val indicesToRemove = newArrayList()
+
+		// find shadowed Pattern nodes
+		for (pNode : patternNodes) {
+			for (node : shadowingNodes) {
+				if (node.name.equals(pNode.name)) {
+					indicesToRemove.add(patternNodes.indexOf(pNode))
+				}
+			}
+		}
+
+		for (index : indicesToRemove.reverse) {
+			patternNodes.remove(index)
+		}
+
+		return Scopes.scopeFor(params + patternNodes)
 	}
 
-	def getScopeForMethodCallNode(MethodCall mc) {
-		// get all nodes of pattern (params and defined)
-		val pattern = EcoreUtil2.getContainerOfType(mc, Pattern)
-		val params = pattern.parameters.filter(ParameterNode)
-		val nodes = pattern.nodes
-		return Scopes.scopeFor(params + nodes)
+	def getEventuallyShadowingNodes(EObject obj) {
+		val parentCases = EcoreUtil2.getAllContainers(obj).filter(Case)
+		return parentCases.map[c|c.node]
 	}
 
-	def getScopeForMethodCallMethod(MethodCall mc) {
-		val node = mc.calledNode
-		val file = getRootFile(mc)
-		val calledClass = MofgenModelUtils.getClasses(file).filter[c|c == node.type].get(0)
-		return Scopes.scopeFor(calledClass.EAllOperations)
+	def getScopeForRefOrCallCalled(RefOrCall r) {
+
+		if (r.target === null) {
+			switch(r.ref.eClass){
+				case Node: {
+					val type = (r.ref as Node).type
+					val clazz = type as EClass
+					val ops = clazz.EAllOperations
+					val attrs = clazz.EAllAttributes
+					val refs = clazz.EReferences
+					return Scopes.scopeFor(ops + attrs + refs)
+				}
+				case ParameterNode: {
+					val type = (r.ref as ParameterNode).type
+					if (type instanceof EClass) {
+						val clazz = type as EClass
+						val ops = clazz.EAllOperations
+						val attrs = clazz.EAllAttributes
+						val refs = clazz.EReferences
+						return Scopes.scopeFor(ops + attrs + refs)
+					}
+				}
+				//case Collection: {} // TODO
+				//case EAttribute: {} // TODO Following call on attribute not allowed, right? It would need to be a ref to have any methods to possibly call
+			}
+		} else {
+			// TODO get return type of last method and return corresponding methods
+			val type = r.called.EType // is eType of Method equal to its return type?
+			if(type instanceof EClass){
+				val clazz = type as EClass
+				val ops = clazz.EAllOperations
+				val attrs = clazz.EAllAttributes
+				val refs = clazz.EReferences
+				return Scopes.scopeFor(ops + attrs + refs)
+			}	// TODO: Test
+		}
+
+		return IScope.NULLSCOPE;
 	}
 
 	def isReferenceType(EObject context, EReference reference) {
@@ -158,29 +185,16 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return context instanceof Node && reference == MGLangPackage.Literals.NODE__TYPE
 	}
 
-	def isNodeAttributeCallObject(EObject context, EReference reference) {
-		return context instanceof NodeAttributeCall && reference == MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__NODE
-	}
-
-	def isNodeAttributeCallAttribute(EObject context, EReference reference) {
-		return context instanceof NodeAttributeCall &&
-			reference == MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE
-	}
-
 	def isNodeAttributeAssignmentType(EObject context, EReference reference) {
 		return context instanceof Assignment && reference == MGLangPackage.Literals.ASSIGNMENT__TARGET
 	}
 
-	def isParameterRef(EObject context, EReference reference) {
-		return context instanceof ParameterRef && reference == MGLangPackage.Literals.PARAMETER_REF__REF
+	def isRefOrCallRef(EObject context, EReference reference) {
+		return context instanceof RefOrCall && reference == MGLangPackage.Literals.REF_OR_CALL__REF
 	}
 
-	def isMethodCallNode(EObject context, EReference reference) {
-		return context instanceof MethodCall && reference == MGLangPackage.Literals.METHOD_CALL__CALLED_NODE
-	}
-
-	def isMethodCallMethod(EObject context, EReference reference) {
-		return context instanceof MethodCall && reference == MGLangPackage.Literals.METHOD_CALL__METHOD
+	def isRefOrCallCalled(EObject context, EReference reference) {
+		return context instanceof RefOrCall && reference == MGLangPackage.Literals.REF_OR_CALL__CALLED
 	}
 
 	def getRootFile(EObject context) {

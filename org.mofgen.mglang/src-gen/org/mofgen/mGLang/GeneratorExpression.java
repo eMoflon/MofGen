@@ -3,6 +3,7 @@
  */
 package org.mofgen.mGLang;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,6 +15,6 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface GeneratorExpression extends Default
+public interface GeneratorExpression extends EObject
 {
 } // GeneratorExpression

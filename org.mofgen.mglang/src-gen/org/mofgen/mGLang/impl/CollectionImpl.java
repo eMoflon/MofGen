@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.NodeOrParameterOrCollection;
+import org.mofgen.mGLang.RefType;
 
 /**
  * <!-- begin-user-doc -->
@@ -168,11 +168,11 @@ public class CollectionImpl extends GeneratorExpressionImpl implements Collectio
   @Override
   public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
   {
-    if (baseClass == NodeOrParameterOrCollection.class)
+    if (baseClass == RefType.class)
     {
       switch (derivedFeatureID)
       {
-        case MGLangPackage.COLLECTION__NAME: return MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION__NAME;
+        case MGLangPackage.COLLECTION__NAME: return MGLangPackage.REF_TYPE__NAME;
         default: return -1;
       }
     }
@@ -187,11 +187,11 @@ public class CollectionImpl extends GeneratorExpressionImpl implements Collectio
   @Override
   public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
   {
-    if (baseClass == NodeOrParameterOrCollection.class)
+    if (baseClass == RefType.class)
     {
       switch (baseFeatureID)
       {
-        case MGLangPackage.NODE_OR_PARAMETER_OR_COLLECTION__NAME: return MGLangPackage.COLLECTION__NAME;
+        case MGLangPackage.REF_TYPE__NAME: return MGLangPackage.COLLECTION__NAME;
         default: return -1;
       }
     }

@@ -15,41 +15,41 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.mofgen.mGLang.ElseStatement;
-import org.mofgen.mGLang.GeneratorExpression;
+import org.mofgen.mGLang.IfElseCase;
+import org.mofgen.mGLang.IfElseSwitch;
 import org.mofgen.mGLang.MGLangPackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Else Statement</b></em>'.
+ * An implementation of the model object '<em><b>If Else Switch</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.ElseStatementImpl#getElse <em>Else</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.IfElseSwitchImpl#getCases <em>Cases</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ElseStatementImpl extends ElseIfOrElseImpl implements ElseStatement
+public class IfElseSwitchImpl extends SwitchImpl implements IfElseSwitch
 {
   /**
-   * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference list.
+   * The cached value of the '{@link #getCases() <em>Cases</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getElse()
+   * @see #getCases()
    * @generated
    * @ordered
    */
-  protected EList<GeneratorExpression> else_;
+  protected EList<IfElseCase> cases;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ElseStatementImpl()
+  protected IfElseSwitchImpl()
   {
     super();
   }
@@ -62,7 +62,7 @@ public class ElseStatementImpl extends ElseIfOrElseImpl implements ElseStatement
   @Override
   protected EClass eStaticClass()
   {
-    return MGLangPackage.Literals.ELSE_STATEMENT;
+    return MGLangPackage.Literals.IF_ELSE_SWITCH;
   }
 
   /**
@@ -71,13 +71,13 @@ public class ElseStatementImpl extends ElseIfOrElseImpl implements ElseStatement
    * @generated
    */
   @Override
-  public EList<GeneratorExpression> getElse()
+  public EList<IfElseCase> getCases()
   {
-    if (else_ == null)
+    if (cases == null)
     {
-      else_ = new EObjectContainmentEList<GeneratorExpression>(GeneratorExpression.class, this, MGLangPackage.ELSE_STATEMENT__ELSE);
+      cases = new EObjectContainmentEList<IfElseCase>(IfElseCase.class, this, MGLangPackage.IF_ELSE_SWITCH__CASES);
     }
-    return else_;
+    return cases;
   }
 
   /**
@@ -90,8 +90,8 @@ public class ElseStatementImpl extends ElseIfOrElseImpl implements ElseStatement
   {
     switch (featureID)
     {
-      case MGLangPackage.ELSE_STATEMENT__ELSE:
-        return ((InternalEList<?>)getElse()).basicRemove(otherEnd, msgs);
+      case MGLangPackage.IF_ELSE_SWITCH__CASES:
+        return ((InternalEList<?>)getCases()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -106,8 +106,8 @@ public class ElseStatementImpl extends ElseIfOrElseImpl implements ElseStatement
   {
     switch (featureID)
     {
-      case MGLangPackage.ELSE_STATEMENT__ELSE:
-        return getElse();
+      case MGLangPackage.IF_ELSE_SWITCH__CASES:
+        return getCases();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -123,9 +123,9 @@ public class ElseStatementImpl extends ElseIfOrElseImpl implements ElseStatement
   {
     switch (featureID)
     {
-      case MGLangPackage.ELSE_STATEMENT__ELSE:
-        getElse().clear();
-        getElse().addAll((Collection<? extends GeneratorExpression>)newValue);
+      case MGLangPackage.IF_ELSE_SWITCH__CASES:
+        getCases().clear();
+        getCases().addAll((Collection<? extends IfElseCase>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -141,8 +141,8 @@ public class ElseStatementImpl extends ElseIfOrElseImpl implements ElseStatement
   {
     switch (featureID)
     {
-      case MGLangPackage.ELSE_STATEMENT__ELSE:
-        getElse().clear();
+      case MGLangPackage.IF_ELSE_SWITCH__CASES:
+        getCases().clear();
         return;
     }
     super.eUnset(featureID);
@@ -158,10 +158,10 @@ public class ElseStatementImpl extends ElseIfOrElseImpl implements ElseStatement
   {
     switch (featureID)
     {
-      case MGLangPackage.ELSE_STATEMENT__ELSE:
-        return else_ != null && !else_.isEmpty();
+      case MGLangPackage.IF_ELSE_SWITCH__CASES:
+        return cases != null && !cases.isEmpty();
     }
     return super.eIsSet(featureID);
   }
 
-} //ElseStatementImpl
+} //IfElseSwitchImpl

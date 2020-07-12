@@ -17,8 +17,6 @@ import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransi
 import org.mofgen.mGLang.Assignment;
 import org.mofgen.mGLang.Case;
 import org.mofgen.mGLang.CaseBody;
-import org.mofgen.mGLang.ElseIfOrElse;
-import org.mofgen.mGLang.ElseStatement;
 import org.mofgen.mGLang.ForBody;
 import org.mofgen.mGLang.ForEachHead;
 import org.mofgen.mGLang.ForRange;
@@ -26,7 +24,8 @@ import org.mofgen.mGLang.ForStatement;
 import org.mofgen.mGLang.FunctionCall;
 import org.mofgen.mGLang.GeneralForHead;
 import org.mofgen.mGLang.Generator;
-import org.mofgen.mGLang.IfStatement;
+import org.mofgen.mGLang.IfElseCase;
+import org.mofgen.mGLang.IfElseSwitch;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.List;
 import org.mofgen.mGLang.ListAdHoc;
@@ -35,15 +34,12 @@ import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.Map;
 import org.mofgen.mGLang.MapAdHoc;
 import org.mofgen.mGLang.MapTupel;
-import org.mofgen.mGLang.MethodCall;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.NegationExpression;
 import org.mofgen.mGLang.Node;
-import org.mofgen.mGLang.NodeAttributeCall;
 import org.mofgen.mGLang.NodeContent;
 import org.mofgen.mGLang.ParamManipulation;
 import org.mofgen.mGLang.ParameterNode;
-import org.mofgen.mGLang.ParameterRef;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternCall;
 import org.mofgen.mGLang.PatternNodeReference;
@@ -52,6 +48,7 @@ import org.mofgen.mGLang.PatternObjectCreation;
 import org.mofgen.mGLang.PatternReturn;
 import org.mofgen.mGLang.Primary;
 import org.mofgen.mGLang.PrimitiveParameter;
+import org.mofgen.mGLang.RefOrCall;
 import org.mofgen.mGLang.Rel;
 import org.mofgen.mGLang.Secondary;
 import org.mofgen.mGLang.SwitchCase;
@@ -73,26 +70,13 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		if (epackage == MGLangPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
 			case MGLangPackage.ASSIGNMENT:
-				if (rule == grammarAccess.getAssignmentRule()) {
-					sequence_Assignment(context, (Assignment) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getNodeReferenceOrAssignmentRule()) {
-					sequence_Assignment_NodeReferenceOrAssignment(context, (Assignment) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_Assignment(context, (Assignment) semanticObject); 
+				return; 
 			case MGLangPackage.CASE:
 				sequence_Case(context, (Case) semanticObject); 
 				return; 
 			case MGLangPackage.CASE_BODY:
 				sequence_CaseBody(context, (CaseBody) semanticObject); 
-				return; 
-			case MGLangPackage.ELSE_IF_OR_ELSE:
-				sequence_ElseIfOrElse(context, (ElseIfOrElse) semanticObject); 
-				return; 
-			case MGLangPackage.ELSE_STATEMENT:
-				sequence_ElseStatement(context, (ElseStatement) semanticObject); 
 				return; 
 			case MGLangPackage.FOR_BODY:
 				sequence_ForBody(context, (ForBody) semanticObject); 
@@ -115,15 +99,27 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 			case MGLangPackage.GENERATOR:
 				sequence_Generator(context, (Generator) semanticObject); 
 				return; 
-			case MGLangPackage.IF_STATEMENT:
-				sequence_IfStatement(context, (IfStatement) semanticObject); 
+			case MGLangPackage.IF_ELSE_CASE:
+				sequence_IfElseCase(context, (IfElseCase) semanticObject); 
+				return; 
+			case MGLangPackage.IF_ELSE_SWITCH:
+				sequence_IfElseSwitch(context, (IfElseSwitch) semanticObject); 
 				return; 
 			case MGLangPackage.IMPORT:
 				sequence_Import(context, (Import) semanticObject); 
 				return; 
 			case MGLangPackage.LIST:
-				sequence_List_ListAdHoc(context, (List) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getGeneratorExpressionRule()
+						|| rule == grammarAccess.getRefTypeRule()
+						|| rule == grammarAccess.getCollectionRule()) {
+					sequence_List_ListAdHoc_RefOrCall(context, (List) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getListRule()) {
+					sequence_List_ListAdHoc_RefOrCall(context, (List) semanticObject); 
+					return; 
+				}
+				else break;
 			case MGLangPackage.LIST_AD_HOC:
 				sequence_ListAdHoc(context, (ListAdHoc) semanticObject); 
 				return; 
@@ -131,16 +127,22 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				sequence_BaseExpr(context, (Literal) semanticObject); 
 				return; 
 			case MGLangPackage.MAP:
-				sequence_Map_MapAdHoc(context, (Map) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getGeneratorExpressionRule()
+						|| rule == grammarAccess.getRefTypeRule()
+						|| rule == grammarAccess.getCollectionRule()) {
+					sequence_Map_MapAdHoc_RefOrCall(context, (Map) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getMapRule()) {
+					sequence_Map_MapAdHoc_RefOrCall(context, (Map) semanticObject); 
+					return; 
+				}
+				else break;
 			case MGLangPackage.MAP_AD_HOC:
 				sequence_MapAdHoc(context, (MapAdHoc) semanticObject); 
 				return; 
 			case MGLangPackage.MAP_TUPEL:
 				sequence_MapTupel(context, (MapTupel) semanticObject); 
-				return; 
-			case MGLangPackage.METHOD_CALL:
-				sequence_MethodCall(context, (MethodCall) semanticObject); 
 				return; 
 			case MGLangPackage.MOFGEN_FILE:
 				sequence_MofgenFile(context, (MofgenFile) semanticObject); 
@@ -151,9 +153,6 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 			case MGLangPackage.NODE:
 				sequence_Node(context, (Node) semanticObject); 
 				return; 
-			case MGLangPackage.NODE_ATTRIBUTE_CALL:
-				sequence_NodeAttributeCall(context, (NodeAttributeCall) semanticObject); 
-				return; 
 			case MGLangPackage.NODE_CONTENT:
 				sequence_NodeContent(context, (NodeContent) semanticObject); 
 				return; 
@@ -163,9 +162,6 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 			case MGLangPackage.PARAMETER_NODE:
 				sequence_ParameterNode(context, (ParameterNode) semanticObject); 
 				return; 
-			case MGLangPackage.PARAMETER_REF:
-				sequence_ParameterRef(context, (ParameterRef) semanticObject); 
-				return; 
 			case MGLangPackage.PATTERN:
 				sequence_Pattern(context, (Pattern) semanticObject); 
 				return; 
@@ -173,15 +169,8 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				sequence_PatternCall(context, (PatternCall) semanticObject); 
 				return; 
 			case MGLangPackage.PATTERN_NODE_REFERENCE:
-				if (rule == grammarAccess.getNodeReferenceOrAssignmentRule()) {
-					sequence_NodeReferenceOrAssignment_PatternNodeReference(context, (PatternNodeReference) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getPatternNodeReferenceRule()) {
-					sequence_PatternNodeReference(context, (PatternNodeReference) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_PatternNodeReference(context, (PatternNodeReference) semanticObject); 
+				return; 
 			case MGLangPackage.PATTERN_OBJECT:
 				sequence_PatternObject(context, (PatternObject) semanticObject); 
 				return; 
@@ -196,6 +185,9 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				return; 
 			case MGLangPackage.PRIMITIVE_PARAMETER:
 				sequence_PrimitiveParameter(context, (PrimitiveParameter) semanticObject); 
+				return; 
+			case MGLangPackage.REF_OR_CALL:
+				sequence_RefOrCall(context, (RefOrCall) semanticObject); 
 				return; 
 			case MGLangPackage.REL:
 				sequence_RelationExpression(context, (Rel) semanticObject); 
@@ -216,6 +208,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     NodeReferenceOrAssignment returns Assignment
 	 *     Assignment returns Assignment
 	 *
 	 * Constraint:
@@ -232,18 +225,6 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		feeder.accept(grammarAccess.getAssignmentAccess().getTargetEAttributeIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.ASSIGNMENT__TARGET, false));
 		feeder.accept(grammarAccess.getAssignmentAccess().getValueArithmeticExpressionParserRuleCall_2_0(), semanticObject.getValue());
 		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     NodeReferenceOrAssignment returns Assignment
-	 *
-	 * Constraint:
-	 *     (target=[EAttribute|ID] value=ArithmeticExpression condition=ArithmeticExpression?)
-	 */
-	protected void sequence_Assignment_NodeReferenceOrAssignment(ISerializationContext context, Assignment semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -327,6 +308,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     Default returns CaseBody
 	 *     CaseBody returns CaseBody
 	 *
 	 * Constraint:
@@ -342,43 +324,9 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     Case returns Case
 	 *
 	 * Constraint:
-	 *     (val=ArithmeticExpression body=CaseBody)
+	 *     (node=Node when=ArithmeticExpression? body=CaseBody)
 	 */
 	protected void sequence_Case(ISerializationContext context, Case semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.CASE__VAL) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.CASE__VAL));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.CASE__BODY) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.CASE__BODY));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getCaseAccess().getValArithmeticExpressionParserRuleCall_1_0(), semanticObject.getVal());
-		feeder.accept(grammarAccess.getCaseAccess().getBodyCaseBodyParserRuleCall_3_0(), semanticObject.getBody());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ElseIfOrElse returns ElseIfOrElse
-	 *
-	 * Constraint:
-	 *     (cond=ArithmeticExpression then+=GeneratorExpression* elseIf=ElseIfOrElse)
-	 */
-	protected void sequence_ElseIfOrElse(ISerializationContext context, ElseIfOrElse semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     ElseIfOrElse returns ElseStatement
-	 *     ElseStatement returns ElseStatement
-	 *
-	 * Constraint:
-	 *     else+=GeneratorExpression*
-	 */
-	protected void sequence_ElseStatement(ISerializationContext context, ElseStatement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -401,20 +349,20 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     ForEachHead returns ForEachHead
 	 *
 	 * Constraint:
-	 *     (src=[NodeOrParameterOrCollection|ID] ref=[EReference|ID] iteratorVar=ID)
+	 *     (src=RefOrCall eref=[EReference|ID] iteratorVar=ID)
 	 */
 	protected void sequence_ForEachHead(ISerializationContext context, ForEachHead semanticObject) {
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.FOR_EACH_HEAD__SRC) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.FOR_EACH_HEAD__SRC));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.FOR_EACH_HEAD__REF) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.FOR_EACH_HEAD__REF));
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.FOR_EACH_HEAD__EREF) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.FOR_EACH_HEAD__EREF));
 			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.FOR_HEAD__ITERATOR_VAR) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.FOR_HEAD__ITERATOR_VAR));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getForEachHeadAccess().getSrcNodeOrParameterOrCollectionIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.FOR_EACH_HEAD__SRC, false));
-		feeder.accept(grammarAccess.getForEachHeadAccess().getRefEReferenceIDTerminalRuleCall_2_0_1(), semanticObject.eGet(MGLangPackage.Literals.FOR_EACH_HEAD__REF, false));
+		feeder.accept(grammarAccess.getForEachHeadAccess().getSrcRefOrCallParserRuleCall_0_0(), semanticObject.getSrc());
+		feeder.accept(grammarAccess.getForEachHeadAccess().getErefEReferenceIDTerminalRuleCall_2_0_1(), semanticObject.eGet(MGLangPackage.Literals.FOR_EACH_HEAD__EREF, false));
 		feeder.accept(grammarAccess.getForEachHeadAccess().getIteratorVarIDTerminalRuleCall_4_0(), semanticObject.getIteratorVar());
 		feeder.finish();
 	}
@@ -445,7 +393,6 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 * Contexts:
 	 *     GeneratorExpression returns ForStatement
 	 *     ForStatement returns ForStatement
-	 *     Default returns ForStatement
 	 *
 	 * Constraint:
 	 *     (head=ForHead body=ForBody)
@@ -500,14 +447,35 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     GeneratorExpression returns IfStatement
-	 *     IfStatement returns IfStatement
-	 *     Default returns IfStatement
+	 *     IfElseCase returns IfElseCase
 	 *
 	 * Constraint:
-	 *     (cond=ArithmeticExpression then+=GeneratorExpression* elseIf=ElseIfOrElse?)
+	 *     (val=ArithmeticExpression body=CaseBody)
 	 */
-	protected void sequence_IfStatement(ISerializationContext context, IfStatement semanticObject) {
+	protected void sequence_IfElseCase(ISerializationContext context, IfElseCase semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.IF_ELSE_CASE__VAL) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.IF_ELSE_CASE__VAL));
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.IF_ELSE_CASE__BODY) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.IF_ELSE_CASE__BODY));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getIfElseCaseAccess().getValArithmeticExpressionParserRuleCall_1_0(), semanticObject.getVal());
+		feeder.accept(grammarAccess.getIfElseCaseAccess().getBodyCaseBodyParserRuleCall_3_0(), semanticObject.getBody());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     GeneratorExpression returns IfElseSwitch
+	 *     Switch returns IfElseSwitch
+	 *     IfElseSwitch returns IfElseSwitch
+	 *
+	 * Constraint:
+	 *     (cases+=IfElseCase+ default=Default?)
+	 */
+	protected void sequence_IfElseSwitch(ISerializationContext context, IfElseSwitch semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -535,6 +503,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     ListAssignment returns ListAdHoc
 	 *     ListAdHoc returns ListAdHoc
 	 *
 	 * Constraint:
@@ -548,21 +517,32 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	/**
 	 * Contexts:
 	 *     GeneratorExpression returns List
-	 *     NodeOrParameterOrCollection returns List
-	 *     Default returns List
+	 *     RefType returns List
 	 *     Collection returns List
-	 *     List returns List
 	 *
 	 * Constraint:
-	 *     (name=ID elements+=Literal elements+=Literal*)
+	 *     (name=ID (ref=[RefType|ID] | (elements+=Literal elements+=Literal*)))
 	 */
-	protected void sequence_List_ListAdHoc(ISerializationContext context, List semanticObject) {
+	protected void sequence_List_ListAdHoc_RefOrCall(ISerializationContext context, List semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
+	// This method is commented out because it has the same signature as another method in this class.
+	// This is probably a bug in Xtext's serializer, please report it here: 
+	// https://bugs.eclipse.org/bugs/enter_bug.cgi?product=TMF
+	//
+	// Contexts:
+	//     List returns List
+	//
+	// Constraint:
+	//     (name=ID (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 called=[ETypedElement|ID]) | (elements+=Literal elements+=Literal*)))
+	//
+	// protected void sequence_List_ListAdHoc_RefOrCall(ISerializationContext context, List semanticObject) { }
+	
 	/**
 	 * Contexts:
+	 *     MapAssignment returns MapAdHoc
 	 *     MapAdHoc returns MapAdHoc
 	 *
 	 * Constraint:
@@ -597,50 +577,28 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	/**
 	 * Contexts:
 	 *     GeneratorExpression returns Map
-	 *     NodeOrParameterOrCollection returns Map
-	 *     Default returns Map
+	 *     RefType returns Map
 	 *     Collection returns Map
-	 *     Map returns Map
 	 *
 	 * Constraint:
-	 *     (name=ID entries+=MapTupel entries+=MapTupel*)
+	 *     (name=ID (ref=[RefType|ID] | (entries+=MapTupel entries+=MapTupel*)))
 	 */
-	protected void sequence_Map_MapAdHoc(ISerializationContext context, Map semanticObject) {
+	protected void sequence_Map_MapAdHoc_RefOrCall(ISerializationContext context, Map semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
-	/**
-	 * Contexts:
-	 *     ParameterRefOrMethodCall returns MethodCall
-	 *     MethodCall returns MethodCall
-	 *     ArithmeticExpression returns MethodCall
-	 *     TertiaryExpression returns MethodCall
-	 *     TertiaryExpression.Tertiary_1_0 returns MethodCall
-	 *     SecondaryExpression returns MethodCall
-	 *     SecondaryExpression.Secondary_1_0 returns MethodCall
-	 *     PrimaryExpr returns MethodCall
-	 *     PrimaryExpr.Primary_1_0 returns MethodCall
-	 *     RelationExpression returns MethodCall
-	 *     RelationExpression.Rel_1_0 returns MethodCall
-	 *     BaseExpr returns MethodCall
-	 *
-	 * Constraint:
-	 *     (calledNode=[Node|ID] method=[EOperation|ID])
-	 */
-	protected void sequence_MethodCall(ISerializationContext context, MethodCall semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.METHOD_CALL__CALLED_NODE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.METHOD_CALL__CALLED_NODE));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.METHOD_CALL__METHOD) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.METHOD_CALL__METHOD));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getMethodCallAccess().getCalledNodeNodeIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.METHOD_CALL__CALLED_NODE, false));
-		feeder.accept(grammarAccess.getMethodCallAccess().getMethodEOperationIDTerminalRuleCall_2_0_1(), semanticObject.eGet(MGLangPackage.Literals.METHOD_CALL__METHOD, false));
-		feeder.finish();
-	}
-	
+	// This method is commented out because it has the same signature as another method in this class.
+	// This is probably a bug in Xtext's serializer, please report it here: 
+	// https://bugs.eclipse.org/bugs/enter_bug.cgi?product=TMF
+	//
+	// Contexts:
+	//     Map returns Map
+	//
+	// Constraint:
+	//     (name=ID (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 called=[ETypedElement|ID]) | (entries+=MapTupel entries+=MapTupel*)))
+	//
+	// protected void sequence_Map_MapAdHoc_RefOrCall(ISerializationContext context, Map semanticObject) { }
 	
 	/**
 	 * Contexts:
@@ -651,27 +609,6 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 */
 	protected void sequence_MofgenFile(ISerializationContext context, MofgenFile semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     NodeAttributeCall returns NodeAttributeCall
-	 *
-	 * Constraint:
-	 *     (node=[Node|ID] attribute=[EAttribute|ID])
-	 */
-	protected void sequence_NodeAttributeCall(ISerializationContext context, NodeAttributeCall semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__NODE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__NODE));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getNodeAttributeCallAccess().getNodeNodeIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__NODE, false));
-		feeder.accept(grammarAccess.getNodeAttributeCallAccess().getAttributeEAttributeIDTerminalRuleCall_2_0_1(), semanticObject.eGet(MGLangPackage.Literals.NODE_ATTRIBUTE_CALL__ATTRIBUTE, false));
-		feeder.finish();
 	}
 	
 	
@@ -689,20 +626,8 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     NodeReferenceOrAssignment returns PatternNodeReference
-	 *
-	 * Constraint:
-	 *     (type=[EReference|ID] target=[Node|ID] condition=ArithmeticExpression?)
-	 */
-	protected void sequence_NodeReferenceOrAssignment_PatternNodeReference(ISerializationContext context, PatternNodeReference semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     Node returns Node
-	 *     NodeOrParameterOrCollection returns Node
+	 *     RefType returns Node
 	 *
 	 * Constraint:
 	 *     (type=[EClass|ID] name=ID (createdBy=NodeContent | createdBy=PatternCall)?)
@@ -737,7 +662,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 * Contexts:
 	 *     Parameter returns ParameterNode
 	 *     ParameterNode returns ParameterNode
-	 *     NodeOrParameterOrCollection returns ParameterNode
+	 *     RefType returns ParameterNode
 	 *
 	 * Constraint:
 	 *     (type=[EClassifier|ID] name=ID)
@@ -746,8 +671,8 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PARAMETER_NODE__TYPE) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PARAMETER_NODE__TYPE));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.NODE_OR_PARAMETER_OR_COLLECTION__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.NODE_OR_PARAMETER_OR_COLLECTION__NAME));
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.REF_TYPE__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.REF_TYPE__NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getParameterNodeAccess().getTypeEClassifierIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.PARAMETER_NODE__TYPE, false));
@@ -758,38 +683,8 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     ParameterRefOrMethodCall returns ParameterRef
-	 *     ParameterRef returns ParameterRef
-	 *     ArithmeticExpression returns ParameterRef
-	 *     TertiaryExpression returns ParameterRef
-	 *     TertiaryExpression.Tertiary_1_0 returns ParameterRef
-	 *     SecondaryExpression returns ParameterRef
-	 *     SecondaryExpression.Secondary_1_0 returns ParameterRef
-	 *     PrimaryExpr returns ParameterRef
-	 *     PrimaryExpr.Primary_1_0 returns ParameterRef
-	 *     RelationExpression returns ParameterRef
-	 *     RelationExpression.Rel_1_0 returns ParameterRef
-	 *     BaseExpr returns ParameterRef
-	 *
-	 * Constraint:
-	 *     ref=[Parameter|ID]
-	 */
-	protected void sequence_ParameterRef(ISerializationContext context, ParameterRef semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PARAMETER_REF__REF) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PARAMETER_REF__REF));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getParameterRefAccess().getRefParameterIDTerminalRuleCall_0_1(), semanticObject.eGet(MGLangPackage.Literals.PARAMETER_REF__REF, false));
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     PatternCall returns PatternCall
 	 *     GeneratorExpression returns PatternCall
-	 *     Default returns PatternCall
 	 *
 	 * Constraint:
 	 *     (called=[Pattern|ID] params+=ArithmeticExpression*)
@@ -801,6 +696,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     NodeReferenceOrAssignment returns PatternNodeReference
 	 *     PatternNodeReference returns PatternNodeReference
 	 *
 	 * Constraint:
@@ -824,7 +720,6 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 * Contexts:
 	 *     GeneratorExpression returns PatternObjectCreation
 	 *     PatternObjectCreation returns PatternObjectCreation
-	 *     Default returns PatternObjectCreation
 	 *
 	 * Constraint:
 	 *     (pObject=PatternObject patternCall=PatternCall)
@@ -884,7 +779,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     (
 	 *         name=ID 
 	 *         (parameters+=Parameter parameters+=Parameter*)? 
-	 *         (colls+=Collection | nodes+=Node | paramManipulations+=ParamManipulation)* 
+	 *         (colls+=Collection | nodes+=Node | paramManipulations+=ParamManipulation | switches+=Switch)* 
 	 *         return=PatternReturn?
 	 *     )
 	 */
@@ -930,7 +825,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 * Contexts:
 	 *     Parameter returns PrimitiveParameter
 	 *     PrimitiveParameter returns PrimitiveParameter
-	 *     NodeOrParameterOrCollection returns PrimitiveParameter
+	 *     RefType returns PrimitiveParameter
 	 *
 	 * Constraint:
 	 *     (type=PrimitiveType name=ID)
@@ -939,13 +834,38 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		if (errorAcceptor != null) {
 			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PRIMITIVE_PARAMETER__TYPE) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PRIMITIVE_PARAMETER__TYPE));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.NODE_OR_PARAMETER_OR_COLLECTION__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.NODE_OR_PARAMETER_OR_COLLECTION__NAME));
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.REF_TYPE__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.REF_TYPE__NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getPrimitiveParameterAccess().getTypePrimitiveTypeEnumRuleCall_0_0(), semanticObject.getType());
 		feeder.accept(grammarAccess.getPrimitiveParameterAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     RefOrCall returns RefOrCall
+	 *     RefOrCall.RefOrCall_1_0 returns RefOrCall
+	 *     ListAssignment returns RefOrCall
+	 *     MapAssignment returns RefOrCall
+	 *     ArithmeticExpression returns RefOrCall
+	 *     TertiaryExpression returns RefOrCall
+	 *     TertiaryExpression.Tertiary_1_0 returns RefOrCall
+	 *     SecondaryExpression returns RefOrCall
+	 *     SecondaryExpression.Secondary_1_0 returns RefOrCall
+	 *     PrimaryExpr returns RefOrCall
+	 *     PrimaryExpr.Primary_1_0 returns RefOrCall
+	 *     RelationExpression returns RefOrCall
+	 *     RelationExpression.Rel_1_0 returns RefOrCall
+	 *     BaseExpr returns RefOrCall
+	 *
+	 * Constraint:
+	 *     (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 called=[ETypedElement|ID]))
+	 */
+	protected void sequence_RefOrCall(ISerializationContext context, RefOrCall semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -1018,11 +938,11 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	/**
 	 * Contexts:
 	 *     GeneratorExpression returns SwitchCase
+	 *     Switch returns SwitchCase
 	 *     SwitchCase returns SwitchCase
-	 *     Default returns SwitchCase
 	 *
 	 * Constraint:
-	 *     (attribute=ParameterRefOrMethodCall cases+=Case+ default=Default)
+	 *     (attribute=RefOrCall cases+=Case+ default=Default?)
 	 */
 	protected void sequence_SwitchCase(ISerializationContext context, SwitchCase semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

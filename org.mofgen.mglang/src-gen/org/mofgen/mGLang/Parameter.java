@@ -14,6 +14,6 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface Parameter extends NodeOrParameterOrCollection
+public interface Parameter extends RefType
 {
 } // Parameter
