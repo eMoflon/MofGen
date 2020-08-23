@@ -92,15 +92,11 @@
         eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GeneratorExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternObjectCreation" eSuperTypes="#//GeneratorExpression #//SwitchExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pObject" eType="#//PatternObject"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="patternCall" eType="#//PatternCall"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternObject">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternVariable" eSuperTypes="#//GeneratorExpression #//SwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Pattern"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="patternCall" eType="#//PatternCall"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ForStatement" eSuperTypes="#//GeneratorExpression #//SwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="head" eType="#//ForHead"

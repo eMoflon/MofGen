@@ -214,21 +214,16 @@ ruleGeneratorExpression:
 		    |
 		rulePatternCall
 		    |
-		rulePatternObjectCreation
+		rulePatternVariable
 	)
 ;
 
-// Rule PatternObjectCreation
-rulePatternObjectCreation:
-	rulePatternObject
+// Rule PatternVariable
+rulePatternVariable:
+	RULE_ID
+	RULE_ID
 	RULE_ASSIGNMENT_OP
 	rulePatternCall
-;
-
-// Rule PatternObject
-rulePatternObject:
-	RULE_ID
-	RULE_ID
 ;
 
 // Rule ForStatement
@@ -280,7 +275,7 @@ ruleSwitchExpression:
 		    |
 		rulePatternCall
 		    |
-		rulePatternObjectCreation
+		rulePatternVariable
 		    |
 		ruleNodeReferenceOrAssignmentOrControlFlow
 	)

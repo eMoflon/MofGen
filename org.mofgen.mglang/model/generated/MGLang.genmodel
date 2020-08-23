@@ -107,13 +107,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Generator/commands"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//GeneratorExpression"/>
-    <genClasses ecoreClass="MGLang.ecore#//PatternObjectCreation">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternObjectCreation/pObject"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternObjectCreation/patternCall"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//PatternObject">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternObject/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//PatternObject/name"/>
+    <genClasses ecoreClass="MGLang.ecore#//PatternVariable">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternVariable/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//PatternVariable/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternVariable/patternCall"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//ForStatement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ForStatement/head"/>

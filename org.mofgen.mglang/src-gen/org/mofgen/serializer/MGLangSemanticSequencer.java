@@ -46,9 +46,8 @@ import org.mofgen.mGLang.ParameterNode;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternCall;
 import org.mofgen.mGLang.PatternNodeReference;
-import org.mofgen.mGLang.PatternObject;
-import org.mofgen.mGLang.PatternObjectCreation;
 import org.mofgen.mGLang.PatternReturn;
+import org.mofgen.mGLang.PatternVariable;
 import org.mofgen.mGLang.Primary;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.mGLang.RefOrCall;
@@ -167,14 +166,11 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 			case MGLangPackage.PATTERN_NODE_REFERENCE:
 				sequence_PatternNodeReference(context, (PatternNodeReference) semanticObject); 
 				return; 
-			case MGLangPackage.PATTERN_OBJECT:
-				sequence_PatternObject(context, (PatternObject) semanticObject); 
-				return; 
-			case MGLangPackage.PATTERN_OBJECT_CREATION:
-				sequence_PatternObjectCreation(context, (PatternObjectCreation) semanticObject); 
-				return; 
 			case MGLangPackage.PATTERN_RETURN:
 				sequence_PatternReturn(context, (PatternReturn) semanticObject); 
+				return; 
+			case MGLangPackage.PATTERN_VARIABLE:
+				sequence_PatternVariable(context, (PatternVariable) semanticObject); 
 				return; 
 			case MGLangPackage.PRIMARY:
 				sequence_PrimaryExpr(context, (Primary) semanticObject); 
@@ -772,50 +768,6 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
-	 *     GeneratorExpression returns PatternObjectCreation
-	 *     PatternObjectCreation returns PatternObjectCreation
-	 *     SwitchExpression returns PatternObjectCreation
-	 *
-	 * Constraint:
-	 *     (pObject=PatternObject patternCall=PatternCall)
-	 */
-	protected void sequence_PatternObjectCreation(ISerializationContext context, PatternObjectCreation semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PATTERN_OBJECT_CREATION__POBJECT) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PATTERN_OBJECT_CREATION__POBJECT));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PATTERN_OBJECT_CREATION__PATTERN_CALL) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PATTERN_OBJECT_CREATION__PATTERN_CALL));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getPatternObjectCreationAccess().getPObjectPatternObjectParserRuleCall_0_0(), semanticObject.getPObject());
-		feeder.accept(grammarAccess.getPatternObjectCreationAccess().getPatternCallPatternCallParserRuleCall_2_0(), semanticObject.getPatternCall());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     PatternObject returns PatternObject
-	 *
-	 * Constraint:
-	 *     (type=[Pattern|ID] name=ID)
-	 */
-	protected void sequence_PatternObject(ISerializationContext context, PatternObject semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PATTERN_OBJECT__TYPE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PATTERN_OBJECT__TYPE));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PATTERN_OBJECT__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PATTERN_OBJECT__NAME));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getPatternObjectAccess().getTypePatternIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.PATTERN_OBJECT__TYPE, false));
-		feeder.accept(grammarAccess.getPatternObjectAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     PatternReturn returns PatternReturn
 	 *
 	 * Constraint:
@@ -823,6 +775,32 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 */
 	protected void sequence_PatternReturn(ISerializationContext context, PatternReturn semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     GeneratorExpression returns PatternVariable
+	 *     PatternVariable returns PatternVariable
+	 *     SwitchExpression returns PatternVariable
+	 *
+	 * Constraint:
+	 *     (type=[Pattern|ID] name=ID patternCall=PatternCall)
+	 */
+	protected void sequence_PatternVariable(ISerializationContext context, PatternVariable semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PATTERN_VARIABLE__TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PATTERN_VARIABLE__TYPE));
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PATTERN_VARIABLE__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PATTERN_VARIABLE__NAME));
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PATTERN_VARIABLE__PATTERN_CALL) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PATTERN_VARIABLE__PATTERN_CALL));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getPatternVariableAccess().getTypePatternIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.PATTERN_VARIABLE__TYPE, false));
+		feeder.accept(grammarAccess.getPatternVariableAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getPatternVariableAccess().getPatternCallPatternCallParserRuleCall_3_0(), semanticObject.getPatternCall());
+		feeder.finish();
 	}
 	
 	

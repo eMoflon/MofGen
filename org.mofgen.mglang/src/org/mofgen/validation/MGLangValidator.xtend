@@ -76,7 +76,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		
 		if(eval instanceof EOperation){
 			val op = eval as EOperation
-			return true;	//TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection?
+			return true;	//TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection? Or possibly only do this at runtime?
 		}
 		
 		if(neededObj instanceof PrimitiveParameter){

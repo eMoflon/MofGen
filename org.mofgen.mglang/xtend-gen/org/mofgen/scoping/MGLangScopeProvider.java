@@ -34,6 +34,7 @@ import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternNodeReference;
+import org.mofgen.mGLang.PatternVariable;
 import org.mofgen.mGLang.RefOrCall;
 import org.mofgen.scoping.AbstractMGLangScopeProvider;
 import org.mofgen.utils.MofgenModelUtils;
@@ -68,7 +69,16 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
     if (_isRefOrCall) {
       return this.getScopeForRefOrCall(((RefOrCall) context));
     }
+    boolean _isPatternVariableType = this.isPatternVariableType(context, reference);
+    if (_isPatternVariableType) {
+      return this.getScopeForPatternVariableType(((PatternVariable) context));
+    }
     return super.getScope(context, reference);
+  }
+  
+  public IScope getScopeForPatternVariableType(final PatternVariable pVar) {
+    final List<Pattern> patterns = EcoreUtil2.<Pattern>getAllContentsOfType(this.getRootFile(pVar), Pattern.class);
+    return Scopes.scopeFor(patterns);
   }
   
   public IScope getScopeForNodeCreationType(final Node n) {
@@ -215,7 +225,12 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
     return ((context instanceof RefOrCall) && Objects.equal(reference, MGLangPackage.Literals.REF_OR_CALL__REF));
   }
   
+  public boolean isPatternVariableType(final EObject context, final EReference reference) {
+    return ((context instanceof PatternVariable) && Objects.equal(reference, MGLangPackage.Literals.PATTERN_VARIABLE__TYPE));
+  }
+  
   public MofgenFile getRootFile(final EObject context) {
-    return EcoreUtil2.<MofgenFile>getContainerOfType(context, MofgenFile.class);
+    EObject _rootContainer = EcoreUtil2.getRootContainer(context);
+    return ((MofgenFile) _rootContainer);
   }
 }

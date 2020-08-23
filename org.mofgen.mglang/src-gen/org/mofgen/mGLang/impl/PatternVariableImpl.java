@@ -4,32 +4,34 @@
 package org.mofgen.mGLang.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.Pattern;
-import org.mofgen.mGLang.PatternObject;
+import org.mofgen.mGLang.PatternCall;
+import org.mofgen.mGLang.PatternVariable;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Pattern Object</b></em>'.
+ * An implementation of the model object '<em><b>Pattern Variable</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.PatternObjectImpl#getType <em>Type</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.PatternObjectImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.PatternVariableImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.PatternVariableImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.PatternVariableImpl#getPatternCall <em>Pattern Call</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class PatternObjectImpl extends MinimalEObjectImpl.Container implements PatternObject
+public class PatternVariableImpl extends GeneratorExpressionImpl implements PatternVariable
 {
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' reference.
@@ -62,11 +64,21 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
   protected String name = NAME_EDEFAULT;
 
   /**
+   * The cached value of the '{@link #getPatternCall() <em>Pattern Call</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getPatternCall()
+   * @generated
+   * @ordered
+   */
+  protected PatternCall patternCall;
+
+  /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected PatternObjectImpl()
+  protected PatternVariableImpl()
   {
     super();
   }
@@ -79,7 +91,7 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
   @Override
   protected EClass eStaticClass()
   {
-    return MGLangPackage.Literals.PATTERN_OBJECT;
+    return MGLangPackage.Literals.PATTERN_VARIABLE;
   }
 
   /**
@@ -97,7 +109,7 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
       if (type != oldType)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.PATTERN_OBJECT__TYPE, oldType, type));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.PATTERN_VARIABLE__TYPE, oldType, type));
       }
     }
     return type;
@@ -124,7 +136,7 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
     Pattern oldType = type;
     type = newType;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_OBJECT__TYPE, oldType, type));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_VARIABLE__TYPE, oldType, type));
   }
 
   /**
@@ -149,7 +161,73 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_OBJECT__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_VARIABLE__NAME, oldName, name));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public PatternCall getPatternCall()
+  {
+    return patternCall;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetPatternCall(PatternCall newPatternCall, NotificationChain msgs)
+  {
+    PatternCall oldPatternCall = patternCall;
+    patternCall = newPatternCall;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_VARIABLE__PATTERN_CALL, oldPatternCall, newPatternCall);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setPatternCall(PatternCall newPatternCall)
+  {
+    if (newPatternCall != patternCall)
+    {
+      NotificationChain msgs = null;
+      if (patternCall != null)
+        msgs = ((InternalEObject)patternCall).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.PATTERN_VARIABLE__PATTERN_CALL, null, msgs);
+      if (newPatternCall != null)
+        msgs = ((InternalEObject)newPatternCall).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.PATTERN_VARIABLE__PATTERN_CALL, null, msgs);
+      msgs = basicSetPatternCall(newPatternCall, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.PATTERN_VARIABLE__PATTERN_CALL, newPatternCall, newPatternCall));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.PATTERN_VARIABLE__PATTERN_CALL:
+        return basicSetPatternCall(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -162,11 +240,13 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_OBJECT__TYPE:
+      case MGLangPackage.PATTERN_VARIABLE__TYPE:
         if (resolve) return getType();
         return basicGetType();
-      case MGLangPackage.PATTERN_OBJECT__NAME:
+      case MGLangPackage.PATTERN_VARIABLE__NAME:
         return getName();
+      case MGLangPackage.PATTERN_VARIABLE__PATTERN_CALL:
+        return getPatternCall();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -181,11 +261,14 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_OBJECT__TYPE:
+      case MGLangPackage.PATTERN_VARIABLE__TYPE:
         setType((Pattern)newValue);
         return;
-      case MGLangPackage.PATTERN_OBJECT__NAME:
+      case MGLangPackage.PATTERN_VARIABLE__NAME:
         setName((String)newValue);
+        return;
+      case MGLangPackage.PATTERN_VARIABLE__PATTERN_CALL:
+        setPatternCall((PatternCall)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -201,11 +284,14 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_OBJECT__TYPE:
+      case MGLangPackage.PATTERN_VARIABLE__TYPE:
         setType((Pattern)null);
         return;
-      case MGLangPackage.PATTERN_OBJECT__NAME:
+      case MGLangPackage.PATTERN_VARIABLE__NAME:
         setName(NAME_EDEFAULT);
+        return;
+      case MGLangPackage.PATTERN_VARIABLE__PATTERN_CALL:
+        setPatternCall((PatternCall)null);
         return;
     }
     super.eUnset(featureID);
@@ -221,10 +307,12 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
   {
     switch (featureID)
     {
-      case MGLangPackage.PATTERN_OBJECT__TYPE:
+      case MGLangPackage.PATTERN_VARIABLE__TYPE:
         return type != null;
-      case MGLangPackage.PATTERN_OBJECT__NAME:
+      case MGLangPackage.PATTERN_VARIABLE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case MGLangPackage.PATTERN_VARIABLE__PATTERN_CALL:
+        return patternCall != null;
     }
     return super.eIsSet(featureID);
   }
@@ -246,4 +334,4 @@ public class PatternObjectImpl extends MinimalEObjectImpl.Container implements P
     return result.toString();
   }
 
-} //PatternObjectImpl
+} //PatternVariableImpl

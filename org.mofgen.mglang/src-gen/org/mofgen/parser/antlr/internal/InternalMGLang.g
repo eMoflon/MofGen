@@ -1477,86 +1477,25 @@ ruleGeneratorExpression returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getPatternObjectCreationParserRuleCall_4());
+			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getPatternVariableParserRuleCall_4());
 		}
-		this_PatternObjectCreation_4=rulePatternObjectCreation
+		this_PatternVariable_4=rulePatternVariable
 		{
-			$current = $this_PatternObjectCreation_4.current;
+			$current = $this_PatternVariable_4.current;
 			afterParserOrEnumRuleCall();
 		}
 	)
 ;
 
-// Entry rule entryRulePatternObjectCreation
-entryRulePatternObjectCreation returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getPatternObjectCreationRule()); }
-	iv_rulePatternObjectCreation=rulePatternObjectCreation
-	{ $current=$iv_rulePatternObjectCreation.current; }
+// Entry rule entryRulePatternVariable
+entryRulePatternVariable returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getPatternVariableRule()); }
+	iv_rulePatternVariable=rulePatternVariable
+	{ $current=$iv_rulePatternVariable.current; }
 	EOF;
 
-// Rule PatternObjectCreation
-rulePatternObjectCreation returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getPatternObjectCreationAccess().getPObjectPatternObjectParserRuleCall_0_0());
-				}
-				lv_pObject_0_0=rulePatternObject
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getPatternObjectCreationRule());
-					}
-					set(
-						$current,
-						"pObject",
-						lv_pObject_0_0,
-						"org.mofgen.MGLang.PatternObject");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-		this_ASSIGNMENT_OP_1=RULE_ASSIGNMENT_OP
-		{
-			newLeafNode(this_ASSIGNMENT_OP_1, grammarAccess.getPatternObjectCreationAccess().getASSIGNMENT_OPTerminalRuleCall_1());
-		}
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getPatternObjectCreationAccess().getPatternCallPatternCallParserRuleCall_2_0());
-				}
-				lv_patternCall_2_0=rulePatternCall
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getPatternObjectCreationRule());
-					}
-					set(
-						$current,
-						"patternCall",
-						lv_patternCall_2_0,
-						"org.mofgen.MGLang.PatternCall");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-	)
-;
-
-// Entry rule entryRulePatternObject
-entryRulePatternObject returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getPatternObjectRule()); }
-	iv_rulePatternObject=rulePatternObject
-	{ $current=$iv_rulePatternObject.current; }
-	EOF;
-
-// Rule PatternObject
-rulePatternObject returns [EObject current=null]
+// Rule PatternVariable
+rulePatternVariable returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -1568,12 +1507,12 @@ rulePatternObject returns [EObject current=null]
 			(
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getPatternObjectRule());
+						$current = createModelElement(grammarAccess.getPatternVariableRule());
 					}
 				}
 				otherlv_0=RULE_ID
 				{
-					newLeafNode(otherlv_0, grammarAccess.getPatternObjectAccess().getTypePatternCrossReference_0_0());
+					newLeafNode(otherlv_0, grammarAccess.getPatternVariableAccess().getTypePatternCrossReference_0_0());
 				}
 			)
 		)
@@ -1581,17 +1520,40 @@ rulePatternObject returns [EObject current=null]
 			(
 				lv_name_1_0=RULE_ID
 				{
-					newLeafNode(lv_name_1_0, grammarAccess.getPatternObjectAccess().getNameIDTerminalRuleCall_1_0());
+					newLeafNode(lv_name_1_0, grammarAccess.getPatternVariableAccess().getNameIDTerminalRuleCall_1_0());
 				}
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getPatternObjectRule());
+						$current = createModelElement(grammarAccess.getPatternVariableRule());
 					}
 					setWithLastConsumed(
 						$current,
 						"name",
 						lv_name_1_0,
 						"org.eclipse.xtext.common.Terminals.ID");
+				}
+			)
+		)
+		this_ASSIGNMENT_OP_2=RULE_ASSIGNMENT_OP
+		{
+			newLeafNode(this_ASSIGNMENT_OP_2, grammarAccess.getPatternVariableAccess().getASSIGNMENT_OPTerminalRuleCall_2());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getPatternVariableAccess().getPatternCallPatternCallParserRuleCall_3_0());
+				}
+				lv_patternCall_3_0=rulePatternCall
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getPatternVariableRule());
+					}
+					set(
+						$current,
+						"patternCall",
+						lv_patternCall_3_0,
+						"org.mofgen.MGLang.PatternCall");
+					afterParserOrEnumRuleCall();
 				}
 			)
 		)
@@ -1929,11 +1891,11 @@ ruleSwitchExpression returns [EObject current=null]
 		}
 		    |
 		{
-			newCompositeNode(grammarAccess.getSwitchExpressionAccess().getPatternObjectCreationParserRuleCall_3());
+			newCompositeNode(grammarAccess.getSwitchExpressionAccess().getPatternVariableParserRuleCall_3());
 		}
-		this_PatternObjectCreation_3=rulePatternObjectCreation
+		this_PatternVariable_3=rulePatternVariable
 		{
-			$current = $this_PatternObjectCreation_3.current;
+			$current = $this_PatternVariable_3.current;
 			afterParserOrEnumRuleCall();
 		}
 		    |

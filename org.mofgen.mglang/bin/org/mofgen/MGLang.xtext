@@ -62,23 +62,19 @@ ParameterNode:
 	type=[ecore::EClassifier] name=ID;
 
 RefOrCall:
-	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' (params = RefParams)? ')')?)*;	//TODO: Map and List Operations
+	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' (params = RefParams)? ')')?)*;
 
 RefParams:
-//	ArithmeticExpression ({RefParams.last=current} ',' next=ArithmeticExpression)*;
 	params += ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
 Generator:
 	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
-	ForStatement | Switch | Collection | PatternCall | PatternObjectCreation;
+	ForStatement | Switch | Collection | PatternCall | PatternVariable;
 
-PatternObjectCreation:
-	pObject=PatternObject ASSIGNMENT_OP patternCall=PatternCall;
-
-PatternObject:
-	type=[Pattern] name=ID;
+PatternVariable:
+	type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall;
 
 ForStatement:
 	'for' head=ForHead '{' body=ForBody '}';
@@ -99,7 +95,7 @@ ForBody:
 	{ForBody} (commands+=GeneratorExpression)*;
 
 SwitchExpression:
-	ForStatement | Collection | PatternCall | PatternObjectCreation | NodeReferenceOrAssignmentOrControlFlow
+	ForStatement | Collection | PatternCall | PatternVariable | NodeReferenceOrAssignmentOrControlFlow
 ;
 
 Switch:
@@ -136,20 +132,20 @@ Collection:
 List:
 	'List' name=ID (ASSIGNMENT_OP createdBy=ListAssignment)?;
 
-ListAssignment: //TODO Returns List?
+ListAssignment:
 	ListAdHoc | RefOrCall;
 
-ListAdHoc: //TODO Returns List?
+ListAdHoc:
 	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
 ;
 
 Map:
 	'Map' name=ID (ASSIGNMENT_OP createdBy=MapAssignment)?;
 
-MapAssignment:	//TODO Returns Map?
+MapAssignment:
 	MapAdHoc | RefOrCall;	
 
-MapAdHoc: //TODO Returns Map?
+MapAdHoc:
 	'[' entries+=MapTupel (',' entries+=MapTupel)* ']';
 
 MapTupel:

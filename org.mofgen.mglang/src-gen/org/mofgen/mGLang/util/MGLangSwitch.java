@@ -222,19 +222,12 @@ public class MGLangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case MGLangPackage.PATTERN_OBJECT_CREATION:
+      case MGLangPackage.PATTERN_VARIABLE:
       {
-        PatternObjectCreation patternObjectCreation = (PatternObjectCreation)theEObject;
-        T result = casePatternObjectCreation(patternObjectCreation);
-        if (result == null) result = caseGeneratorExpression(patternObjectCreation);
-        if (result == null) result = caseSwitchExpression(patternObjectCreation);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case MGLangPackage.PATTERN_OBJECT:
-      {
-        PatternObject patternObject = (PatternObject)theEObject;
-        T result = casePatternObject(patternObject);
+        PatternVariable patternVariable = (PatternVariable)theEObject;
+        T result = casePatternVariable(patternVariable);
+        if (result == null) result = caseGeneratorExpression(patternVariable);
+        if (result == null) result = caseSwitchExpression(patternVariable);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -843,33 +836,17 @@ public class MGLangSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Pattern Object Creation</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Pattern Variable</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Pattern Object Creation</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Pattern Variable</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T casePatternObjectCreation(PatternObjectCreation object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Pattern Object</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Pattern Object</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T casePatternObject(PatternObject object)
+  public T casePatternVariable(PatternVariable object)
   {
     return null;
   }

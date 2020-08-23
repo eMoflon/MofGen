@@ -23,6 +23,7 @@ import org.mofgen.collectionModel.CollectionModelPackage
 import java.util.ArrayList
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.Generator
+import org.mofgen.mGLang.PatternVariable
 
 /**
  * This class contains custom scoping description.
@@ -32,7 +33,6 @@ import org.mofgen.mGLang.Generator
  */
 class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
-	// TODO: Scoping for calls / refs within case-bodies shadowing the outer scope
 	override getScope(EObject context, EReference reference) {
 		if (isNodeCreation(context, reference)) {
 			return getScopeForNodeCreationType(context as Node)
@@ -49,11 +49,18 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isRefOrCall(context)) {
 			return getScopeForRefOrCall(context as RefOrCall)
 		}
+		if(isPatternVariableType(context, reference)){
+			return getScopeForPatternVariableType(context as PatternVariable)
+		}
 
 		return super.getScope(context, reference)
 	// return IScope.NULLSCOPE;
 	}
 
+	def getScopeForPatternVariableType(PatternVariable pVar){
+		val patterns = EcoreUtil2.getAllContentsOfType(getRootFile(pVar), Pattern)
+		return Scopes.scopeFor(patterns)
+	}
 
 	def getScopeForNodeCreationType(Node n) {
 		val file = getRootFile(n)
@@ -106,7 +113,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 
 	def getScopeForRefOrCall(RefOrCall r) {
-
 		if (r.target === null) {
 			// get parameters of above Pattern
 			val pattern = EcoreUtil2.getContainerOfType(r, Pattern)
@@ -191,8 +197,12 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	def isRefOrCallRef(EObject context, EReference reference) {
 		return context instanceof RefOrCall && reference == MGLangPackage.Literals.REF_OR_CALL__REF
 	}
+	
+	def isPatternVariableType(EObject context, EReference reference){
+		return context instanceof PatternVariable && reference == MGLangPackage.Literals.PATTERN_VARIABLE__TYPE
+	}
 
 	def getRootFile(EObject context) {
-		return EcoreUtil2.getContainerOfType(context, MofgenFile)
+		return EcoreUtil2.getRootContainer(context) as MofgenFile
 	}
 }

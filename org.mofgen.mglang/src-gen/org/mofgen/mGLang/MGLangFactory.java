@@ -195,22 +195,13 @@ public interface MGLangFactory extends EFactory
   GeneratorExpression createGeneratorExpression();
 
   /**
-   * Returns a new object of class '<em>Pattern Object Creation</em>'.
+   * Returns a new object of class '<em>Pattern Variable</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Pattern Object Creation</em>'.
+   * @return a new object of class '<em>Pattern Variable</em>'.
    * @generated
    */
-  PatternObjectCreation createPatternObjectCreation();
-
-  /**
-   * Returns a new object of class '<em>Pattern Object</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Pattern Object</em>'.
-   * @generated
-   */
-  PatternObject createPatternObject();
+  PatternVariable createPatternVariable();
 
   /**
    * Returns a new object of class '<em>For Statement</em>'.

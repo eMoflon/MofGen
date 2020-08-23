@@ -762,7 +762,6 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cParamsAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
 		private final RuleCall cParamsArithmeticExpressionParserRuleCall_1_1_0 = (RuleCall)cParamsAssignment_1_1.eContents().get(0);
 		
-		////TODO: Map and List Operations
 		//RefParams:
 		//	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 		@Override public ParserRule getRule() { return rule; }
@@ -848,14 +847,14 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cSwitchParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cCollectionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cPatternCallParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
-		private final RuleCall cPatternObjectCreationParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		private final RuleCall cPatternVariableParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		
 		//GeneratorExpression:
-		//	ForStatement | Switch | Collection | PatternCall | PatternObjectCreation;
+		//	ForStatement | Switch | Collection | PatternCall | PatternVariable;
 		@Override public ParserRule getRule() { return rule; }
 		
 		////Only serves as super class for all possible commands within generator
-		//ForStatement | Switch | Collection | PatternCall | PatternObjectCreation
+		//ForStatement | Switch | Collection | PatternCall | PatternVariable
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		////Only serves as super class for all possible commands within generator
@@ -871,54 +870,26 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//PatternCall
 		public RuleCall getPatternCallParserRuleCall_3() { return cPatternCallParserRuleCall_3; }
 		
-		//PatternObjectCreation
-		public RuleCall getPatternObjectCreationParserRuleCall_4() { return cPatternObjectCreationParserRuleCall_4; }
+		//PatternVariable
+		public RuleCall getPatternVariableParserRuleCall_4() { return cPatternVariableParserRuleCall_4; }
 	}
-	public class PatternObjectCreationElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.PatternObjectCreation");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cPObjectAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cPObjectPatternObjectParserRuleCall_0_0 = (RuleCall)cPObjectAssignment_0.eContents().get(0);
-		private final RuleCall cASSIGNMENT_OPTerminalRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
-		private final Assignment cPatternCallAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cPatternCallPatternCallParserRuleCall_2_0 = (RuleCall)cPatternCallAssignment_2.eContents().get(0);
-		
-		//PatternObjectCreation:
-		//	pObject=PatternObject ASSIGNMENT_OP patternCall=PatternCall;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//pObject=PatternObject ASSIGNMENT_OP patternCall=PatternCall
-		public Group getGroup() { return cGroup; }
-		
-		//pObject=PatternObject
-		public Assignment getPObjectAssignment_0() { return cPObjectAssignment_0; }
-		
-		//PatternObject
-		public RuleCall getPObjectPatternObjectParserRuleCall_0_0() { return cPObjectPatternObjectParserRuleCall_0_0; }
-		
-		//ASSIGNMENT_OP
-		public RuleCall getASSIGNMENT_OPTerminalRuleCall_1() { return cASSIGNMENT_OPTerminalRuleCall_1; }
-		
-		//patternCall=PatternCall
-		public Assignment getPatternCallAssignment_2() { return cPatternCallAssignment_2; }
-		
-		//PatternCall
-		public RuleCall getPatternCallPatternCallParserRuleCall_2_0() { return cPatternCallPatternCallParserRuleCall_2_0; }
-	}
-	public class PatternObjectElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.PatternObject");
+	public class PatternVariableElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.PatternVariable");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final CrossReference cTypePatternCrossReference_0_0 = (CrossReference)cTypeAssignment_0.eContents().get(0);
 		private final RuleCall cTypePatternIDTerminalRuleCall_0_0_1 = (RuleCall)cTypePatternCrossReference_0_0.eContents().get(1);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final RuleCall cASSIGNMENT_OPTerminalRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final Assignment cPatternCallAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cPatternCallPatternCallParserRuleCall_3_0 = (RuleCall)cPatternCallAssignment_3.eContents().get(0);
 		
-		//PatternObject:
-		//	type=[Pattern] name=ID;
+		//PatternVariable:
+		//	type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//type=[Pattern] name=ID
+		//type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall
 		public Group getGroup() { return cGroup; }
 		
 		//type=[Pattern]
@@ -935,6 +906,15 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		
+		//ASSIGNMENT_OP
+		public RuleCall getASSIGNMENT_OPTerminalRuleCall_2() { return cASSIGNMENT_OPTerminalRuleCall_2; }
+		
+		//patternCall=PatternCall
+		public Assignment getPatternCallAssignment_3() { return cPatternCallAssignment_3; }
+		
+		//PatternCall
+		public RuleCall getPatternCallPatternCallParserRuleCall_3_0() { return cPatternCallPatternCallParserRuleCall_3_0; }
 	}
 	public class ForStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.ForStatement");
@@ -1124,14 +1104,14 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cForStatementParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cCollectionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cPatternCallParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
-		private final RuleCall cPatternObjectCreationParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cPatternVariableParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cNodeReferenceOrAssignmentOrControlFlowParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		
 		//SwitchExpression:
-		//	ForStatement | Collection | PatternCall | PatternObjectCreation | NodeReferenceOrAssignmentOrControlFlow;
+		//	ForStatement | Collection | PatternCall | PatternVariable | NodeReferenceOrAssignmentOrControlFlow;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ForStatement | Collection | PatternCall | PatternObjectCreation | NodeReferenceOrAssignmentOrControlFlow
+		//ForStatement | Collection | PatternCall | PatternVariable | NodeReferenceOrAssignmentOrControlFlow
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//ForStatement
@@ -1143,8 +1123,8 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//PatternCall
 		public RuleCall getPatternCallParserRuleCall_2() { return cPatternCallParserRuleCall_2; }
 		
-		//PatternObjectCreation
-		public RuleCall getPatternObjectCreationParserRuleCall_3() { return cPatternObjectCreationParserRuleCall_3; }
+		//PatternVariable
+		public RuleCall getPatternVariableParserRuleCall_3() { return cPatternVariableParserRuleCall_3; }
 		
 		//NodeReferenceOrAssignmentOrControlFlow
 		public RuleCall getNodeReferenceOrAssignmentOrControlFlowParserRuleCall_4() { return cNodeReferenceOrAssignmentOrControlFlowParserRuleCall_4; }
@@ -1546,11 +1526,9 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//	ListAdHoc | RefOrCall;
 		@Override public ParserRule getRule() { return rule; }
 		
-		////TODO Returns List?
 		//ListAdHoc | RefOrCall
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		////TODO Returns List?
 		//ListAdHoc
 		public RuleCall getListAdHocParserRuleCall_0() { return cListAdHocParserRuleCall_0; }
 		
@@ -1569,16 +1547,14 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cElementsLiteralParserRuleCall_2_1_0 = (RuleCall)cElementsAssignment_2_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
-		//ListAdHoc: //TODO Returns List?
+		//ListAdHoc:
 		//	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		////TODO Returns List?
 		//'[' elements+=Literal (',' elements+=Literal)* ']'
 		public Group getGroup() { return cGroup; }
 		
-		////TODO Returns List?
 		//'['
 		public Keyword getLeftSquareBracketKeyword_0() { return cLeftSquareBracketKeyword_0; }
 		
@@ -1652,11 +1628,9 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//	MapAdHoc | RefOrCall;
 		@Override public ParserRule getRule() { return rule; }
 		
-		////TODO Returns Map?
 		//MapAdHoc | RefOrCall
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		////TODO Returns Map?
 		//MapAdHoc
 		public RuleCall getMapAdHocParserRuleCall_0() { return cMapAdHocParserRuleCall_0; }
 		
@@ -1675,15 +1649,13 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cEntriesMapTupelParserRuleCall_2_1_0 = (RuleCall)cEntriesAssignment_2_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
-		//MapAdHoc: //TODO Returns Map?
+		//MapAdHoc:
 		//	'[' entries+=MapTupel (',' entries+=MapTupel)* ']';
 		@Override public ParserRule getRule() { return rule; }
 		
-		////TODO Returns Map?
 		//'[' entries+=MapTupel (',' entries+=MapTupel)* ']'
 		public Group getGroup() { return cGroup; }
 		
-		////TODO Returns Map?
 		//'['
 		public Keyword getLeftSquareBracketKeyword_0() { return cLeftSquareBracketKeyword_0; }
 		
@@ -2370,8 +2342,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	private final RefParamsElements pRefParams;
 	private final GeneratorElements pGenerator;
 	private final GeneratorExpressionElements pGeneratorExpression;
-	private final PatternObjectCreationElements pPatternObjectCreation;
-	private final PatternObjectElements pPatternObject;
+	private final PatternVariableElements pPatternVariable;
 	private final ForStatementElements pForStatement;
 	private final ForHeadElements pForHead;
 	private final GeneralForHeadElements pGeneralForHead;
@@ -2448,8 +2419,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		this.pRefParams = new RefParamsElements();
 		this.pGenerator = new GeneratorElements();
 		this.pGeneratorExpression = new GeneratorExpressionElements();
-		this.pPatternObjectCreation = new PatternObjectCreationElements();
-		this.pPatternObject = new PatternObjectElements();
+		this.pPatternVariable = new PatternVariableElements();
 		this.pForStatement = new ForStatementElements();
 		this.pForHead = new ForHeadElements();
 		this.pGeneralForHead = new GeneralForHeadElements();
@@ -2703,7 +2673,6 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getRefOrCallAccess().getRule();
 	}
 	
-	////TODO: Map and List Operations
 	//RefParams:
 	//	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 	public RefParamsElements getRefParamsAccess() {
@@ -2725,7 +2694,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//GeneratorExpression:
-	//	ForStatement | Switch | Collection | PatternCall | PatternObjectCreation;
+	//	ForStatement | Switch | Collection | PatternCall | PatternVariable;
 	public GeneratorExpressionElements getGeneratorExpressionAccess() {
 		return pGeneratorExpression;
 	}
@@ -2734,24 +2703,14 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getGeneratorExpressionAccess().getRule();
 	}
 	
-	//PatternObjectCreation:
-	//	pObject=PatternObject ASSIGNMENT_OP patternCall=PatternCall;
-	public PatternObjectCreationElements getPatternObjectCreationAccess() {
-		return pPatternObjectCreation;
+	//PatternVariable:
+	//	type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall;
+	public PatternVariableElements getPatternVariableAccess() {
+		return pPatternVariable;
 	}
 	
-	public ParserRule getPatternObjectCreationRule() {
-		return getPatternObjectCreationAccess().getRule();
-	}
-	
-	//PatternObject:
-	//	type=[Pattern] name=ID;
-	public PatternObjectElements getPatternObjectAccess() {
-		return pPatternObject;
-	}
-	
-	public ParserRule getPatternObjectRule() {
-		return getPatternObjectAccess().getRule();
+	public ParserRule getPatternVariableRule() {
+		return getPatternVariableAccess().getRule();
 	}
 	
 	//ForStatement:
@@ -2815,7 +2774,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//SwitchExpression:
-	//	ForStatement | Collection | PatternCall | PatternObjectCreation | NodeReferenceOrAssignmentOrControlFlow;
+	//	ForStatement | Collection | PatternCall | PatternVariable | NodeReferenceOrAssignmentOrControlFlow;
 	public SwitchExpressionElements getSwitchExpressionAccess() {
 		return pSwitchExpression;
 	}
@@ -2944,7 +2903,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getListAssignmentAccess().getRule();
 	}
 	
-	//ListAdHoc: //TODO Returns List?
+	//ListAdHoc:
 	//	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
 	//;
 	public ListAdHocElements getListAdHocAccess() {
@@ -2975,7 +2934,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getMapAssignmentAccess().getRule();
 	}
 	
-	//MapAdHoc: //TODO Returns Map?
+	//MapAdHoc:
 	//	'[' entries+=MapTupel (',' entries+=MapTupel)* ']';
 	public MapAdHocElements getMapAdHocAccess() {
 		return pMapAdHoc;

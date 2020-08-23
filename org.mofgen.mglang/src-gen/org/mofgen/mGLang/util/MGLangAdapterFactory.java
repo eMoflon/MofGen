@@ -171,14 +171,9 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createGeneratorExpressionAdapter();
       }
       @Override
-      public Adapter casePatternObjectCreation(PatternObjectCreation object)
+      public Adapter casePatternVariable(PatternVariable object)
       {
-        return createPatternObjectCreationAdapter();
-      }
-      @Override
-      public Adapter casePatternObject(PatternObject object)
-      {
-        return createPatternObjectAdapter();
+        return createPatternVariableAdapter();
       }
       @Override
       public Adapter caseForStatement(ForStatement object)
@@ -668,31 +663,16 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.PatternObjectCreation <em>Pattern Object Creation</em>}'.
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.PatternVariable <em>Pattern Variable</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.mofgen.mGLang.PatternObjectCreation
+   * @see org.mofgen.mGLang.PatternVariable
    * @generated
    */
-  public Adapter createPatternObjectCreationAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.PatternObject <em>Pattern Object</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see org.mofgen.mGLang.PatternObject
-   * @generated
-   */
-  public Adapter createPatternObjectAdapter()
+  public Adapter createPatternVariableAdapter()
   {
     return null;
   }

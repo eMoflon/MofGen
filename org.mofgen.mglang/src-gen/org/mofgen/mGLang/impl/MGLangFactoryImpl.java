@@ -85,8 +85,7 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.REF_PARAMS: return createRefParams();
       case MGLangPackage.GENERATOR: return createGenerator();
       case MGLangPackage.GENERATOR_EXPRESSION: return createGeneratorExpression();
-      case MGLangPackage.PATTERN_OBJECT_CREATION: return createPatternObjectCreation();
-      case MGLangPackage.PATTERN_OBJECT: return createPatternObject();
+      case MGLangPackage.PATTERN_VARIABLE: return createPatternVariable();
       case MGLangPackage.FOR_STATEMENT: return createForStatement();
       case MGLangPackage.FOR_HEAD: return createForHead();
       case MGLangPackage.GENERAL_FOR_HEAD: return createGeneralForHead();
@@ -416,22 +415,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public PatternObjectCreation createPatternObjectCreation()
+  public PatternVariable createPatternVariable()
   {
-    PatternObjectCreationImpl patternObjectCreation = new PatternObjectCreationImpl();
-    return patternObjectCreation;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public PatternObject createPatternObject()
-  {
-    PatternObjectImpl patternObject = new PatternObjectImpl();
-    return patternObject;
+    PatternVariableImpl patternVariable = new PatternVariableImpl();
+    return patternVariable;
   }
 
   /**
