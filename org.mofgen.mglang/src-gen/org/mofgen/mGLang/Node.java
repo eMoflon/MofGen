@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Node extends RefType
+public interface Node extends PatternCommand, RefType
 {
   /**
    * Returns the value of the '<em><b>Type</b></em>' reference.

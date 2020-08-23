@@ -80,6 +80,13 @@ public class MGLangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case MGLangPackage.FILE_COMMAND:
+      {
+        FileCommand fileCommand = (FileCommand)theEObject;
+        T result = caseFileCommand(fileCommand);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case MGLangPackage.IMPORT:
       {
         Import import_ = (Import)theEObject;
@@ -98,6 +105,14 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         Pattern pattern = (Pattern)theEObject;
         T result = casePattern(pattern);
+        if (result == null) result = caseFileCommand(pattern);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case MGLangPackage.PATTERN_COMMAND:
+      {
+        PatternCommand patternCommand = (PatternCommand)theEObject;
+        T result = casePatternCommand(patternCommand);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -112,6 +127,7 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         ParamManipulation paramManipulation = (ParamManipulation)theEObject;
         T result = caseParamManipulation(paramManipulation);
+        if (result == null) result = casePatternCommand(paramManipulation);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -119,6 +135,7 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         Node node = (Node)theEObject;
         T result = caseNode(node);
+        if (result == null) result = casePatternCommand(node);
         if (result == null) result = caseRefType(node);
         if (result == null) result = defaultCase(theEObject);
         return result;
@@ -212,6 +229,7 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         Generator generator = (Generator)theEObject;
         T result = caseGenerator(generator);
+        if (result == null) result = caseFileCommand(generator);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -288,6 +306,7 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         org.mofgen.mGLang.Switch switch_ = (org.mofgen.mGLang.Switch)theEObject;
         T result = caseSwitch(switch_);
+        if (result == null) result = casePatternCommand(switch_);
         if (result == null) result = caseNodeReferenceOrAssignmentOrControlFlow(switch_);
         if (result == null) result = caseGeneratorExpression(switch_);
         if (result == null) result = caseSwitchExpression(switch_);
@@ -299,6 +318,7 @@ public class MGLangSwitch<T> extends Switch<T>
         IfElseSwitch ifElseSwitch = (IfElseSwitch)theEObject;
         T result = caseIfElseSwitch(ifElseSwitch);
         if (result == null) result = caseSwitch(ifElseSwitch);
+        if (result == null) result = casePatternCommand(ifElseSwitch);
         if (result == null) result = caseNodeReferenceOrAssignmentOrControlFlow(ifElseSwitch);
         if (result == null) result = caseGeneratorExpression(ifElseSwitch);
         if (result == null) result = caseSwitchExpression(ifElseSwitch);
@@ -324,6 +344,7 @@ public class MGLangSwitch<T> extends Switch<T>
         SwitchCase switchCase = (SwitchCase)theEObject;
         T result = caseSwitchCase(switchCase);
         if (result == null) result = caseSwitch(switchCase);
+        if (result == null) result = casePatternCommand(switchCase);
         if (result == null) result = caseNodeReferenceOrAssignmentOrControlFlow(switchCase);
         if (result == null) result = caseGeneratorExpression(switchCase);
         if (result == null) result = caseSwitchExpression(switchCase);
@@ -365,6 +386,7 @@ public class MGLangSwitch<T> extends Switch<T>
       {
         Collection collection = (Collection)theEObject;
         T result = caseCollection(collection);
+        if (result == null) result = casePatternCommand(collection);
         if (result == null) result = caseGeneratorExpression(collection);
         if (result == null) result = caseRefType(collection);
         if (result == null) result = caseSwitchExpression(collection);
@@ -376,6 +398,7 @@ public class MGLangSwitch<T> extends Switch<T>
         List list = (List)theEObject;
         T result = caseList(list);
         if (result == null) result = caseCollection(list);
+        if (result == null) result = casePatternCommand(list);
         if (result == null) result = caseGeneratorExpression(list);
         if (result == null) result = caseRefType(list);
         if (result == null) result = caseSwitchExpression(list);
@@ -402,6 +425,7 @@ public class MGLangSwitch<T> extends Switch<T>
         Map map = (Map)theEObject;
         T result = caseMap(map);
         if (result == null) result = caseCollection(map);
+        if (result == null) result = casePatternCommand(map);
         if (result == null) result = caseGeneratorExpression(map);
         if (result == null) result = caseRefType(map);
         if (result == null) result = caseSwitchExpression(map);
@@ -548,6 +572,22 @@ public class MGLangSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>File Command</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>File Command</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseFileCommand(FileCommand object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Import</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -591,6 +631,22 @@ public class MGLangSwitch<T> extends Switch<T>
    * @generated
    */
   public T casePattern(Pattern object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Pattern Command</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Pattern Command</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casePatternCommand(PatternCommand object)
   {
     return null;
   }

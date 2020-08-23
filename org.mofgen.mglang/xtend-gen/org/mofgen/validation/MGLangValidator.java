@@ -5,19 +5,28 @@ package org.mofgen.validation;
 
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 import org.mofgen.interpreter.Calculator;
 import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.GeneralForHead;
+import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.Parameter;
+import org.mofgen.mGLang.ParameterNode;
 import org.mofgen.mGLang.PatternCall;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.mGLang.PrimitiveType;
+import org.mofgen.utils.MofgenModelUtils;
 import org.mofgen.validation.AbstractMGLangValidator;
 
 /**
@@ -46,6 +55,33 @@ public class MGLangValidator extends AbstractMGLangValidator {
     if (_greaterThan) {
       this.error("Limiting bound is less than starting value", MGLangPackage.Literals.GENERAL_FOR_HEAD__RANGE);
     }
+  }
+  
+  @Check
+  public void checkForImportConclicts(final Import imp) {
+    List<Import> imports = EcoreUtil2.<Import>getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import.class);
+    imports.remove(imp);
+    final LinkedList<String> duplicateClasses = this.checkImportsForDuplicates(imports, imp);
+    boolean _isEmpty = duplicateClasses.isEmpty();
+    boolean _not = (!_isEmpty);
+    if (_not) {
+      String _string = duplicateClasses.toString();
+      String _plus = ("Import conflict for classes with names" + _string);
+      this.warning(_plus, MGLangPackage.Literals.IMPORT__URI);
+    }
+  }
+  
+  public LinkedList<String> checkImportsForDuplicates(final List<Import> imps, final Import otherImp) {
+    final ArrayList<EClass> classes = MofgenModelUtils.getClassesFromImportList(imps);
+    final ArrayList<EClass> otherClasses = MofgenModelUtils.getClassesFromImport(otherImp);
+    LinkedList<String> conflicts = CollectionLiterals.<String>newLinkedList();
+    for (final EClass otherClass : otherClasses) {
+      boolean _contains = classes.contains(otherClass);
+      if (_contains) {
+        conflicts.add(otherClass.getName());
+      }
+    }
+    return conflicts;
   }
   
   @Check
@@ -93,7 +129,6 @@ public class MGLangValidator extends AbstractMGLangValidator {
   private boolean areTypesMatching(final ArithmeticExpression givenExpression, final Parameter neededObj) {
     final Object eval = this.calc.evaluate(givenExpression);
     if ((eval instanceof EOperation)) {
-      final EOperation op = ((EOperation) eval);
       return true;
     }
     if ((neededObj instanceof PrimitiveParameter)) {
@@ -112,7 +147,8 @@ public class MGLangValidator extends AbstractMGLangValidator {
             break;
         }
       }
-    } else {
+    }
+    if ((neededObj instanceof ParameterNode)) {
     }
     return false;
   }

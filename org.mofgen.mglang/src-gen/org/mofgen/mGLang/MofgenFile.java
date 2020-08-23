@@ -18,8 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.MofgenFile#getImports <em>Imports</em>}</li>
  *   <li>{@link org.mofgen.mGLang.MofgenFile#getConfig <em>Config</em>}</li>
- *   <li>{@link org.mofgen.mGLang.MofgenFile#getPatterns <em>Patterns</em>}</li>
- *   <li>{@link org.mofgen.mGLang.MofgenFile#getGenerators <em>Generators</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.MofgenFile#getCommands <em>Commands</em>}</li>
  * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getMofgenFile()
@@ -63,27 +62,15 @@ public interface MofgenFile extends EObject
   void setConfig(Config value);
 
   /**
-   * Returns the value of the '<em><b>Patterns</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.Pattern}.
+   * Returns the value of the '<em><b>Commands</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.FileCommand}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Patterns</em>' containment reference list.
-   * @see org.mofgen.mGLang.MGLangPackage#getMofgenFile_Patterns()
+   * @return the value of the '<em>Commands</em>' containment reference list.
+   * @see org.mofgen.mGLang.MGLangPackage#getMofgenFile_Commands()
    * @model containment="true"
    * @generated
    */
-  EList<Pattern> getPatterns();
-
-  /**
-   * Returns the value of the '<em><b>Generators</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.Generator}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Generators</em>' containment reference list.
-   * @see org.mofgen.mGLang.MGLangPackage#getMofgenFile_Generators()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Generator> getGenerators();
+  EList<FileCommand> getCommands();
 
 } // MofgenFile

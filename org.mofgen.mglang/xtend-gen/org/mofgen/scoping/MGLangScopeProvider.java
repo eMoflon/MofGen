@@ -179,7 +179,7 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
       ArrayList<Collection> collections = new ArrayList<Collection>();
       if ((pattern != null)) {
         params.addAll(pattern.getParameters());
-        patternNodes.addAll(pattern.getNodes());
+        Iterables.<Node>addAll(patternNodes, Iterables.<Node>filter(pattern.getCommands(), Node.class));
         collections.addAll(EcoreUtil2.<Collection>getAllContentsOfType(pattern, Collection.class));
       } else {
         collections.addAll(EcoreUtil2.<Collection>getAllContentsOfType(gen, Collection.class));
@@ -259,7 +259,6 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   }
   
   public MofgenFile getRootFile(final EObject context) {
-    EObject _rootContainer = EcoreUtil2.getRootContainer(context);
-    return ((MofgenFile) _rootContainer);
+    return MofgenModelUtils.getRootFile(context);
   }
 }

@@ -21,6 +21,7 @@ import org.mofgen.mGLang.CaseWithoutCast;
 import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.Config;
 import org.mofgen.mGLang.Default;
+import org.mofgen.mGLang.FileCommand;
 import org.mofgen.mGLang.ForBody;
 import org.mofgen.mGLang.ForEachHead;
 import org.mofgen.mGLang.ForHead;
@@ -55,6 +56,7 @@ import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.ParameterNode;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternCall;
+import org.mofgen.mGLang.PatternCommand;
 import org.mofgen.mGLang.PatternNodeReference;
 import org.mofgen.mGLang.PatternReturn;
 import org.mofgen.mGLang.PatternVariable;
@@ -96,6 +98,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass fileCommandEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass importEClass = null;
 
   /**
@@ -111,6 +120,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   private EClass patternEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass patternCommandEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -620,7 +636,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getMofgenFile_Patterns()
+  public EReference getMofgenFile_Commands()
   {
     return (EReference)mofgenFileEClass.getEStructuralFeatures().get(2);
   }
@@ -631,9 +647,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getMofgenFile_Generators()
+  public EClass getFileCommand()
   {
-    return (EReference)mofgenFileEClass.getEStructuralFeatures().get(3);
+    return fileCommandEClass;
   }
 
   /**
@@ -730,7 +746,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getPattern_Colls()
+  public EReference getPattern_Commands()
   {
     return (EReference)patternEClass.getEStructuralFeatures().get(2);
   }
@@ -741,7 +757,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getPattern_Nodes()
+  public EReference getPattern_Return()
   {
     return (EReference)patternEClass.getEStructuralFeatures().get(3);
   }
@@ -752,31 +768,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getPattern_ParamManipulations()
+  public EClass getPatternCommand()
   {
-    return (EReference)patternEClass.getEStructuralFeatures().get(4);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getPattern_Switches()
-  {
-    return (EReference)patternEClass.getEStructuralFeatures().get(5);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EReference getPattern_Return()
-  {
-    return (EReference)patternEClass.getEStructuralFeatures().get(6);
+    return patternCommandEClass;
   }
 
   /**
@@ -2210,8 +2204,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     mofgenFileEClass = createEClass(MOFGEN_FILE);
     createEReference(mofgenFileEClass, MOFGEN_FILE__IMPORTS);
     createEReference(mofgenFileEClass, MOFGEN_FILE__CONFIG);
-    createEReference(mofgenFileEClass, MOFGEN_FILE__PATTERNS);
-    createEReference(mofgenFileEClass, MOFGEN_FILE__GENERATORS);
+    createEReference(mofgenFileEClass, MOFGEN_FILE__COMMANDS);
+
+    fileCommandEClass = createEClass(FILE_COMMAND);
 
     importEClass = createEClass(IMPORT);
     createEAttribute(importEClass, IMPORT__URI);
@@ -2223,11 +2218,10 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     patternEClass = createEClass(PATTERN);
     createEAttribute(patternEClass, PATTERN__NAME);
     createEReference(patternEClass, PATTERN__PARAMETERS);
-    createEReference(patternEClass, PATTERN__COLLS);
-    createEReference(patternEClass, PATTERN__NODES);
-    createEReference(patternEClass, PATTERN__PARAM_MANIPULATIONS);
-    createEReference(patternEClass, PATTERN__SWITCHES);
+    createEReference(patternEClass, PATTERN__COMMANDS);
     createEReference(patternEClass, PATTERN__RETURN);
+
+    patternCommandEClass = createEClass(PATTERN_COMMAND);
 
     patternReturnEClass = createEClass(PATTERN_RETURN);
     createEReference(patternReturnEClass, PATTERN_RETURN__RETURN_VALUE);
@@ -2440,6 +2434,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     // Set bounds for type parameters
 
     // Add supertypes to classes
+    patternEClass.getESuperTypes().add(this.getFileCommand());
+    paramManipulationEClass.getESuperTypes().add(this.getPatternCommand());
+    nodeEClass.getESuperTypes().add(this.getPatternCommand());
     nodeEClass.getESuperTypes().add(this.getRefType());
     patternCallEClass.getESuperTypes().add(this.getGeneratorExpression());
     patternCallEClass.getESuperTypes().add(this.getSwitchExpression());
@@ -2452,12 +2449,14 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     refOrCallEClass.getESuperTypes().add(this.getListAssignment());
     refOrCallEClass.getESuperTypes().add(this.getMapAssignment());
     refOrCallEClass.getESuperTypes().add(this.getArithmeticExpression());
+    generatorEClass.getESuperTypes().add(this.getFileCommand());
     patternVariableEClass.getESuperTypes().add(this.getGeneratorExpression());
     patternVariableEClass.getESuperTypes().add(this.getSwitchExpression());
     forStatementEClass.getESuperTypes().add(this.getGeneratorExpression());
     forStatementEClass.getESuperTypes().add(this.getSwitchExpression());
     generalForHeadEClass.getESuperTypes().add(this.getForHead());
     forEachHeadEClass.getESuperTypes().add(this.getForHead());
+    switchEClass.getESuperTypes().add(this.getPatternCommand());
     switchEClass.getESuperTypes().add(this.getNodeReferenceOrAssignmentOrControlFlow());
     switchEClass.getESuperTypes().add(this.getGeneratorExpression());
     ifElseSwitchEClass.getESuperTypes().add(this.getSwitch());
@@ -2465,6 +2464,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     caseWithCastEClass.getESuperTypes().add(this.getCase());
     caseWithoutCastEClass.getESuperTypes().add(this.getCase());
     caseBodyEClass.getESuperTypes().add(this.getDefault());
+    collectionEClass.getESuperTypes().add(this.getPatternCommand());
     collectionEClass.getESuperTypes().add(this.getGeneratorExpression());
     collectionEClass.getESuperTypes().add(this.getRefType());
     collectionEClass.getESuperTypes().add(this.getSwitchExpression());
@@ -2487,8 +2487,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEClass(mofgenFileEClass, MofgenFile.class, "MofgenFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMofgenFile_Imports(), this.getImport(), null, "imports", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMofgenFile_Config(), this.getConfig(), null, "config", null, 0, 1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMofgenFile_Patterns(), this.getPattern(), null, "patterns", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getMofgenFile_Generators(), this.getGenerator(), null, "generators", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMofgenFile_Commands(), this.getFileCommand(), null, "commands", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(fileCommandEClass, FileCommand.class, "FileCommand", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(importEClass, Import.class, "Import", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getImport_Uri(), ecorePackage.getEString(), "uri", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2500,11 +2501,10 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEClass(patternEClass, Pattern.class, "Pattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getPattern_Name(), ecorePackage.getEString(), "name", null, 0, 1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPattern_Parameters(), this.getParameter(), null, "parameters", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPattern_Colls(), this.getCollection(), null, "colls", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPattern_Nodes(), this.getNode(), null, "nodes", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPattern_ParamManipulations(), this.getParamManipulation(), null, "paramManipulations", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPattern_Switches(), this.getSwitch(), null, "switches", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPattern_Commands(), this.getPatternCommand(), null, "commands", null, 0, -1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPattern_Return(), this.getPatternReturn(), null, "return", null, 0, 1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(patternCommandEClass, PatternCommand.class, "PatternCommand", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(patternReturnEClass, PatternReturn.class, "PatternReturn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getPatternReturn_ReturnValue(), this.getNode(), null, "returnValue", null, 0, 1, PatternReturn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

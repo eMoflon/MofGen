@@ -87,22 +87,13 @@ public interface MGLangPackage extends EPackage
   int MOFGEN_FILE__CONFIG = 1;
 
   /**
-   * The feature id for the '<em><b>Patterns</b></em>' containment reference list.
+   * The feature id for the '<em><b>Commands</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int MOFGEN_FILE__PATTERNS = 2;
-
-  /**
-   * The feature id for the '<em><b>Generators</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int MOFGEN_FILE__GENERATORS = 3;
+  int MOFGEN_FILE__COMMANDS = 2;
 
   /**
    * The number of structural features of the '<em>Mofgen File</em>' class.
@@ -111,7 +102,26 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int MOFGEN_FILE_FEATURE_COUNT = 4;
+  int MOFGEN_FILE_FEATURE_COUNT = 3;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.FileCommandImpl <em>File Command</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.FileCommandImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getFileCommand()
+   * @generated
+   */
+  int FILE_COMMAND = 1;
+
+  /**
+   * The number of structural features of the '<em>File Command</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FILE_COMMAND_FEATURE_COUNT = 0;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.ImportImpl <em>Import</em>}' class.
@@ -121,7 +131,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getImport()
    * @generated
    */
-  int IMPORT = 1;
+  int IMPORT = 2;
 
   /**
    * The feature id for the '<em><b>Uri</b></em>' attribute.
@@ -158,7 +168,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getConfig()
    * @generated
    */
-  int CONFIG = 2;
+  int CONFIG = 3;
 
   /**
    * The feature id for the '<em><b>Expressions</b></em>' attribute list.
@@ -186,7 +196,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPattern()
    * @generated
    */
-  int PATTERN = 3;
+  int PATTERN = 4;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -195,7 +205,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN__NAME = 0;
+  int PATTERN__NAME = FILE_COMMAND_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -204,43 +214,16 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN__PARAMETERS = 1;
+  int PATTERN__PARAMETERS = FILE_COMMAND_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Colls</b></em>' containment reference list.
+   * The feature id for the '<em><b>Commands</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PATTERN__COLLS = 2;
-
-  /**
-   * The feature id for the '<em><b>Nodes</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PATTERN__NODES = 3;
-
-  /**
-   * The feature id for the '<em><b>Param Manipulations</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PATTERN__PARAM_MANIPULATIONS = 4;
-
-  /**
-   * The feature id for the '<em><b>Switches</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PATTERN__SWITCHES = 5;
+  int PATTERN__COMMANDS = FILE_COMMAND_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Return</b></em>' containment reference.
@@ -249,7 +232,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN__RETURN = 6;
+  int PATTERN__RETURN = FILE_COMMAND_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Pattern</em>' class.
@@ -258,7 +241,26 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PATTERN_FEATURE_COUNT = 7;
+  int PATTERN_FEATURE_COUNT = FILE_COMMAND_FEATURE_COUNT + 4;
+
+  /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.PatternCommandImpl <em>Pattern Command</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.PatternCommandImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPatternCommand()
+   * @generated
+   */
+  int PATTERN_COMMAND = 5;
+
+  /**
+   * The number of structural features of the '<em>Pattern Command</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PATTERN_COMMAND_FEATURE_COUNT = 0;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.PatternReturnImpl <em>Pattern Return</em>}' class.
@@ -268,7 +270,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPatternReturn()
    * @generated
    */
-  int PATTERN_RETURN = 4;
+  int PATTERN_RETURN = 6;
 
   /**
    * The feature id for the '<em><b>Return Value</b></em>' reference.
@@ -296,7 +298,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getParamManipulation()
    * @generated
    */
-  int PARAM_MANIPULATION = 5;
+  int PARAM_MANIPULATION = 7;
 
   /**
    * The feature id for the '<em><b>Param</b></em>' reference.
@@ -305,7 +307,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PARAM_MANIPULATION__PARAM = 0;
+  int PARAM_MANIPULATION__PARAM = PATTERN_COMMAND_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Content</b></em>' containment reference.
@@ -314,7 +316,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PARAM_MANIPULATION__CONTENT = 1;
+  int PARAM_MANIPULATION__CONTENT = PATTERN_COMMAND_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Param Manipulation</em>' class.
@@ -323,35 +325,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PARAM_MANIPULATION_FEATURE_COUNT = 2;
-
-  /**
-   * The meta object id for the '{@link org.mofgen.mGLang.impl.RefTypeImpl <em>Ref Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.mofgen.mGLang.impl.RefTypeImpl
-   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRefType()
-   * @generated
-   */
-  int REF_TYPE = 24;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REF_TYPE__NAME = 0;
-
-  /**
-   * The number of structural features of the '<em>Ref Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int REF_TYPE_FEATURE_COUNT = 1;
+  int PARAM_MANIPULATION_FEATURE_COUNT = PATTERN_COMMAND_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.NodeImpl <em>Node</em>}' class.
@@ -361,7 +335,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNode()
    * @generated
    */
-  int NODE = 6;
+  int NODE = 8;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -370,7 +344,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int NODE__NAME = REF_TYPE__NAME;
+  int NODE__NAME = PATTERN_COMMAND_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' reference.
@@ -379,7 +353,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int NODE__TYPE = REF_TYPE_FEATURE_COUNT + 0;
+  int NODE__TYPE = PATTERN_COMMAND_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Created By</b></em>' containment reference.
@@ -388,7 +362,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int NODE__CREATED_BY = REF_TYPE_FEATURE_COUNT + 1;
+  int NODE__CREATED_BY = PATTERN_COMMAND_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Node</em>' class.
@@ -397,7 +371,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int NODE_FEATURE_COUNT = REF_TYPE_FEATURE_COUNT + 2;
+  int NODE_FEATURE_COUNT = PATTERN_COMMAND_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.NodeContentImpl <em>Node Content</em>}' class.
@@ -407,7 +381,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNodeContent()
    * @generated
    */
-  int NODE_CONTENT = 7;
+  int NODE_CONTENT = 9;
 
   /**
    * The feature id for the '<em><b>Refs Assigns</b></em>' containment reference list.
@@ -435,7 +409,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGeneratorExpression()
    * @generated
    */
-  int GENERATOR_EXPRESSION = 18;
+  int GENERATOR_EXPRESSION = 20;
 
   /**
    * The number of structural features of the '<em>Generator Expression</em>' class.
@@ -454,7 +428,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPatternCall()
    * @generated
    */
-  int PATTERN_CALL = 8;
+  int PATTERN_CALL = 10;
 
   /**
    * The feature id for the '<em><b>Called</b></em>' reference.
@@ -491,7 +465,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSwitchExpression()
    * @generated
    */
-  int SWITCH_EXPRESSION = 26;
+  int SWITCH_EXPRESSION = 28;
 
   /**
    * The number of structural features of the '<em>Switch Expression</em>' class.
@@ -510,7 +484,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNodeReferenceOrAssignmentOrControlFlow()
    * @generated
    */
-  int NODE_REFERENCE_OR_ASSIGNMENT_OR_CONTROL_FLOW = 9;
+  int NODE_REFERENCE_OR_ASSIGNMENT_OR_CONTROL_FLOW = 11;
 
   /**
    * The number of structural features of the '<em>Node Reference Or Assignment Or Control Flow</em>' class.
@@ -529,7 +503,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPatternNodeReference()
    * @generated
    */
-  int PATTERN_NODE_REFERENCE = 10;
+  int PATTERN_NODE_REFERENCE = 12;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' reference.
@@ -566,7 +540,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getAssignment()
    * @generated
    */
-  int ASSIGNMENT = 11;
+  int ASSIGNMENT = 13;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' reference.
@@ -596,6 +570,34 @@ public interface MGLangPackage extends EPackage
   int ASSIGNMENT_FEATURE_COUNT = NODE_REFERENCE_OR_ASSIGNMENT_OR_CONTROL_FLOW_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link org.mofgen.mGLang.impl.RefTypeImpl <em>Ref Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.mofgen.mGLang.impl.RefTypeImpl
+   * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRefType()
+   * @generated
+   */
+  int REF_TYPE = 26;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REF_TYPE__NAME = 0;
+
+  /**
+   * The number of structural features of the '<em>Ref Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REF_TYPE_FEATURE_COUNT = 1;
+
+  /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.ParameterImpl <em>Parameter</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -603,7 +605,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getParameter()
    * @generated
    */
-  int PARAMETER = 12;
+  int PARAMETER = 14;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -631,7 +633,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPrimitiveParameter()
    * @generated
    */
-  int PRIMITIVE_PARAMETER = 13;
+  int PRIMITIVE_PARAMETER = 15;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -668,7 +670,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getParameterNode()
    * @generated
    */
-  int PARAMETER_NODE = 14;
+  int PARAMETER_NODE = 16;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -714,7 +716,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getListAssignment()
    * @generated
    */
-  int LIST_ASSIGNMENT = 38;
+  int LIST_ASSIGNMENT = 40;
 
   /**
    * The number of structural features of the '<em>List Assignment</em>' class.
@@ -733,7 +735,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRefOrCall()
    * @generated
    */
-  int REF_OR_CALL = 15;
+  int REF_OR_CALL = 17;
 
   /**
    * The feature id for the '<em><b>Ref</b></em>' reference.
@@ -779,7 +781,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRefParams()
    * @generated
    */
-  int REF_PARAMS = 16;
+  int REF_PARAMS = 18;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -807,7 +809,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGenerator()
    * @generated
    */
-  int GENERATOR = 17;
+  int GENERATOR = 19;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -816,7 +818,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int GENERATOR__PARAMS = 0;
+  int GENERATOR__PARAMS = FILE_COMMAND_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Commands</b></em>' containment reference list.
@@ -825,7 +827,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int GENERATOR__COMMANDS = 1;
+  int GENERATOR__COMMANDS = FILE_COMMAND_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Generator</em>' class.
@@ -834,7 +836,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int GENERATOR_FEATURE_COUNT = 2;
+  int GENERATOR_FEATURE_COUNT = FILE_COMMAND_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.PatternVariableImpl <em>Pattern Variable</em>}' class.
@@ -844,7 +846,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPatternVariable()
    * @generated
    */
-  int PATTERN_VARIABLE = 19;
+  int PATTERN_VARIABLE = 21;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' reference.
@@ -890,7 +892,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForStatement()
    * @generated
    */
-  int FOR_STATEMENT = 20;
+  int FOR_STATEMENT = 22;
 
   /**
    * The feature id for the '<em><b>Head</b></em>' containment reference.
@@ -927,7 +929,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForHead()
    * @generated
    */
-  int FOR_HEAD = 21;
+  int FOR_HEAD = 23;
 
   /**
    * The feature id for the '<em><b>Iterator Var</b></em>' attribute.
@@ -955,7 +957,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getGeneralForHead()
    * @generated
    */
-  int GENERAL_FOR_HEAD = 22;
+  int GENERAL_FOR_HEAD = 24;
 
   /**
    * The feature id for the '<em><b>Iterator Var</b></em>' attribute.
@@ -992,7 +994,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForEachHead()
    * @generated
    */
-  int FOR_EACH_HEAD = 23;
+  int FOR_EACH_HEAD = 25;
 
   /**
    * The feature id for the '<em><b>Iterator Var</b></em>' attribute.
@@ -1038,7 +1040,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForBody()
    * @generated
    */
-  int FOR_BODY = 25;
+  int FOR_BODY = 27;
 
   /**
    * The feature id for the '<em><b>Commands</b></em>' containment reference list.
@@ -1066,7 +1068,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSwitch()
    * @generated
    */
-  int SWITCH = 27;
+  int SWITCH = 29;
 
   /**
    * The feature id for the '<em><b>Default</b></em>' containment reference.
@@ -1075,7 +1077,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SWITCH__DEFAULT = NODE_REFERENCE_OR_ASSIGNMENT_OR_CONTROL_FLOW_FEATURE_COUNT + 0;
+  int SWITCH__DEFAULT = PATTERN_COMMAND_FEATURE_COUNT + 0;
 
   /**
    * The number of structural features of the '<em>Switch</em>' class.
@@ -1084,7 +1086,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SWITCH_FEATURE_COUNT = NODE_REFERENCE_OR_ASSIGNMENT_OR_CONTROL_FLOW_FEATURE_COUNT + 1;
+  int SWITCH_FEATURE_COUNT = PATTERN_COMMAND_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.IfElseSwitchImpl <em>If Else Switch</em>}' class.
@@ -1094,7 +1096,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getIfElseSwitch()
    * @generated
    */
-  int IF_ELSE_SWITCH = 28;
+  int IF_ELSE_SWITCH = 30;
 
   /**
    * The feature id for the '<em><b>Default</b></em>' containment reference.
@@ -1131,7 +1133,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getIfElseCase()
    * @generated
    */
-  int IF_ELSE_CASE = 29;
+  int IF_ELSE_CASE = 31;
 
   /**
    * The feature id for the '<em><b>Val</b></em>' containment reference.
@@ -1168,7 +1170,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getDefault()
    * @generated
    */
-  int DEFAULT = 30;
+  int DEFAULT = 32;
 
   /**
    * The number of structural features of the '<em>Default</em>' class.
@@ -1187,7 +1189,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSwitchCase()
    * @generated
    */
-  int SWITCH_CASE = 31;
+  int SWITCH_CASE = 33;
 
   /**
    * The feature id for the '<em><b>Default</b></em>' containment reference.
@@ -1233,7 +1235,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCase()
    * @generated
    */
-  int CASE = 32;
+  int CASE = 34;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1261,7 +1263,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCaseWithCast()
    * @generated
    */
-  int CASE_WITH_CAST = 33;
+  int CASE_WITH_CAST = 35;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1307,7 +1309,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCaseWithoutCast()
    * @generated
    */
-  int CASE_WITHOUT_CAST = 34;
+  int CASE_WITHOUT_CAST = 36;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1344,7 +1346,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCaseBody()
    * @generated
    */
-  int CASE_BODY = 35;
+  int CASE_BODY = 37;
 
   /**
    * The feature id for the '<em><b>Expressions</b></em>' containment reference list.
@@ -1372,7 +1374,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getCollection()
    * @generated
    */
-  int COLLECTION = 36;
+  int COLLECTION = 38;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1381,7 +1383,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COLLECTION__NAME = GENERATOR_EXPRESSION_FEATURE_COUNT + 0;
+  int COLLECTION__NAME = PATTERN_COMMAND_FEATURE_COUNT + 0;
 
   /**
    * The number of structural features of the '<em>Collection</em>' class.
@@ -1390,7 +1392,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int COLLECTION_FEATURE_COUNT = GENERATOR_EXPRESSION_FEATURE_COUNT + 1;
+  int COLLECTION_FEATURE_COUNT = PATTERN_COMMAND_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.ListImpl <em>List</em>}' class.
@@ -1400,7 +1402,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getList()
    * @generated
    */
-  int LIST = 37;
+  int LIST = 39;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1437,7 +1439,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getListAdHoc()
    * @generated
    */
-  int LIST_AD_HOC = 39;
+  int LIST_AD_HOC = 41;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -1465,7 +1467,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMap()
    * @generated
    */
-  int MAP = 40;
+  int MAP = 42;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1502,7 +1504,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMapAssignment()
    * @generated
    */
-  int MAP_ASSIGNMENT = 41;
+  int MAP_ASSIGNMENT = 43;
 
   /**
    * The number of structural features of the '<em>Map Assignment</em>' class.
@@ -1521,7 +1523,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMapAdHoc()
    * @generated
    */
-  int MAP_AD_HOC = 42;
+  int MAP_AD_HOC = 44;
 
   /**
    * The feature id for the '<em><b>Entries</b></em>' containment reference list.
@@ -1549,7 +1551,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMapTupel()
    * @generated
    */
-  int MAP_TUPEL = 43;
+  int MAP_TUPEL = 45;
 
   /**
    * The feature id for the '<em><b>Key</b></em>' containment reference.
@@ -1586,7 +1588,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getForRange()
    * @generated
    */
-  int FOR_RANGE = 44;
+  int FOR_RANGE = 46;
 
   /**
    * The feature id for the '<em><b>Start</b></em>' containment reference.
@@ -1623,7 +1625,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getArithmeticExpression()
    * @generated
    */
-  int ARITHMETIC_EXPRESSION = 45;
+  int ARITHMETIC_EXPRESSION = 47;
 
   /**
    * The number of structural features of the '<em>Arithmetic Expression</em>' class.
@@ -1642,7 +1644,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getLiteral()
    * @generated
    */
-  int LITERAL = 46;
+  int LITERAL = 48;
 
   /**
    * The number of structural features of the '<em>Literal</em>' class.
@@ -1661,7 +1663,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getBooleanLiteral()
    * @generated
    */
-  int BOOLEAN_LITERAL = 47;
+  int BOOLEAN_LITERAL = 49;
 
   /**
    * The feature id for the '<em><b>Val</b></em>' attribute.
@@ -1689,7 +1691,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getStringLiteral()
    * @generated
    */
-  int STRING_LITERAL = 48;
+  int STRING_LITERAL = 50;
 
   /**
    * The feature id for the '<em><b>Val</b></em>' attribute.
@@ -1717,7 +1719,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNumberLiteral()
    * @generated
    */
-  int NUMBER_LITERAL = 49;
+  int NUMBER_LITERAL = 51;
 
   /**
    * The feature id for the '<em><b>Val</b></em>' attribute.
@@ -1745,7 +1747,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getTertiary()
    * @generated
    */
-  int TERTIARY = 50;
+  int TERTIARY = 52;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1791,7 +1793,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSecondary()
    * @generated
    */
-  int SECONDARY = 51;
+  int SECONDARY = 53;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1837,7 +1839,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPrimary()
    * @generated
    */
-  int PRIMARY = 52;
+  int PRIMARY = 54;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1883,7 +1885,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRel()
    * @generated
    */
-  int REL = 53;
+  int REL = 55;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1929,7 +1931,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getNegationExpression()
    * @generated
    */
-  int NEGATION_EXPRESSION = 54;
+  int NEGATION_EXPRESSION = 56;
 
   /**
    * The feature id for the '<em><b>Expr</b></em>' containment reference.
@@ -1957,7 +1959,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getFunctionCall()
    * @generated
    */
-  int FUNCTION_CALL = 55;
+  int FUNCTION_CALL = 57;
 
   /**
    * The feature id for the '<em><b>Func</b></em>' attribute.
@@ -1994,7 +1996,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getMathFunc()
    * @generated
    */
-  int MATH_FUNC = 56;
+  int MATH_FUNC = 58;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.PrimitiveType <em>Primitive Type</em>}' enum.
@@ -2004,7 +2006,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPrimitiveType()
    * @generated
    */
-  int PRIMITIVE_TYPE = 57;
+  int PRIMITIVE_TYPE = 59;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.RelationalOp <em>Relational Op</em>}' enum.
@@ -2014,7 +2016,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getRelationalOp()
    * @generated
    */
-  int RELATIONAL_OP = 58;
+  int RELATIONAL_OP = 60;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.TertiaryOp <em>Tertiary Op</em>}' enum.
@@ -2024,7 +2026,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getTertiaryOp()
    * @generated
    */
-  int TERTIARY_OP = 59;
+  int TERTIARY_OP = 61;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.SecondaryOp <em>Secondary Op</em>}' enum.
@@ -2034,7 +2036,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getSecondaryOp()
    * @generated
    */
-  int SECONDARY_OP = 60;
+  int SECONDARY_OP = 62;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.PrimaryOp <em>Primary Op</em>}' enum.
@@ -2044,7 +2046,7 @@ public interface MGLangPackage extends EPackage
    * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPrimaryOp()
    * @generated
    */
-  int PRIMARY_OP = 61;
+  int PRIMARY_OP = 63;
 
 
   /**
@@ -2080,26 +2082,25 @@ public interface MGLangPackage extends EPackage
   EReference getMofgenFile_Config();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.MofgenFile#getPatterns <em>Patterns</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.MofgenFile#getCommands <em>Commands</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Patterns</em>'.
-   * @see org.mofgen.mGLang.MofgenFile#getPatterns()
+   * @return the meta object for the containment reference list '<em>Commands</em>'.
+   * @see org.mofgen.mGLang.MofgenFile#getCommands()
    * @see #getMofgenFile()
    * @generated
    */
-  EReference getMofgenFile_Patterns();
+  EReference getMofgenFile_Commands();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.MofgenFile#getGenerators <em>Generators</em>}'.
+   * Returns the meta object for class '{@link org.mofgen.mGLang.FileCommand <em>File Command</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Generators</em>'.
-   * @see org.mofgen.mGLang.MofgenFile#getGenerators()
-   * @see #getMofgenFile()
+   * @return the meta object for class '<em>File Command</em>'.
+   * @see org.mofgen.mGLang.FileCommand
    * @generated
    */
-  EReference getMofgenFile_Generators();
+  EClass getFileCommand();
 
   /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.Import <em>Import</em>}'.
@@ -2187,48 +2188,15 @@ public interface MGLangPackage extends EPackage
   EReference getPattern_Parameters();
 
   /**
-   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.Pattern#getColls <em>Colls</em>}'.
+   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.Pattern#getCommands <em>Commands</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Colls</em>'.
-   * @see org.mofgen.mGLang.Pattern#getColls()
+   * @return the meta object for the containment reference list '<em>Commands</em>'.
+   * @see org.mofgen.mGLang.Pattern#getCommands()
    * @see #getPattern()
    * @generated
    */
-  EReference getPattern_Colls();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.Pattern#getNodes <em>Nodes</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Nodes</em>'.
-   * @see org.mofgen.mGLang.Pattern#getNodes()
-   * @see #getPattern()
-   * @generated
-   */
-  EReference getPattern_Nodes();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.Pattern#getParamManipulations <em>Param Manipulations</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Param Manipulations</em>'.
-   * @see org.mofgen.mGLang.Pattern#getParamManipulations()
-   * @see #getPattern()
-   * @generated
-   */
-  EReference getPattern_ParamManipulations();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link org.mofgen.mGLang.Pattern#getSwitches <em>Switches</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Switches</em>'.
-   * @see org.mofgen.mGLang.Pattern#getSwitches()
-   * @see #getPattern()
-   * @generated
-   */
-  EReference getPattern_Switches();
+  EReference getPattern_Commands();
 
   /**
    * Returns the meta object for the containment reference '{@link org.mofgen.mGLang.Pattern#getReturn <em>Return</em>}'.
@@ -2240,6 +2208,16 @@ public interface MGLangPackage extends EPackage
    * @generated
    */
   EReference getPattern_Return();
+
+  /**
+   * Returns the meta object for class '{@link org.mofgen.mGLang.PatternCommand <em>Pattern Command</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Pattern Command</em>'.
+   * @see org.mofgen.mGLang.PatternCommand
+   * @generated
+   */
+  EClass getPatternCommand();
 
   /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.PatternReturn <em>Pattern Return</em>}'.
@@ -3630,20 +3608,22 @@ public interface MGLangPackage extends EPackage
     EReference MOFGEN_FILE__CONFIG = eINSTANCE.getMofgenFile_Config();
 
     /**
-     * The meta object literal for the '<em><b>Patterns</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Commands</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference MOFGEN_FILE__PATTERNS = eINSTANCE.getMofgenFile_Patterns();
+    EReference MOFGEN_FILE__COMMANDS = eINSTANCE.getMofgenFile_Commands();
 
     /**
-     * The meta object literal for the '<em><b>Generators</b></em>' containment reference list feature.
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.FileCommandImpl <em>File Command</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.FileCommandImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getFileCommand()
      * @generated
      */
-    EReference MOFGEN_FILE__GENERATORS = eINSTANCE.getMofgenFile_Generators();
+    EClass FILE_COMMAND = eINSTANCE.getFileCommand();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.ImportImpl <em>Import</em>}' class.
@@ -3716,36 +3696,12 @@ public interface MGLangPackage extends EPackage
     EReference PATTERN__PARAMETERS = eINSTANCE.getPattern_Parameters();
 
     /**
-     * The meta object literal for the '<em><b>Colls</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Commands</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference PATTERN__COLLS = eINSTANCE.getPattern_Colls();
-
-    /**
-     * The meta object literal for the '<em><b>Nodes</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference PATTERN__NODES = eINSTANCE.getPattern_Nodes();
-
-    /**
-     * The meta object literal for the '<em><b>Param Manipulations</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference PATTERN__PARAM_MANIPULATIONS = eINSTANCE.getPattern_ParamManipulations();
-
-    /**
-     * The meta object literal for the '<em><b>Switches</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference PATTERN__SWITCHES = eINSTANCE.getPattern_Switches();
+    EReference PATTERN__COMMANDS = eINSTANCE.getPattern_Commands();
 
     /**
      * The meta object literal for the '<em><b>Return</b></em>' containment reference feature.
@@ -3754,6 +3710,16 @@ public interface MGLangPackage extends EPackage
      * @generated
      */
     EReference PATTERN__RETURN = eINSTANCE.getPattern_Return();
+
+    /**
+     * The meta object literal for the '{@link org.mofgen.mGLang.impl.PatternCommandImpl <em>Pattern Command</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.mofgen.mGLang.impl.PatternCommandImpl
+     * @see org.mofgen.mGLang.impl.MGLangPackageImpl#getPatternCommand()
+     * @generated
+     */
+    EClass PATTERN_COMMAND = eINSTANCE.getPatternCommand();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.PatternReturnImpl <em>Pattern Return</em>}' class.

@@ -20,7 +20,7 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface Switch extends NodeReferenceOrAssignmentOrControlFlow, GeneratorExpression
+public interface Switch extends PatternCommand, NodeReferenceOrAssignmentOrControlFlow, GeneratorExpression
 {
   /**
    * Returns the value of the '<em><b>Default</b></em>' containment reference.

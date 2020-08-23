@@ -81,6 +81,11 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
         return createMofgenFileAdapter();
       }
       @Override
+      public Adapter caseFileCommand(FileCommand object)
+      {
+        return createFileCommandAdapter();
+      }
+      @Override
       public Adapter caseImport(Import object)
       {
         return createImportAdapter();
@@ -94,6 +99,11 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
       public Adapter casePattern(Pattern object)
       {
         return createPatternAdapter();
+      }
+      @Override
+      public Adapter casePatternCommand(PatternCommand object)
+      {
+        return createPatternCommandAdapter();
       }
       @Override
       public Adapter casePatternReturn(PatternReturn object)
@@ -393,6 +403,21 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.FileCommand <em>File Command</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.FileCommand
+   * @generated
+   */
+  public Adapter createFileCommandAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.Import <em>Import</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -433,6 +458,21 @@ public class MGLangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createPatternAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.mofgen.mGLang.PatternCommand <em>Pattern Command</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.mofgen.mGLang.PatternCommand
+   * @generated
+   */
+  public Adapter createPatternCommandAdapter()
   {
     return null;
   }

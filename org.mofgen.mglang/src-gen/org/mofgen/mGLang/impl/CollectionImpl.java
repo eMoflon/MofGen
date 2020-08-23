@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.mofgen.mGLang.Collection;
+import org.mofgen.mGLang.GeneratorExpression;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.RefType;
 import org.mofgen.mGLang.SwitchExpression;
@@ -27,7 +28,7 @@ import org.mofgen.mGLang.SwitchExpression;
  *
  * @generated
  */
-public class CollectionImpl extends GeneratorExpressionImpl implements Collection
+public class CollectionImpl extends PatternCommandImpl implements Collection
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -169,6 +170,13 @@ public class CollectionImpl extends GeneratorExpressionImpl implements Collectio
   @Override
   public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
   {
+    if (baseClass == GeneratorExpression.class)
+    {
+      switch (derivedFeatureID)
+      {
+        default: return -1;
+      }
+    }
     if (baseClass == RefType.class)
     {
       switch (derivedFeatureID)
@@ -195,6 +203,13 @@ public class CollectionImpl extends GeneratorExpressionImpl implements Collectio
   @Override
   public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
   {
+    if (baseClass == GeneratorExpression.class)
+    {
+      switch (baseFeatureID)
+      {
+        default: return -1;
+      }
+    }
     if (baseClass == RefType.class)
     {
       switch (baseFeatureID)

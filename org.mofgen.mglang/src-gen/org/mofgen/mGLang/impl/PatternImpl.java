@@ -3,6 +3,8 @@
  */
 package org.mofgen.mGLang.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -12,19 +14,15 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.Node;
-import org.mofgen.mGLang.ParamManipulation;
 import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.Pattern;
+import org.mofgen.mGLang.PatternCommand;
 import org.mofgen.mGLang.PatternReturn;
-import org.mofgen.mGLang.Switch;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,16 +34,13 @@ import org.mofgen.mGLang.Switch;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getParameters <em>Parameters</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getColls <em>Colls</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getNodes <em>Nodes</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getParamManipulations <em>Param Manipulations</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getSwitches <em>Switches</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getCommands <em>Commands</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.PatternImpl#getReturn <em>Return</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
+public class PatternImpl extends FileCommandImpl implements Pattern
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -78,44 +73,14 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
   protected EList<Parameter> parameters;
 
   /**
-   * The cached value of the '{@link #getColls() <em>Colls</em>}' containment reference list.
+   * The cached value of the '{@link #getCommands() <em>Commands</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getColls()
+   * @see #getCommands()
    * @generated
    * @ordered
    */
-  protected EList<Collection> colls;
-
-  /**
-   * The cached value of the '{@link #getNodes() <em>Nodes</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getNodes()
-   * @generated
-   * @ordered
-   */
-  protected EList<Node> nodes;
-
-  /**
-   * The cached value of the '{@link #getParamManipulations() <em>Param Manipulations</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getParamManipulations()
-   * @generated
-   * @ordered
-   */
-  protected EList<ParamManipulation> paramManipulations;
-
-  /**
-   * The cached value of the '{@link #getSwitches() <em>Switches</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getSwitches()
-   * @generated
-   * @ordered
-   */
-  protected EList<Switch> switches;
+  protected EList<PatternCommand> commands;
 
   /**
    * The cached value of the '{@link #getReturn() <em>Return</em>}' containment reference.
@@ -194,58 +159,13 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
    * @generated
    */
   @Override
-  public EList<Collection> getColls()
+  public EList<PatternCommand> getCommands()
   {
-    if (colls == null)
+    if (commands == null)
     {
-      colls = new EObjectContainmentEList<Collection>(Collection.class, this, MGLangPackage.PATTERN__COLLS);
+      commands = new EObjectContainmentEList<PatternCommand>(PatternCommand.class, this, MGLangPackage.PATTERN__COMMANDS);
     }
-    return colls;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<Node> getNodes()
-  {
-    if (nodes == null)
-    {
-      nodes = new EObjectContainmentEList<Node>(Node.class, this, MGLangPackage.PATTERN__NODES);
-    }
-    return nodes;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<ParamManipulation> getParamManipulations()
-  {
-    if (paramManipulations == null)
-    {
-      paramManipulations = new EObjectContainmentEList<ParamManipulation>(ParamManipulation.class, this, MGLangPackage.PATTERN__PARAM_MANIPULATIONS);
-    }
-    return paramManipulations;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<Switch> getSwitches()
-  {
-    if (switches == null)
-    {
-      switches = new EObjectContainmentEList<Switch>(Switch.class, this, MGLangPackage.PATTERN__SWITCHES);
-    }
-    return switches;
+    return commands;
   }
 
   /**
@@ -310,14 +230,8 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
     {
       case MGLangPackage.PATTERN__PARAMETERS:
         return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
-      case MGLangPackage.PATTERN__COLLS:
-        return ((InternalEList<?>)getColls()).basicRemove(otherEnd, msgs);
-      case MGLangPackage.PATTERN__NODES:
-        return ((InternalEList<?>)getNodes()).basicRemove(otherEnd, msgs);
-      case MGLangPackage.PATTERN__PARAM_MANIPULATIONS:
-        return ((InternalEList<?>)getParamManipulations()).basicRemove(otherEnd, msgs);
-      case MGLangPackage.PATTERN__SWITCHES:
-        return ((InternalEList<?>)getSwitches()).basicRemove(otherEnd, msgs);
+      case MGLangPackage.PATTERN__COMMANDS:
+        return ((InternalEList<?>)getCommands()).basicRemove(otherEnd, msgs);
       case MGLangPackage.PATTERN__RETURN:
         return basicSetReturn(null, msgs);
     }
@@ -338,14 +252,8 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return getName();
       case MGLangPackage.PATTERN__PARAMETERS:
         return getParameters();
-      case MGLangPackage.PATTERN__COLLS:
-        return getColls();
-      case MGLangPackage.PATTERN__NODES:
-        return getNodes();
-      case MGLangPackage.PATTERN__PARAM_MANIPULATIONS:
-        return getParamManipulations();
-      case MGLangPackage.PATTERN__SWITCHES:
-        return getSwitches();
+      case MGLangPackage.PATTERN__COMMANDS:
+        return getCommands();
       case MGLangPackage.PATTERN__RETURN:
         return getReturn();
     }
@@ -368,23 +276,11 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return;
       case MGLangPackage.PATTERN__PARAMETERS:
         getParameters().clear();
-        getParameters().addAll((java.util.Collection<? extends Parameter>)newValue);
+        getParameters().addAll((Collection<? extends Parameter>)newValue);
         return;
-      case MGLangPackage.PATTERN__COLLS:
-        getColls().clear();
-        getColls().addAll((java.util.Collection<? extends Collection>)newValue);
-        return;
-      case MGLangPackage.PATTERN__NODES:
-        getNodes().clear();
-        getNodes().addAll((java.util.Collection<? extends Node>)newValue);
-        return;
-      case MGLangPackage.PATTERN__PARAM_MANIPULATIONS:
-        getParamManipulations().clear();
-        getParamManipulations().addAll((java.util.Collection<? extends ParamManipulation>)newValue);
-        return;
-      case MGLangPackage.PATTERN__SWITCHES:
-        getSwitches().clear();
-        getSwitches().addAll((java.util.Collection<? extends Switch>)newValue);
+      case MGLangPackage.PATTERN__COMMANDS:
+        getCommands().clear();
+        getCommands().addAll((Collection<? extends PatternCommand>)newValue);
         return;
       case MGLangPackage.PATTERN__RETURN:
         setReturn((PatternReturn)newValue);
@@ -409,17 +305,8 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
       case MGLangPackage.PATTERN__PARAMETERS:
         getParameters().clear();
         return;
-      case MGLangPackage.PATTERN__COLLS:
-        getColls().clear();
-        return;
-      case MGLangPackage.PATTERN__NODES:
-        getNodes().clear();
-        return;
-      case MGLangPackage.PATTERN__PARAM_MANIPULATIONS:
-        getParamManipulations().clear();
-        return;
-      case MGLangPackage.PATTERN__SWITCHES:
-        getSwitches().clear();
+      case MGLangPackage.PATTERN__COMMANDS:
+        getCommands().clear();
         return;
       case MGLangPackage.PATTERN__RETURN:
         setReturn((PatternReturn)null);
@@ -442,14 +329,8 @@ public class PatternImpl extends MinimalEObjectImpl.Container implements Pattern
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case MGLangPackage.PATTERN__PARAMETERS:
         return parameters != null && !parameters.isEmpty();
-      case MGLangPackage.PATTERN__COLLS:
-        return colls != null && !colls.isEmpty();
-      case MGLangPackage.PATTERN__NODES:
-        return nodes != null && !nodes.isEmpty();
-      case MGLangPackage.PATTERN__PARAM_MANIPULATIONS:
-        return paramManipulations != null && !paramManipulations.isEmpty();
-      case MGLangPackage.PATTERN__SWITCHES:
-        return switches != null && !switches.isEmpty();
+      case MGLangPackage.PATTERN__COMMANDS:
+        return commands != null && !commands.isEmpty();
       case MGLangPackage.PATTERN__RETURN:
         return return_ != null;
     }

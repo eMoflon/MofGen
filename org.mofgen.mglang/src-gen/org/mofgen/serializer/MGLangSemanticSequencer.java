@@ -472,6 +472,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     FileCommand returns Generator
 	 *     Generator returns Generator
 	 *
 	 * Constraint:
@@ -505,6 +506,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     PatternCommand returns IfElseSwitch
 	 *     NodeReferenceOrAssignmentOrControlFlow returns IfElseSwitch
 	 *     GeneratorExpression returns IfElseSwitch
 	 *     SwitchExpression returns IfElseSwitch
@@ -555,6 +557,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     PatternCommand returns List
 	 *     GeneratorExpression returns List
 	 *     RefType returns List
 	 *     SwitchExpression returns List
@@ -605,6 +608,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     PatternCommand returns Map
 	 *     GeneratorExpression returns Map
 	 *     RefType returns Map
 	 *     SwitchExpression returns Map
@@ -624,7 +628,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     MofgenFile returns MofgenFile
 	 *
 	 * Constraint:
-	 *     (imports+=Import* config=Config (patterns+=Pattern | generators+=Generator)*)
+	 *     (imports+=Import* config=Config commands+=FileCommand*)
 	 */
 	protected void sequence_MofgenFile(ISerializationContext context, MofgenFile semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -645,6 +649,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     PatternCommand returns Node
 	 *     Node returns Node
 	 *     RefType returns Node
 	 *
@@ -687,6 +692,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     PatternCommand returns ParamManipulation
 	 *     ParamManipulation returns ParamManipulation
 	 *
 	 * Constraint:
@@ -797,15 +803,11 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     FileCommand returns Pattern
 	 *     Pattern returns Pattern
 	 *
 	 * Constraint:
-	 *     (
-	 *         name=ID 
-	 *         (parameters+=Parameter parameters+=Parameter*)? 
-	 *         (colls+=Collection | nodes+=Node | paramManipulations+=ParamManipulation | switches+=Switch)* 
-	 *         return=PatternReturn?
-	 *     )
+	 *     (name=ID (parameters+=Parameter parameters+=Parameter*)? commands+=PatternCommand* return=PatternReturn?)
 	 */
 	protected void sequence_Pattern(ISerializationContext context, Pattern semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1002,6 +1004,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	
 	/**
 	 * Contexts:
+	 *     PatternCommand returns SwitchCase
 	 *     NodeReferenceOrAssignmentOrControlFlow returns SwitchCase
 	 *     GeneratorExpression returns SwitchCase
 	 *     SwitchExpression returns SwitchCase

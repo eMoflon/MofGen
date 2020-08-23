@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.Node;
+import org.mofgen.mGLang.RefType;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,14 +24,35 @@ import org.mofgen.mGLang.Node;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getCreatedBy <em>Created By</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class NodeImpl extends RefTypeImpl implements Node
+public class NodeImpl extends PatternCommandImpl implements Node
 {
+  /**
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' reference.
    * <!-- begin-user-doc -->
@@ -70,6 +92,31 @@ public class NodeImpl extends RefTypeImpl implements Node
   protected EClass eStaticClass()
   {
     return MGLangPackage.Literals.NODE;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setName(String newName)
+  {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.NODE__NAME, oldName, name));
   }
 
   /**
@@ -193,6 +240,8 @@ public class NodeImpl extends RefTypeImpl implements Node
   {
     switch (featureID)
     {
+      case MGLangPackage.NODE__NAME:
+        return getName();
       case MGLangPackage.NODE__TYPE:
         if (resolve) return getType();
         return basicGetType();
@@ -212,6 +261,9 @@ public class NodeImpl extends RefTypeImpl implements Node
   {
     switch (featureID)
     {
+      case MGLangPackage.NODE__NAME:
+        setName((String)newValue);
+        return;
       case MGLangPackage.NODE__TYPE:
         setType((EClass)newValue);
         return;
@@ -232,6 +284,9 @@ public class NodeImpl extends RefTypeImpl implements Node
   {
     switch (featureID)
     {
+      case MGLangPackage.NODE__NAME:
+        setName(NAME_EDEFAULT);
+        return;
       case MGLangPackage.NODE__TYPE:
         setType((EClass)null);
         return;
@@ -252,12 +307,69 @@ public class NodeImpl extends RefTypeImpl implements Node
   {
     switch (featureID)
     {
+      case MGLangPackage.NODE__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case MGLangPackage.NODE__TYPE:
         return type != null;
       case MGLangPackage.NODE__CREATED_BY:
         return createdBy != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+  {
+    if (baseClass == RefType.class)
+    {
+      switch (derivedFeatureID)
+      {
+        case MGLangPackage.NODE__NAME: return MGLangPackage.REF_TYPE__NAME;
+        default: return -1;
+      }
+    }
+    return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+  {
+    if (baseClass == RefType.class)
+    {
+      switch (baseFeatureID)
+      {
+        case MGLangPackage.REF_TYPE__NAME: return MGLangPackage.NODE__NAME;
+        default: return -1;
+      }
+    }
+    return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
   }
 
 } //NodeImpl

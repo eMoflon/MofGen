@@ -41,9 +41,9 @@
     <genClasses ecoreClass="MGLang.ecore#//MofgenFile">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/imports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/config"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/patterns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/generators"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/commands"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//FileCommand"/>
     <genClasses ecoreClass="MGLang.ecore#//Import">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Import/uri"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Import/name"/>
@@ -54,12 +54,10 @@
     <genClasses ecoreClass="MGLang.ecore#//Pattern">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Pattern/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/parameters"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/colls"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/nodes"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/paramManipulations"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/switches"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/commands"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/return"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//PatternCommand"/>
     <genClasses ecoreClass="MGLang.ecore#//PatternReturn">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternReturn/returnValue"/>
     </genClasses>

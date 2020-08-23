@@ -14,6 +14,6 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface Collection extends GeneratorExpression, RefType, SwitchExpression
+public interface Collection extends PatternCommand, GeneratorExpression, RefType, SwitchExpression
 {
 } // Collection

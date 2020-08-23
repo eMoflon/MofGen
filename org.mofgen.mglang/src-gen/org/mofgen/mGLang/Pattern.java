@@ -5,8 +5,6 @@ package org.mofgen.mGLang;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Pattern</b></em>'.
@@ -18,10 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.Pattern#getName <em>Name</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getParameters <em>Parameters</em>}</li>
- *   <li>{@link org.mofgen.mGLang.Pattern#getColls <em>Colls</em>}</li>
- *   <li>{@link org.mofgen.mGLang.Pattern#getNodes <em>Nodes</em>}</li>
- *   <li>{@link org.mofgen.mGLang.Pattern#getParamManipulations <em>Param Manipulations</em>}</li>
- *   <li>{@link org.mofgen.mGLang.Pattern#getSwitches <em>Switches</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.Pattern#getCommands <em>Commands</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Pattern#getReturn <em>Return</em>}</li>
  * </ul>
  *
@@ -29,7 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Pattern extends EObject
+public interface Pattern extends FileCommand
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -66,52 +61,16 @@ public interface Pattern extends EObject
   EList<Parameter> getParameters();
 
   /**
-   * Returns the value of the '<em><b>Colls</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.Collection}.
+   * Returns the value of the '<em><b>Commands</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.PatternCommand}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Colls</em>' containment reference list.
-   * @see org.mofgen.mGLang.MGLangPackage#getPattern_Colls()
+   * @return the value of the '<em>Commands</em>' containment reference list.
+   * @see org.mofgen.mGLang.MGLangPackage#getPattern_Commands()
    * @model containment="true"
    * @generated
    */
-  EList<Collection> getColls();
-
-  /**
-   * Returns the value of the '<em><b>Nodes</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.Node}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Nodes</em>' containment reference list.
-   * @see org.mofgen.mGLang.MGLangPackage#getPattern_Nodes()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Node> getNodes();
-
-  /**
-   * Returns the value of the '<em><b>Param Manipulations</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.ParamManipulation}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Param Manipulations</em>' containment reference list.
-   * @see org.mofgen.mGLang.MGLangPackage#getPattern_ParamManipulations()
-   * @model containment="true"
-   * @generated
-   */
-  EList<ParamManipulation> getParamManipulations();
-
-  /**
-   * Returns the value of the '<em><b>Switches</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.Switch}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Switches</em>' containment reference list.
-   * @see org.mofgen.mGLang.MGLangPackage#getPattern_Switches()
-   * @model containment="true"
-   * @generated
-   */
-  EList<Switch> getSwitches();
+  EList<PatternCommand> getCommands();
 
   /**
    * Returns the value of the '<em><b>Return</b></em>' containment reference.

@@ -3,17 +3,21 @@
  */
 package org.mofgen.validation
 
-import org.mofgen.mGLang.PatternCall
-import org.eclipse.xtext.validation.Check
-import org.mofgen.mGLang.MGLangPackage
-import org.mofgen.mGLang.ArithmeticExpression
-import org.mofgen.mGLang.Parameter
-import org.mofgen.interpreter.Calculator
 import com.google.inject.Inject
-import org.mofgen.mGLang.GeneralForHead
-import org.mofgen.mGLang.util.MGLangAdapterFactory
-import org.mofgen.mGLang.PrimitiveParameter
+import java.util.List
 import org.eclipse.emf.ecore.EOperation
+import org.eclipse.xtext.EcoreUtil2
+import org.eclipse.xtext.validation.Check
+import org.mofgen.interpreter.Calculator
+import org.mofgen.mGLang.ArithmeticExpression
+import org.mofgen.mGLang.GeneralForHead
+import org.mofgen.mGLang.Import
+import org.mofgen.mGLang.MGLangPackage
+import org.mofgen.mGLang.Parameter
+import org.mofgen.mGLang.PatternCall
+import org.mofgen.mGLang.PrimitiveParameter
+import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.ParameterNode
 
 /**
  * This class contains custom validation rules. 
@@ -41,6 +45,28 @@ class MGLangValidator extends AbstractMGLangValidator {
 		if(castStart > castEnd){
 			error("Limiting bound is less than starting value", MGLangPackage.Literals.GENERAL_FOR_HEAD__RANGE)
 		}
+	}
+	
+	@Check
+	def checkForImportConclicts(Import imp){
+		var imports = EcoreUtil2.getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import)
+		imports.remove(imp)
+		val duplicateClasses = checkImportsForDuplicates(imports, imp)
+		if(!duplicateClasses.isEmpty){
+			warning("Import conflict for classes with names" + duplicateClasses.toString, MGLangPackage.Literals.IMPORT__URI)
+		}
+	}
+	
+	def checkImportsForDuplicates(List<Import> imps, Import otherImp){
+		val classes = MofgenModelUtils.getClassesFromImportList(imps)
+		val otherClasses = MofgenModelUtils.getClassesFromImport(otherImp)
+		var conflicts = newLinkedList()
+		for(otherClass : otherClasses){
+			if(classes.contains(otherClass)){
+				conflicts.add(otherClass.name)
+			}
+		}
+		return conflicts
 	}
 	
 	@Check
@@ -75,7 +101,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		val eval = calc.evaluate(givenExpression)
 		
 		if(eval instanceof EOperation){
-			val op = eval as EOperation
+			//val op = eval as EOperation
 			return true;	//TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection? Or possibly only do this at runtime?
 		}
 		
@@ -86,7 +112,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 				case DOUBLE: return eval instanceof Double
 				case STRING: return eval instanceof String
 			}
-		}else{
+		}
+		if(neededObj instanceof ParameterNode){
 			//TODO
 		}
 		return false

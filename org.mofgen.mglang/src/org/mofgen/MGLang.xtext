@@ -7,8 +7,12 @@ generate mGLang "http://www.mofgen.org/MGLang"
 MofgenFile:
 	(imports+=Import)*
 	(config=Config)
-	(patterns+=Pattern |
-	generators+=Generator)*;
+	(commands += FileCommand)*
+;
+
+FileCommand:
+	Pattern | Generator
+;
 
 Import:
 	'import' uri=STRING 'as' name=ID;
@@ -24,9 +28,12 @@ ConfigExpression:
 ;
 
 Pattern:
-	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (((colls+=Collection)*)? &
-	((nodes+=Node)*)? & ((paramManipulations+=ParamManipulation)*)? & ((switches+=Switch)*)?) '}'
+	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands += PatternCommand)* '}'
 	(return=PatternReturn)?;
+
+PatternCommand:
+	Collection | Node | ParamManipulation | Switch
+;
 
 PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;

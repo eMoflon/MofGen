@@ -20,11 +20,10 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.mofgen.mGLang.Config;
-import org.mofgen.mGLang.Generator;
+import org.mofgen.mGLang.FileCommand;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MofgenFile;
-import org.mofgen.mGLang.Pattern;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,8 +35,7 @@ import org.mofgen.mGLang.Pattern;
  * <ul>
  *   <li>{@link org.mofgen.mGLang.impl.MofgenFileImpl#getImports <em>Imports</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.MofgenFileImpl#getConfig <em>Config</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.MofgenFileImpl#getPatterns <em>Patterns</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.MofgenFileImpl#getGenerators <em>Generators</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.MofgenFileImpl#getCommands <em>Commands</em>}</li>
  * </ul>
  *
  * @generated
@@ -65,24 +63,14 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
   protected Config config;
 
   /**
-   * The cached value of the '{@link #getPatterns() <em>Patterns</em>}' containment reference list.
+   * The cached value of the '{@link #getCommands() <em>Commands</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getPatterns()
+   * @see #getCommands()
    * @generated
    * @ordered
    */
-  protected EList<Pattern> patterns;
-
-  /**
-   * The cached value of the '{@link #getGenerators() <em>Generators</em>}' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getGenerators()
-   * @generated
-   * @ordered
-   */
-  protected EList<Generator> generators;
+  protected EList<FileCommand> commands;
 
   /**
    * <!-- begin-user-doc -->
@@ -176,28 +164,13 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
    * @generated
    */
   @Override
-  public EList<Pattern> getPatterns()
+  public EList<FileCommand> getCommands()
   {
-    if (patterns == null)
+    if (commands == null)
     {
-      patterns = new EObjectContainmentEList<Pattern>(Pattern.class, this, MGLangPackage.MOFGEN_FILE__PATTERNS);
+      commands = new EObjectContainmentEList<FileCommand>(FileCommand.class, this, MGLangPackage.MOFGEN_FILE__COMMANDS);
     }
-    return patterns;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public EList<Generator> getGenerators()
-  {
-    if (generators == null)
-    {
-      generators = new EObjectContainmentEList<Generator>(Generator.class, this, MGLangPackage.MOFGEN_FILE__GENERATORS);
-    }
-    return generators;
+    return commands;
   }
 
   /**
@@ -214,10 +187,8 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
         return ((InternalEList<?>)getImports()).basicRemove(otherEnd, msgs);
       case MGLangPackage.MOFGEN_FILE__CONFIG:
         return basicSetConfig(null, msgs);
-      case MGLangPackage.MOFGEN_FILE__PATTERNS:
-        return ((InternalEList<?>)getPatterns()).basicRemove(otherEnd, msgs);
-      case MGLangPackage.MOFGEN_FILE__GENERATORS:
-        return ((InternalEList<?>)getGenerators()).basicRemove(otherEnd, msgs);
+      case MGLangPackage.MOFGEN_FILE__COMMANDS:
+        return ((InternalEList<?>)getCommands()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -236,10 +207,8 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
         return getImports();
       case MGLangPackage.MOFGEN_FILE__CONFIG:
         return getConfig();
-      case MGLangPackage.MOFGEN_FILE__PATTERNS:
-        return getPatterns();
-      case MGLangPackage.MOFGEN_FILE__GENERATORS:
-        return getGenerators();
+      case MGLangPackage.MOFGEN_FILE__COMMANDS:
+        return getCommands();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -262,13 +231,9 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
       case MGLangPackage.MOFGEN_FILE__CONFIG:
         setConfig((Config)newValue);
         return;
-      case MGLangPackage.MOFGEN_FILE__PATTERNS:
-        getPatterns().clear();
-        getPatterns().addAll((Collection<? extends Pattern>)newValue);
-        return;
-      case MGLangPackage.MOFGEN_FILE__GENERATORS:
-        getGenerators().clear();
-        getGenerators().addAll((Collection<? extends Generator>)newValue);
+      case MGLangPackage.MOFGEN_FILE__COMMANDS:
+        getCommands().clear();
+        getCommands().addAll((Collection<? extends FileCommand>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -290,11 +255,8 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
       case MGLangPackage.MOFGEN_FILE__CONFIG:
         setConfig((Config)null);
         return;
-      case MGLangPackage.MOFGEN_FILE__PATTERNS:
-        getPatterns().clear();
-        return;
-      case MGLangPackage.MOFGEN_FILE__GENERATORS:
-        getGenerators().clear();
+      case MGLangPackage.MOFGEN_FILE__COMMANDS:
+        getCommands().clear();
         return;
     }
     super.eUnset(featureID);
@@ -314,10 +276,8 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
         return imports != null && !imports.isEmpty();
       case MGLangPackage.MOFGEN_FILE__CONFIG:
         return config != null;
-      case MGLangPackage.MOFGEN_FILE__PATTERNS:
-        return patterns != null && !patterns.isEmpty();
-      case MGLangPackage.MOFGEN_FILE__GENERATORS:
-        return generators != null && !generators.isEmpty();
+      case MGLangPackage.MOFGEN_FILE__COMMANDS:
+        return commands != null && !commands.isEmpty();
     }
     return super.eIsSet(featureID);
   }

@@ -3,7 +3,6 @@
  */
 package org.mofgen.mGLang;
 
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface ParamManipulation extends EObject
+public interface ParamManipulation extends PatternCommand
 {
   /**
    * Returns the value of the '<em><b>Param</b></em>' reference.

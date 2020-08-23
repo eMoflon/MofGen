@@ -28,7 +28,7 @@ import org.mofgen.mGLang.Switch;
  *
  * @generated
  */
-public class SwitchImpl extends NodeReferenceOrAssignmentOrControlFlowImpl implements Switch
+public class SwitchImpl extends PatternCommandImpl implements Switch
 {
   /**
    * The cached value of the '{@link #getDefault() <em>Default</em>}' containment reference.

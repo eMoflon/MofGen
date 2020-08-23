@@ -33,6 +33,15 @@ public interface MGLangFactory extends EFactory
   MofgenFile createMofgenFile();
 
   /**
+   * Returns a new object of class '<em>File Command</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>File Command</em>'.
+   * @generated
+   */
+  FileCommand createFileCommand();
+
+  /**
    * Returns a new object of class '<em>Import</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -58,6 +67,15 @@ public interface MGLangFactory extends EFactory
    * @generated
    */
   Pattern createPattern();
+
+  /**
+   * Returns a new object of class '<em>Pattern Command</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Pattern Command</em>'.
+   * @generated
+   */
+  PatternCommand createPatternCommand();
 
   /**
    * Returns a new object of class '<em>Pattern Return</em>'.

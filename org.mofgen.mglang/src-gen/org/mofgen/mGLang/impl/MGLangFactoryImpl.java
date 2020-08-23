@@ -67,9 +67,11 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
     switch (eClass.getClassifierID())
     {
       case MGLangPackage.MOFGEN_FILE: return createMofgenFile();
+      case MGLangPackage.FILE_COMMAND: return createFileCommand();
       case MGLangPackage.IMPORT: return createImport();
       case MGLangPackage.CONFIG: return createConfig();
       case MGLangPackage.PATTERN: return createPattern();
+      case MGLangPackage.PATTERN_COMMAND: return createPatternCommand();
       case MGLangPackage.PATTERN_RETURN: return createPatternReturn();
       case MGLangPackage.PARAM_MANIPULATION: return createParamManipulation();
       case MGLangPackage.NODE: return createNode();
@@ -199,6 +201,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
+  public FileCommand createFileCommand()
+  {
+    FileCommandImpl fileCommand = new FileCommandImpl();
+    return fileCommand;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Import createImport()
   {
     ImportImpl import_ = new ImportImpl();
@@ -227,6 +241,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     PatternImpl pattern = new PatternImpl();
     return pattern;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public PatternCommand createPatternCommand()
+  {
+    PatternCommandImpl patternCommand = new PatternCommandImpl();
+    return patternCommand;
   }
 
   /**

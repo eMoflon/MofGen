@@ -8,11 +8,17 @@ ruleMofgenFile:
 	ruleImport
 	*
 	ruleConfig
+	ruleFileCommand
+	*
+;
+
+// Rule FileCommand
+ruleFileCommand:
 	(
 		rulePattern
 		    |
 		ruleGenerator
-	)*
+	)
 ;
 
 // Rule Import
@@ -53,21 +59,24 @@ rulePattern:
 	)?
 	')'
 	'{'
-	(ruleCollection
+	rulePatternCommand
 	*
-	    |
-	ruleNode
-	*
-	    |
-	ruleParamManipulation
-	*
-	    |
-	ruleSwitch
-	*
-	)*
 	'}'
 	rulePatternReturn
 	?
+;
+
+// Rule PatternCommand
+rulePatternCommand:
+	(
+		ruleCollection
+		    |
+		ruleNode
+		    |
+		ruleParamManipulation
+		    |
+		ruleSwitch
+	)
 ;
 
 // Rule PatternReturn

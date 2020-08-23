@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.NodeContent;
@@ -31,7 +30,7 @@ import org.mofgen.mGLang.ParameterNode;
  *
  * @generated
  */
-public class ParamManipulationImpl extends MinimalEObjectImpl.Container implements ParamManipulation
+public class ParamManipulationImpl extends PatternCommandImpl implements ParamManipulation
 {
   /**
    * The cached value of the '{@link #getParam() <em>Param</em>}' reference.

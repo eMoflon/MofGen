@@ -146,7 +146,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			if (pattern !== null){
 				params.addAll(pattern.parameters)
 				// get nodes of pattern
-				patternNodes.addAll(pattern.nodes)
+//				patternNodes.addAll(pattern.nodes)
+				patternNodes.addAll(pattern.commands.filter(Node))
 				
 				collections.addAll(EcoreUtil2.getAllContentsOfType(pattern, Collection))
 			}else{
@@ -230,6 +231,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 
 	def getRootFile(EObject context) {
-		return EcoreUtil2.getRootContainer(context) as MofgenFile
+		return MofgenModelUtils.getRootFile(context)
 	}
 }

@@ -3,9 +3,12 @@ package org.mofgen.utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -53,6 +56,19 @@ public class MofgenModelUtils {
 		loadEcoreModel(imp.getUri()).ifPresent(m -> classes.addAll(getElements(m, EClass.class)));
 		return classes;
 	}
+	
+	/**
+	 * Returns all EClasses imported by the imports in the given list
+	 * 
+	 * @param imps the import objects
+	 */
+	public static ArrayList<EClass> getClassesFromImportList(final List<Import> imps){
+		final ArrayList<EClass> classes = new ArrayList<>();
+		imps.forEach(i -> {
+			loadEcoreModel(i.getUri()).ifPresent(m -> classes.addAll(getElements(m, EClass.class)));
+		});
+		return classes;
+	}
 
 	/**
 	 * Returns all EDataTypes imported into the given file.
@@ -77,6 +93,14 @@ public class MofgenModelUtils {
 	public static <T extends EObject> List<T> getElements(final Resource resource, final Class<T> type) {
 		return EcoreUtil2.getAllContentsOfType(resource.getContents().get(0), type);
 	}
+	
+	/**
+	 * @return the root container of the given EObject as MofgenFile
+	 */
+	public static MofgenFile getRootFile(final EObject obj) {
+		return (MofgenFile) EcoreUtil2.getRootContainer(obj);
+	}
+	
 
 	/**
 	 * Returns an Optional for the Ecore model resource with the given URI.

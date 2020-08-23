@@ -6,11 +6,10 @@
         eType="#//Import" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="config" eType="#//Config"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="patterns" upperBound="-1"
-        eType="#//Pattern" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="generators" upperBound="-1"
-        eType="#//Generator" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
+        eType="#//FileCommand" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FileCommand"/>
   <eClassifiers xsi:type="ecore:EClass" name="Import">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="uri" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -19,30 +18,25 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="expressions" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Pattern">
+  <eClassifiers xsi:type="ecore:EClass" name="Pattern" eSuperTypes="#//FileCommand">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
         eType="#//Parameter" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="colls" upperBound="-1"
-        eType="#//Collection" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="nodes" upperBound="-1"
-        eType="#//Node" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="paramManipulations" upperBound="-1"
-        eType="#//ParamManipulation" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="switches" upperBound="-1"
-        eType="#//Switch" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
+        eType="#//PatternCommand" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="return" eType="#//PatternReturn"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCommand"/>
   <eClassifiers xsi:type="ecore:EClass" name="PatternReturn">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="#//Node"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ParamManipulation">
+  <eClassifiers xsi:type="ecore:EClass" name="ParamManipulation" eSuperTypes="#//PatternCommand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="param" eType="#//ParameterNode"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//NodeContent"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//RefType">
+  <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//PatternCommand #//RefType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
@@ -86,7 +80,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//ArithmeticExpression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Generator">
+  <eClassifiers xsi:type="ecore:EClass" name="Generator" eSuperTypes="#//FileCommand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//Parameter" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
@@ -125,7 +119,7 @@
         eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SwitchExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Switch" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow #//GeneratorExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="Switch" eSuperTypes="#//PatternCommand #//NodeReferenceOrAssignmentOrControlFlow #//GeneratorExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//Default"
         containment="true"/>
   </eClassifiers>
@@ -163,7 +157,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
         eType="#//SwitchExpression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//GeneratorExpression #//RefType #//SwitchExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//PatternCommand #//GeneratorExpression #//RefType #//SwitchExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="List" eSuperTypes="#//Collection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="#//ListAssignment"
         containment="true"/>
