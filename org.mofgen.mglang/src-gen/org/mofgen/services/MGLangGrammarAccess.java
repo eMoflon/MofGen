@@ -870,13 +870,14 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cCollectionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		private final RuleCall cPatternCallParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cPatternVariableParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		private final RuleCall cVariableParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
 		
 		//GeneratorExpression:
-		//	ForStatement | Switch | Collection | PatternCall | PatternVariable;
+		//	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable;
 		@Override public ParserRule getRule() { return rule; }
 		
 		////Only serves as super class for all possible commands within generator
-		//ForStatement | Switch | Collection | PatternCall | PatternVariable
+		//ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		////Only serves as super class for all possible commands within generator
@@ -894,6 +895,9 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//PatternVariable
 		public RuleCall getPatternVariableParserRuleCall_4() { return cPatternVariableParserRuleCall_4; }
+		
+		//Variable
+		public RuleCall getVariableParserRuleCall_5() { return cVariableParserRuleCall_5; }
 	}
 	public class PatternVariableElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.PatternVariable");
@@ -937,6 +941,41 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//PatternCall
 		public RuleCall getPatternCallPatternCallParserRuleCall_3_0() { return cPatternCallPatternCallParserRuleCall_3_0; }
+	}
+	public class VariableElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Variable");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cVarKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final RuleCall cASSIGNMENT_OPTerminalRuleCall_2 = (RuleCall)cGroup.eContents().get(2);
+		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cValueArithmeticExpressionParserRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		
+		//Variable:
+		//	'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression
+		public Group getGroup() { return cGroup; }
+		
+		//'var'
+		public Keyword getVarKeyword_0() { return cVarKeyword_0; }
+		
+		//name=ID
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		
+		//ID
+		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		
+		//ASSIGNMENT_OP
+		public RuleCall getASSIGNMENT_OPTerminalRuleCall_2() { return cASSIGNMENT_OPTerminalRuleCall_2; }
+		
+		//value=ArithmeticExpression
+		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+		
+		//ArithmeticExpression
+		public RuleCall getValueArithmeticExpressionParserRuleCall_3_0() { return cValueArithmeticExpressionParserRuleCall_3_0; }
 	}
 	public class ForStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.ForStatement");
@@ -1080,12 +1119,13 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cNodeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cParameterParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cCollectionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cVariableParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//RefType:
-		//	Node | Parameter | Collection;
+		//	Node | Parameter | Collection | Variable;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//Node | Parameter | Collection
+		//Node | Parameter | Collection | Variable
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//Node
@@ -1096,6 +1136,9 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//Collection
 		public RuleCall getCollectionParserRuleCall_2() { return cCollectionParserRuleCall_2; }
+		
+		//Variable
+		public RuleCall getVariableParserRuleCall_3() { return cVariableParserRuleCall_3; }
 	}
 	public class ForBodyElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.ForBody");
@@ -2367,6 +2410,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	private final GeneratorElements pGenerator;
 	private final GeneratorExpressionElements pGeneratorExpression;
 	private final PatternVariableElements pPatternVariable;
+	private final VariableElements pVariable;
 	private final ForStatementElements pForStatement;
 	private final ForHeadElements pForHead;
 	private final GeneralForHeadElements pGeneralForHead;
@@ -2446,6 +2490,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		this.pGenerator = new GeneratorElements();
 		this.pGeneratorExpression = new GeneratorExpressionElements();
 		this.pPatternVariable = new PatternVariableElements();
+		this.pVariable = new VariableElements();
 		this.pForStatement = new ForStatementElements();
 		this.pForHead = new ForHeadElements();
 		this.pGeneralForHead = new GeneralForHeadElements();
@@ -2739,7 +2784,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//GeneratorExpression:
-	//	ForStatement | Switch | Collection | PatternCall | PatternVariable;
+	//	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable;
 	public GeneratorExpressionElements getGeneratorExpressionAccess() {
 		return pGeneratorExpression;
 	}
@@ -2756,6 +2801,16 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getPatternVariableRule() {
 		return getPatternVariableAccess().getRule();
+	}
+	
+	//Variable:
+	//	'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression;
+	public VariableElements getVariableAccess() {
+		return pVariable;
+	}
+	
+	public ParserRule getVariableRule() {
+		return getVariableAccess().getRule();
 	}
 	
 	//ForStatement:
@@ -2799,7 +2854,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//RefType:
-	//	Node | Parameter | Collection;
+	//	Node | Parameter | Collection | Variable;
 	public RefTypeElements getRefTypeAccess() {
 		return pRefType;
 	}

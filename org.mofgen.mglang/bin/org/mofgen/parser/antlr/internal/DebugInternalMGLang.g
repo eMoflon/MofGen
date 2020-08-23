@@ -228,6 +228,8 @@ ruleGeneratorExpression:
 		rulePatternCall
 		    |
 		rulePatternVariable
+		    |
+		ruleVariable
 	)
 ;
 
@@ -237,6 +239,14 @@ rulePatternVariable:
 	RULE_ID
 	RULE_ASSIGNMENT_OP
 	rulePatternCall
+;
+
+// Rule Variable
+ruleVariable:
+	'var'
+	RULE_ID
+	RULE_ASSIGNMENT_OP
+	ruleArithmeticExpression
 ;
 
 // Rule ForStatement

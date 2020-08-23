@@ -1464,6 +1464,15 @@ ruleGeneratorExpression returns [EObject current=null]
 			$current = $this_PatternVariable_4.current;
 			afterParserOrEnumRuleCall();
 		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getVariableParserRuleCall_5());
+		}
+		this_Variable_5=ruleVariable
+		{
+			$current = $this_Variable_5.current;
+			afterParserOrEnumRuleCall();
+		}
 	)
 ;
 
@@ -1533,6 +1542,70 @@ rulePatternVariable returns [EObject current=null]
 						"patternCall",
 						lv_patternCall_3_0,
 						"org.mofgen.MGLang.PatternCall");
+					afterParserOrEnumRuleCall();
+				}
+			)
+		)
+	)
+;
+
+// Entry rule entryRuleVariable
+entryRuleVariable returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getVariableRule()); }
+	iv_ruleVariable=ruleVariable
+	{ $current=$iv_ruleVariable.current; }
+	EOF;
+
+// Rule Variable
+ruleVariable returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		otherlv_0='var'
+		{
+			newLeafNode(otherlv_0, grammarAccess.getVariableAccess().getVarKeyword_0());
+		}
+		(
+			(
+				lv_name_1_0=RULE_ID
+				{
+					newLeafNode(lv_name_1_0, grammarAccess.getVariableAccess().getNameIDTerminalRuleCall_1_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getVariableRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"name",
+						lv_name_1_0,
+						"org.eclipse.xtext.common.Terminals.ID");
+				}
+			)
+		)
+		this_ASSIGNMENT_OP_2=RULE_ASSIGNMENT_OP
+		{
+			newLeafNode(this_ASSIGNMENT_OP_2, grammarAccess.getVariableAccess().getASSIGNMENT_OPTerminalRuleCall_2());
+		}
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getVariableAccess().getValueArithmeticExpressionParserRuleCall_3_0());
+				}
+				lv_value_3_0=ruleArithmeticExpression
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getVariableRule());
+					}
+					set(
+						$current,
+						"value",
+						lv_value_3_0,
+						"org.mofgen.MGLang.ArithmeticExpression");
 					afterParserOrEnumRuleCall();
 				}
 			)

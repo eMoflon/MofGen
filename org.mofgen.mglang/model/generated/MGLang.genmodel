@@ -111,6 +111,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//PatternVariable/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternVariable/patternCall"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//Variable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Variable/value"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//ForStatement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ForStatement/head"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ForStatement/body"/>

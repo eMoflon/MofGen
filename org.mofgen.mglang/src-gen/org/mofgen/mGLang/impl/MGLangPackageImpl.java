@@ -77,6 +77,7 @@ import org.mofgen.mGLang.SwitchCase;
 import org.mofgen.mGLang.SwitchExpression;
 import org.mofgen.mGLang.Tertiary;
 import org.mofgen.mGLang.TertiaryOp;
+import org.mofgen.mGLang.Variable;
 
 /**
  * <!-- begin-user-doc -->
@@ -239,6 +240,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   private EClass patternVariableEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass variableEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1211,6 +1219,28 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
   public EReference getPatternVariable_PatternCall()
   {
     return (EReference)patternVariableEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getVariable()
+  {
+    return variableEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getVariable_Value()
+  {
+    return (EReference)variableEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2279,6 +2309,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEAttribute(patternVariableEClass, PATTERN_VARIABLE__NAME);
     createEReference(patternVariableEClass, PATTERN_VARIABLE__PATTERN_CALL);
 
+    variableEClass = createEClass(VARIABLE);
+    createEReference(variableEClass, VARIABLE__VALUE);
+
     forStatementEClass = createEClass(FOR_STATEMENT);
     createEReference(forStatementEClass, FOR_STATEMENT__HEAD);
     createEReference(forStatementEClass, FOR_STATEMENT__BODY);
@@ -2452,6 +2485,8 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     generatorEClass.getESuperTypes().add(this.getFileCommand());
     patternVariableEClass.getESuperTypes().add(this.getGeneratorExpression());
     patternVariableEClass.getESuperTypes().add(this.getSwitchExpression());
+    variableEClass.getESuperTypes().add(this.getGeneratorExpression());
+    variableEClass.getESuperTypes().add(this.getRefType());
     forStatementEClass.getESuperTypes().add(this.getGeneratorExpression());
     forStatementEClass.getESuperTypes().add(this.getSwitchExpression());
     generalForHeadEClass.getESuperTypes().add(this.getForHead());
@@ -2561,6 +2596,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getPatternVariable_Type(), this.getPattern(), null, "type", null, 0, 1, PatternVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getPatternVariable_Name(), ecorePackage.getEString(), "name", null, 0, 1, PatternVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPatternVariable_PatternCall(), this.getPatternCall(), null, "patternCall", null, 0, 1, PatternVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(variableEClass, Variable.class, "Variable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getVariable_Value(), this.getArithmeticExpression(), null, "value", null, 0, 1, Variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(forStatementEClass, ForStatement.class, "ForStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getForStatement_Head(), this.getForHead(), null, "head", null, 0, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

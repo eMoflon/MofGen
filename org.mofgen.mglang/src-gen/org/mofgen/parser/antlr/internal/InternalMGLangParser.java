@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalMGLangParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_ASSIGNMENT_OP", "RULE_NEWLINE", "RULE_TRUE", "RULE_FALSE", "RULE_DOUBLE", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'import'", "'as'", "'config'", "'('", "')'", "'{'", "'}'", "'test'", "'pattern'", "','", "'return'", "'this'", "'.'", "'->'", "'gen'", "'for'", "'in'", "'-'", "'switch'", "'case'", "':'", "'default'", "'when'", "'List'", "'['", "']'", "'Map'", "'!'", "'sqrt'", "'abs'", "'int'", "'char'", "'double'", "'String'", "'>'", "'>='", "'=='", "'!='", "'<='", "'<'", "'+'", "'||'", "'%'", "'^'", "'*'", "'/'", "'&&'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_ASSIGNMENT_OP", "RULE_NEWLINE", "RULE_TRUE", "RULE_FALSE", "RULE_DOUBLE", "RULE_INT", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'import'", "'as'", "'config'", "'('", "')'", "'{'", "'}'", "'test'", "'pattern'", "','", "'return'", "'this'", "'.'", "'->'", "'gen'", "'var'", "'for'", "'in'", "'-'", "'switch'", "'case'", "':'", "'default'", "'when'", "'List'", "'['", "']'", "'Map'", "'!'", "'sqrt'", "'abs'", "'int'", "'char'", "'double'", "'String'", "'>'", "'>='", "'=='", "'!='", "'<='", "'<'", "'+'", "'||'", "'%'", "'^'", "'*'", "'/'", "'&&'"
     };
     public static final int T__50=50;
     public static final int T__19=19;
@@ -53,6 +53,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
     public static final int T__25=25;
     public static final int RULE_FALSE=9;
     public static final int T__62=62;
+    public static final int T__63=63;
     public static final int T__20=20;
     public static final int T__21=21;
     public static final int RULE_NEWLINE=7;
@@ -942,7 +943,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             int alt6=2;
             int LA6_0 = input.LA(1);
 
-            if ( (LA6_0==RULE_ID||(LA6_0>=46 && LA6_0<=49)) ) {
+            if ( (LA6_0==RULE_ID||(LA6_0>=47 && LA6_0<=50)) ) {
                 alt6=1;
             }
             switch (alt6) {
@@ -1062,7 +1063,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 int alt7=2;
                 int LA7_0 = input.LA(1);
 
-                if ( (LA7_0==RULE_ID||LA7_0==34||LA7_0==39||LA7_0==42) ) {
+                if ( (LA7_0==RULE_ID||LA7_0==35||LA7_0==40||LA7_0==43) ) {
                     alt7=1;
                 }
 
@@ -1233,8 +1234,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             // InternalMGLang.g:484:2: (this_Collection_0= ruleCollection | this_Node_1= ruleNode | this_ParamManipulation_2= ruleParamManipulation | this_Switch_3= ruleSwitch )
             int alt9=4;
             switch ( input.LA(1) ) {
-            case 39:
-            case 42:
+            case 40:
+            case 43:
                 {
                 alt9=1;
                 }
@@ -1257,7 +1258,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 }
                 }
                 break;
-            case 34:
+            case 35:
                 {
                 alt9=4;
                 }
@@ -1935,7 +1936,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 int alt12=2;
                 int LA12_0 = input.LA(1);
 
-                if ( (LA12_0==RULE_ID||LA12_0==34) ) {
+                if ( (LA12_0==RULE_ID||LA12_0==35) ) {
                     alt12=1;
                 }
 
@@ -2093,7 +2094,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             int alt14=2;
             int LA14_0 = input.LA(1);
 
-            if ( ((LA14_0>=RULE_STRING && LA14_0<=RULE_ID)||(LA14_0>=RULE_TRUE && LA14_0<=RULE_DOUBLE)||LA14_0==19||(LA14_0>=43 && LA14_0<=45)) ) {
+            if ( ((LA14_0>=RULE_STRING && LA14_0<=RULE_ID)||(LA14_0>=RULE_TRUE && LA14_0<=RULE_DOUBLE)||LA14_0==19||(LA14_0>=44 && LA14_0<=46)) ) {
                 alt14=1;
             }
             switch (alt14) {
@@ -2284,11 +2285,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             if ( (LA15_0==RULE_ID) ) {
                 int LA15_1 = input.LA(2);
 
-                if ( (LA15_1==RULE_ASSIGNMENT_OP) ) {
-                    alt15=2;
-                }
-                else if ( (LA15_1==29) ) {
+                if ( (LA15_1==29) ) {
                     alt15=1;
+                }
+                else if ( (LA15_1==RULE_ASSIGNMENT_OP) ) {
+                    alt15=2;
                 }
                 else {
                     NoViableAltException nvae =
@@ -2297,7 +2298,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     throw nvae;
                 }
             }
-            else if ( (LA15_0==34) ) {
+            else if ( (LA15_0==35) ) {
                 alt15=3;
             }
             else {
@@ -2697,7 +2698,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             int alt16=2;
             int LA16_0 = input.LA(1);
 
-            if ( ((LA16_0>=46 && LA16_0<=49)) ) {
+            if ( ((LA16_0>=47 && LA16_0<=50)) ) {
                 alt16=1;
             }
             else if ( (LA16_0==RULE_ID) ) {
@@ -3223,7 +3224,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             	            int alt18=2;
             	            int LA18_0 = input.LA(1);
 
-            	            if ( ((LA18_0>=RULE_STRING && LA18_0<=RULE_ID)||(LA18_0>=RULE_TRUE && LA18_0<=RULE_DOUBLE)||LA18_0==19||(LA18_0>=43 && LA18_0<=45)) ) {
+            	            if ( ((LA18_0>=RULE_STRING && LA18_0<=RULE_ID)||(LA18_0>=RULE_TRUE && LA18_0<=RULE_DOUBLE)||LA18_0==19||(LA18_0>=44 && LA18_0<=46)) ) {
             	                alt18=1;
             	            }
             	            switch (alt18) {
@@ -3557,7 +3558,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 int alt22=2;
                 int LA22_0 = input.LA(1);
 
-                if ( (LA22_0==RULE_ID||(LA22_0>=46 && LA22_0<=49)) ) {
+                if ( (LA22_0==RULE_ID||(LA22_0>=47 && LA22_0<=50)) ) {
                     alt22=1;
                 }
 
@@ -3614,7 +3615,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 int alt23=2;
                 int LA23_0 = input.LA(1);
 
-                if ( (LA23_0==RULE_ID||LA23_0==31||LA23_0==34||LA23_0==39||LA23_0==42) ) {
+                if ( (LA23_0==RULE_ID||(LA23_0>=31 && LA23_0<=32)||LA23_0==35||LA23_0==40||LA23_0==43) ) {
                     alt23=1;
                 }
 
@@ -3720,7 +3721,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleGeneratorExpression"
-    // InternalMGLang.g:1415:1: ruleGeneratorExpression returns [EObject current=null] : (this_ForStatement_0= ruleForStatement | this_Switch_1= ruleSwitch | this_Collection_2= ruleCollection | this_PatternCall_3= rulePatternCall | this_PatternVariable_4= rulePatternVariable ) ;
+    // InternalMGLang.g:1415:1: ruleGeneratorExpression returns [EObject current=null] : (this_ForStatement_0= ruleForStatement | this_Switch_1= ruleSwitch | this_Collection_2= ruleCollection | this_PatternCall_3= rulePatternCall | this_PatternVariable_4= rulePatternVariable | this_Variable_5= ruleVariable ) ;
     public final EObject ruleGeneratorExpression() throws RecognitionException {
         EObject current = null;
 
@@ -3734,29 +3735,31 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
         EObject this_PatternVariable_4 = null;
 
+        EObject this_Variable_5 = null;
+
 
 
         	enterRule();
 
         try {
-            // InternalMGLang.g:1421:2: ( (this_ForStatement_0= ruleForStatement | this_Switch_1= ruleSwitch | this_Collection_2= ruleCollection | this_PatternCall_3= rulePatternCall | this_PatternVariable_4= rulePatternVariable ) )
-            // InternalMGLang.g:1422:2: (this_ForStatement_0= ruleForStatement | this_Switch_1= ruleSwitch | this_Collection_2= ruleCollection | this_PatternCall_3= rulePatternCall | this_PatternVariable_4= rulePatternVariable )
+            // InternalMGLang.g:1421:2: ( (this_ForStatement_0= ruleForStatement | this_Switch_1= ruleSwitch | this_Collection_2= ruleCollection | this_PatternCall_3= rulePatternCall | this_PatternVariable_4= rulePatternVariable | this_Variable_5= ruleVariable ) )
+            // InternalMGLang.g:1422:2: (this_ForStatement_0= ruleForStatement | this_Switch_1= ruleSwitch | this_Collection_2= ruleCollection | this_PatternCall_3= rulePatternCall | this_PatternVariable_4= rulePatternVariable | this_Variable_5= ruleVariable )
             {
-            // InternalMGLang.g:1422:2: (this_ForStatement_0= ruleForStatement | this_Switch_1= ruleSwitch | this_Collection_2= ruleCollection | this_PatternCall_3= rulePatternCall | this_PatternVariable_4= rulePatternVariable )
-            int alt24=5;
+            // InternalMGLang.g:1422:2: (this_ForStatement_0= ruleForStatement | this_Switch_1= ruleSwitch | this_Collection_2= ruleCollection | this_PatternCall_3= rulePatternCall | this_PatternVariable_4= rulePatternVariable | this_Variable_5= ruleVariable )
+            int alt24=6;
             switch ( input.LA(1) ) {
-            case 31:
+            case 32:
                 {
                 alt24=1;
                 }
                 break;
-            case 34:
+            case 35:
                 {
                 alt24=2;
                 }
                 break;
-            case 39:
-            case 42:
+            case 40:
+            case 43:
                 {
                 alt24=3;
                 }
@@ -3777,6 +3780,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
                     throw nvae;
                 }
+                }
+                break;
+            case 31:
+                {
+                alt24=6;
                 }
                 break;
             default:
@@ -3877,6 +3885,24 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
                     }
                     break;
+                case 6 :
+                    // InternalMGLang.g:1468:3: this_Variable_5= ruleVariable
+                    {
+
+                    			newCompositeNode(grammarAccess.getGeneratorExpressionAccess().getVariableParserRuleCall_5());
+                    		
+                    pushFollow(FOLLOW_2);
+                    this_Variable_5=ruleVariable();
+
+                    state._fsp--;
+
+
+                    			current = this_Variable_5;
+                    			afterParserOrEnumRuleCall();
+                    		
+
+                    }
+                    break;
 
             }
 
@@ -3900,7 +3926,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRulePatternVariable"
-    // InternalMGLang.g:1471:1: entryRulePatternVariable returns [EObject current=null] : iv_rulePatternVariable= rulePatternVariable EOF ;
+    // InternalMGLang.g:1480:1: entryRulePatternVariable returns [EObject current=null] : iv_rulePatternVariable= rulePatternVariable EOF ;
     public final EObject entryRulePatternVariable() throws RecognitionException {
         EObject current = null;
 
@@ -3908,8 +3934,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1471:56: (iv_rulePatternVariable= rulePatternVariable EOF )
-            // InternalMGLang.g:1472:2: iv_rulePatternVariable= rulePatternVariable EOF
+            // InternalMGLang.g:1480:56: (iv_rulePatternVariable= rulePatternVariable EOF )
+            // InternalMGLang.g:1481:2: iv_rulePatternVariable= rulePatternVariable EOF
             {
              newCompositeNode(grammarAccess.getPatternVariableRule()); 
             pushFollow(FOLLOW_1);
@@ -3936,7 +3962,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "rulePatternVariable"
-    // InternalMGLang.g:1478:1: rulePatternVariable returns [EObject current=null] : ( ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) ) ) ;
+    // InternalMGLang.g:1487:1: rulePatternVariable returns [EObject current=null] : ( ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) ) ) ;
     public final EObject rulePatternVariable() throws RecognitionException {
         EObject current = null;
 
@@ -3950,17 +3976,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:1484:2: ( ( ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) ) ) )
-            // InternalMGLang.g:1485:2: ( ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) ) )
+            // InternalMGLang.g:1493:2: ( ( ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) ) ) )
+            // InternalMGLang.g:1494:2: ( ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) ) )
             {
-            // InternalMGLang.g:1485:2: ( ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) ) )
-            // InternalMGLang.g:1486:3: ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) )
+            // InternalMGLang.g:1494:2: ( ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) ) )
+            // InternalMGLang.g:1495:3: ( (otherlv_0= RULE_ID ) ) ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_patternCall_3_0= rulePatternCall ) )
             {
-            // InternalMGLang.g:1486:3: ( (otherlv_0= RULE_ID ) )
-            // InternalMGLang.g:1487:4: (otherlv_0= RULE_ID )
+            // InternalMGLang.g:1495:3: ( (otherlv_0= RULE_ID ) )
+            // InternalMGLang.g:1496:4: (otherlv_0= RULE_ID )
             {
-            // InternalMGLang.g:1487:4: (otherlv_0= RULE_ID )
-            // InternalMGLang.g:1488:5: otherlv_0= RULE_ID
+            // InternalMGLang.g:1496:4: (otherlv_0= RULE_ID )
+            // InternalMGLang.g:1497:5: otherlv_0= RULE_ID
             {
 
             					if (current==null) {
@@ -3977,11 +4003,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMGLang.g:1499:3: ( (lv_name_1_0= RULE_ID ) )
-            // InternalMGLang.g:1500:4: (lv_name_1_0= RULE_ID )
+            // InternalMGLang.g:1508:3: ( (lv_name_1_0= RULE_ID ) )
+            // InternalMGLang.g:1509:4: (lv_name_1_0= RULE_ID )
             {
-            // InternalMGLang.g:1500:4: (lv_name_1_0= RULE_ID )
-            // InternalMGLang.g:1501:5: lv_name_1_0= RULE_ID
+            // InternalMGLang.g:1509:4: (lv_name_1_0= RULE_ID )
+            // InternalMGLang.g:1510:5: lv_name_1_0= RULE_ID
             {
             lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_23); 
 
@@ -4007,11 +4033,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(this_ASSIGNMENT_OP_2, grammarAccess.getPatternVariableAccess().getASSIGNMENT_OPTerminalRuleCall_2());
             		
-            // InternalMGLang.g:1521:3: ( (lv_patternCall_3_0= rulePatternCall ) )
-            // InternalMGLang.g:1522:4: (lv_patternCall_3_0= rulePatternCall )
+            // InternalMGLang.g:1530:3: ( (lv_patternCall_3_0= rulePatternCall ) )
+            // InternalMGLang.g:1531:4: (lv_patternCall_3_0= rulePatternCall )
             {
-            // InternalMGLang.g:1522:4: (lv_patternCall_3_0= rulePatternCall )
-            // InternalMGLang.g:1523:5: lv_patternCall_3_0= rulePatternCall
+            // InternalMGLang.g:1531:4: (lv_patternCall_3_0= rulePatternCall )
+            // InternalMGLang.g:1532:5: lv_patternCall_3_0= rulePatternCall
             {
 
             					newCompositeNode(grammarAccess.getPatternVariableAccess().getPatternCallPatternCallParserRuleCall_3_0());
@@ -4060,8 +4086,152 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
     // $ANTLR end "rulePatternVariable"
 
 
+    // $ANTLR start "entryRuleVariable"
+    // InternalMGLang.g:1553:1: entryRuleVariable returns [EObject current=null] : iv_ruleVariable= ruleVariable EOF ;
+    public final EObject entryRuleVariable() throws RecognitionException {
+        EObject current = null;
+
+        EObject iv_ruleVariable = null;
+
+
+        try {
+            // InternalMGLang.g:1553:49: (iv_ruleVariable= ruleVariable EOF )
+            // InternalMGLang.g:1554:2: iv_ruleVariable= ruleVariable EOF
+            {
+             newCompositeNode(grammarAccess.getVariableRule()); 
+            pushFollow(FOLLOW_1);
+            iv_ruleVariable=ruleVariable();
+
+            state._fsp--;
+
+             current =iv_ruleVariable; 
+            match(input,EOF,FOLLOW_2); 
+
+            }
+
+        }
+
+            catch (RecognitionException re) {
+                recover(input,re);
+                appendSkippedTokens();
+            }
+        finally {
+        }
+        return current;
+    }
+    // $ANTLR end "entryRuleVariable"
+
+
+    // $ANTLR start "ruleVariable"
+    // InternalMGLang.g:1560:1: ruleVariable returns [EObject current=null] : (otherlv_0= 'var' ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_value_3_0= ruleArithmeticExpression ) ) ) ;
+    public final EObject ruleVariable() throws RecognitionException {
+        EObject current = null;
+
+        Token otherlv_0=null;
+        Token lv_name_1_0=null;
+        Token this_ASSIGNMENT_OP_2=null;
+        EObject lv_value_3_0 = null;
+
+
+
+        	enterRule();
+
+        try {
+            // InternalMGLang.g:1566:2: ( (otherlv_0= 'var' ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_value_3_0= ruleArithmeticExpression ) ) ) )
+            // InternalMGLang.g:1567:2: (otherlv_0= 'var' ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_value_3_0= ruleArithmeticExpression ) ) )
+            {
+            // InternalMGLang.g:1567:2: (otherlv_0= 'var' ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_value_3_0= ruleArithmeticExpression ) ) )
+            // InternalMGLang.g:1568:3: otherlv_0= 'var' ( (lv_name_1_0= RULE_ID ) ) this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_value_3_0= ruleArithmeticExpression ) )
+            {
+            otherlv_0=(Token)match(input,31,FOLLOW_7); 
+
+            			newLeafNode(otherlv_0, grammarAccess.getVariableAccess().getVarKeyword_0());
+            		
+            // InternalMGLang.g:1572:3: ( (lv_name_1_0= RULE_ID ) )
+            // InternalMGLang.g:1573:4: (lv_name_1_0= RULE_ID )
+            {
+            // InternalMGLang.g:1573:4: (lv_name_1_0= RULE_ID )
+            // InternalMGLang.g:1574:5: lv_name_1_0= RULE_ID
+            {
+            lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_23); 
+
+            					newLeafNode(lv_name_1_0, grammarAccess.getVariableAccess().getNameIDTerminalRuleCall_1_0());
+            				
+
+            					if (current==null) {
+            						current = createModelElement(grammarAccess.getVariableRule());
+            					}
+            					setWithLastConsumed(
+            						current,
+            						"name",
+            						lv_name_1_0,
+            						"org.eclipse.xtext.common.Terminals.ID");
+            				
+
+            }
+
+
+            }
+
+            this_ASSIGNMENT_OP_2=(Token)match(input,RULE_ASSIGNMENT_OP,FOLLOW_21); 
+
+            			newLeafNode(this_ASSIGNMENT_OP_2, grammarAccess.getVariableAccess().getASSIGNMENT_OPTerminalRuleCall_2());
+            		
+            // InternalMGLang.g:1594:3: ( (lv_value_3_0= ruleArithmeticExpression ) )
+            // InternalMGLang.g:1595:4: (lv_value_3_0= ruleArithmeticExpression )
+            {
+            // InternalMGLang.g:1595:4: (lv_value_3_0= ruleArithmeticExpression )
+            // InternalMGLang.g:1596:5: lv_value_3_0= ruleArithmeticExpression
+            {
+
+            					newCompositeNode(grammarAccess.getVariableAccess().getValueArithmeticExpressionParserRuleCall_3_0());
+            				
+            pushFollow(FOLLOW_2);
+            lv_value_3_0=ruleArithmeticExpression();
+
+            state._fsp--;
+
+
+            					if (current==null) {
+            						current = createModelElementForParent(grammarAccess.getVariableRule());
+            					}
+            					set(
+            						current,
+            						"value",
+            						lv_value_3_0,
+            						"org.mofgen.MGLang.ArithmeticExpression");
+            					afterParserOrEnumRuleCall();
+            				
+
+            }
+
+
+            }
+
+
+            }
+
+
+            }
+
+
+            	leaveRule();
+
+        }
+
+            catch (RecognitionException re) {
+                recover(input,re);
+                appendSkippedTokens();
+            }
+        finally {
+        }
+        return current;
+    }
+    // $ANTLR end "ruleVariable"
+
+
     // $ANTLR start "entryRuleForStatement"
-    // InternalMGLang.g:1544:1: entryRuleForStatement returns [EObject current=null] : iv_ruleForStatement= ruleForStatement EOF ;
+    // InternalMGLang.g:1617:1: entryRuleForStatement returns [EObject current=null] : iv_ruleForStatement= ruleForStatement EOF ;
     public final EObject entryRuleForStatement() throws RecognitionException {
         EObject current = null;
 
@@ -4069,8 +4239,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1544:53: (iv_ruleForStatement= ruleForStatement EOF )
-            // InternalMGLang.g:1545:2: iv_ruleForStatement= ruleForStatement EOF
+            // InternalMGLang.g:1617:53: (iv_ruleForStatement= ruleForStatement EOF )
+            // InternalMGLang.g:1618:2: iv_ruleForStatement= ruleForStatement EOF
             {
              newCompositeNode(grammarAccess.getForStatementRule()); 
             pushFollow(FOLLOW_1);
@@ -4097,7 +4267,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleForStatement"
-    // InternalMGLang.g:1551:1: ruleForStatement returns [EObject current=null] : (otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}' ) ;
+    // InternalMGLang.g:1624:1: ruleForStatement returns [EObject current=null] : (otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}' ) ;
     public final EObject ruleForStatement() throws RecognitionException {
         EObject current = null;
 
@@ -4113,21 +4283,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:1557:2: ( (otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}' ) )
-            // InternalMGLang.g:1558:2: (otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}' )
+            // InternalMGLang.g:1630:2: ( (otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}' ) )
+            // InternalMGLang.g:1631:2: (otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}' )
             {
-            // InternalMGLang.g:1558:2: (otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}' )
-            // InternalMGLang.g:1559:3: otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}'
+            // InternalMGLang.g:1631:2: (otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}' )
+            // InternalMGLang.g:1632:3: otherlv_0= 'for' ( (lv_head_1_0= ruleForHead ) ) otherlv_2= '{' ( (lv_body_3_0= ruleForBody ) ) otherlv_4= '}'
             {
-            otherlv_0=(Token)match(input,31,FOLLOW_21); 
+            otherlv_0=(Token)match(input,32,FOLLOW_21); 
 
             			newLeafNode(otherlv_0, grammarAccess.getForStatementAccess().getForKeyword_0());
             		
-            // InternalMGLang.g:1563:3: ( (lv_head_1_0= ruleForHead ) )
-            // InternalMGLang.g:1564:4: (lv_head_1_0= ruleForHead )
+            // InternalMGLang.g:1636:3: ( (lv_head_1_0= ruleForHead ) )
+            // InternalMGLang.g:1637:4: (lv_head_1_0= ruleForHead )
             {
-            // InternalMGLang.g:1564:4: (lv_head_1_0= ruleForHead )
-            // InternalMGLang.g:1565:5: lv_head_1_0= ruleForHead
+            // InternalMGLang.g:1637:4: (lv_head_1_0= ruleForHead )
+            // InternalMGLang.g:1638:5: lv_head_1_0= ruleForHead
             {
 
             					newCompositeNode(grammarAccess.getForStatementAccess().getHeadForHeadParserRuleCall_1_0());
@@ -4158,11 +4328,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_2, grammarAccess.getForStatementAccess().getLeftCurlyBracketKeyword_2());
             		
-            // InternalMGLang.g:1586:3: ( (lv_body_3_0= ruleForBody ) )
-            // InternalMGLang.g:1587:4: (lv_body_3_0= ruleForBody )
+            // InternalMGLang.g:1659:3: ( (lv_body_3_0= ruleForBody ) )
+            // InternalMGLang.g:1660:4: (lv_body_3_0= ruleForBody )
             {
-            // InternalMGLang.g:1587:4: (lv_body_3_0= ruleForBody )
-            // InternalMGLang.g:1588:5: lv_body_3_0= ruleForBody
+            // InternalMGLang.g:1660:4: (lv_body_3_0= ruleForBody )
+            // InternalMGLang.g:1661:5: lv_body_3_0= ruleForBody
             {
 
             					newCompositeNode(grammarAccess.getForStatementAccess().getBodyForBodyParserRuleCall_3_0());
@@ -4216,7 +4386,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleForHead"
-    // InternalMGLang.g:1613:1: entryRuleForHead returns [EObject current=null] : iv_ruleForHead= ruleForHead EOF ;
+    // InternalMGLang.g:1686:1: entryRuleForHead returns [EObject current=null] : iv_ruleForHead= ruleForHead EOF ;
     public final EObject entryRuleForHead() throws RecognitionException {
         EObject current = null;
 
@@ -4224,8 +4394,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1613:48: (iv_ruleForHead= ruleForHead EOF )
-            // InternalMGLang.g:1614:2: iv_ruleForHead= ruleForHead EOF
+            // InternalMGLang.g:1686:48: (iv_ruleForHead= ruleForHead EOF )
+            // InternalMGLang.g:1687:2: iv_ruleForHead= ruleForHead EOF
             {
              newCompositeNode(grammarAccess.getForHeadRule()); 
             pushFollow(FOLLOW_1);
@@ -4252,7 +4422,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleForHead"
-    // InternalMGLang.g:1620:1: ruleForHead returns [EObject current=null] : (this_GeneralForHead_0= ruleGeneralForHead | this_ForEachHead_1= ruleForEachHead ) ;
+    // InternalMGLang.g:1693:1: ruleForHead returns [EObject current=null] : (this_GeneralForHead_0= ruleGeneralForHead | this_ForEachHead_1= ruleForEachHead ) ;
     public final EObject ruleForHead() throws RecognitionException {
         EObject current = null;
 
@@ -4265,21 +4435,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:1626:2: ( (this_GeneralForHead_0= ruleGeneralForHead | this_ForEachHead_1= ruleForEachHead ) )
-            // InternalMGLang.g:1627:2: (this_GeneralForHead_0= ruleGeneralForHead | this_ForEachHead_1= ruleForEachHead )
+            // InternalMGLang.g:1699:2: ( (this_GeneralForHead_0= ruleGeneralForHead | this_ForEachHead_1= ruleForEachHead ) )
+            // InternalMGLang.g:1700:2: (this_GeneralForHead_0= ruleGeneralForHead | this_ForEachHead_1= ruleForEachHead )
             {
-            // InternalMGLang.g:1627:2: (this_GeneralForHead_0= ruleGeneralForHead | this_ForEachHead_1= ruleForEachHead )
+            // InternalMGLang.g:1700:2: (this_GeneralForHead_0= ruleGeneralForHead | this_ForEachHead_1= ruleForEachHead )
             int alt25=2;
             int LA25_0 = input.LA(1);
 
             if ( (LA25_0==RULE_ID) ) {
                 int LA25_1 = input.LA(2);
 
-                if ( (LA25_1==28||LA25_1==33) ) {
-                    alt25=2;
-                }
-                else if ( (LA25_1==32) ) {
+                if ( (LA25_1==33) ) {
                     alt25=1;
+                }
+                else if ( (LA25_1==28||LA25_1==34) ) {
+                    alt25=2;
                 }
                 else {
                     NoViableAltException nvae =
@@ -4296,7 +4466,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt25) {
                 case 1 :
-                    // InternalMGLang.g:1628:3: this_GeneralForHead_0= ruleGeneralForHead
+                    // InternalMGLang.g:1701:3: this_GeneralForHead_0= ruleGeneralForHead
                     {
 
                     			newCompositeNode(grammarAccess.getForHeadAccess().getGeneralForHeadParserRuleCall_0());
@@ -4314,7 +4484,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:1637:3: this_ForEachHead_1= ruleForEachHead
+                    // InternalMGLang.g:1710:3: this_ForEachHead_1= ruleForEachHead
                     {
 
                     			newCompositeNode(grammarAccess.getForHeadAccess().getForEachHeadParserRuleCall_1());
@@ -4354,7 +4524,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleGeneralForHead"
-    // InternalMGLang.g:1649:1: entryRuleGeneralForHead returns [EObject current=null] : iv_ruleGeneralForHead= ruleGeneralForHead EOF ;
+    // InternalMGLang.g:1722:1: entryRuleGeneralForHead returns [EObject current=null] : iv_ruleGeneralForHead= ruleGeneralForHead EOF ;
     public final EObject entryRuleGeneralForHead() throws RecognitionException {
         EObject current = null;
 
@@ -4362,8 +4532,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1649:55: (iv_ruleGeneralForHead= ruleGeneralForHead EOF )
-            // InternalMGLang.g:1650:2: iv_ruleGeneralForHead= ruleGeneralForHead EOF
+            // InternalMGLang.g:1722:55: (iv_ruleGeneralForHead= ruleGeneralForHead EOF )
+            // InternalMGLang.g:1723:2: iv_ruleGeneralForHead= ruleGeneralForHead EOF
             {
              newCompositeNode(grammarAccess.getGeneralForHeadRule()); 
             pushFollow(FOLLOW_1);
@@ -4390,7 +4560,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleGeneralForHead"
-    // InternalMGLang.g:1656:1: ruleGeneralForHead returns [EObject current=null] : ( ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) ) ) ;
+    // InternalMGLang.g:1729:1: ruleGeneralForHead returns [EObject current=null] : ( ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) ) ) ;
     public final EObject ruleGeneralForHead() throws RecognitionException {
         EObject current = null;
 
@@ -4403,17 +4573,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:1662:2: ( ( ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) ) ) )
-            // InternalMGLang.g:1663:2: ( ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) ) )
+            // InternalMGLang.g:1735:2: ( ( ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) ) ) )
+            // InternalMGLang.g:1736:2: ( ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) ) )
             {
-            // InternalMGLang.g:1663:2: ( ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) ) )
-            // InternalMGLang.g:1664:3: ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) )
+            // InternalMGLang.g:1736:2: ( ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) ) )
+            // InternalMGLang.g:1737:3: ( (lv_iteratorVar_0_0= RULE_ID ) ) otherlv_1= 'in' ( (lv_range_2_0= ruleForRange ) )
             {
-            // InternalMGLang.g:1664:3: ( (lv_iteratorVar_0_0= RULE_ID ) )
-            // InternalMGLang.g:1665:4: (lv_iteratorVar_0_0= RULE_ID )
+            // InternalMGLang.g:1737:3: ( (lv_iteratorVar_0_0= RULE_ID ) )
+            // InternalMGLang.g:1738:4: (lv_iteratorVar_0_0= RULE_ID )
             {
-            // InternalMGLang.g:1665:4: (lv_iteratorVar_0_0= RULE_ID )
-            // InternalMGLang.g:1666:5: lv_iteratorVar_0_0= RULE_ID
+            // InternalMGLang.g:1738:4: (lv_iteratorVar_0_0= RULE_ID )
+            // InternalMGLang.g:1739:5: lv_iteratorVar_0_0= RULE_ID
             {
             lv_iteratorVar_0_0=(Token)match(input,RULE_ID,FOLLOW_29); 
 
@@ -4435,15 +4605,15 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,32,FOLLOW_21); 
+            otherlv_1=(Token)match(input,33,FOLLOW_21); 
 
             			newLeafNode(otherlv_1, grammarAccess.getGeneralForHeadAccess().getInKeyword_1());
             		
-            // InternalMGLang.g:1686:3: ( (lv_range_2_0= ruleForRange ) )
-            // InternalMGLang.g:1687:4: (lv_range_2_0= ruleForRange )
+            // InternalMGLang.g:1759:3: ( (lv_range_2_0= ruleForRange ) )
+            // InternalMGLang.g:1760:4: (lv_range_2_0= ruleForRange )
             {
-            // InternalMGLang.g:1687:4: (lv_range_2_0= ruleForRange )
-            // InternalMGLang.g:1688:5: lv_range_2_0= ruleForRange
+            // InternalMGLang.g:1760:4: (lv_range_2_0= ruleForRange )
+            // InternalMGLang.g:1761:5: lv_range_2_0= ruleForRange
             {
 
             					newCompositeNode(grammarAccess.getGeneralForHeadAccess().getRangeForRangeParserRuleCall_2_0());
@@ -4493,7 +4663,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleForEachHead"
-    // InternalMGLang.g:1709:1: entryRuleForEachHead returns [EObject current=null] : iv_ruleForEachHead= ruleForEachHead EOF ;
+    // InternalMGLang.g:1782:1: entryRuleForEachHead returns [EObject current=null] : iv_ruleForEachHead= ruleForEachHead EOF ;
     public final EObject entryRuleForEachHead() throws RecognitionException {
         EObject current = null;
 
@@ -4501,8 +4671,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1709:52: (iv_ruleForEachHead= ruleForEachHead EOF )
-            // InternalMGLang.g:1710:2: iv_ruleForEachHead= ruleForEachHead EOF
+            // InternalMGLang.g:1782:52: (iv_ruleForEachHead= ruleForEachHead EOF )
+            // InternalMGLang.g:1783:2: iv_ruleForEachHead= ruleForEachHead EOF
             {
              newCompositeNode(grammarAccess.getForEachHeadRule()); 
             pushFollow(FOLLOW_1);
@@ -4529,7 +4699,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleForEachHead"
-    // InternalMGLang.g:1716:1: ruleForEachHead returns [EObject current=null] : ( ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) ) ) ;
+    // InternalMGLang.g:1789:1: ruleForEachHead returns [EObject current=null] : ( ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) ) ) ;
     public final EObject ruleForEachHead() throws RecognitionException {
         EObject current = null;
 
@@ -4544,17 +4714,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:1722:2: ( ( ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) ) ) )
-            // InternalMGLang.g:1723:2: ( ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) ) )
+            // InternalMGLang.g:1795:2: ( ( ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) ) ) )
+            // InternalMGLang.g:1796:2: ( ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) ) )
             {
-            // InternalMGLang.g:1723:2: ( ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) ) )
-            // InternalMGLang.g:1724:3: ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) )
+            // InternalMGLang.g:1796:2: ( ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) ) )
+            // InternalMGLang.g:1797:3: ( (lv_src_0_0= ruleRefOrCall ) ) otherlv_1= '-' ( (otherlv_2= RULE_ID ) ) otherlv_3= '->' ( (lv_iteratorVar_4_0= RULE_ID ) )
             {
-            // InternalMGLang.g:1724:3: ( (lv_src_0_0= ruleRefOrCall ) )
-            // InternalMGLang.g:1725:4: (lv_src_0_0= ruleRefOrCall )
+            // InternalMGLang.g:1797:3: ( (lv_src_0_0= ruleRefOrCall ) )
+            // InternalMGLang.g:1798:4: (lv_src_0_0= ruleRefOrCall )
             {
-            // InternalMGLang.g:1725:4: (lv_src_0_0= ruleRefOrCall )
-            // InternalMGLang.g:1726:5: lv_src_0_0= ruleRefOrCall
+            // InternalMGLang.g:1798:4: (lv_src_0_0= ruleRefOrCall )
+            // InternalMGLang.g:1799:5: lv_src_0_0= ruleRefOrCall
             {
 
             					newCompositeNode(grammarAccess.getForEachHeadAccess().getSrcRefOrCallParserRuleCall_0_0());
@@ -4581,15 +4751,15 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,33,FOLLOW_7); 
+            otherlv_1=(Token)match(input,34,FOLLOW_7); 
 
             			newLeafNode(otherlv_1, grammarAccess.getForEachHeadAccess().getHyphenMinusKeyword_1());
             		
-            // InternalMGLang.g:1747:3: ( (otherlv_2= RULE_ID ) )
-            // InternalMGLang.g:1748:4: (otherlv_2= RULE_ID )
+            // InternalMGLang.g:1820:3: ( (otherlv_2= RULE_ID ) )
+            // InternalMGLang.g:1821:4: (otherlv_2= RULE_ID )
             {
-            // InternalMGLang.g:1748:4: (otherlv_2= RULE_ID )
-            // InternalMGLang.g:1749:5: otherlv_2= RULE_ID
+            // InternalMGLang.g:1821:4: (otherlv_2= RULE_ID )
+            // InternalMGLang.g:1822:5: otherlv_2= RULE_ID
             {
 
             					if (current==null) {
@@ -4610,11 +4780,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_3, grammarAccess.getForEachHeadAccess().getHyphenMinusGreaterThanSignKeyword_3());
             		
-            // InternalMGLang.g:1764:3: ( (lv_iteratorVar_4_0= RULE_ID ) )
-            // InternalMGLang.g:1765:4: (lv_iteratorVar_4_0= RULE_ID )
+            // InternalMGLang.g:1837:3: ( (lv_iteratorVar_4_0= RULE_ID ) )
+            // InternalMGLang.g:1838:4: (lv_iteratorVar_4_0= RULE_ID )
             {
-            // InternalMGLang.g:1765:4: (lv_iteratorVar_4_0= RULE_ID )
-            // InternalMGLang.g:1766:5: lv_iteratorVar_4_0= RULE_ID
+            // InternalMGLang.g:1838:4: (lv_iteratorVar_4_0= RULE_ID )
+            // InternalMGLang.g:1839:5: lv_iteratorVar_4_0= RULE_ID
             {
             lv_iteratorVar_4_0=(Token)match(input,RULE_ID,FOLLOW_2); 
 
@@ -4659,7 +4829,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleForBody"
-    // InternalMGLang.g:1786:1: entryRuleForBody returns [EObject current=null] : iv_ruleForBody= ruleForBody EOF ;
+    // InternalMGLang.g:1859:1: entryRuleForBody returns [EObject current=null] : iv_ruleForBody= ruleForBody EOF ;
     public final EObject entryRuleForBody() throws RecognitionException {
         EObject current = null;
 
@@ -4667,8 +4837,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1786:48: (iv_ruleForBody= ruleForBody EOF )
-            // InternalMGLang.g:1787:2: iv_ruleForBody= ruleForBody EOF
+            // InternalMGLang.g:1859:48: (iv_ruleForBody= ruleForBody EOF )
+            // InternalMGLang.g:1860:2: iv_ruleForBody= ruleForBody EOF
             {
              newCompositeNode(grammarAccess.getForBodyRule()); 
             pushFollow(FOLLOW_1);
@@ -4695,7 +4865,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleForBody"
-    // InternalMGLang.g:1793:1: ruleForBody returns [EObject current=null] : ( () ( (lv_commands_1_0= ruleGeneratorExpression ) )* ) ;
+    // InternalMGLang.g:1866:1: ruleForBody returns [EObject current=null] : ( () ( (lv_commands_1_0= ruleGeneratorExpression ) )* ) ;
     public final EObject ruleForBody() throws RecognitionException {
         EObject current = null;
 
@@ -4706,14 +4876,14 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:1799:2: ( ( () ( (lv_commands_1_0= ruleGeneratorExpression ) )* ) )
-            // InternalMGLang.g:1800:2: ( () ( (lv_commands_1_0= ruleGeneratorExpression ) )* )
+            // InternalMGLang.g:1872:2: ( ( () ( (lv_commands_1_0= ruleGeneratorExpression ) )* ) )
+            // InternalMGLang.g:1873:2: ( () ( (lv_commands_1_0= ruleGeneratorExpression ) )* )
             {
-            // InternalMGLang.g:1800:2: ( () ( (lv_commands_1_0= ruleGeneratorExpression ) )* )
-            // InternalMGLang.g:1801:3: () ( (lv_commands_1_0= ruleGeneratorExpression ) )*
+            // InternalMGLang.g:1873:2: ( () ( (lv_commands_1_0= ruleGeneratorExpression ) )* )
+            // InternalMGLang.g:1874:3: () ( (lv_commands_1_0= ruleGeneratorExpression ) )*
             {
-            // InternalMGLang.g:1801:3: ()
-            // InternalMGLang.g:1802:4: 
+            // InternalMGLang.g:1874:3: ()
+            // InternalMGLang.g:1875:4: 
             {
 
             				current = forceCreateModelElement(
@@ -4723,23 +4893,23 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMGLang.g:1808:3: ( (lv_commands_1_0= ruleGeneratorExpression ) )*
+            // InternalMGLang.g:1881:3: ( (lv_commands_1_0= ruleGeneratorExpression ) )*
             loop26:
             do {
                 int alt26=2;
                 int LA26_0 = input.LA(1);
 
-                if ( (LA26_0==RULE_ID||LA26_0==31||LA26_0==34||LA26_0==39||LA26_0==42) ) {
+                if ( (LA26_0==RULE_ID||(LA26_0>=31 && LA26_0<=32)||LA26_0==35||LA26_0==40||LA26_0==43) ) {
                     alt26=1;
                 }
 
 
                 switch (alt26) {
             	case 1 :
-            	    // InternalMGLang.g:1809:4: (lv_commands_1_0= ruleGeneratorExpression )
+            	    // InternalMGLang.g:1882:4: (lv_commands_1_0= ruleGeneratorExpression )
             	    {
-            	    // InternalMGLang.g:1809:4: (lv_commands_1_0= ruleGeneratorExpression )
-            	    // InternalMGLang.g:1810:5: lv_commands_1_0= ruleGeneratorExpression
+            	    // InternalMGLang.g:1882:4: (lv_commands_1_0= ruleGeneratorExpression )
+            	    // InternalMGLang.g:1883:5: lv_commands_1_0= ruleGeneratorExpression
             	    {
 
             	    					newCompositeNode(grammarAccess.getForBodyAccess().getCommandsGeneratorExpressionParserRuleCall_1_0());
@@ -4795,7 +4965,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleSwitchExpression"
-    // InternalMGLang.g:1831:1: entryRuleSwitchExpression returns [EObject current=null] : iv_ruleSwitchExpression= ruleSwitchExpression EOF ;
+    // InternalMGLang.g:1904:1: entryRuleSwitchExpression returns [EObject current=null] : iv_ruleSwitchExpression= ruleSwitchExpression EOF ;
     public final EObject entryRuleSwitchExpression() throws RecognitionException {
         EObject current = null;
 
@@ -4803,8 +4973,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1831:57: (iv_ruleSwitchExpression= ruleSwitchExpression EOF )
-            // InternalMGLang.g:1832:2: iv_ruleSwitchExpression= ruleSwitchExpression EOF
+            // InternalMGLang.g:1904:57: (iv_ruleSwitchExpression= ruleSwitchExpression EOF )
+            // InternalMGLang.g:1905:2: iv_ruleSwitchExpression= ruleSwitchExpression EOF
             {
              newCompositeNode(grammarAccess.getSwitchExpressionRule()); 
             pushFollow(FOLLOW_1);
@@ -4831,7 +5001,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSwitchExpression"
-    // InternalMGLang.g:1838:1: ruleSwitchExpression returns [EObject current=null] : (this_ForStatement_0= ruleForStatement | this_Collection_1= ruleCollection | this_PatternCall_2= rulePatternCall | this_PatternVariable_3= rulePatternVariable | this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow ) ;
+    // InternalMGLang.g:1911:1: ruleSwitchExpression returns [EObject current=null] : (this_ForStatement_0= ruleForStatement | this_Collection_1= ruleCollection | this_PatternCall_2= rulePatternCall | this_PatternVariable_3= rulePatternVariable | this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow ) ;
     public final EObject ruleSwitchExpression() throws RecognitionException {
         EObject current = null;
 
@@ -4850,19 +5020,19 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:1844:2: ( (this_ForStatement_0= ruleForStatement | this_Collection_1= ruleCollection | this_PatternCall_2= rulePatternCall | this_PatternVariable_3= rulePatternVariable | this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow ) )
-            // InternalMGLang.g:1845:2: (this_ForStatement_0= ruleForStatement | this_Collection_1= ruleCollection | this_PatternCall_2= rulePatternCall | this_PatternVariable_3= rulePatternVariable | this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow )
+            // InternalMGLang.g:1917:2: ( (this_ForStatement_0= ruleForStatement | this_Collection_1= ruleCollection | this_PatternCall_2= rulePatternCall | this_PatternVariable_3= rulePatternVariable | this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow ) )
+            // InternalMGLang.g:1918:2: (this_ForStatement_0= ruleForStatement | this_Collection_1= ruleCollection | this_PatternCall_2= rulePatternCall | this_PatternVariable_3= rulePatternVariable | this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow )
             {
-            // InternalMGLang.g:1845:2: (this_ForStatement_0= ruleForStatement | this_Collection_1= ruleCollection | this_PatternCall_2= rulePatternCall | this_PatternVariable_3= rulePatternVariable | this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow )
+            // InternalMGLang.g:1918:2: (this_ForStatement_0= ruleForStatement | this_Collection_1= ruleCollection | this_PatternCall_2= rulePatternCall | this_PatternVariable_3= rulePatternVariable | this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow )
             int alt27=5;
             switch ( input.LA(1) ) {
-            case 31:
+            case 32:
                 {
                 alt27=1;
                 }
                 break;
-            case 39:
-            case 42:
+            case 40:
+            case 43:
                 {
                 alt27=2;
                 }
@@ -4876,14 +5046,14 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     alt27=5;
                     }
                     break;
-                case 19:
-                    {
-                    alt27=3;
-                    }
-                    break;
                 case RULE_ID:
                     {
                     alt27=4;
+                    }
+                    break;
+                case 19:
+                    {
+                    alt27=3;
                     }
                     break;
                 default:
@@ -4895,7 +5065,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
                 }
                 break;
-            case 34:
+            case 35:
                 {
                 alt27=5;
                 }
@@ -4909,7 +5079,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             switch (alt27) {
                 case 1 :
-                    // InternalMGLang.g:1846:3: this_ForStatement_0= ruleForStatement
+                    // InternalMGLang.g:1919:3: this_ForStatement_0= ruleForStatement
                     {
 
                     			newCompositeNode(grammarAccess.getSwitchExpressionAccess().getForStatementParserRuleCall_0());
@@ -4927,7 +5097,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:1855:3: this_Collection_1= ruleCollection
+                    // InternalMGLang.g:1928:3: this_Collection_1= ruleCollection
                     {
 
                     			newCompositeNode(grammarAccess.getSwitchExpressionAccess().getCollectionParserRuleCall_1());
@@ -4945,7 +5115,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMGLang.g:1864:3: this_PatternCall_2= rulePatternCall
+                    // InternalMGLang.g:1937:3: this_PatternCall_2= rulePatternCall
                     {
 
                     			newCompositeNode(grammarAccess.getSwitchExpressionAccess().getPatternCallParserRuleCall_2());
@@ -4963,7 +5133,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMGLang.g:1873:3: this_PatternVariable_3= rulePatternVariable
+                    // InternalMGLang.g:1946:3: this_PatternVariable_3= rulePatternVariable
                     {
 
                     			newCompositeNode(grammarAccess.getSwitchExpressionAccess().getPatternVariableParserRuleCall_3());
@@ -4981,7 +5151,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalMGLang.g:1882:3: this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow
+                    // InternalMGLang.g:1955:3: this_NodeReferenceOrAssignmentOrControlFlow_4= ruleNodeReferenceOrAssignmentOrControlFlow
                     {
 
                     			newCompositeNode(grammarAccess.getSwitchExpressionAccess().getNodeReferenceOrAssignmentOrControlFlowParserRuleCall_4());
@@ -5021,7 +5191,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleSwitch"
-    // InternalMGLang.g:1894:1: entryRuleSwitch returns [EObject current=null] : iv_ruleSwitch= ruleSwitch EOF ;
+    // InternalMGLang.g:1967:1: entryRuleSwitch returns [EObject current=null] : iv_ruleSwitch= ruleSwitch EOF ;
     public final EObject entryRuleSwitch() throws RecognitionException {
         EObject current = null;
 
@@ -5029,8 +5199,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1894:47: (iv_ruleSwitch= ruleSwitch EOF )
-            // InternalMGLang.g:1895:2: iv_ruleSwitch= ruleSwitch EOF
+            // InternalMGLang.g:1967:47: (iv_ruleSwitch= ruleSwitch EOF )
+            // InternalMGLang.g:1968:2: iv_ruleSwitch= ruleSwitch EOF
             {
              newCompositeNode(grammarAccess.getSwitchRule()); 
             pushFollow(FOLLOW_1);
@@ -5057,7 +5227,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSwitch"
-    // InternalMGLang.g:1901:1: ruleSwitch returns [EObject current=null] : (this_IfElseSwitch_0= ruleIfElseSwitch | this_SwitchCase_1= ruleSwitchCase ) ;
+    // InternalMGLang.g:1974:1: ruleSwitch returns [EObject current=null] : (this_IfElseSwitch_0= ruleIfElseSwitch | this_SwitchCase_1= ruleSwitchCase ) ;
     public final EObject ruleSwitch() throws RecognitionException {
         EObject current = null;
 
@@ -5070,14 +5240,14 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:1907:2: ( (this_IfElseSwitch_0= ruleIfElseSwitch | this_SwitchCase_1= ruleSwitchCase ) )
-            // InternalMGLang.g:1908:2: (this_IfElseSwitch_0= ruleIfElseSwitch | this_SwitchCase_1= ruleSwitchCase )
+            // InternalMGLang.g:1980:2: ( (this_IfElseSwitch_0= ruleIfElseSwitch | this_SwitchCase_1= ruleSwitchCase ) )
+            // InternalMGLang.g:1981:2: (this_IfElseSwitch_0= ruleIfElseSwitch | this_SwitchCase_1= ruleSwitchCase )
             {
-            // InternalMGLang.g:1908:2: (this_IfElseSwitch_0= ruleIfElseSwitch | this_SwitchCase_1= ruleSwitchCase )
+            // InternalMGLang.g:1981:2: (this_IfElseSwitch_0= ruleIfElseSwitch | this_SwitchCase_1= ruleSwitchCase )
             int alt28=2;
             int LA28_0 = input.LA(1);
 
-            if ( (LA28_0==34) ) {
+            if ( (LA28_0==35) ) {
                 int LA28_1 = input.LA(2);
 
                 if ( (LA28_1==21) ) {
@@ -5101,7 +5271,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt28) {
                 case 1 :
-                    // InternalMGLang.g:1909:3: this_IfElseSwitch_0= ruleIfElseSwitch
+                    // InternalMGLang.g:1982:3: this_IfElseSwitch_0= ruleIfElseSwitch
                     {
 
                     			newCompositeNode(grammarAccess.getSwitchAccess().getIfElseSwitchParserRuleCall_0());
@@ -5119,7 +5289,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:1918:3: this_SwitchCase_1= ruleSwitchCase
+                    // InternalMGLang.g:1991:3: this_SwitchCase_1= ruleSwitchCase
                     {
 
                     			newCompositeNode(grammarAccess.getSwitchAccess().getSwitchCaseParserRuleCall_1());
@@ -5159,7 +5329,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleIfElseSwitch"
-    // InternalMGLang.g:1930:1: entryRuleIfElseSwitch returns [EObject current=null] : iv_ruleIfElseSwitch= ruleIfElseSwitch EOF ;
+    // InternalMGLang.g:2003:1: entryRuleIfElseSwitch returns [EObject current=null] : iv_ruleIfElseSwitch= ruleIfElseSwitch EOF ;
     public final EObject entryRuleIfElseSwitch() throws RecognitionException {
         EObject current = null;
 
@@ -5167,8 +5337,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1930:53: (iv_ruleIfElseSwitch= ruleIfElseSwitch EOF )
-            // InternalMGLang.g:1931:2: iv_ruleIfElseSwitch= ruleIfElseSwitch EOF
+            // InternalMGLang.g:2003:53: (iv_ruleIfElseSwitch= ruleIfElseSwitch EOF )
+            // InternalMGLang.g:2004:2: iv_ruleIfElseSwitch= ruleIfElseSwitch EOF
             {
              newCompositeNode(grammarAccess.getIfElseSwitchRule()); 
             pushFollow(FOLLOW_1);
@@ -5195,7 +5365,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleIfElseSwitch"
-    // InternalMGLang.g:1937:1: ruleIfElseSwitch returns [EObject current=null] : (otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}' ) ;
+    // InternalMGLang.g:2010:1: ruleIfElseSwitch returns [EObject current=null] : (otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}' ) ;
     public final EObject ruleIfElseSwitch() throws RecognitionException {
         EObject current = null;
 
@@ -5211,13 +5381,13 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:1943:2: ( (otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}' ) )
-            // InternalMGLang.g:1944:2: (otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}' )
+            // InternalMGLang.g:2016:2: ( (otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}' ) )
+            // InternalMGLang.g:2017:2: (otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}' )
             {
-            // InternalMGLang.g:1944:2: (otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}' )
-            // InternalMGLang.g:1945:3: otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}'
+            // InternalMGLang.g:2017:2: (otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}' )
+            // InternalMGLang.g:2018:3: otherlv_0= 'switch' otherlv_1= '{' ( (lv_cases_2_0= ruleIfElseCase ) )+ ( (lv_default_3_0= ruleDefault ) )? otherlv_4= '}'
             {
-            otherlv_0=(Token)match(input,34,FOLLOW_10); 
+            otherlv_0=(Token)match(input,35,FOLLOW_10); 
 
             			newLeafNode(otherlv_0, grammarAccess.getIfElseSwitchAccess().getSwitchKeyword_0());
             		
@@ -5225,24 +5395,24 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_1, grammarAccess.getIfElseSwitchAccess().getLeftCurlyBracketKeyword_1());
             		
-            // InternalMGLang.g:1953:3: ( (lv_cases_2_0= ruleIfElseCase ) )+
+            // InternalMGLang.g:2026:3: ( (lv_cases_2_0= ruleIfElseCase ) )+
             int cnt29=0;
             loop29:
             do {
                 int alt29=2;
                 int LA29_0 = input.LA(1);
 
-                if ( (LA29_0==35) ) {
+                if ( (LA29_0==36) ) {
                     alt29=1;
                 }
 
 
                 switch (alt29) {
             	case 1 :
-            	    // InternalMGLang.g:1954:4: (lv_cases_2_0= ruleIfElseCase )
+            	    // InternalMGLang.g:2027:4: (lv_cases_2_0= ruleIfElseCase )
             	    {
-            	    // InternalMGLang.g:1954:4: (lv_cases_2_0= ruleIfElseCase )
-            	    // InternalMGLang.g:1955:5: lv_cases_2_0= ruleIfElseCase
+            	    // InternalMGLang.g:2027:4: (lv_cases_2_0= ruleIfElseCase )
+            	    // InternalMGLang.g:2028:5: lv_cases_2_0= ruleIfElseCase
             	    {
 
             	    					newCompositeNode(grammarAccess.getIfElseSwitchAccess().getCasesIfElseCaseParserRuleCall_2_0());
@@ -5279,19 +5449,19 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 cnt29++;
             } while (true);
 
-            // InternalMGLang.g:1972:3: ( (lv_default_3_0= ruleDefault ) )?
+            // InternalMGLang.g:2045:3: ( (lv_default_3_0= ruleDefault ) )?
             int alt30=2;
             int LA30_0 = input.LA(1);
 
-            if ( (LA30_0==37) ) {
+            if ( (LA30_0==38) ) {
                 alt30=1;
             }
             switch (alt30) {
                 case 1 :
-                    // InternalMGLang.g:1973:4: (lv_default_3_0= ruleDefault )
+                    // InternalMGLang.g:2046:4: (lv_default_3_0= ruleDefault )
                     {
-                    // InternalMGLang.g:1973:4: (lv_default_3_0= ruleDefault )
-                    // InternalMGLang.g:1974:5: lv_default_3_0= ruleDefault
+                    // InternalMGLang.g:2046:4: (lv_default_3_0= ruleDefault )
+                    // InternalMGLang.g:2047:5: lv_default_3_0= ruleDefault
                     {
 
                     					newCompositeNode(grammarAccess.getIfElseSwitchAccess().getDefaultDefaultParserRuleCall_3_0());
@@ -5348,7 +5518,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleIfElseCase"
-    // InternalMGLang.g:1999:1: entryRuleIfElseCase returns [EObject current=null] : iv_ruleIfElseCase= ruleIfElseCase EOF ;
+    // InternalMGLang.g:2072:1: entryRuleIfElseCase returns [EObject current=null] : iv_ruleIfElseCase= ruleIfElseCase EOF ;
     public final EObject entryRuleIfElseCase() throws RecognitionException {
         EObject current = null;
 
@@ -5356,8 +5526,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:1999:51: (iv_ruleIfElseCase= ruleIfElseCase EOF )
-            // InternalMGLang.g:2000:2: iv_ruleIfElseCase= ruleIfElseCase EOF
+            // InternalMGLang.g:2072:51: (iv_ruleIfElseCase= ruleIfElseCase EOF )
+            // InternalMGLang.g:2073:2: iv_ruleIfElseCase= ruleIfElseCase EOF
             {
              newCompositeNode(grammarAccess.getIfElseCaseRule()); 
             pushFollow(FOLLOW_1);
@@ -5384,7 +5554,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleIfElseCase"
-    // InternalMGLang.g:2006:1: ruleIfElseCase returns [EObject current=null] : (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) ) ;
+    // InternalMGLang.g:2079:1: ruleIfElseCase returns [EObject current=null] : (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) ) ;
     public final EObject ruleIfElseCase() throws RecognitionException {
         EObject current = null;
 
@@ -5399,21 +5569,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2012:2: ( (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) ) )
-            // InternalMGLang.g:2013:2: (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) )
+            // InternalMGLang.g:2085:2: ( (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) ) )
+            // InternalMGLang.g:2086:2: (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) )
             {
-            // InternalMGLang.g:2013:2: (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) )
-            // InternalMGLang.g:2014:3: otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) )
+            // InternalMGLang.g:2086:2: (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) )
+            // InternalMGLang.g:2087:3: otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) )
             {
-            otherlv_0=(Token)match(input,35,FOLLOW_21); 
+            otherlv_0=(Token)match(input,36,FOLLOW_21); 
 
             			newLeafNode(otherlv_0, grammarAccess.getIfElseCaseAccess().getCaseKeyword_0());
             		
-            // InternalMGLang.g:2018:3: ( (lv_val_1_0= ruleArithmeticExpression ) )
-            // InternalMGLang.g:2019:4: (lv_val_1_0= ruleArithmeticExpression )
+            // InternalMGLang.g:2091:3: ( (lv_val_1_0= ruleArithmeticExpression ) )
+            // InternalMGLang.g:2092:4: (lv_val_1_0= ruleArithmeticExpression )
             {
-            // InternalMGLang.g:2019:4: (lv_val_1_0= ruleArithmeticExpression )
-            // InternalMGLang.g:2020:5: lv_val_1_0= ruleArithmeticExpression
+            // InternalMGLang.g:2092:4: (lv_val_1_0= ruleArithmeticExpression )
+            // InternalMGLang.g:2093:5: lv_val_1_0= ruleArithmeticExpression
             {
 
             					newCompositeNode(grammarAccess.getIfElseCaseAccess().getValArithmeticExpressionParserRuleCall_1_0());
@@ -5440,15 +5610,15 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_2=(Token)match(input,36,FOLLOW_35); 
+            otherlv_2=(Token)match(input,37,FOLLOW_35); 
 
             			newLeafNode(otherlv_2, grammarAccess.getIfElseCaseAccess().getColonKeyword_2());
             		
-            // InternalMGLang.g:2041:3: ( (lv_body_3_0= ruleCaseBody ) )
-            // InternalMGLang.g:2042:4: (lv_body_3_0= ruleCaseBody )
+            // InternalMGLang.g:2114:3: ( (lv_body_3_0= ruleCaseBody ) )
+            // InternalMGLang.g:2115:4: (lv_body_3_0= ruleCaseBody )
             {
-            // InternalMGLang.g:2042:4: (lv_body_3_0= ruleCaseBody )
-            // InternalMGLang.g:2043:5: lv_body_3_0= ruleCaseBody
+            // InternalMGLang.g:2115:4: (lv_body_3_0= ruleCaseBody )
+            // InternalMGLang.g:2116:5: lv_body_3_0= ruleCaseBody
             {
 
             					newCompositeNode(grammarAccess.getIfElseCaseAccess().getBodyCaseBodyParserRuleCall_3_0());
@@ -5498,7 +5668,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleDefault"
-    // InternalMGLang.g:2064:1: entryRuleDefault returns [EObject current=null] : iv_ruleDefault= ruleDefault EOF ;
+    // InternalMGLang.g:2137:1: entryRuleDefault returns [EObject current=null] : iv_ruleDefault= ruleDefault EOF ;
     public final EObject entryRuleDefault() throws RecognitionException {
         EObject current = null;
 
@@ -5506,8 +5676,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2064:48: (iv_ruleDefault= ruleDefault EOF )
-            // InternalMGLang.g:2065:2: iv_ruleDefault= ruleDefault EOF
+            // InternalMGLang.g:2137:48: (iv_ruleDefault= ruleDefault EOF )
+            // InternalMGLang.g:2138:2: iv_ruleDefault= ruleDefault EOF
             {
              newCompositeNode(grammarAccess.getDefaultRule()); 
             pushFollow(FOLLOW_1);
@@ -5534,7 +5704,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleDefault"
-    // InternalMGLang.g:2071:1: ruleDefault returns [EObject current=null] : (otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody ) ;
+    // InternalMGLang.g:2144:1: ruleDefault returns [EObject current=null] : (otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody ) ;
     public final EObject ruleDefault() throws RecognitionException {
         EObject current = null;
 
@@ -5547,17 +5717,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2077:2: ( (otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody ) )
-            // InternalMGLang.g:2078:2: (otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody )
+            // InternalMGLang.g:2150:2: ( (otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody ) )
+            // InternalMGLang.g:2151:2: (otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody )
             {
-            // InternalMGLang.g:2078:2: (otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody )
-            // InternalMGLang.g:2079:3: otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody
+            // InternalMGLang.g:2151:2: (otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody )
+            // InternalMGLang.g:2152:3: otherlv_0= 'default' otherlv_1= ':' this_CaseBody_2= ruleCaseBody
             {
-            otherlv_0=(Token)match(input,37,FOLLOW_34); 
+            otherlv_0=(Token)match(input,38,FOLLOW_34); 
 
             			newLeafNode(otherlv_0, grammarAccess.getDefaultAccess().getDefaultKeyword_0());
             		
-            otherlv_1=(Token)match(input,36,FOLLOW_35); 
+            otherlv_1=(Token)match(input,37,FOLLOW_35); 
 
             			newLeafNode(otherlv_1, grammarAccess.getDefaultAccess().getColonKeyword_1());
             		
@@ -5596,7 +5766,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleSwitchCase"
-    // InternalMGLang.g:2099:1: entryRuleSwitchCase returns [EObject current=null] : iv_ruleSwitchCase= ruleSwitchCase EOF ;
+    // InternalMGLang.g:2172:1: entryRuleSwitchCase returns [EObject current=null] : iv_ruleSwitchCase= ruleSwitchCase EOF ;
     public final EObject entryRuleSwitchCase() throws RecognitionException {
         EObject current = null;
 
@@ -5604,8 +5774,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2099:51: (iv_ruleSwitchCase= ruleSwitchCase EOF )
-            // InternalMGLang.g:2100:2: iv_ruleSwitchCase= ruleSwitchCase EOF
+            // InternalMGLang.g:2172:51: (iv_ruleSwitchCase= ruleSwitchCase EOF )
+            // InternalMGLang.g:2173:2: iv_ruleSwitchCase= ruleSwitchCase EOF
             {
              newCompositeNode(grammarAccess.getSwitchCaseRule()); 
             pushFollow(FOLLOW_1);
@@ -5632,7 +5802,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSwitchCase"
-    // InternalMGLang.g:2106:1: ruleSwitchCase returns [EObject current=null] : (otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}' ) ;
+    // InternalMGLang.g:2179:1: ruleSwitchCase returns [EObject current=null] : (otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}' ) ;
     public final EObject ruleSwitchCase() throws RecognitionException {
         EObject current = null;
 
@@ -5652,13 +5822,13 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2112:2: ( (otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}' ) )
-            // InternalMGLang.g:2113:2: (otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}' )
+            // InternalMGLang.g:2185:2: ( (otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}' ) )
+            // InternalMGLang.g:2186:2: (otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}' )
             {
-            // InternalMGLang.g:2113:2: (otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}' )
-            // InternalMGLang.g:2114:3: otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}'
+            // InternalMGLang.g:2186:2: (otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}' )
+            // InternalMGLang.g:2187:3: otherlv_0= 'switch' otherlv_1= '(' ( (lv_attribute_2_0= ruleRefOrCall ) ) otherlv_3= ')' otherlv_4= '{' ( (lv_cases_5_0= ruleCase ) )+ ( (lv_default_6_0= ruleDefault ) )? otherlv_7= '}'
             {
-            otherlv_0=(Token)match(input,34,FOLLOW_8); 
+            otherlv_0=(Token)match(input,35,FOLLOW_8); 
 
             			newLeafNode(otherlv_0, grammarAccess.getSwitchCaseAccess().getSwitchKeyword_0());
             		
@@ -5666,11 +5836,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_1, grammarAccess.getSwitchCaseAccess().getLeftParenthesisKeyword_1());
             		
-            // InternalMGLang.g:2122:3: ( (lv_attribute_2_0= ruleRefOrCall ) )
-            // InternalMGLang.g:2123:4: (lv_attribute_2_0= ruleRefOrCall )
+            // InternalMGLang.g:2195:3: ( (lv_attribute_2_0= ruleRefOrCall ) )
+            // InternalMGLang.g:2196:4: (lv_attribute_2_0= ruleRefOrCall )
             {
-            // InternalMGLang.g:2123:4: (lv_attribute_2_0= ruleRefOrCall )
-            // InternalMGLang.g:2124:5: lv_attribute_2_0= ruleRefOrCall
+            // InternalMGLang.g:2196:4: (lv_attribute_2_0= ruleRefOrCall )
+            // InternalMGLang.g:2197:5: lv_attribute_2_0= ruleRefOrCall
             {
 
             					newCompositeNode(grammarAccess.getSwitchCaseAccess().getAttributeRefOrCallParserRuleCall_2_0());
@@ -5705,24 +5875,24 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_4, grammarAccess.getSwitchCaseAccess().getLeftCurlyBracketKeyword_4());
             		
-            // InternalMGLang.g:2149:3: ( (lv_cases_5_0= ruleCase ) )+
+            // InternalMGLang.g:2222:3: ( (lv_cases_5_0= ruleCase ) )+
             int cnt31=0;
             loop31:
             do {
                 int alt31=2;
                 int LA31_0 = input.LA(1);
 
-                if ( (LA31_0==35) ) {
+                if ( (LA31_0==36) ) {
                     alt31=1;
                 }
 
 
                 switch (alt31) {
             	case 1 :
-            	    // InternalMGLang.g:2150:4: (lv_cases_5_0= ruleCase )
+            	    // InternalMGLang.g:2223:4: (lv_cases_5_0= ruleCase )
             	    {
-            	    // InternalMGLang.g:2150:4: (lv_cases_5_0= ruleCase )
-            	    // InternalMGLang.g:2151:5: lv_cases_5_0= ruleCase
+            	    // InternalMGLang.g:2223:4: (lv_cases_5_0= ruleCase )
+            	    // InternalMGLang.g:2224:5: lv_cases_5_0= ruleCase
             	    {
 
             	    					newCompositeNode(grammarAccess.getSwitchCaseAccess().getCasesCaseParserRuleCall_5_0());
@@ -5759,19 +5929,19 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 cnt31++;
             } while (true);
 
-            // InternalMGLang.g:2168:3: ( (lv_default_6_0= ruleDefault ) )?
+            // InternalMGLang.g:2241:3: ( (lv_default_6_0= ruleDefault ) )?
             int alt32=2;
             int LA32_0 = input.LA(1);
 
-            if ( (LA32_0==37) ) {
+            if ( (LA32_0==38) ) {
                 alt32=1;
             }
             switch (alt32) {
                 case 1 :
-                    // InternalMGLang.g:2169:4: (lv_default_6_0= ruleDefault )
+                    // InternalMGLang.g:2242:4: (lv_default_6_0= ruleDefault )
                     {
-                    // InternalMGLang.g:2169:4: (lv_default_6_0= ruleDefault )
-                    // InternalMGLang.g:2170:5: lv_default_6_0= ruleDefault
+                    // InternalMGLang.g:2242:4: (lv_default_6_0= ruleDefault )
+                    // InternalMGLang.g:2243:5: lv_default_6_0= ruleDefault
                     {
 
                     					newCompositeNode(grammarAccess.getSwitchCaseAccess().getDefaultDefaultParserRuleCall_6_0());
@@ -5828,7 +5998,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleCase"
-    // InternalMGLang.g:2195:1: entryRuleCase returns [EObject current=null] : iv_ruleCase= ruleCase EOF ;
+    // InternalMGLang.g:2268:1: entryRuleCase returns [EObject current=null] : iv_ruleCase= ruleCase EOF ;
     public final EObject entryRuleCase() throws RecognitionException {
         EObject current = null;
 
@@ -5836,8 +6006,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2195:45: (iv_ruleCase= ruleCase EOF )
-            // InternalMGLang.g:2196:2: iv_ruleCase= ruleCase EOF
+            // InternalMGLang.g:2268:45: (iv_ruleCase= ruleCase EOF )
+            // InternalMGLang.g:2269:2: iv_ruleCase= ruleCase EOF
             {
              newCompositeNode(grammarAccess.getCaseRule()); 
             pushFollow(FOLLOW_1);
@@ -5864,7 +6034,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleCase"
-    // InternalMGLang.g:2202:1: ruleCase returns [EObject current=null] : (this_CaseWithCast_0= ruleCaseWithCast | this_CaseWithoutCast_1= ruleCaseWithoutCast ) ;
+    // InternalMGLang.g:2275:1: ruleCase returns [EObject current=null] : (this_CaseWithCast_0= ruleCaseWithCast | this_CaseWithoutCast_1= ruleCaseWithoutCast ) ;
     public final EObject ruleCase() throws RecognitionException {
         EObject current = null;
 
@@ -5877,27 +6047,27 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2208:2: ( (this_CaseWithCast_0= ruleCaseWithCast | this_CaseWithoutCast_1= ruleCaseWithoutCast ) )
-            // InternalMGLang.g:2209:2: (this_CaseWithCast_0= ruleCaseWithCast | this_CaseWithoutCast_1= ruleCaseWithoutCast )
+            // InternalMGLang.g:2281:2: ( (this_CaseWithCast_0= ruleCaseWithCast | this_CaseWithoutCast_1= ruleCaseWithoutCast ) )
+            // InternalMGLang.g:2282:2: (this_CaseWithCast_0= ruleCaseWithCast | this_CaseWithoutCast_1= ruleCaseWithoutCast )
             {
-            // InternalMGLang.g:2209:2: (this_CaseWithCast_0= ruleCaseWithCast | this_CaseWithoutCast_1= ruleCaseWithoutCast )
+            // InternalMGLang.g:2282:2: (this_CaseWithCast_0= ruleCaseWithCast | this_CaseWithoutCast_1= ruleCaseWithoutCast )
             int alt33=2;
             int LA33_0 = input.LA(1);
 
-            if ( (LA33_0==35) ) {
+            if ( (LA33_0==36) ) {
                 int LA33_1 = input.LA(2);
 
-                if ( (LA33_1==RULE_STRING||(LA33_1>=RULE_TRUE && LA33_1<=RULE_DOUBLE)||LA33_1==19||(LA33_1>=43 && LA33_1<=45)) ) {
+                if ( (LA33_1==RULE_STRING||(LA33_1>=RULE_TRUE && LA33_1<=RULE_DOUBLE)||LA33_1==19||(LA33_1>=44 && LA33_1<=46)) ) {
                     alt33=2;
                 }
                 else if ( (LA33_1==RULE_ID) ) {
                     int LA33_3 = input.LA(3);
 
-                    if ( (LA33_3==RULE_ID) ) {
-                        alt33=1;
-                    }
-                    else if ( (LA33_3==28||LA33_3==33||LA33_3==36||(LA33_3>=50 && LA33_3<=62)) ) {
+                    if ( (LA33_3==28||LA33_3==34||LA33_3==37||(LA33_3>=51 && LA33_3<=63)) ) {
                         alt33=2;
+                    }
+                    else if ( (LA33_3==RULE_ID) ) {
+                        alt33=1;
                     }
                     else {
                         NoViableAltException nvae =
@@ -5921,7 +6091,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt33) {
                 case 1 :
-                    // InternalMGLang.g:2210:3: this_CaseWithCast_0= ruleCaseWithCast
+                    // InternalMGLang.g:2283:3: this_CaseWithCast_0= ruleCaseWithCast
                     {
 
                     			newCompositeNode(grammarAccess.getCaseAccess().getCaseWithCastParserRuleCall_0());
@@ -5939,7 +6109,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:2219:3: this_CaseWithoutCast_1= ruleCaseWithoutCast
+                    // InternalMGLang.g:2292:3: this_CaseWithoutCast_1= ruleCaseWithoutCast
                     {
 
                     			newCompositeNode(grammarAccess.getCaseAccess().getCaseWithoutCastParserRuleCall_1());
@@ -5979,7 +6149,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleCaseWithCast"
-    // InternalMGLang.g:2231:1: entryRuleCaseWithCast returns [EObject current=null] : iv_ruleCaseWithCast= ruleCaseWithCast EOF ;
+    // InternalMGLang.g:2304:1: entryRuleCaseWithCast returns [EObject current=null] : iv_ruleCaseWithCast= ruleCaseWithCast EOF ;
     public final EObject entryRuleCaseWithCast() throws RecognitionException {
         EObject current = null;
 
@@ -5987,8 +6157,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2231:53: (iv_ruleCaseWithCast= ruleCaseWithCast EOF )
-            // InternalMGLang.g:2232:2: iv_ruleCaseWithCast= ruleCaseWithCast EOF
+            // InternalMGLang.g:2304:53: (iv_ruleCaseWithCast= ruleCaseWithCast EOF )
+            // InternalMGLang.g:2305:2: iv_ruleCaseWithCast= ruleCaseWithCast EOF
             {
              newCompositeNode(grammarAccess.getCaseWithCastRule()); 
             pushFollow(FOLLOW_1);
@@ -6015,7 +6185,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleCaseWithCast"
-    // InternalMGLang.g:2238:1: ruleCaseWithCast returns [EObject current=null] : (otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) ) ) ;
+    // InternalMGLang.g:2311:1: ruleCaseWithCast returns [EObject current=null] : (otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) ) ) ;
     public final EObject ruleCaseWithCast() throws RecognitionException {
         EObject current = null;
 
@@ -6033,21 +6203,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2244:2: ( (otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) ) ) )
-            // InternalMGLang.g:2245:2: (otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) ) )
+            // InternalMGLang.g:2317:2: ( (otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) ) ) )
+            // InternalMGLang.g:2318:2: (otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) ) )
             {
-            // InternalMGLang.g:2245:2: (otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) ) )
-            // InternalMGLang.g:2246:3: otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) )
+            // InternalMGLang.g:2318:2: (otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) ) )
+            // InternalMGLang.g:2319:3: otherlv_0= 'case' ( (lv_node_1_0= ruleNode ) ) (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )? otherlv_4= ':' ( (lv_body_5_0= ruleCaseBody ) )
             {
-            otherlv_0=(Token)match(input,35,FOLLOW_7); 
+            otherlv_0=(Token)match(input,36,FOLLOW_7); 
 
             			newLeafNode(otherlv_0, grammarAccess.getCaseWithCastAccess().getCaseKeyword_0());
             		
-            // InternalMGLang.g:2250:3: ( (lv_node_1_0= ruleNode ) )
-            // InternalMGLang.g:2251:4: (lv_node_1_0= ruleNode )
+            // InternalMGLang.g:2323:3: ( (lv_node_1_0= ruleNode ) )
+            // InternalMGLang.g:2324:4: (lv_node_1_0= ruleNode )
             {
-            // InternalMGLang.g:2251:4: (lv_node_1_0= ruleNode )
-            // InternalMGLang.g:2252:5: lv_node_1_0= ruleNode
+            // InternalMGLang.g:2324:4: (lv_node_1_0= ruleNode )
+            // InternalMGLang.g:2325:5: lv_node_1_0= ruleNode
             {
 
             					newCompositeNode(grammarAccess.getCaseWithCastAccess().getNodeNodeParserRuleCall_1_0());
@@ -6074,26 +6244,26 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMGLang.g:2269:3: (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )?
+            // InternalMGLang.g:2342:3: (otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) ) )?
             int alt34=2;
             int LA34_0 = input.LA(1);
 
-            if ( (LA34_0==38) ) {
+            if ( (LA34_0==39) ) {
                 alt34=1;
             }
             switch (alt34) {
                 case 1 :
-                    // InternalMGLang.g:2270:4: otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) )
+                    // InternalMGLang.g:2343:4: otherlv_2= 'when' ( (lv_when_3_0= ruleArithmeticExpression ) )
                     {
-                    otherlv_2=(Token)match(input,38,FOLLOW_21); 
+                    otherlv_2=(Token)match(input,39,FOLLOW_21); 
 
                     				newLeafNode(otherlv_2, grammarAccess.getCaseWithCastAccess().getWhenKeyword_2_0());
                     			
-                    // InternalMGLang.g:2274:4: ( (lv_when_3_0= ruleArithmeticExpression ) )
-                    // InternalMGLang.g:2275:5: (lv_when_3_0= ruleArithmeticExpression )
+                    // InternalMGLang.g:2347:4: ( (lv_when_3_0= ruleArithmeticExpression ) )
+                    // InternalMGLang.g:2348:5: (lv_when_3_0= ruleArithmeticExpression )
                     {
-                    // InternalMGLang.g:2275:5: (lv_when_3_0= ruleArithmeticExpression )
-                    // InternalMGLang.g:2276:6: lv_when_3_0= ruleArithmeticExpression
+                    // InternalMGLang.g:2348:5: (lv_when_3_0= ruleArithmeticExpression )
+                    // InternalMGLang.g:2349:6: lv_when_3_0= ruleArithmeticExpression
                     {
 
                     						newCompositeNode(grammarAccess.getCaseWithCastAccess().getWhenArithmeticExpressionParserRuleCall_2_1_0());
@@ -6126,15 +6296,15 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_4=(Token)match(input,36,FOLLOW_35); 
+            otherlv_4=(Token)match(input,37,FOLLOW_35); 
 
             			newLeafNode(otherlv_4, grammarAccess.getCaseWithCastAccess().getColonKeyword_3());
             		
-            // InternalMGLang.g:2298:3: ( (lv_body_5_0= ruleCaseBody ) )
-            // InternalMGLang.g:2299:4: (lv_body_5_0= ruleCaseBody )
+            // InternalMGLang.g:2371:3: ( (lv_body_5_0= ruleCaseBody ) )
+            // InternalMGLang.g:2372:4: (lv_body_5_0= ruleCaseBody )
             {
-            // InternalMGLang.g:2299:4: (lv_body_5_0= ruleCaseBody )
-            // InternalMGLang.g:2300:5: lv_body_5_0= ruleCaseBody
+            // InternalMGLang.g:2372:4: (lv_body_5_0= ruleCaseBody )
+            // InternalMGLang.g:2373:5: lv_body_5_0= ruleCaseBody
             {
 
             					newCompositeNode(grammarAccess.getCaseWithCastAccess().getBodyCaseBodyParserRuleCall_4_0());
@@ -6184,7 +6354,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleCaseWithoutCast"
-    // InternalMGLang.g:2321:1: entryRuleCaseWithoutCast returns [EObject current=null] : iv_ruleCaseWithoutCast= ruleCaseWithoutCast EOF ;
+    // InternalMGLang.g:2394:1: entryRuleCaseWithoutCast returns [EObject current=null] : iv_ruleCaseWithoutCast= ruleCaseWithoutCast EOF ;
     public final EObject entryRuleCaseWithoutCast() throws RecognitionException {
         EObject current = null;
 
@@ -6192,8 +6362,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2321:56: (iv_ruleCaseWithoutCast= ruleCaseWithoutCast EOF )
-            // InternalMGLang.g:2322:2: iv_ruleCaseWithoutCast= ruleCaseWithoutCast EOF
+            // InternalMGLang.g:2394:56: (iv_ruleCaseWithoutCast= ruleCaseWithoutCast EOF )
+            // InternalMGLang.g:2395:2: iv_ruleCaseWithoutCast= ruleCaseWithoutCast EOF
             {
              newCompositeNode(grammarAccess.getCaseWithoutCastRule()); 
             pushFollow(FOLLOW_1);
@@ -6220,7 +6390,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleCaseWithoutCast"
-    // InternalMGLang.g:2328:1: ruleCaseWithoutCast returns [EObject current=null] : (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) ) ;
+    // InternalMGLang.g:2401:1: ruleCaseWithoutCast returns [EObject current=null] : (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) ) ;
     public final EObject ruleCaseWithoutCast() throws RecognitionException {
         EObject current = null;
 
@@ -6235,21 +6405,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2334:2: ( (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) ) )
-            // InternalMGLang.g:2335:2: (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) )
+            // InternalMGLang.g:2407:2: ( (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) ) )
+            // InternalMGLang.g:2408:2: (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) )
             {
-            // InternalMGLang.g:2335:2: (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) )
-            // InternalMGLang.g:2336:3: otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) )
+            // InternalMGLang.g:2408:2: (otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) ) )
+            // InternalMGLang.g:2409:3: otherlv_0= 'case' ( (lv_val_1_0= ruleArithmeticExpression ) ) otherlv_2= ':' ( (lv_body_3_0= ruleCaseBody ) )
             {
-            otherlv_0=(Token)match(input,35,FOLLOW_21); 
+            otherlv_0=(Token)match(input,36,FOLLOW_21); 
 
             			newLeafNode(otherlv_0, grammarAccess.getCaseWithoutCastAccess().getCaseKeyword_0());
             		
-            // InternalMGLang.g:2340:3: ( (lv_val_1_0= ruleArithmeticExpression ) )
-            // InternalMGLang.g:2341:4: (lv_val_1_0= ruleArithmeticExpression )
+            // InternalMGLang.g:2413:3: ( (lv_val_1_0= ruleArithmeticExpression ) )
+            // InternalMGLang.g:2414:4: (lv_val_1_0= ruleArithmeticExpression )
             {
-            // InternalMGLang.g:2341:4: (lv_val_1_0= ruleArithmeticExpression )
-            // InternalMGLang.g:2342:5: lv_val_1_0= ruleArithmeticExpression
+            // InternalMGLang.g:2414:4: (lv_val_1_0= ruleArithmeticExpression )
+            // InternalMGLang.g:2415:5: lv_val_1_0= ruleArithmeticExpression
             {
 
             					newCompositeNode(grammarAccess.getCaseWithoutCastAccess().getValArithmeticExpressionParserRuleCall_1_0());
@@ -6276,15 +6446,15 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_2=(Token)match(input,36,FOLLOW_35); 
+            otherlv_2=(Token)match(input,37,FOLLOW_35); 
 
             			newLeafNode(otherlv_2, grammarAccess.getCaseWithoutCastAccess().getColonKeyword_2());
             		
-            // InternalMGLang.g:2363:3: ( (lv_body_3_0= ruleCaseBody ) )
-            // InternalMGLang.g:2364:4: (lv_body_3_0= ruleCaseBody )
+            // InternalMGLang.g:2436:3: ( (lv_body_3_0= ruleCaseBody ) )
+            // InternalMGLang.g:2437:4: (lv_body_3_0= ruleCaseBody )
             {
-            // InternalMGLang.g:2364:4: (lv_body_3_0= ruleCaseBody )
-            // InternalMGLang.g:2365:5: lv_body_3_0= ruleCaseBody
+            // InternalMGLang.g:2437:4: (lv_body_3_0= ruleCaseBody )
+            // InternalMGLang.g:2438:5: lv_body_3_0= ruleCaseBody
             {
 
             					newCompositeNode(grammarAccess.getCaseWithoutCastAccess().getBodyCaseBodyParserRuleCall_3_0());
@@ -6334,7 +6504,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleCaseBody"
-    // InternalMGLang.g:2386:1: entryRuleCaseBody returns [EObject current=null] : iv_ruleCaseBody= ruleCaseBody EOF ;
+    // InternalMGLang.g:2459:1: entryRuleCaseBody returns [EObject current=null] : iv_ruleCaseBody= ruleCaseBody EOF ;
     public final EObject entryRuleCaseBody() throws RecognitionException {
         EObject current = null;
 
@@ -6342,8 +6512,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2386:49: (iv_ruleCaseBody= ruleCaseBody EOF )
-            // InternalMGLang.g:2387:2: iv_ruleCaseBody= ruleCaseBody EOF
+            // InternalMGLang.g:2459:49: (iv_ruleCaseBody= ruleCaseBody EOF )
+            // InternalMGLang.g:2460:2: iv_ruleCaseBody= ruleCaseBody EOF
             {
              newCompositeNode(grammarAccess.getCaseBodyRule()); 
             pushFollow(FOLLOW_1);
@@ -6370,7 +6540,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleCaseBody"
-    // InternalMGLang.g:2393:1: ruleCaseBody returns [EObject current=null] : ( ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' ) | ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE ) ) ;
+    // InternalMGLang.g:2466:1: ruleCaseBody returns [EObject current=null] : ( ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' ) | ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE ) ) ;
     public final EObject ruleCaseBody() throws RecognitionException {
         EObject current = null;
 
@@ -6386,17 +6556,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2399:2: ( ( ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' ) | ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE ) ) )
-            // InternalMGLang.g:2400:2: ( ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' ) | ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE ) )
+            // InternalMGLang.g:2472:2: ( ( ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' ) | ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE ) ) )
+            // InternalMGLang.g:2473:2: ( ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' ) | ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE ) )
             {
-            // InternalMGLang.g:2400:2: ( ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' ) | ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE ) )
+            // InternalMGLang.g:2473:2: ( ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' ) | ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE ) )
             int alt36=2;
             int LA36_0 = input.LA(1);
 
             if ( (LA36_0==21) ) {
                 alt36=1;
             }
-            else if ( (LA36_0==RULE_ID||LA36_0==31||LA36_0==34||LA36_0==39||LA36_0==42) ) {
+            else if ( (LA36_0==RULE_ID||LA36_0==32||LA36_0==35||LA36_0==40||LA36_0==43) ) {
                 alt36=2;
             }
             else {
@@ -6407,13 +6577,13 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt36) {
                 case 1 :
-                    // InternalMGLang.g:2401:3: ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' )
+                    // InternalMGLang.g:2474:3: ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' )
                     {
-                    // InternalMGLang.g:2401:3: ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' )
-                    // InternalMGLang.g:2402:4: () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}'
+                    // InternalMGLang.g:2474:3: ( () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}' )
+                    // InternalMGLang.g:2475:4: () otherlv_1= '{' ( (lv_expressions_2_0= ruleSwitchExpression ) )* otherlv_3= '}'
                     {
-                    // InternalMGLang.g:2402:4: ()
-                    // InternalMGLang.g:2403:5: 
+                    // InternalMGLang.g:2475:4: ()
+                    // InternalMGLang.g:2476:5: 
                     {
 
                     					current = forceCreateModelElement(
@@ -6427,23 +6597,23 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
                     				newLeafNode(otherlv_1, grammarAccess.getCaseBodyAccess().getLeftCurlyBracketKeyword_0_1());
                     			
-                    // InternalMGLang.g:2413:4: ( (lv_expressions_2_0= ruleSwitchExpression ) )*
+                    // InternalMGLang.g:2486:4: ( (lv_expressions_2_0= ruleSwitchExpression ) )*
                     loop35:
                     do {
                         int alt35=2;
                         int LA35_0 = input.LA(1);
 
-                        if ( (LA35_0==RULE_ID||LA35_0==31||LA35_0==34||LA35_0==39||LA35_0==42) ) {
+                        if ( (LA35_0==RULE_ID||LA35_0==32||LA35_0==35||LA35_0==40||LA35_0==43) ) {
                             alt35=1;
                         }
 
 
                         switch (alt35) {
                     	case 1 :
-                    	    // InternalMGLang.g:2414:5: (lv_expressions_2_0= ruleSwitchExpression )
+                    	    // InternalMGLang.g:2487:5: (lv_expressions_2_0= ruleSwitchExpression )
                     	    {
-                    	    // InternalMGLang.g:2414:5: (lv_expressions_2_0= ruleSwitchExpression )
-                    	    // InternalMGLang.g:2415:6: lv_expressions_2_0= ruleSwitchExpression
+                    	    // InternalMGLang.g:2487:5: (lv_expressions_2_0= ruleSwitchExpression )
+                    	    // InternalMGLang.g:2488:6: lv_expressions_2_0= ruleSwitchExpression
                     	    {
 
                     	    						newCompositeNode(grammarAccess.getCaseBodyAccess().getExpressionsSwitchExpressionParserRuleCall_0_2_0());
@@ -6487,16 +6657,16 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:2438:3: ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE )
+                    // InternalMGLang.g:2511:3: ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE )
                     {
-                    // InternalMGLang.g:2438:3: ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE )
-                    // InternalMGLang.g:2439:4: ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE
+                    // InternalMGLang.g:2511:3: ( ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE )
+                    // InternalMGLang.g:2512:4: ( (lv_expressions_4_0= ruleSwitchExpression ) ) this_NEWLINE_5= RULE_NEWLINE
                     {
-                    // InternalMGLang.g:2439:4: ( (lv_expressions_4_0= ruleSwitchExpression ) )
-                    // InternalMGLang.g:2440:5: (lv_expressions_4_0= ruleSwitchExpression )
+                    // InternalMGLang.g:2512:4: ( (lv_expressions_4_0= ruleSwitchExpression ) )
+                    // InternalMGLang.g:2513:5: (lv_expressions_4_0= ruleSwitchExpression )
                     {
-                    // InternalMGLang.g:2440:5: (lv_expressions_4_0= ruleSwitchExpression )
-                    // InternalMGLang.g:2441:6: lv_expressions_4_0= ruleSwitchExpression
+                    // InternalMGLang.g:2513:5: (lv_expressions_4_0= ruleSwitchExpression )
+                    // InternalMGLang.g:2514:6: lv_expressions_4_0= ruleSwitchExpression
                     {
 
                     						newCompositeNode(grammarAccess.getCaseBodyAccess().getExpressionsSwitchExpressionParserRuleCall_1_0_0());
@@ -6556,7 +6726,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleCollection"
-    // InternalMGLang.g:2467:1: entryRuleCollection returns [EObject current=null] : iv_ruleCollection= ruleCollection EOF ;
+    // InternalMGLang.g:2540:1: entryRuleCollection returns [EObject current=null] : iv_ruleCollection= ruleCollection EOF ;
     public final EObject entryRuleCollection() throws RecognitionException {
         EObject current = null;
 
@@ -6564,8 +6734,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2467:51: (iv_ruleCollection= ruleCollection EOF )
-            // InternalMGLang.g:2468:2: iv_ruleCollection= ruleCollection EOF
+            // InternalMGLang.g:2540:51: (iv_ruleCollection= ruleCollection EOF )
+            // InternalMGLang.g:2541:2: iv_ruleCollection= ruleCollection EOF
             {
              newCompositeNode(grammarAccess.getCollectionRule()); 
             pushFollow(FOLLOW_1);
@@ -6592,7 +6762,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleCollection"
-    // InternalMGLang.g:2474:1: ruleCollection returns [EObject current=null] : (this_List_0= ruleList | this_Map_1= ruleMap ) ;
+    // InternalMGLang.g:2547:1: ruleCollection returns [EObject current=null] : (this_List_0= ruleList | this_Map_1= ruleMap ) ;
     public final EObject ruleCollection() throws RecognitionException {
         EObject current = null;
 
@@ -6605,17 +6775,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2480:2: ( (this_List_0= ruleList | this_Map_1= ruleMap ) )
-            // InternalMGLang.g:2481:2: (this_List_0= ruleList | this_Map_1= ruleMap )
+            // InternalMGLang.g:2553:2: ( (this_List_0= ruleList | this_Map_1= ruleMap ) )
+            // InternalMGLang.g:2554:2: (this_List_0= ruleList | this_Map_1= ruleMap )
             {
-            // InternalMGLang.g:2481:2: (this_List_0= ruleList | this_Map_1= ruleMap )
+            // InternalMGLang.g:2554:2: (this_List_0= ruleList | this_Map_1= ruleMap )
             int alt37=2;
             int LA37_0 = input.LA(1);
 
-            if ( (LA37_0==39) ) {
+            if ( (LA37_0==40) ) {
                 alt37=1;
             }
-            else if ( (LA37_0==42) ) {
+            else if ( (LA37_0==43) ) {
                 alt37=2;
             }
             else {
@@ -6626,7 +6796,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt37) {
                 case 1 :
-                    // InternalMGLang.g:2482:3: this_List_0= ruleList
+                    // InternalMGLang.g:2555:3: this_List_0= ruleList
                     {
 
                     			newCompositeNode(grammarAccess.getCollectionAccess().getListParserRuleCall_0());
@@ -6644,7 +6814,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:2491:3: this_Map_1= ruleMap
+                    // InternalMGLang.g:2564:3: this_Map_1= ruleMap
                     {
 
                     			newCompositeNode(grammarAccess.getCollectionAccess().getMapParserRuleCall_1());
@@ -6684,7 +6854,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleList"
-    // InternalMGLang.g:2503:1: entryRuleList returns [EObject current=null] : iv_ruleList= ruleList EOF ;
+    // InternalMGLang.g:2576:1: entryRuleList returns [EObject current=null] : iv_ruleList= ruleList EOF ;
     public final EObject entryRuleList() throws RecognitionException {
         EObject current = null;
 
@@ -6692,8 +6862,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2503:45: (iv_ruleList= ruleList EOF )
-            // InternalMGLang.g:2504:2: iv_ruleList= ruleList EOF
+            // InternalMGLang.g:2576:45: (iv_ruleList= ruleList EOF )
+            // InternalMGLang.g:2577:2: iv_ruleList= ruleList EOF
             {
              newCompositeNode(grammarAccess.getListRule()); 
             pushFollow(FOLLOW_1);
@@ -6720,7 +6890,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleList"
-    // InternalMGLang.g:2510:1: ruleList returns [EObject current=null] : (otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )? ) ;
+    // InternalMGLang.g:2583:1: ruleList returns [EObject current=null] : (otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )? ) ;
     public final EObject ruleList() throws RecognitionException {
         EObject current = null;
 
@@ -6734,21 +6904,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2516:2: ( (otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )? ) )
-            // InternalMGLang.g:2517:2: (otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )? )
+            // InternalMGLang.g:2589:2: ( (otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )? ) )
+            // InternalMGLang.g:2590:2: (otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )? )
             {
-            // InternalMGLang.g:2517:2: (otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )? )
-            // InternalMGLang.g:2518:3: otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )?
+            // InternalMGLang.g:2590:2: (otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )? )
+            // InternalMGLang.g:2591:3: otherlv_0= 'List' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )?
             {
-            otherlv_0=(Token)match(input,39,FOLLOW_7); 
+            otherlv_0=(Token)match(input,40,FOLLOW_7); 
 
             			newLeafNode(otherlv_0, grammarAccess.getListAccess().getListKeyword_0());
             		
-            // InternalMGLang.g:2522:3: ( (lv_name_1_0= RULE_ID ) )
-            // InternalMGLang.g:2523:4: (lv_name_1_0= RULE_ID )
+            // InternalMGLang.g:2595:3: ( (lv_name_1_0= RULE_ID ) )
+            // InternalMGLang.g:2596:4: (lv_name_1_0= RULE_ID )
             {
-            // InternalMGLang.g:2523:4: (lv_name_1_0= RULE_ID )
-            // InternalMGLang.g:2524:5: lv_name_1_0= RULE_ID
+            // InternalMGLang.g:2596:4: (lv_name_1_0= RULE_ID )
+            // InternalMGLang.g:2597:5: lv_name_1_0= RULE_ID
             {
             lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_39); 
 
@@ -6770,7 +6940,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMGLang.g:2540:3: (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )?
+            // InternalMGLang.g:2613:3: (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) ) )?
             int alt38=2;
             int LA38_0 = input.LA(1);
 
@@ -6779,17 +6949,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt38) {
                 case 1 :
-                    // InternalMGLang.g:2541:4: this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) )
+                    // InternalMGLang.g:2614:4: this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleListAssignment ) )
                     {
                     this_ASSIGNMENT_OP_2=(Token)match(input,RULE_ASSIGNMENT_OP,FOLLOW_40); 
 
                     				newLeafNode(this_ASSIGNMENT_OP_2, grammarAccess.getListAccess().getASSIGNMENT_OPTerminalRuleCall_2_0());
                     			
-                    // InternalMGLang.g:2545:4: ( (lv_createdBy_3_0= ruleListAssignment ) )
-                    // InternalMGLang.g:2546:5: (lv_createdBy_3_0= ruleListAssignment )
+                    // InternalMGLang.g:2618:4: ( (lv_createdBy_3_0= ruleListAssignment ) )
+                    // InternalMGLang.g:2619:5: (lv_createdBy_3_0= ruleListAssignment )
                     {
-                    // InternalMGLang.g:2546:5: (lv_createdBy_3_0= ruleListAssignment )
-                    // InternalMGLang.g:2547:6: lv_createdBy_3_0= ruleListAssignment
+                    // InternalMGLang.g:2619:5: (lv_createdBy_3_0= ruleListAssignment )
+                    // InternalMGLang.g:2620:6: lv_createdBy_3_0= ruleListAssignment
                     {
 
                     						newCompositeNode(grammarAccess.getListAccess().getCreatedByListAssignmentParserRuleCall_2_1_0());
@@ -6845,7 +7015,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleListAssignment"
-    // InternalMGLang.g:2569:1: entryRuleListAssignment returns [EObject current=null] : iv_ruleListAssignment= ruleListAssignment EOF ;
+    // InternalMGLang.g:2642:1: entryRuleListAssignment returns [EObject current=null] : iv_ruleListAssignment= ruleListAssignment EOF ;
     public final EObject entryRuleListAssignment() throws RecognitionException {
         EObject current = null;
 
@@ -6853,8 +7023,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2569:55: (iv_ruleListAssignment= ruleListAssignment EOF )
-            // InternalMGLang.g:2570:2: iv_ruleListAssignment= ruleListAssignment EOF
+            // InternalMGLang.g:2642:55: (iv_ruleListAssignment= ruleListAssignment EOF )
+            // InternalMGLang.g:2643:2: iv_ruleListAssignment= ruleListAssignment EOF
             {
              newCompositeNode(grammarAccess.getListAssignmentRule()); 
             pushFollow(FOLLOW_1);
@@ -6881,7 +7051,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleListAssignment"
-    // InternalMGLang.g:2576:1: ruleListAssignment returns [EObject current=null] : (this_ListAdHoc_0= ruleListAdHoc | this_RefOrCall_1= ruleRefOrCall ) ;
+    // InternalMGLang.g:2649:1: ruleListAssignment returns [EObject current=null] : (this_ListAdHoc_0= ruleListAdHoc | this_RefOrCall_1= ruleRefOrCall ) ;
     public final EObject ruleListAssignment() throws RecognitionException {
         EObject current = null;
 
@@ -6894,14 +7064,14 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2582:2: ( (this_ListAdHoc_0= ruleListAdHoc | this_RefOrCall_1= ruleRefOrCall ) )
-            // InternalMGLang.g:2583:2: (this_ListAdHoc_0= ruleListAdHoc | this_RefOrCall_1= ruleRefOrCall )
+            // InternalMGLang.g:2655:2: ( (this_ListAdHoc_0= ruleListAdHoc | this_RefOrCall_1= ruleRefOrCall ) )
+            // InternalMGLang.g:2656:2: (this_ListAdHoc_0= ruleListAdHoc | this_RefOrCall_1= ruleRefOrCall )
             {
-            // InternalMGLang.g:2583:2: (this_ListAdHoc_0= ruleListAdHoc | this_RefOrCall_1= ruleRefOrCall )
+            // InternalMGLang.g:2656:2: (this_ListAdHoc_0= ruleListAdHoc | this_RefOrCall_1= ruleRefOrCall )
             int alt39=2;
             int LA39_0 = input.LA(1);
 
-            if ( (LA39_0==40) ) {
+            if ( (LA39_0==41) ) {
                 alt39=1;
             }
             else if ( (LA39_0==RULE_ID) ) {
@@ -6915,7 +7085,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt39) {
                 case 1 :
-                    // InternalMGLang.g:2584:3: this_ListAdHoc_0= ruleListAdHoc
+                    // InternalMGLang.g:2657:3: this_ListAdHoc_0= ruleListAdHoc
                     {
 
                     			newCompositeNode(grammarAccess.getListAssignmentAccess().getListAdHocParserRuleCall_0());
@@ -6933,7 +7103,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:2593:3: this_RefOrCall_1= ruleRefOrCall
+                    // InternalMGLang.g:2666:3: this_RefOrCall_1= ruleRefOrCall
                     {
 
                     			newCompositeNode(grammarAccess.getListAssignmentAccess().getRefOrCallParserRuleCall_1());
@@ -6973,7 +7143,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleListAdHoc"
-    // InternalMGLang.g:2605:1: entryRuleListAdHoc returns [EObject current=null] : iv_ruleListAdHoc= ruleListAdHoc EOF ;
+    // InternalMGLang.g:2678:1: entryRuleListAdHoc returns [EObject current=null] : iv_ruleListAdHoc= ruleListAdHoc EOF ;
     public final EObject entryRuleListAdHoc() throws RecognitionException {
         EObject current = null;
 
@@ -6981,8 +7151,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2605:50: (iv_ruleListAdHoc= ruleListAdHoc EOF )
-            // InternalMGLang.g:2606:2: iv_ruleListAdHoc= ruleListAdHoc EOF
+            // InternalMGLang.g:2678:50: (iv_ruleListAdHoc= ruleListAdHoc EOF )
+            // InternalMGLang.g:2679:2: iv_ruleListAdHoc= ruleListAdHoc EOF
             {
              newCompositeNode(grammarAccess.getListAdHocRule()); 
             pushFollow(FOLLOW_1);
@@ -7009,7 +7179,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleListAdHoc"
-    // InternalMGLang.g:2612:1: ruleListAdHoc returns [EObject current=null] : (otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']' ) ;
+    // InternalMGLang.g:2685:1: ruleListAdHoc returns [EObject current=null] : (otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']' ) ;
     public final EObject ruleListAdHoc() throws RecognitionException {
         EObject current = null;
 
@@ -7025,21 +7195,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2618:2: ( (otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']' ) )
-            // InternalMGLang.g:2619:2: (otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']' )
+            // InternalMGLang.g:2691:2: ( (otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']' ) )
+            // InternalMGLang.g:2692:2: (otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']' )
             {
-            // InternalMGLang.g:2619:2: (otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']' )
-            // InternalMGLang.g:2620:3: otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']'
+            // InternalMGLang.g:2692:2: (otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']' )
+            // InternalMGLang.g:2693:3: otherlv_0= '[' ( (lv_elements_1_0= ruleLiteral ) ) (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )* otherlv_4= ']'
             {
-            otherlv_0=(Token)match(input,40,FOLLOW_41); 
+            otherlv_0=(Token)match(input,41,FOLLOW_41); 
 
             			newLeafNode(otherlv_0, grammarAccess.getListAdHocAccess().getLeftSquareBracketKeyword_0());
             		
-            // InternalMGLang.g:2624:3: ( (lv_elements_1_0= ruleLiteral ) )
-            // InternalMGLang.g:2625:4: (lv_elements_1_0= ruleLiteral )
+            // InternalMGLang.g:2697:3: ( (lv_elements_1_0= ruleLiteral ) )
+            // InternalMGLang.g:2698:4: (lv_elements_1_0= ruleLiteral )
             {
-            // InternalMGLang.g:2625:4: (lv_elements_1_0= ruleLiteral )
-            // InternalMGLang.g:2626:5: lv_elements_1_0= ruleLiteral
+            // InternalMGLang.g:2698:4: (lv_elements_1_0= ruleLiteral )
+            // InternalMGLang.g:2699:5: lv_elements_1_0= ruleLiteral
             {
 
             					newCompositeNode(grammarAccess.getListAdHocAccess().getElementsLiteralParserRuleCall_1_0());
@@ -7066,7 +7236,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMGLang.g:2643:3: (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )*
+            // InternalMGLang.g:2716:3: (otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) ) )*
             loop40:
             do {
                 int alt40=2;
@@ -7079,17 +7249,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
                 switch (alt40) {
             	case 1 :
-            	    // InternalMGLang.g:2644:4: otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) )
+            	    // InternalMGLang.g:2717:4: otherlv_2= ',' ( (lv_elements_3_0= ruleLiteral ) )
             	    {
             	    otherlv_2=(Token)match(input,25,FOLLOW_41); 
 
             	    				newLeafNode(otherlv_2, grammarAccess.getListAdHocAccess().getCommaKeyword_2_0());
             	    			
-            	    // InternalMGLang.g:2648:4: ( (lv_elements_3_0= ruleLiteral ) )
-            	    // InternalMGLang.g:2649:5: (lv_elements_3_0= ruleLiteral )
+            	    // InternalMGLang.g:2721:4: ( (lv_elements_3_0= ruleLiteral ) )
+            	    // InternalMGLang.g:2722:5: (lv_elements_3_0= ruleLiteral )
             	    {
-            	    // InternalMGLang.g:2649:5: (lv_elements_3_0= ruleLiteral )
-            	    // InternalMGLang.g:2650:6: lv_elements_3_0= ruleLiteral
+            	    // InternalMGLang.g:2722:5: (lv_elements_3_0= ruleLiteral )
+            	    // InternalMGLang.g:2723:6: lv_elements_3_0= ruleLiteral
             	    {
 
             	    						newCompositeNode(grammarAccess.getListAdHocAccess().getElementsLiteralParserRuleCall_2_1_0());
@@ -7125,7 +7295,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 }
             } while (true);
 
-            otherlv_4=(Token)match(input,41,FOLLOW_2); 
+            otherlv_4=(Token)match(input,42,FOLLOW_2); 
 
             			newLeafNode(otherlv_4, grammarAccess.getListAdHocAccess().getRightSquareBracketKeyword_3());
             		
@@ -7152,7 +7322,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleMap"
-    // InternalMGLang.g:2676:1: entryRuleMap returns [EObject current=null] : iv_ruleMap= ruleMap EOF ;
+    // InternalMGLang.g:2749:1: entryRuleMap returns [EObject current=null] : iv_ruleMap= ruleMap EOF ;
     public final EObject entryRuleMap() throws RecognitionException {
         EObject current = null;
 
@@ -7160,8 +7330,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2676:44: (iv_ruleMap= ruleMap EOF )
-            // InternalMGLang.g:2677:2: iv_ruleMap= ruleMap EOF
+            // InternalMGLang.g:2749:44: (iv_ruleMap= ruleMap EOF )
+            // InternalMGLang.g:2750:2: iv_ruleMap= ruleMap EOF
             {
              newCompositeNode(grammarAccess.getMapRule()); 
             pushFollow(FOLLOW_1);
@@ -7188,7 +7358,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleMap"
-    // InternalMGLang.g:2683:1: ruleMap returns [EObject current=null] : (otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )? ) ;
+    // InternalMGLang.g:2756:1: ruleMap returns [EObject current=null] : (otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )? ) ;
     public final EObject ruleMap() throws RecognitionException {
         EObject current = null;
 
@@ -7202,21 +7372,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2689:2: ( (otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )? ) )
-            // InternalMGLang.g:2690:2: (otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )? )
+            // InternalMGLang.g:2762:2: ( (otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )? ) )
+            // InternalMGLang.g:2763:2: (otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )? )
             {
-            // InternalMGLang.g:2690:2: (otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )? )
-            // InternalMGLang.g:2691:3: otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )?
+            // InternalMGLang.g:2763:2: (otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )? )
+            // InternalMGLang.g:2764:3: otherlv_0= 'Map' ( (lv_name_1_0= RULE_ID ) ) (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )?
             {
-            otherlv_0=(Token)match(input,42,FOLLOW_7); 
+            otherlv_0=(Token)match(input,43,FOLLOW_7); 
 
             			newLeafNode(otherlv_0, grammarAccess.getMapAccess().getMapKeyword_0());
             		
-            // InternalMGLang.g:2695:3: ( (lv_name_1_0= RULE_ID ) )
-            // InternalMGLang.g:2696:4: (lv_name_1_0= RULE_ID )
+            // InternalMGLang.g:2768:3: ( (lv_name_1_0= RULE_ID ) )
+            // InternalMGLang.g:2769:4: (lv_name_1_0= RULE_ID )
             {
-            // InternalMGLang.g:2696:4: (lv_name_1_0= RULE_ID )
-            // InternalMGLang.g:2697:5: lv_name_1_0= RULE_ID
+            // InternalMGLang.g:2769:4: (lv_name_1_0= RULE_ID )
+            // InternalMGLang.g:2770:5: lv_name_1_0= RULE_ID
             {
             lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_39); 
 
@@ -7238,7 +7408,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMGLang.g:2713:3: (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )?
+            // InternalMGLang.g:2786:3: (this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) ) )?
             int alt41=2;
             int LA41_0 = input.LA(1);
 
@@ -7247,17 +7417,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt41) {
                 case 1 :
-                    // InternalMGLang.g:2714:4: this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) )
+                    // InternalMGLang.g:2787:4: this_ASSIGNMENT_OP_2= RULE_ASSIGNMENT_OP ( (lv_createdBy_3_0= ruleMapAssignment ) )
                     {
                     this_ASSIGNMENT_OP_2=(Token)match(input,RULE_ASSIGNMENT_OP,FOLLOW_40); 
 
                     				newLeafNode(this_ASSIGNMENT_OP_2, grammarAccess.getMapAccess().getASSIGNMENT_OPTerminalRuleCall_2_0());
                     			
-                    // InternalMGLang.g:2718:4: ( (lv_createdBy_3_0= ruleMapAssignment ) )
-                    // InternalMGLang.g:2719:5: (lv_createdBy_3_0= ruleMapAssignment )
+                    // InternalMGLang.g:2791:4: ( (lv_createdBy_3_0= ruleMapAssignment ) )
+                    // InternalMGLang.g:2792:5: (lv_createdBy_3_0= ruleMapAssignment )
                     {
-                    // InternalMGLang.g:2719:5: (lv_createdBy_3_0= ruleMapAssignment )
-                    // InternalMGLang.g:2720:6: lv_createdBy_3_0= ruleMapAssignment
+                    // InternalMGLang.g:2792:5: (lv_createdBy_3_0= ruleMapAssignment )
+                    // InternalMGLang.g:2793:6: lv_createdBy_3_0= ruleMapAssignment
                     {
 
                     						newCompositeNode(grammarAccess.getMapAccess().getCreatedByMapAssignmentParserRuleCall_2_1_0());
@@ -7313,7 +7483,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleMapAssignment"
-    // InternalMGLang.g:2742:1: entryRuleMapAssignment returns [EObject current=null] : iv_ruleMapAssignment= ruleMapAssignment EOF ;
+    // InternalMGLang.g:2815:1: entryRuleMapAssignment returns [EObject current=null] : iv_ruleMapAssignment= ruleMapAssignment EOF ;
     public final EObject entryRuleMapAssignment() throws RecognitionException {
         EObject current = null;
 
@@ -7321,8 +7491,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2742:54: (iv_ruleMapAssignment= ruleMapAssignment EOF )
-            // InternalMGLang.g:2743:2: iv_ruleMapAssignment= ruleMapAssignment EOF
+            // InternalMGLang.g:2815:54: (iv_ruleMapAssignment= ruleMapAssignment EOF )
+            // InternalMGLang.g:2816:2: iv_ruleMapAssignment= ruleMapAssignment EOF
             {
              newCompositeNode(grammarAccess.getMapAssignmentRule()); 
             pushFollow(FOLLOW_1);
@@ -7349,7 +7519,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleMapAssignment"
-    // InternalMGLang.g:2749:1: ruleMapAssignment returns [EObject current=null] : (this_MapAdHoc_0= ruleMapAdHoc | this_RefOrCall_1= ruleRefOrCall ) ;
+    // InternalMGLang.g:2822:1: ruleMapAssignment returns [EObject current=null] : (this_MapAdHoc_0= ruleMapAdHoc | this_RefOrCall_1= ruleRefOrCall ) ;
     public final EObject ruleMapAssignment() throws RecognitionException {
         EObject current = null;
 
@@ -7362,14 +7532,14 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2755:2: ( (this_MapAdHoc_0= ruleMapAdHoc | this_RefOrCall_1= ruleRefOrCall ) )
-            // InternalMGLang.g:2756:2: (this_MapAdHoc_0= ruleMapAdHoc | this_RefOrCall_1= ruleRefOrCall )
+            // InternalMGLang.g:2828:2: ( (this_MapAdHoc_0= ruleMapAdHoc | this_RefOrCall_1= ruleRefOrCall ) )
+            // InternalMGLang.g:2829:2: (this_MapAdHoc_0= ruleMapAdHoc | this_RefOrCall_1= ruleRefOrCall )
             {
-            // InternalMGLang.g:2756:2: (this_MapAdHoc_0= ruleMapAdHoc | this_RefOrCall_1= ruleRefOrCall )
+            // InternalMGLang.g:2829:2: (this_MapAdHoc_0= ruleMapAdHoc | this_RefOrCall_1= ruleRefOrCall )
             int alt42=2;
             int LA42_0 = input.LA(1);
 
-            if ( (LA42_0==40) ) {
+            if ( (LA42_0==41) ) {
                 alt42=1;
             }
             else if ( (LA42_0==RULE_ID) ) {
@@ -7383,7 +7553,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt42) {
                 case 1 :
-                    // InternalMGLang.g:2757:3: this_MapAdHoc_0= ruleMapAdHoc
+                    // InternalMGLang.g:2830:3: this_MapAdHoc_0= ruleMapAdHoc
                     {
 
                     			newCompositeNode(grammarAccess.getMapAssignmentAccess().getMapAdHocParserRuleCall_0());
@@ -7401,7 +7571,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:2766:3: this_RefOrCall_1= ruleRefOrCall
+                    // InternalMGLang.g:2839:3: this_RefOrCall_1= ruleRefOrCall
                     {
 
                     			newCompositeNode(grammarAccess.getMapAssignmentAccess().getRefOrCallParserRuleCall_1());
@@ -7441,7 +7611,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleMapAdHoc"
-    // InternalMGLang.g:2778:1: entryRuleMapAdHoc returns [EObject current=null] : iv_ruleMapAdHoc= ruleMapAdHoc EOF ;
+    // InternalMGLang.g:2851:1: entryRuleMapAdHoc returns [EObject current=null] : iv_ruleMapAdHoc= ruleMapAdHoc EOF ;
     public final EObject entryRuleMapAdHoc() throws RecognitionException {
         EObject current = null;
 
@@ -7449,8 +7619,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2778:49: (iv_ruleMapAdHoc= ruleMapAdHoc EOF )
-            // InternalMGLang.g:2779:2: iv_ruleMapAdHoc= ruleMapAdHoc EOF
+            // InternalMGLang.g:2851:49: (iv_ruleMapAdHoc= ruleMapAdHoc EOF )
+            // InternalMGLang.g:2852:2: iv_ruleMapAdHoc= ruleMapAdHoc EOF
             {
              newCompositeNode(grammarAccess.getMapAdHocRule()); 
             pushFollow(FOLLOW_1);
@@ -7477,7 +7647,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleMapAdHoc"
-    // InternalMGLang.g:2785:1: ruleMapAdHoc returns [EObject current=null] : (otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']' ) ;
+    // InternalMGLang.g:2858:1: ruleMapAdHoc returns [EObject current=null] : (otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']' ) ;
     public final EObject ruleMapAdHoc() throws RecognitionException {
         EObject current = null;
 
@@ -7493,21 +7663,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2791:2: ( (otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']' ) )
-            // InternalMGLang.g:2792:2: (otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']' )
+            // InternalMGLang.g:2864:2: ( (otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']' ) )
+            // InternalMGLang.g:2865:2: (otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']' )
             {
-            // InternalMGLang.g:2792:2: (otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']' )
-            // InternalMGLang.g:2793:3: otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']'
+            // InternalMGLang.g:2865:2: (otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']' )
+            // InternalMGLang.g:2866:3: otherlv_0= '[' ( (lv_entries_1_0= ruleMapTupel ) ) (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )* otherlv_4= ']'
             {
-            otherlv_0=(Token)match(input,40,FOLLOW_8); 
+            otherlv_0=(Token)match(input,41,FOLLOW_8); 
 
             			newLeafNode(otherlv_0, grammarAccess.getMapAdHocAccess().getLeftSquareBracketKeyword_0());
             		
-            // InternalMGLang.g:2797:3: ( (lv_entries_1_0= ruleMapTupel ) )
-            // InternalMGLang.g:2798:4: (lv_entries_1_0= ruleMapTupel )
+            // InternalMGLang.g:2870:3: ( (lv_entries_1_0= ruleMapTupel ) )
+            // InternalMGLang.g:2871:4: (lv_entries_1_0= ruleMapTupel )
             {
-            // InternalMGLang.g:2798:4: (lv_entries_1_0= ruleMapTupel )
-            // InternalMGLang.g:2799:5: lv_entries_1_0= ruleMapTupel
+            // InternalMGLang.g:2871:4: (lv_entries_1_0= ruleMapTupel )
+            // InternalMGLang.g:2872:5: lv_entries_1_0= ruleMapTupel
             {
 
             					newCompositeNode(grammarAccess.getMapAdHocAccess().getEntriesMapTupelParserRuleCall_1_0());
@@ -7534,7 +7704,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalMGLang.g:2816:3: (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )*
+            // InternalMGLang.g:2889:3: (otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) ) )*
             loop43:
             do {
                 int alt43=2;
@@ -7547,17 +7717,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
                 switch (alt43) {
             	case 1 :
-            	    // InternalMGLang.g:2817:4: otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) )
+            	    // InternalMGLang.g:2890:4: otherlv_2= ',' ( (lv_entries_3_0= ruleMapTupel ) )
             	    {
             	    otherlv_2=(Token)match(input,25,FOLLOW_8); 
 
             	    				newLeafNode(otherlv_2, grammarAccess.getMapAdHocAccess().getCommaKeyword_2_0());
             	    			
-            	    // InternalMGLang.g:2821:4: ( (lv_entries_3_0= ruleMapTupel ) )
-            	    // InternalMGLang.g:2822:5: (lv_entries_3_0= ruleMapTupel )
+            	    // InternalMGLang.g:2894:4: ( (lv_entries_3_0= ruleMapTupel ) )
+            	    // InternalMGLang.g:2895:5: (lv_entries_3_0= ruleMapTupel )
             	    {
-            	    // InternalMGLang.g:2822:5: (lv_entries_3_0= ruleMapTupel )
-            	    // InternalMGLang.g:2823:6: lv_entries_3_0= ruleMapTupel
+            	    // InternalMGLang.g:2895:5: (lv_entries_3_0= ruleMapTupel )
+            	    // InternalMGLang.g:2896:6: lv_entries_3_0= ruleMapTupel
             	    {
 
             	    						newCompositeNode(grammarAccess.getMapAdHocAccess().getEntriesMapTupelParserRuleCall_2_1_0());
@@ -7593,7 +7763,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 }
             } while (true);
 
-            otherlv_4=(Token)match(input,41,FOLLOW_2); 
+            otherlv_4=(Token)match(input,42,FOLLOW_2); 
 
             			newLeafNode(otherlv_4, grammarAccess.getMapAdHocAccess().getRightSquareBracketKeyword_3());
             		
@@ -7620,7 +7790,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleMapTupel"
-    // InternalMGLang.g:2849:1: entryRuleMapTupel returns [EObject current=null] : iv_ruleMapTupel= ruleMapTupel EOF ;
+    // InternalMGLang.g:2922:1: entryRuleMapTupel returns [EObject current=null] : iv_ruleMapTupel= ruleMapTupel EOF ;
     public final EObject entryRuleMapTupel() throws RecognitionException {
         EObject current = null;
 
@@ -7628,8 +7798,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2849:49: (iv_ruleMapTupel= ruleMapTupel EOF )
-            // InternalMGLang.g:2850:2: iv_ruleMapTupel= ruleMapTupel EOF
+            // InternalMGLang.g:2922:49: (iv_ruleMapTupel= ruleMapTupel EOF )
+            // InternalMGLang.g:2923:2: iv_ruleMapTupel= ruleMapTupel EOF
             {
              newCompositeNode(grammarAccess.getMapTupelRule()); 
             pushFollow(FOLLOW_1);
@@ -7656,7 +7826,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleMapTupel"
-    // InternalMGLang.g:2856:1: ruleMapTupel returns [EObject current=null] : (otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')' ) ;
+    // InternalMGLang.g:2929:1: ruleMapTupel returns [EObject current=null] : (otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')' ) ;
     public final EObject ruleMapTupel() throws RecognitionException {
         EObject current = null;
 
@@ -7672,21 +7842,21 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2862:2: ( (otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')' ) )
-            // InternalMGLang.g:2863:2: (otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')' )
+            // InternalMGLang.g:2935:2: ( (otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')' ) )
+            // InternalMGLang.g:2936:2: (otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')' )
             {
-            // InternalMGLang.g:2863:2: (otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')' )
-            // InternalMGLang.g:2864:3: otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')'
+            // InternalMGLang.g:2936:2: (otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')' )
+            // InternalMGLang.g:2937:3: otherlv_0= '(' ( (lv_key_1_0= ruleLiteral ) ) otherlv_2= ',' ( (lv_value_3_0= ruleArithmeticExpression ) ) otherlv_4= ')'
             {
             otherlv_0=(Token)match(input,19,FOLLOW_41); 
 
             			newLeafNode(otherlv_0, grammarAccess.getMapTupelAccess().getLeftParenthesisKeyword_0());
             		
-            // InternalMGLang.g:2868:3: ( (lv_key_1_0= ruleLiteral ) )
-            // InternalMGLang.g:2869:4: (lv_key_1_0= ruleLiteral )
+            // InternalMGLang.g:2941:3: ( (lv_key_1_0= ruleLiteral ) )
+            // InternalMGLang.g:2942:4: (lv_key_1_0= ruleLiteral )
             {
-            // InternalMGLang.g:2869:4: (lv_key_1_0= ruleLiteral )
-            // InternalMGLang.g:2870:5: lv_key_1_0= ruleLiteral
+            // InternalMGLang.g:2942:4: (lv_key_1_0= ruleLiteral )
+            // InternalMGLang.g:2943:5: lv_key_1_0= ruleLiteral
             {
 
             					newCompositeNode(grammarAccess.getMapTupelAccess().getKeyLiteralParserRuleCall_1_0());
@@ -7717,11 +7887,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_2, grammarAccess.getMapTupelAccess().getCommaKeyword_2());
             		
-            // InternalMGLang.g:2891:3: ( (lv_value_3_0= ruleArithmeticExpression ) )
-            // InternalMGLang.g:2892:4: (lv_value_3_0= ruleArithmeticExpression )
+            // InternalMGLang.g:2964:3: ( (lv_value_3_0= ruleArithmeticExpression ) )
+            // InternalMGLang.g:2965:4: (lv_value_3_0= ruleArithmeticExpression )
             {
-            // InternalMGLang.g:2892:4: (lv_value_3_0= ruleArithmeticExpression )
-            // InternalMGLang.g:2893:5: lv_value_3_0= ruleArithmeticExpression
+            // InternalMGLang.g:2965:4: (lv_value_3_0= ruleArithmeticExpression )
+            // InternalMGLang.g:2966:5: lv_value_3_0= ruleArithmeticExpression
             {
 
             					newCompositeNode(grammarAccess.getMapTupelAccess().getValueArithmeticExpressionParserRuleCall_3_0());
@@ -7775,7 +7945,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleForRange"
-    // InternalMGLang.g:2918:1: entryRuleForRange returns [EObject current=null] : iv_ruleForRange= ruleForRange EOF ;
+    // InternalMGLang.g:2991:1: entryRuleForRange returns [EObject current=null] : iv_ruleForRange= ruleForRange EOF ;
     public final EObject entryRuleForRange() throws RecognitionException {
         EObject current = null;
 
@@ -7783,8 +7953,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2918:49: (iv_ruleForRange= ruleForRange EOF )
-            // InternalMGLang.g:2919:2: iv_ruleForRange= ruleForRange EOF
+            // InternalMGLang.g:2991:49: (iv_ruleForRange= ruleForRange EOF )
+            // InternalMGLang.g:2992:2: iv_ruleForRange= ruleForRange EOF
             {
              newCompositeNode(grammarAccess.getForRangeRule()); 
             pushFollow(FOLLOW_1);
@@ -7811,7 +7981,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleForRange"
-    // InternalMGLang.g:2925:1: ruleForRange returns [EObject current=null] : ( ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) ) ) ;
+    // InternalMGLang.g:2998:1: ruleForRange returns [EObject current=null] : ( ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) ) ) ;
     public final EObject ruleForRange() throws RecognitionException {
         EObject current = null;
 
@@ -7825,17 +7995,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2931:2: ( ( ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) ) ) )
-            // InternalMGLang.g:2932:2: ( ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) ) )
+            // InternalMGLang.g:3004:2: ( ( ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) ) ) )
+            // InternalMGLang.g:3005:2: ( ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) ) )
             {
-            // InternalMGLang.g:2932:2: ( ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) ) )
-            // InternalMGLang.g:2933:3: ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) )
+            // InternalMGLang.g:3005:2: ( ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) ) )
+            // InternalMGLang.g:3006:3: ( (lv_start_0_0= ruleArithmeticExpression ) ) otherlv_1= ':' ( (lv_end_2_0= ruleArithmeticExpression ) )
             {
-            // InternalMGLang.g:2933:3: ( (lv_start_0_0= ruleArithmeticExpression ) )
-            // InternalMGLang.g:2934:4: (lv_start_0_0= ruleArithmeticExpression )
+            // InternalMGLang.g:3006:3: ( (lv_start_0_0= ruleArithmeticExpression ) )
+            // InternalMGLang.g:3007:4: (lv_start_0_0= ruleArithmeticExpression )
             {
-            // InternalMGLang.g:2934:4: (lv_start_0_0= ruleArithmeticExpression )
-            // InternalMGLang.g:2935:5: lv_start_0_0= ruleArithmeticExpression
+            // InternalMGLang.g:3007:4: (lv_start_0_0= ruleArithmeticExpression )
+            // InternalMGLang.g:3008:5: lv_start_0_0= ruleArithmeticExpression
             {
 
             					newCompositeNode(grammarAccess.getForRangeAccess().getStartArithmeticExpressionParserRuleCall_0_0());
@@ -7862,15 +8032,15 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,36,FOLLOW_21); 
+            otherlv_1=(Token)match(input,37,FOLLOW_21); 
 
             			newLeafNode(otherlv_1, grammarAccess.getForRangeAccess().getColonKeyword_1());
             		
-            // InternalMGLang.g:2956:3: ( (lv_end_2_0= ruleArithmeticExpression ) )
-            // InternalMGLang.g:2957:4: (lv_end_2_0= ruleArithmeticExpression )
+            // InternalMGLang.g:3029:3: ( (lv_end_2_0= ruleArithmeticExpression ) )
+            // InternalMGLang.g:3030:4: (lv_end_2_0= ruleArithmeticExpression )
             {
-            // InternalMGLang.g:2957:4: (lv_end_2_0= ruleArithmeticExpression )
-            // InternalMGLang.g:2958:5: lv_end_2_0= ruleArithmeticExpression
+            // InternalMGLang.g:3030:4: (lv_end_2_0= ruleArithmeticExpression )
+            // InternalMGLang.g:3031:5: lv_end_2_0= ruleArithmeticExpression
             {
 
             					newCompositeNode(grammarAccess.getForRangeAccess().getEndArithmeticExpressionParserRuleCall_2_0());
@@ -7920,7 +8090,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleArithmeticExpression"
-    // InternalMGLang.g:2979:1: entryRuleArithmeticExpression returns [EObject current=null] : iv_ruleArithmeticExpression= ruleArithmeticExpression EOF ;
+    // InternalMGLang.g:3052:1: entryRuleArithmeticExpression returns [EObject current=null] : iv_ruleArithmeticExpression= ruleArithmeticExpression EOF ;
     public final EObject entryRuleArithmeticExpression() throws RecognitionException {
         EObject current = null;
 
@@ -7928,8 +8098,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:2979:61: (iv_ruleArithmeticExpression= ruleArithmeticExpression EOF )
-            // InternalMGLang.g:2980:2: iv_ruleArithmeticExpression= ruleArithmeticExpression EOF
+            // InternalMGLang.g:3052:61: (iv_ruleArithmeticExpression= ruleArithmeticExpression EOF )
+            // InternalMGLang.g:3053:2: iv_ruleArithmeticExpression= ruleArithmeticExpression EOF
             {
              newCompositeNode(grammarAccess.getArithmeticExpressionRule()); 
             pushFollow(FOLLOW_1);
@@ -7956,7 +8126,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleArithmeticExpression"
-    // InternalMGLang.g:2986:1: ruleArithmeticExpression returns [EObject current=null] : this_TertiaryExpression_0= ruleTertiaryExpression ;
+    // InternalMGLang.g:3059:1: ruleArithmeticExpression returns [EObject current=null] : this_TertiaryExpression_0= ruleTertiaryExpression ;
     public final EObject ruleArithmeticExpression() throws RecognitionException {
         EObject current = null;
 
@@ -7967,8 +8137,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:2992:2: (this_TertiaryExpression_0= ruleTertiaryExpression )
-            // InternalMGLang.g:2993:2: this_TertiaryExpression_0= ruleTertiaryExpression
+            // InternalMGLang.g:3065:2: (this_TertiaryExpression_0= ruleTertiaryExpression )
+            // InternalMGLang.g:3066:2: this_TertiaryExpression_0= ruleTertiaryExpression
             {
 
             		newCompositeNode(grammarAccess.getArithmeticExpressionAccess().getTertiaryExpressionParserRuleCall());
@@ -8002,7 +8172,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleTertiaryExpression"
-    // InternalMGLang.g:3004:1: entryRuleTertiaryExpression returns [EObject current=null] : iv_ruleTertiaryExpression= ruleTertiaryExpression EOF ;
+    // InternalMGLang.g:3077:1: entryRuleTertiaryExpression returns [EObject current=null] : iv_ruleTertiaryExpression= ruleTertiaryExpression EOF ;
     public final EObject entryRuleTertiaryExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8010,8 +8180,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:3004:59: (iv_ruleTertiaryExpression= ruleTertiaryExpression EOF )
-            // InternalMGLang.g:3005:2: iv_ruleTertiaryExpression= ruleTertiaryExpression EOF
+            // InternalMGLang.g:3077:59: (iv_ruleTertiaryExpression= ruleTertiaryExpression EOF )
+            // InternalMGLang.g:3078:2: iv_ruleTertiaryExpression= ruleTertiaryExpression EOF
             {
              newCompositeNode(grammarAccess.getTertiaryExpressionRule()); 
             pushFollow(FOLLOW_1);
@@ -8038,7 +8208,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleTertiaryExpression"
-    // InternalMGLang.g:3011:1: ruleTertiaryExpression returns [EObject current=null] : (this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )* ) ;
+    // InternalMGLang.g:3084:1: ruleTertiaryExpression returns [EObject current=null] : (this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )* ) ;
     public final EObject ruleTertiaryExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8053,11 +8223,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3017:2: ( (this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )* ) )
-            // InternalMGLang.g:3018:2: (this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )* )
+            // InternalMGLang.g:3090:2: ( (this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )* ) )
+            // InternalMGLang.g:3091:2: (this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )* )
             {
-            // InternalMGLang.g:3018:2: (this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )* )
-            // InternalMGLang.g:3019:3: this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )*
+            // InternalMGLang.g:3091:2: (this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )* )
+            // InternalMGLang.g:3092:3: this_SecondaryExpression_0= ruleSecondaryExpression ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )*
             {
 
             			newCompositeNode(grammarAccess.getTertiaryExpressionAccess().getSecondaryExpressionParserRuleCall_0());
@@ -8071,23 +8241,23 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             			current = this_SecondaryExpression_0;
             			afterParserOrEnumRuleCall();
             		
-            // InternalMGLang.g:3027:3: ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )*
+            // InternalMGLang.g:3100:3: ( () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) ) )*
             loop44:
             do {
                 int alt44=2;
                 int LA44_0 = input.LA(1);
 
-                if ( (LA44_0==33||(LA44_0>=56 && LA44_0<=57)) ) {
+                if ( (LA44_0==34||(LA44_0>=57 && LA44_0<=58)) ) {
                     alt44=1;
                 }
 
 
                 switch (alt44) {
             	case 1 :
-            	    // InternalMGLang.g:3028:4: () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) )
+            	    // InternalMGLang.g:3101:4: () ( (lv_op_2_0= ruleTertiaryOp ) ) ( (lv_right_3_0= ruleSecondaryExpression ) )
             	    {
-            	    // InternalMGLang.g:3028:4: ()
-            	    // InternalMGLang.g:3029:5: 
+            	    // InternalMGLang.g:3101:4: ()
+            	    // InternalMGLang.g:3102:5: 
             	    {
 
             	    					current = forceCreateModelElementAndSet(
@@ -8097,11 +8267,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMGLang.g:3035:4: ( (lv_op_2_0= ruleTertiaryOp ) )
-            	    // InternalMGLang.g:3036:5: (lv_op_2_0= ruleTertiaryOp )
+            	    // InternalMGLang.g:3108:4: ( (lv_op_2_0= ruleTertiaryOp ) )
+            	    // InternalMGLang.g:3109:5: (lv_op_2_0= ruleTertiaryOp )
             	    {
-            	    // InternalMGLang.g:3036:5: (lv_op_2_0= ruleTertiaryOp )
-            	    // InternalMGLang.g:3037:6: lv_op_2_0= ruleTertiaryOp
+            	    // InternalMGLang.g:3109:5: (lv_op_2_0= ruleTertiaryOp )
+            	    // InternalMGLang.g:3110:6: lv_op_2_0= ruleTertiaryOp
             	    {
 
             	    						newCompositeNode(grammarAccess.getTertiaryExpressionAccess().getOpTertiaryOpEnumRuleCall_1_1_0());
@@ -8128,11 +8298,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMGLang.g:3054:4: ( (lv_right_3_0= ruleSecondaryExpression ) )
-            	    // InternalMGLang.g:3055:5: (lv_right_3_0= ruleSecondaryExpression )
+            	    // InternalMGLang.g:3127:4: ( (lv_right_3_0= ruleSecondaryExpression ) )
+            	    // InternalMGLang.g:3128:5: (lv_right_3_0= ruleSecondaryExpression )
             	    {
-            	    // InternalMGLang.g:3055:5: (lv_right_3_0= ruleSecondaryExpression )
-            	    // InternalMGLang.g:3056:6: lv_right_3_0= ruleSecondaryExpression
+            	    // InternalMGLang.g:3128:5: (lv_right_3_0= ruleSecondaryExpression )
+            	    // InternalMGLang.g:3129:6: lv_right_3_0= ruleSecondaryExpression
             	    {
 
             	    						newCompositeNode(grammarAccess.getTertiaryExpressionAccess().getRightSecondaryExpressionParserRuleCall_1_2_0());
@@ -8191,7 +8361,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleSecondaryExpression"
-    // InternalMGLang.g:3078:1: entryRuleSecondaryExpression returns [EObject current=null] : iv_ruleSecondaryExpression= ruleSecondaryExpression EOF ;
+    // InternalMGLang.g:3151:1: entryRuleSecondaryExpression returns [EObject current=null] : iv_ruleSecondaryExpression= ruleSecondaryExpression EOF ;
     public final EObject entryRuleSecondaryExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8199,8 +8369,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:3078:60: (iv_ruleSecondaryExpression= ruleSecondaryExpression EOF )
-            // InternalMGLang.g:3079:2: iv_ruleSecondaryExpression= ruleSecondaryExpression EOF
+            // InternalMGLang.g:3151:60: (iv_ruleSecondaryExpression= ruleSecondaryExpression EOF )
+            // InternalMGLang.g:3152:2: iv_ruleSecondaryExpression= ruleSecondaryExpression EOF
             {
              newCompositeNode(grammarAccess.getSecondaryExpressionRule()); 
             pushFollow(FOLLOW_1);
@@ -8227,7 +8397,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSecondaryExpression"
-    // InternalMGLang.g:3085:1: ruleSecondaryExpression returns [EObject current=null] : (this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )* ) ;
+    // InternalMGLang.g:3158:1: ruleSecondaryExpression returns [EObject current=null] : (this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )* ) ;
     public final EObject ruleSecondaryExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8242,11 +8412,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3091:2: ( (this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )* ) )
-            // InternalMGLang.g:3092:2: (this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )* )
+            // InternalMGLang.g:3164:2: ( (this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )* ) )
+            // InternalMGLang.g:3165:2: (this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )* )
             {
-            // InternalMGLang.g:3092:2: (this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )* )
-            // InternalMGLang.g:3093:3: this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )*
+            // InternalMGLang.g:3165:2: (this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )* )
+            // InternalMGLang.g:3166:3: this_PrimaryExpr_0= rulePrimaryExpr ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )*
             {
 
             			newCompositeNode(grammarAccess.getSecondaryExpressionAccess().getPrimaryExprParserRuleCall_0());
@@ -8260,23 +8430,23 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             			current = this_PrimaryExpr_0;
             			afterParserOrEnumRuleCall();
             		
-            // InternalMGLang.g:3101:3: ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )*
+            // InternalMGLang.g:3174:3: ( () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) ) )*
             loop45:
             do {
                 int alt45=2;
                 int LA45_0 = input.LA(1);
 
-                if ( ((LA45_0>=58 && LA45_0<=59)) ) {
+                if ( ((LA45_0>=59 && LA45_0<=60)) ) {
                     alt45=1;
                 }
 
 
                 switch (alt45) {
             	case 1 :
-            	    // InternalMGLang.g:3102:4: () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) )
+            	    // InternalMGLang.g:3175:4: () ( (lv_op_2_0= ruleSecondaryOp ) ) ( (lv_right_3_0= rulePrimaryExpr ) )
             	    {
-            	    // InternalMGLang.g:3102:4: ()
-            	    // InternalMGLang.g:3103:5: 
+            	    // InternalMGLang.g:3175:4: ()
+            	    // InternalMGLang.g:3176:5: 
             	    {
 
             	    					current = forceCreateModelElementAndSet(
@@ -8286,11 +8456,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMGLang.g:3109:4: ( (lv_op_2_0= ruleSecondaryOp ) )
-            	    // InternalMGLang.g:3110:5: (lv_op_2_0= ruleSecondaryOp )
+            	    // InternalMGLang.g:3182:4: ( (lv_op_2_0= ruleSecondaryOp ) )
+            	    // InternalMGLang.g:3183:5: (lv_op_2_0= ruleSecondaryOp )
             	    {
-            	    // InternalMGLang.g:3110:5: (lv_op_2_0= ruleSecondaryOp )
-            	    // InternalMGLang.g:3111:6: lv_op_2_0= ruleSecondaryOp
+            	    // InternalMGLang.g:3183:5: (lv_op_2_0= ruleSecondaryOp )
+            	    // InternalMGLang.g:3184:6: lv_op_2_0= ruleSecondaryOp
             	    {
 
             	    						newCompositeNode(grammarAccess.getSecondaryExpressionAccess().getOpSecondaryOpEnumRuleCall_1_1_0());
@@ -8317,11 +8487,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMGLang.g:3128:4: ( (lv_right_3_0= rulePrimaryExpr ) )
-            	    // InternalMGLang.g:3129:5: (lv_right_3_0= rulePrimaryExpr )
+            	    // InternalMGLang.g:3201:4: ( (lv_right_3_0= rulePrimaryExpr ) )
+            	    // InternalMGLang.g:3202:5: (lv_right_3_0= rulePrimaryExpr )
             	    {
-            	    // InternalMGLang.g:3129:5: (lv_right_3_0= rulePrimaryExpr )
-            	    // InternalMGLang.g:3130:6: lv_right_3_0= rulePrimaryExpr
+            	    // InternalMGLang.g:3202:5: (lv_right_3_0= rulePrimaryExpr )
+            	    // InternalMGLang.g:3203:6: lv_right_3_0= rulePrimaryExpr
             	    {
 
             	    						newCompositeNode(grammarAccess.getSecondaryExpressionAccess().getRightPrimaryExprParserRuleCall_1_2_0());
@@ -8380,7 +8550,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRulePrimaryExpr"
-    // InternalMGLang.g:3152:1: entryRulePrimaryExpr returns [EObject current=null] : iv_rulePrimaryExpr= rulePrimaryExpr EOF ;
+    // InternalMGLang.g:3225:1: entryRulePrimaryExpr returns [EObject current=null] : iv_rulePrimaryExpr= rulePrimaryExpr EOF ;
     public final EObject entryRulePrimaryExpr() throws RecognitionException {
         EObject current = null;
 
@@ -8388,8 +8558,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:3152:52: (iv_rulePrimaryExpr= rulePrimaryExpr EOF )
-            // InternalMGLang.g:3153:2: iv_rulePrimaryExpr= rulePrimaryExpr EOF
+            // InternalMGLang.g:3225:52: (iv_rulePrimaryExpr= rulePrimaryExpr EOF )
+            // InternalMGLang.g:3226:2: iv_rulePrimaryExpr= rulePrimaryExpr EOF
             {
              newCompositeNode(grammarAccess.getPrimaryExprRule()); 
             pushFollow(FOLLOW_1);
@@ -8416,7 +8586,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "rulePrimaryExpr"
-    // InternalMGLang.g:3159:1: rulePrimaryExpr returns [EObject current=null] : (this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )* ) ;
+    // InternalMGLang.g:3232:1: rulePrimaryExpr returns [EObject current=null] : (this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )* ) ;
     public final EObject rulePrimaryExpr() throws RecognitionException {
         EObject current = null;
 
@@ -8431,11 +8601,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3165:2: ( (this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )* ) )
-            // InternalMGLang.g:3166:2: (this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )* )
+            // InternalMGLang.g:3238:2: ( (this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )* ) )
+            // InternalMGLang.g:3239:2: (this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )* )
             {
-            // InternalMGLang.g:3166:2: (this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )* )
-            // InternalMGLang.g:3167:3: this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )*
+            // InternalMGLang.g:3239:2: (this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )* )
+            // InternalMGLang.g:3240:3: this_RelationExpression_0= ruleRelationExpression ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )*
             {
 
             			newCompositeNode(grammarAccess.getPrimaryExprAccess().getRelationExpressionParserRuleCall_0());
@@ -8449,23 +8619,23 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             			current = this_RelationExpression_0;
             			afterParserOrEnumRuleCall();
             		
-            // InternalMGLang.g:3175:3: ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )*
+            // InternalMGLang.g:3248:3: ( () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) ) )*
             loop46:
             do {
                 int alt46=2;
                 int LA46_0 = input.LA(1);
 
-                if ( ((LA46_0>=60 && LA46_0<=62)) ) {
+                if ( ((LA46_0>=61 && LA46_0<=63)) ) {
                     alt46=1;
                 }
 
 
                 switch (alt46) {
             	case 1 :
-            	    // InternalMGLang.g:3176:4: () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) )
+            	    // InternalMGLang.g:3249:4: () ( (lv_op_2_0= rulePrimaryOp ) ) ( (lv_right_3_0= ruleRelationExpression ) )
             	    {
-            	    // InternalMGLang.g:3176:4: ()
-            	    // InternalMGLang.g:3177:5: 
+            	    // InternalMGLang.g:3249:4: ()
+            	    // InternalMGLang.g:3250:5: 
             	    {
 
             	    					current = forceCreateModelElementAndSet(
@@ -8475,11 +8645,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMGLang.g:3183:4: ( (lv_op_2_0= rulePrimaryOp ) )
-            	    // InternalMGLang.g:3184:5: (lv_op_2_0= rulePrimaryOp )
+            	    // InternalMGLang.g:3256:4: ( (lv_op_2_0= rulePrimaryOp ) )
+            	    // InternalMGLang.g:3257:5: (lv_op_2_0= rulePrimaryOp )
             	    {
-            	    // InternalMGLang.g:3184:5: (lv_op_2_0= rulePrimaryOp )
-            	    // InternalMGLang.g:3185:6: lv_op_2_0= rulePrimaryOp
+            	    // InternalMGLang.g:3257:5: (lv_op_2_0= rulePrimaryOp )
+            	    // InternalMGLang.g:3258:6: lv_op_2_0= rulePrimaryOp
             	    {
 
             	    						newCompositeNode(grammarAccess.getPrimaryExprAccess().getOpPrimaryOpEnumRuleCall_1_1_0());
@@ -8506,11 +8676,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMGLang.g:3202:4: ( (lv_right_3_0= ruleRelationExpression ) )
-            	    // InternalMGLang.g:3203:5: (lv_right_3_0= ruleRelationExpression )
+            	    // InternalMGLang.g:3275:4: ( (lv_right_3_0= ruleRelationExpression ) )
+            	    // InternalMGLang.g:3276:5: (lv_right_3_0= ruleRelationExpression )
             	    {
-            	    // InternalMGLang.g:3203:5: (lv_right_3_0= ruleRelationExpression )
-            	    // InternalMGLang.g:3204:6: lv_right_3_0= ruleRelationExpression
+            	    // InternalMGLang.g:3276:5: (lv_right_3_0= ruleRelationExpression )
+            	    // InternalMGLang.g:3277:6: lv_right_3_0= ruleRelationExpression
             	    {
 
             	    						newCompositeNode(grammarAccess.getPrimaryExprAccess().getRightRelationExpressionParserRuleCall_1_2_0());
@@ -8569,7 +8739,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleRelationExpression"
-    // InternalMGLang.g:3226:1: entryRuleRelationExpression returns [EObject current=null] : iv_ruleRelationExpression= ruleRelationExpression EOF ;
+    // InternalMGLang.g:3299:1: entryRuleRelationExpression returns [EObject current=null] : iv_ruleRelationExpression= ruleRelationExpression EOF ;
     public final EObject entryRuleRelationExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8577,8 +8747,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:3226:59: (iv_ruleRelationExpression= ruleRelationExpression EOF )
-            // InternalMGLang.g:3227:2: iv_ruleRelationExpression= ruleRelationExpression EOF
+            // InternalMGLang.g:3299:59: (iv_ruleRelationExpression= ruleRelationExpression EOF )
+            // InternalMGLang.g:3300:2: iv_ruleRelationExpression= ruleRelationExpression EOF
             {
              newCompositeNode(grammarAccess.getRelationExpressionRule()); 
             pushFollow(FOLLOW_1);
@@ -8605,7 +8775,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleRelationExpression"
-    // InternalMGLang.g:3233:1: ruleRelationExpression returns [EObject current=null] : (this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )* ) ;
+    // InternalMGLang.g:3306:1: ruleRelationExpression returns [EObject current=null] : (this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )* ) ;
     public final EObject ruleRelationExpression() throws RecognitionException {
         EObject current = null;
 
@@ -8620,11 +8790,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3239:2: ( (this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )* ) )
-            // InternalMGLang.g:3240:2: (this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )* )
+            // InternalMGLang.g:3312:2: ( (this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )* ) )
+            // InternalMGLang.g:3313:2: (this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )* )
             {
-            // InternalMGLang.g:3240:2: (this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )* )
-            // InternalMGLang.g:3241:3: this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )*
+            // InternalMGLang.g:3313:2: (this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )* )
+            // InternalMGLang.g:3314:3: this_BaseExpr_0= ruleBaseExpr ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )*
             {
 
             			newCompositeNode(grammarAccess.getRelationExpressionAccess().getBaseExprParserRuleCall_0());
@@ -8638,23 +8808,23 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             			current = this_BaseExpr_0;
             			afterParserOrEnumRuleCall();
             		
-            // InternalMGLang.g:3249:3: ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )*
+            // InternalMGLang.g:3322:3: ( () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) ) )*
             loop47:
             do {
                 int alt47=2;
                 int LA47_0 = input.LA(1);
 
-                if ( ((LA47_0>=50 && LA47_0<=55)) ) {
+                if ( ((LA47_0>=51 && LA47_0<=56)) ) {
                     alt47=1;
                 }
 
 
                 switch (alt47) {
             	case 1 :
-            	    // InternalMGLang.g:3250:4: () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) )
+            	    // InternalMGLang.g:3323:4: () ( (lv_relation_2_0= ruleRelationalOp ) ) ( (lv_right_3_0= ruleBaseExpr ) )
             	    {
-            	    // InternalMGLang.g:3250:4: ()
-            	    // InternalMGLang.g:3251:5: 
+            	    // InternalMGLang.g:3323:4: ()
+            	    // InternalMGLang.g:3324:5: 
             	    {
 
             	    					current = forceCreateModelElementAndSet(
@@ -8664,11 +8834,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMGLang.g:3257:4: ( (lv_relation_2_0= ruleRelationalOp ) )
-            	    // InternalMGLang.g:3258:5: (lv_relation_2_0= ruleRelationalOp )
+            	    // InternalMGLang.g:3330:4: ( (lv_relation_2_0= ruleRelationalOp ) )
+            	    // InternalMGLang.g:3331:5: (lv_relation_2_0= ruleRelationalOp )
             	    {
-            	    // InternalMGLang.g:3258:5: (lv_relation_2_0= ruleRelationalOp )
-            	    // InternalMGLang.g:3259:6: lv_relation_2_0= ruleRelationalOp
+            	    // InternalMGLang.g:3331:5: (lv_relation_2_0= ruleRelationalOp )
+            	    // InternalMGLang.g:3332:6: lv_relation_2_0= ruleRelationalOp
             	    {
 
             	    						newCompositeNode(grammarAccess.getRelationExpressionAccess().getRelationRelationalOpEnumRuleCall_1_1_0());
@@ -8695,11 +8865,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalMGLang.g:3276:4: ( (lv_right_3_0= ruleBaseExpr ) )
-            	    // InternalMGLang.g:3277:5: (lv_right_3_0= ruleBaseExpr )
+            	    // InternalMGLang.g:3349:4: ( (lv_right_3_0= ruleBaseExpr ) )
+            	    // InternalMGLang.g:3350:5: (lv_right_3_0= ruleBaseExpr )
             	    {
-            	    // InternalMGLang.g:3277:5: (lv_right_3_0= ruleBaseExpr )
-            	    // InternalMGLang.g:3278:6: lv_right_3_0= ruleBaseExpr
+            	    // InternalMGLang.g:3350:5: (lv_right_3_0= ruleBaseExpr )
+            	    // InternalMGLang.g:3351:6: lv_right_3_0= ruleBaseExpr
             	    {
 
             	    						newCompositeNode(grammarAccess.getRelationExpressionAccess().getRightBaseExprParserRuleCall_1_2_0());
@@ -8758,7 +8928,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleBaseExpr"
-    // InternalMGLang.g:3300:1: entryRuleBaseExpr returns [EObject current=null] : iv_ruleBaseExpr= ruleBaseExpr EOF ;
+    // InternalMGLang.g:3373:1: entryRuleBaseExpr returns [EObject current=null] : iv_ruleBaseExpr= ruleBaseExpr EOF ;
     public final EObject entryRuleBaseExpr() throws RecognitionException {
         EObject current = null;
 
@@ -8766,8 +8936,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:3300:49: (iv_ruleBaseExpr= ruleBaseExpr EOF )
-            // InternalMGLang.g:3301:2: iv_ruleBaseExpr= ruleBaseExpr EOF
+            // InternalMGLang.g:3373:49: (iv_ruleBaseExpr= ruleBaseExpr EOF )
+            // InternalMGLang.g:3374:2: iv_ruleBaseExpr= ruleBaseExpr EOF
             {
              newCompositeNode(grammarAccess.getBaseExprRule()); 
             pushFollow(FOLLOW_1);
@@ -8794,7 +8964,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleBaseExpr"
-    // InternalMGLang.g:3307:1: ruleBaseExpr returns [EObject current=null] : ( (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' ) | ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) ) | ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' ) | this_Literal_11= ruleLiteral | this_RefOrCall_12= ruleRefOrCall ) ;
+    // InternalMGLang.g:3380:1: ruleBaseExpr returns [EObject current=null] : ( (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' ) | ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) ) | ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' ) | this_Literal_11= ruleLiteral | this_RefOrCall_12= ruleRefOrCall ) ;
     public final EObject ruleBaseExpr() throws RecognitionException {
         EObject current = null;
 
@@ -8820,10 +8990,10 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3313:2: ( ( (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' ) | ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) ) | ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' ) | this_Literal_11= ruleLiteral | this_RefOrCall_12= ruleRefOrCall ) )
-            // InternalMGLang.g:3314:2: ( (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' ) | ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) ) | ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' ) | this_Literal_11= ruleLiteral | this_RefOrCall_12= ruleRefOrCall )
+            // InternalMGLang.g:3386:2: ( ( (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' ) | ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) ) | ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' ) | this_Literal_11= ruleLiteral | this_RefOrCall_12= ruleRefOrCall ) )
+            // InternalMGLang.g:3387:2: ( (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' ) | ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) ) | ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' ) | this_Literal_11= ruleLiteral | this_RefOrCall_12= ruleRefOrCall )
             {
-            // InternalMGLang.g:3314:2: ( (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' ) | ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) ) | ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' ) | this_Literal_11= ruleLiteral | this_RefOrCall_12= ruleRefOrCall )
+            // InternalMGLang.g:3387:2: ( (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' ) | ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) ) | ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' ) | this_Literal_11= ruleLiteral | this_RefOrCall_12= ruleRefOrCall )
             int alt48=5;
             switch ( input.LA(1) ) {
             case 19:
@@ -8831,13 +9001,13 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                 alt48=1;
                 }
                 break;
-            case 43:
+            case 44:
                 {
                 alt48=2;
                 }
                 break;
-            case 44:
             case 45:
+            case 46:
                 {
                 alt48=3;
                 }
@@ -8864,10 +9034,10 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             switch (alt48) {
                 case 1 :
-                    // InternalMGLang.g:3315:3: (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' )
+                    // InternalMGLang.g:3388:3: (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' )
                     {
-                    // InternalMGLang.g:3315:3: (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' )
-                    // InternalMGLang.g:3316:4: otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')'
+                    // InternalMGLang.g:3388:3: (otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')' )
+                    // InternalMGLang.g:3389:4: otherlv_0= '(' this_ArithmeticExpression_1= ruleArithmeticExpression otherlv_2= ')'
                     {
                     otherlv_0=(Token)match(input,19,FOLLOW_21); 
 
@@ -8896,13 +9066,13 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:3334:3: ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) )
+                    // InternalMGLang.g:3407:3: ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) )
                     {
-                    // InternalMGLang.g:3334:3: ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) )
-                    // InternalMGLang.g:3335:4: () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) )
+                    // InternalMGLang.g:3407:3: ( () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) ) )
+                    // InternalMGLang.g:3408:4: () otherlv_4= '!' ( (lv_expr_5_0= ruleBaseExpr ) )
                     {
-                    // InternalMGLang.g:3335:4: ()
-                    // InternalMGLang.g:3336:5: 
+                    // InternalMGLang.g:3408:4: ()
+                    // InternalMGLang.g:3409:5: 
                     {
 
                     					current = forceCreateModelElement(
@@ -8912,15 +9082,15 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_4=(Token)match(input,43,FOLLOW_21); 
+                    otherlv_4=(Token)match(input,44,FOLLOW_21); 
 
                     				newLeafNode(otherlv_4, grammarAccess.getBaseExprAccess().getExclamationMarkKeyword_1_1());
                     			
-                    // InternalMGLang.g:3346:4: ( (lv_expr_5_0= ruleBaseExpr ) )
-                    // InternalMGLang.g:3347:5: (lv_expr_5_0= ruleBaseExpr )
+                    // InternalMGLang.g:3419:4: ( (lv_expr_5_0= ruleBaseExpr ) )
+                    // InternalMGLang.g:3420:5: (lv_expr_5_0= ruleBaseExpr )
                     {
-                    // InternalMGLang.g:3347:5: (lv_expr_5_0= ruleBaseExpr )
-                    // InternalMGLang.g:3348:6: lv_expr_5_0= ruleBaseExpr
+                    // InternalMGLang.g:3420:5: (lv_expr_5_0= ruleBaseExpr )
+                    // InternalMGLang.g:3421:6: lv_expr_5_0= ruleBaseExpr
                     {
 
                     						newCompositeNode(grammarAccess.getBaseExprAccess().getExprBaseExprParserRuleCall_1_2_0());
@@ -8954,13 +9124,13 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMGLang.g:3367:3: ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' )
+                    // InternalMGLang.g:3440:3: ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' )
                     {
-                    // InternalMGLang.g:3367:3: ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' )
-                    // InternalMGLang.g:3368:4: () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')'
+                    // InternalMGLang.g:3440:3: ( () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')' )
+                    // InternalMGLang.g:3441:4: () ( (lv_func_7_0= ruleMathFunc ) ) otherlv_8= '(' ( (lv_expr_9_0= ruleArithmeticExpression ) ) otherlv_10= ')'
                     {
-                    // InternalMGLang.g:3368:4: ()
-                    // InternalMGLang.g:3369:5: 
+                    // InternalMGLang.g:3441:4: ()
+                    // InternalMGLang.g:3442:5: 
                     {
 
                     					current = forceCreateModelElement(
@@ -8970,11 +9140,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // InternalMGLang.g:3375:4: ( (lv_func_7_0= ruleMathFunc ) )
-                    // InternalMGLang.g:3376:5: (lv_func_7_0= ruleMathFunc )
+                    // InternalMGLang.g:3448:4: ( (lv_func_7_0= ruleMathFunc ) )
+                    // InternalMGLang.g:3449:5: (lv_func_7_0= ruleMathFunc )
                     {
-                    // InternalMGLang.g:3376:5: (lv_func_7_0= ruleMathFunc )
-                    // InternalMGLang.g:3377:6: lv_func_7_0= ruleMathFunc
+                    // InternalMGLang.g:3449:5: (lv_func_7_0= ruleMathFunc )
+                    // InternalMGLang.g:3450:6: lv_func_7_0= ruleMathFunc
                     {
 
                     						newCompositeNode(grammarAccess.getBaseExprAccess().getFuncMathFuncEnumRuleCall_2_1_0());
@@ -9005,11 +9175,11 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
                     				newLeafNode(otherlv_8, grammarAccess.getBaseExprAccess().getLeftParenthesisKeyword_2_2());
                     			
-                    // InternalMGLang.g:3398:4: ( (lv_expr_9_0= ruleArithmeticExpression ) )
-                    // InternalMGLang.g:3399:5: (lv_expr_9_0= ruleArithmeticExpression )
+                    // InternalMGLang.g:3471:4: ( (lv_expr_9_0= ruleArithmeticExpression ) )
+                    // InternalMGLang.g:3472:5: (lv_expr_9_0= ruleArithmeticExpression )
                     {
-                    // InternalMGLang.g:3399:5: (lv_expr_9_0= ruleArithmeticExpression )
-                    // InternalMGLang.g:3400:6: lv_expr_9_0= ruleArithmeticExpression
+                    // InternalMGLang.g:3472:5: (lv_expr_9_0= ruleArithmeticExpression )
+                    // InternalMGLang.g:3473:6: lv_expr_9_0= ruleArithmeticExpression
                     {
 
                     						newCompositeNode(grammarAccess.getBaseExprAccess().getExprArithmeticExpressionParserRuleCall_2_3_0());
@@ -9047,7 +9217,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMGLang.g:3423:3: this_Literal_11= ruleLiteral
+                    // InternalMGLang.g:3496:3: this_Literal_11= ruleLiteral
                     {
 
                     			newCompositeNode(grammarAccess.getBaseExprAccess().getLiteralParserRuleCall_3());
@@ -9065,7 +9235,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalMGLang.g:3432:3: this_RefOrCall_12= ruleRefOrCall
+                    // InternalMGLang.g:3505:3: this_RefOrCall_12= ruleRefOrCall
                     {
 
                     			newCompositeNode(grammarAccess.getBaseExprAccess().getRefOrCallParserRuleCall_4());
@@ -9105,7 +9275,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleLiteral"
-    // InternalMGLang.g:3444:1: entryRuleLiteral returns [EObject current=null] : iv_ruleLiteral= ruleLiteral EOF ;
+    // InternalMGLang.g:3517:1: entryRuleLiteral returns [EObject current=null] : iv_ruleLiteral= ruleLiteral EOF ;
     public final EObject entryRuleLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -9113,8 +9283,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:3444:48: (iv_ruleLiteral= ruleLiteral EOF )
-            // InternalMGLang.g:3445:2: iv_ruleLiteral= ruleLiteral EOF
+            // InternalMGLang.g:3517:48: (iv_ruleLiteral= ruleLiteral EOF )
+            // InternalMGLang.g:3518:2: iv_ruleLiteral= ruleLiteral EOF
             {
              newCompositeNode(grammarAccess.getLiteralRule()); 
             pushFollow(FOLLOW_1);
@@ -9141,7 +9311,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleLiteral"
-    // InternalMGLang.g:3451:1: ruleLiteral returns [EObject current=null] : (this_BooleanLiteral_0= ruleBooleanLiteral | this_StringLiteral_1= ruleStringLiteral | this_NumberLiteral_2= ruleNumberLiteral ) ;
+    // InternalMGLang.g:3524:1: ruleLiteral returns [EObject current=null] : (this_BooleanLiteral_0= ruleBooleanLiteral | this_StringLiteral_1= ruleStringLiteral | this_NumberLiteral_2= ruleNumberLiteral ) ;
     public final EObject ruleLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -9156,10 +9326,10 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3457:2: ( (this_BooleanLiteral_0= ruleBooleanLiteral | this_StringLiteral_1= ruleStringLiteral | this_NumberLiteral_2= ruleNumberLiteral ) )
-            // InternalMGLang.g:3458:2: (this_BooleanLiteral_0= ruleBooleanLiteral | this_StringLiteral_1= ruleStringLiteral | this_NumberLiteral_2= ruleNumberLiteral )
+            // InternalMGLang.g:3530:2: ( (this_BooleanLiteral_0= ruleBooleanLiteral | this_StringLiteral_1= ruleStringLiteral | this_NumberLiteral_2= ruleNumberLiteral ) )
+            // InternalMGLang.g:3531:2: (this_BooleanLiteral_0= ruleBooleanLiteral | this_StringLiteral_1= ruleStringLiteral | this_NumberLiteral_2= ruleNumberLiteral )
             {
-            // InternalMGLang.g:3458:2: (this_BooleanLiteral_0= ruleBooleanLiteral | this_StringLiteral_1= ruleStringLiteral | this_NumberLiteral_2= ruleNumberLiteral )
+            // InternalMGLang.g:3531:2: (this_BooleanLiteral_0= ruleBooleanLiteral | this_StringLiteral_1= ruleStringLiteral | this_NumberLiteral_2= ruleNumberLiteral )
             int alt49=3;
             switch ( input.LA(1) ) {
             case RULE_TRUE:
@@ -9187,7 +9357,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             switch (alt49) {
                 case 1 :
-                    // InternalMGLang.g:3459:3: this_BooleanLiteral_0= ruleBooleanLiteral
+                    // InternalMGLang.g:3532:3: this_BooleanLiteral_0= ruleBooleanLiteral
                     {
 
                     			newCompositeNode(grammarAccess.getLiteralAccess().getBooleanLiteralParserRuleCall_0());
@@ -9205,7 +9375,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:3468:3: this_StringLiteral_1= ruleStringLiteral
+                    // InternalMGLang.g:3541:3: this_StringLiteral_1= ruleStringLiteral
                     {
 
                     			newCompositeNode(grammarAccess.getLiteralAccess().getStringLiteralParserRuleCall_1());
@@ -9223,7 +9393,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMGLang.g:3477:3: this_NumberLiteral_2= ruleNumberLiteral
+                    // InternalMGLang.g:3550:3: this_NumberLiteral_2= ruleNumberLiteral
                     {
 
                     			newCompositeNode(grammarAccess.getLiteralAccess().getNumberLiteralParserRuleCall_2());
@@ -9263,7 +9433,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleBooleanLiteral"
-    // InternalMGLang.g:3489:1: entryRuleBooleanLiteral returns [EObject current=null] : iv_ruleBooleanLiteral= ruleBooleanLiteral EOF ;
+    // InternalMGLang.g:3562:1: entryRuleBooleanLiteral returns [EObject current=null] : iv_ruleBooleanLiteral= ruleBooleanLiteral EOF ;
     public final EObject entryRuleBooleanLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -9271,8 +9441,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:3489:55: (iv_ruleBooleanLiteral= ruleBooleanLiteral EOF )
-            // InternalMGLang.g:3490:2: iv_ruleBooleanLiteral= ruleBooleanLiteral EOF
+            // InternalMGLang.g:3562:55: (iv_ruleBooleanLiteral= ruleBooleanLiteral EOF )
+            // InternalMGLang.g:3563:2: iv_ruleBooleanLiteral= ruleBooleanLiteral EOF
             {
              newCompositeNode(grammarAccess.getBooleanLiteralRule()); 
             pushFollow(FOLLOW_1);
@@ -9299,7 +9469,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleBooleanLiteral"
-    // InternalMGLang.g:3496:1: ruleBooleanLiteral returns [EObject current=null] : ( ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) ) ) ;
+    // InternalMGLang.g:3569:1: ruleBooleanLiteral returns [EObject current=null] : ( ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) ) ) ;
     public final EObject ruleBooleanLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -9310,16 +9480,16 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3502:2: ( ( ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) ) ) )
-            // InternalMGLang.g:3503:2: ( ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) ) )
+            // InternalMGLang.g:3575:2: ( ( ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) ) ) )
+            // InternalMGLang.g:3576:2: ( ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) ) )
             {
-            // InternalMGLang.g:3503:2: ( ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) ) )
-            // InternalMGLang.g:3504:3: ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) )
+            // InternalMGLang.g:3576:2: ( ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) ) )
+            // InternalMGLang.g:3577:3: ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) )
             {
-            // InternalMGLang.g:3504:3: ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) )
-            // InternalMGLang.g:3505:4: (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE )
+            // InternalMGLang.g:3577:3: ( (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE ) )
+            // InternalMGLang.g:3578:4: (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE )
             {
-            // InternalMGLang.g:3505:4: (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE )
+            // InternalMGLang.g:3578:4: (lv_val_0_1= RULE_TRUE | lv_val_0_2= RULE_FALSE )
             int alt50=2;
             int LA50_0 = input.LA(1);
 
@@ -9337,7 +9507,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt50) {
                 case 1 :
-                    // InternalMGLang.g:3506:5: lv_val_0_1= RULE_TRUE
+                    // InternalMGLang.g:3579:5: lv_val_0_1= RULE_TRUE
                     {
                     lv_val_0_1=(Token)match(input,RULE_TRUE,FOLLOW_2); 
 
@@ -9357,7 +9527,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:3521:5: lv_val_0_2= RULE_FALSE
+                    // InternalMGLang.g:3594:5: lv_val_0_2= RULE_FALSE
                     {
                     lv_val_0_2=(Token)match(input,RULE_FALSE,FOLLOW_2); 
 
@@ -9405,7 +9575,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleStringLiteral"
-    // InternalMGLang.g:3541:1: entryRuleStringLiteral returns [EObject current=null] : iv_ruleStringLiteral= ruleStringLiteral EOF ;
+    // InternalMGLang.g:3614:1: entryRuleStringLiteral returns [EObject current=null] : iv_ruleStringLiteral= ruleStringLiteral EOF ;
     public final EObject entryRuleStringLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -9413,8 +9583,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:3541:54: (iv_ruleStringLiteral= ruleStringLiteral EOF )
-            // InternalMGLang.g:3542:2: iv_ruleStringLiteral= ruleStringLiteral EOF
+            // InternalMGLang.g:3614:54: (iv_ruleStringLiteral= ruleStringLiteral EOF )
+            // InternalMGLang.g:3615:2: iv_ruleStringLiteral= ruleStringLiteral EOF
             {
              newCompositeNode(grammarAccess.getStringLiteralRule()); 
             pushFollow(FOLLOW_1);
@@ -9441,7 +9611,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleStringLiteral"
-    // InternalMGLang.g:3548:1: ruleStringLiteral returns [EObject current=null] : ( (lv_val_0_0= RULE_STRING ) ) ;
+    // InternalMGLang.g:3621:1: ruleStringLiteral returns [EObject current=null] : ( (lv_val_0_0= RULE_STRING ) ) ;
     public final EObject ruleStringLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -9451,14 +9621,14 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3554:2: ( ( (lv_val_0_0= RULE_STRING ) ) )
-            // InternalMGLang.g:3555:2: ( (lv_val_0_0= RULE_STRING ) )
+            // InternalMGLang.g:3627:2: ( ( (lv_val_0_0= RULE_STRING ) ) )
+            // InternalMGLang.g:3628:2: ( (lv_val_0_0= RULE_STRING ) )
             {
-            // InternalMGLang.g:3555:2: ( (lv_val_0_0= RULE_STRING ) )
-            // InternalMGLang.g:3556:3: (lv_val_0_0= RULE_STRING )
+            // InternalMGLang.g:3628:2: ( (lv_val_0_0= RULE_STRING ) )
+            // InternalMGLang.g:3629:3: (lv_val_0_0= RULE_STRING )
             {
-            // InternalMGLang.g:3556:3: (lv_val_0_0= RULE_STRING )
-            // InternalMGLang.g:3557:4: lv_val_0_0= RULE_STRING
+            // InternalMGLang.g:3629:3: (lv_val_0_0= RULE_STRING )
+            // InternalMGLang.g:3630:4: lv_val_0_0= RULE_STRING
             {
             lv_val_0_0=(Token)match(input,RULE_STRING,FOLLOW_2); 
 
@@ -9500,7 +9670,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleNumberLiteral"
-    // InternalMGLang.g:3576:1: entryRuleNumberLiteral returns [EObject current=null] : iv_ruleNumberLiteral= ruleNumberLiteral EOF ;
+    // InternalMGLang.g:3649:1: entryRuleNumberLiteral returns [EObject current=null] : iv_ruleNumberLiteral= ruleNumberLiteral EOF ;
     public final EObject entryRuleNumberLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -9508,8 +9678,8 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalMGLang.g:3576:54: (iv_ruleNumberLiteral= ruleNumberLiteral EOF )
-            // InternalMGLang.g:3577:2: iv_ruleNumberLiteral= ruleNumberLiteral EOF
+            // InternalMGLang.g:3649:54: (iv_ruleNumberLiteral= ruleNumberLiteral EOF )
+            // InternalMGLang.g:3650:2: iv_ruleNumberLiteral= ruleNumberLiteral EOF
             {
              newCompositeNode(grammarAccess.getNumberLiteralRule()); 
             pushFollow(FOLLOW_1);
@@ -9536,7 +9706,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleNumberLiteral"
-    // InternalMGLang.g:3583:1: ruleNumberLiteral returns [EObject current=null] : ( (lv_val_0_0= RULE_DOUBLE ) ) ;
+    // InternalMGLang.g:3656:1: ruleNumberLiteral returns [EObject current=null] : ( (lv_val_0_0= RULE_DOUBLE ) ) ;
     public final EObject ruleNumberLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -9546,14 +9716,14 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3589:2: ( ( (lv_val_0_0= RULE_DOUBLE ) ) )
-            // InternalMGLang.g:3590:2: ( (lv_val_0_0= RULE_DOUBLE ) )
+            // InternalMGLang.g:3662:2: ( ( (lv_val_0_0= RULE_DOUBLE ) ) )
+            // InternalMGLang.g:3663:2: ( (lv_val_0_0= RULE_DOUBLE ) )
             {
-            // InternalMGLang.g:3590:2: ( (lv_val_0_0= RULE_DOUBLE ) )
-            // InternalMGLang.g:3591:3: (lv_val_0_0= RULE_DOUBLE )
+            // InternalMGLang.g:3663:2: ( (lv_val_0_0= RULE_DOUBLE ) )
+            // InternalMGLang.g:3664:3: (lv_val_0_0= RULE_DOUBLE )
             {
-            // InternalMGLang.g:3591:3: (lv_val_0_0= RULE_DOUBLE )
-            // InternalMGLang.g:3592:4: lv_val_0_0= RULE_DOUBLE
+            // InternalMGLang.g:3664:3: (lv_val_0_0= RULE_DOUBLE )
+            // InternalMGLang.g:3665:4: lv_val_0_0= RULE_DOUBLE
             {
             lv_val_0_0=(Token)match(input,RULE_DOUBLE,FOLLOW_2); 
 
@@ -9595,7 +9765,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleMathFunc"
-    // InternalMGLang.g:3611:1: ruleMathFunc returns [Enumerator current=null] : ( (enumLiteral_0= 'sqrt' ) | (enumLiteral_1= 'abs' ) ) ;
+    // InternalMGLang.g:3684:1: ruleMathFunc returns [Enumerator current=null] : ( (enumLiteral_0= 'sqrt' ) | (enumLiteral_1= 'abs' ) ) ;
     public final Enumerator ruleMathFunc() throws RecognitionException {
         Enumerator current = null;
 
@@ -9606,17 +9776,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3617:2: ( ( (enumLiteral_0= 'sqrt' ) | (enumLiteral_1= 'abs' ) ) )
-            // InternalMGLang.g:3618:2: ( (enumLiteral_0= 'sqrt' ) | (enumLiteral_1= 'abs' ) )
+            // InternalMGLang.g:3690:2: ( ( (enumLiteral_0= 'sqrt' ) | (enumLiteral_1= 'abs' ) ) )
+            // InternalMGLang.g:3691:2: ( (enumLiteral_0= 'sqrt' ) | (enumLiteral_1= 'abs' ) )
             {
-            // InternalMGLang.g:3618:2: ( (enumLiteral_0= 'sqrt' ) | (enumLiteral_1= 'abs' ) )
+            // InternalMGLang.g:3691:2: ( (enumLiteral_0= 'sqrt' ) | (enumLiteral_1= 'abs' ) )
             int alt51=2;
             int LA51_0 = input.LA(1);
 
-            if ( (LA51_0==44) ) {
+            if ( (LA51_0==45) ) {
                 alt51=1;
             }
-            else if ( (LA51_0==45) ) {
+            else if ( (LA51_0==46) ) {
                 alt51=2;
             }
             else {
@@ -9627,12 +9797,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt51) {
                 case 1 :
-                    // InternalMGLang.g:3619:3: (enumLiteral_0= 'sqrt' )
+                    // InternalMGLang.g:3692:3: (enumLiteral_0= 'sqrt' )
                     {
-                    // InternalMGLang.g:3619:3: (enumLiteral_0= 'sqrt' )
-                    // InternalMGLang.g:3620:4: enumLiteral_0= 'sqrt'
+                    // InternalMGLang.g:3692:3: (enumLiteral_0= 'sqrt' )
+                    // InternalMGLang.g:3693:4: enumLiteral_0= 'sqrt'
                     {
-                    enumLiteral_0=(Token)match(input,44,FOLLOW_2); 
+                    enumLiteral_0=(Token)match(input,45,FOLLOW_2); 
 
                     				current = grammarAccess.getMathFuncAccess().getSQRTEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_0, grammarAccess.getMathFuncAccess().getSQRTEnumLiteralDeclaration_0());
@@ -9644,12 +9814,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:3627:3: (enumLiteral_1= 'abs' )
+                    // InternalMGLang.g:3700:3: (enumLiteral_1= 'abs' )
                     {
-                    // InternalMGLang.g:3627:3: (enumLiteral_1= 'abs' )
-                    // InternalMGLang.g:3628:4: enumLiteral_1= 'abs'
+                    // InternalMGLang.g:3700:3: (enumLiteral_1= 'abs' )
+                    // InternalMGLang.g:3701:4: enumLiteral_1= 'abs'
                     {
-                    enumLiteral_1=(Token)match(input,45,FOLLOW_2); 
+                    enumLiteral_1=(Token)match(input,46,FOLLOW_2); 
 
                     				current = grammarAccess.getMathFuncAccess().getABSEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_1, grammarAccess.getMathFuncAccess().getABSEnumLiteralDeclaration_1());
@@ -9683,7 +9853,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "rulePrimitiveType"
-    // InternalMGLang.g:3638:1: rulePrimitiveType returns [Enumerator current=null] : ( (enumLiteral_0= 'int' ) | (enumLiteral_1= 'char' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'String' ) ) ;
+    // InternalMGLang.g:3711:1: rulePrimitiveType returns [Enumerator current=null] : ( (enumLiteral_0= 'int' ) | (enumLiteral_1= 'char' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'String' ) ) ;
     public final Enumerator rulePrimitiveType() throws RecognitionException {
         Enumerator current = null;
 
@@ -9696,28 +9866,28 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3644:2: ( ( (enumLiteral_0= 'int' ) | (enumLiteral_1= 'char' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'String' ) ) )
-            // InternalMGLang.g:3645:2: ( (enumLiteral_0= 'int' ) | (enumLiteral_1= 'char' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'String' ) )
+            // InternalMGLang.g:3717:2: ( ( (enumLiteral_0= 'int' ) | (enumLiteral_1= 'char' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'String' ) ) )
+            // InternalMGLang.g:3718:2: ( (enumLiteral_0= 'int' ) | (enumLiteral_1= 'char' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'String' ) )
             {
-            // InternalMGLang.g:3645:2: ( (enumLiteral_0= 'int' ) | (enumLiteral_1= 'char' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'String' ) )
+            // InternalMGLang.g:3718:2: ( (enumLiteral_0= 'int' ) | (enumLiteral_1= 'char' ) | (enumLiteral_2= 'double' ) | (enumLiteral_3= 'String' ) )
             int alt52=4;
             switch ( input.LA(1) ) {
-            case 46:
+            case 47:
                 {
                 alt52=1;
                 }
                 break;
-            case 47:
+            case 48:
                 {
                 alt52=2;
                 }
                 break;
-            case 48:
+            case 49:
                 {
                 alt52=3;
                 }
                 break;
-            case 49:
+            case 50:
                 {
                 alt52=4;
                 }
@@ -9731,12 +9901,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             switch (alt52) {
                 case 1 :
-                    // InternalMGLang.g:3646:3: (enumLiteral_0= 'int' )
+                    // InternalMGLang.g:3719:3: (enumLiteral_0= 'int' )
                     {
-                    // InternalMGLang.g:3646:3: (enumLiteral_0= 'int' )
-                    // InternalMGLang.g:3647:4: enumLiteral_0= 'int'
+                    // InternalMGLang.g:3719:3: (enumLiteral_0= 'int' )
+                    // InternalMGLang.g:3720:4: enumLiteral_0= 'int'
                     {
-                    enumLiteral_0=(Token)match(input,46,FOLLOW_2); 
+                    enumLiteral_0=(Token)match(input,47,FOLLOW_2); 
 
                     				current = grammarAccess.getPrimitiveTypeAccess().getINTEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_0, grammarAccess.getPrimitiveTypeAccess().getINTEnumLiteralDeclaration_0());
@@ -9748,12 +9918,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:3654:3: (enumLiteral_1= 'char' )
+                    // InternalMGLang.g:3727:3: (enumLiteral_1= 'char' )
                     {
-                    // InternalMGLang.g:3654:3: (enumLiteral_1= 'char' )
-                    // InternalMGLang.g:3655:4: enumLiteral_1= 'char'
+                    // InternalMGLang.g:3727:3: (enumLiteral_1= 'char' )
+                    // InternalMGLang.g:3728:4: enumLiteral_1= 'char'
                     {
-                    enumLiteral_1=(Token)match(input,47,FOLLOW_2); 
+                    enumLiteral_1=(Token)match(input,48,FOLLOW_2); 
 
                     				current = grammarAccess.getPrimitiveTypeAccess().getCHAREnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_1, grammarAccess.getPrimitiveTypeAccess().getCHAREnumLiteralDeclaration_1());
@@ -9765,12 +9935,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMGLang.g:3662:3: (enumLiteral_2= 'double' )
+                    // InternalMGLang.g:3735:3: (enumLiteral_2= 'double' )
                     {
-                    // InternalMGLang.g:3662:3: (enumLiteral_2= 'double' )
-                    // InternalMGLang.g:3663:4: enumLiteral_2= 'double'
+                    // InternalMGLang.g:3735:3: (enumLiteral_2= 'double' )
+                    // InternalMGLang.g:3736:4: enumLiteral_2= 'double'
                     {
-                    enumLiteral_2=(Token)match(input,48,FOLLOW_2); 
+                    enumLiteral_2=(Token)match(input,49,FOLLOW_2); 
 
                     				current = grammarAccess.getPrimitiveTypeAccess().getDOUBLEEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_2, grammarAccess.getPrimitiveTypeAccess().getDOUBLEEnumLiteralDeclaration_2());
@@ -9782,12 +9952,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMGLang.g:3670:3: (enumLiteral_3= 'String' )
+                    // InternalMGLang.g:3743:3: (enumLiteral_3= 'String' )
                     {
-                    // InternalMGLang.g:3670:3: (enumLiteral_3= 'String' )
-                    // InternalMGLang.g:3671:4: enumLiteral_3= 'String'
+                    // InternalMGLang.g:3743:3: (enumLiteral_3= 'String' )
+                    // InternalMGLang.g:3744:4: enumLiteral_3= 'String'
                     {
-                    enumLiteral_3=(Token)match(input,49,FOLLOW_2); 
+                    enumLiteral_3=(Token)match(input,50,FOLLOW_2); 
 
                     				current = grammarAccess.getPrimitiveTypeAccess().getSTRINGEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_3, grammarAccess.getPrimitiveTypeAccess().getSTRINGEnumLiteralDeclaration_3());
@@ -9821,7 +9991,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleRelationalOp"
-    // InternalMGLang.g:3681:1: ruleRelationalOp returns [Enumerator current=null] : ( (enumLiteral_0= '>' ) | (enumLiteral_1= '>=' ) | (enumLiteral_2= '==' ) | (enumLiteral_3= '!=' ) | (enumLiteral_4= '<=' ) | (enumLiteral_5= '<' ) ) ;
+    // InternalMGLang.g:3754:1: ruleRelationalOp returns [Enumerator current=null] : ( (enumLiteral_0= '>' ) | (enumLiteral_1= '>=' ) | (enumLiteral_2= '==' ) | (enumLiteral_3= '!=' ) | (enumLiteral_4= '<=' ) | (enumLiteral_5= '<' ) ) ;
     public final Enumerator ruleRelationalOp() throws RecognitionException {
         Enumerator current = null;
 
@@ -9836,38 +10006,38 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3687:2: ( ( (enumLiteral_0= '>' ) | (enumLiteral_1= '>=' ) | (enumLiteral_2= '==' ) | (enumLiteral_3= '!=' ) | (enumLiteral_4= '<=' ) | (enumLiteral_5= '<' ) ) )
-            // InternalMGLang.g:3688:2: ( (enumLiteral_0= '>' ) | (enumLiteral_1= '>=' ) | (enumLiteral_2= '==' ) | (enumLiteral_3= '!=' ) | (enumLiteral_4= '<=' ) | (enumLiteral_5= '<' ) )
+            // InternalMGLang.g:3760:2: ( ( (enumLiteral_0= '>' ) | (enumLiteral_1= '>=' ) | (enumLiteral_2= '==' ) | (enumLiteral_3= '!=' ) | (enumLiteral_4= '<=' ) | (enumLiteral_5= '<' ) ) )
+            // InternalMGLang.g:3761:2: ( (enumLiteral_0= '>' ) | (enumLiteral_1= '>=' ) | (enumLiteral_2= '==' ) | (enumLiteral_3= '!=' ) | (enumLiteral_4= '<=' ) | (enumLiteral_5= '<' ) )
             {
-            // InternalMGLang.g:3688:2: ( (enumLiteral_0= '>' ) | (enumLiteral_1= '>=' ) | (enumLiteral_2= '==' ) | (enumLiteral_3= '!=' ) | (enumLiteral_4= '<=' ) | (enumLiteral_5= '<' ) )
+            // InternalMGLang.g:3761:2: ( (enumLiteral_0= '>' ) | (enumLiteral_1= '>=' ) | (enumLiteral_2= '==' ) | (enumLiteral_3= '!=' ) | (enumLiteral_4= '<=' ) | (enumLiteral_5= '<' ) )
             int alt53=6;
             switch ( input.LA(1) ) {
-            case 50:
+            case 51:
                 {
                 alt53=1;
                 }
                 break;
-            case 51:
+            case 52:
                 {
                 alt53=2;
                 }
                 break;
-            case 52:
+            case 53:
                 {
                 alt53=3;
                 }
                 break;
-            case 53:
+            case 54:
                 {
                 alt53=4;
                 }
                 break;
-            case 54:
+            case 55:
                 {
                 alt53=5;
                 }
                 break;
-            case 55:
+            case 56:
                 {
                 alt53=6;
                 }
@@ -9881,12 +10051,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             switch (alt53) {
                 case 1 :
-                    // InternalMGLang.g:3689:3: (enumLiteral_0= '>' )
+                    // InternalMGLang.g:3762:3: (enumLiteral_0= '>' )
                     {
-                    // InternalMGLang.g:3689:3: (enumLiteral_0= '>' )
-                    // InternalMGLang.g:3690:4: enumLiteral_0= '>'
+                    // InternalMGLang.g:3762:3: (enumLiteral_0= '>' )
+                    // InternalMGLang.g:3763:4: enumLiteral_0= '>'
                     {
-                    enumLiteral_0=(Token)match(input,50,FOLLOW_2); 
+                    enumLiteral_0=(Token)match(input,51,FOLLOW_2); 
 
                     				current = grammarAccess.getRelationalOpAccess().getGREATEREnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_0, grammarAccess.getRelationalOpAccess().getGREATEREnumLiteralDeclaration_0());
@@ -9898,12 +10068,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:3697:3: (enumLiteral_1= '>=' )
+                    // InternalMGLang.g:3770:3: (enumLiteral_1= '>=' )
                     {
-                    // InternalMGLang.g:3697:3: (enumLiteral_1= '>=' )
-                    // InternalMGLang.g:3698:4: enumLiteral_1= '>='
+                    // InternalMGLang.g:3770:3: (enumLiteral_1= '>=' )
+                    // InternalMGLang.g:3771:4: enumLiteral_1= '>='
                     {
-                    enumLiteral_1=(Token)match(input,51,FOLLOW_2); 
+                    enumLiteral_1=(Token)match(input,52,FOLLOW_2); 
 
                     				current = grammarAccess.getRelationalOpAccess().getGREATER_OR_EQUALEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_1, grammarAccess.getRelationalOpAccess().getGREATER_OR_EQUALEnumLiteralDeclaration_1());
@@ -9915,12 +10085,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMGLang.g:3705:3: (enumLiteral_2= '==' )
+                    // InternalMGLang.g:3778:3: (enumLiteral_2= '==' )
                     {
-                    // InternalMGLang.g:3705:3: (enumLiteral_2= '==' )
-                    // InternalMGLang.g:3706:4: enumLiteral_2= '=='
+                    // InternalMGLang.g:3778:3: (enumLiteral_2= '==' )
+                    // InternalMGLang.g:3779:4: enumLiteral_2= '=='
                     {
-                    enumLiteral_2=(Token)match(input,52,FOLLOW_2); 
+                    enumLiteral_2=(Token)match(input,53,FOLLOW_2); 
 
                     				current = grammarAccess.getRelationalOpAccess().getEQUALEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_2, grammarAccess.getRelationalOpAccess().getEQUALEnumLiteralDeclaration_2());
@@ -9932,12 +10102,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalMGLang.g:3713:3: (enumLiteral_3= '!=' )
+                    // InternalMGLang.g:3786:3: (enumLiteral_3= '!=' )
                     {
-                    // InternalMGLang.g:3713:3: (enumLiteral_3= '!=' )
-                    // InternalMGLang.g:3714:4: enumLiteral_3= '!='
+                    // InternalMGLang.g:3786:3: (enumLiteral_3= '!=' )
+                    // InternalMGLang.g:3787:4: enumLiteral_3= '!='
                     {
-                    enumLiteral_3=(Token)match(input,53,FOLLOW_2); 
+                    enumLiteral_3=(Token)match(input,54,FOLLOW_2); 
 
                     				current = grammarAccess.getRelationalOpAccess().getUNEQUALEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_3, grammarAccess.getRelationalOpAccess().getUNEQUALEnumLiteralDeclaration_3());
@@ -9949,12 +10119,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalMGLang.g:3721:3: (enumLiteral_4= '<=' )
+                    // InternalMGLang.g:3794:3: (enumLiteral_4= '<=' )
                     {
-                    // InternalMGLang.g:3721:3: (enumLiteral_4= '<=' )
-                    // InternalMGLang.g:3722:4: enumLiteral_4= '<='
+                    // InternalMGLang.g:3794:3: (enumLiteral_4= '<=' )
+                    // InternalMGLang.g:3795:4: enumLiteral_4= '<='
                     {
-                    enumLiteral_4=(Token)match(input,54,FOLLOW_2); 
+                    enumLiteral_4=(Token)match(input,55,FOLLOW_2); 
 
                     				current = grammarAccess.getRelationalOpAccess().getLESS_OR_EQUALEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_4, grammarAccess.getRelationalOpAccess().getLESS_OR_EQUALEnumLiteralDeclaration_4());
@@ -9966,12 +10136,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // InternalMGLang.g:3729:3: (enumLiteral_5= '<' )
+                    // InternalMGLang.g:3802:3: (enumLiteral_5= '<' )
                     {
-                    // InternalMGLang.g:3729:3: (enumLiteral_5= '<' )
-                    // InternalMGLang.g:3730:4: enumLiteral_5= '<'
+                    // InternalMGLang.g:3802:3: (enumLiteral_5= '<' )
+                    // InternalMGLang.g:3803:4: enumLiteral_5= '<'
                     {
-                    enumLiteral_5=(Token)match(input,55,FOLLOW_2); 
+                    enumLiteral_5=(Token)match(input,56,FOLLOW_2); 
 
                     				current = grammarAccess.getRelationalOpAccess().getLESSEnumLiteralDeclaration_5().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_5, grammarAccess.getRelationalOpAccess().getLESSEnumLiteralDeclaration_5());
@@ -10005,7 +10175,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleTertiaryOp"
-    // InternalMGLang.g:3740:1: ruleTertiaryOp returns [Enumerator current=null] : ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) | (enumLiteral_2= '||' ) ) ;
+    // InternalMGLang.g:3813:1: ruleTertiaryOp returns [Enumerator current=null] : ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) | (enumLiteral_2= '||' ) ) ;
     public final Enumerator ruleTertiaryOp() throws RecognitionException {
         Enumerator current = null;
 
@@ -10017,23 +10187,23 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3746:2: ( ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) | (enumLiteral_2= '||' ) ) )
-            // InternalMGLang.g:3747:2: ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) | (enumLiteral_2= '||' ) )
+            // InternalMGLang.g:3819:2: ( ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) | (enumLiteral_2= '||' ) ) )
+            // InternalMGLang.g:3820:2: ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) | (enumLiteral_2= '||' ) )
             {
-            // InternalMGLang.g:3747:2: ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) | (enumLiteral_2= '||' ) )
+            // InternalMGLang.g:3820:2: ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) | (enumLiteral_2= '||' ) )
             int alt54=3;
             switch ( input.LA(1) ) {
-            case 56:
+            case 57:
                 {
                 alt54=1;
                 }
                 break;
-            case 33:
+            case 34:
                 {
                 alt54=2;
                 }
                 break;
-            case 57:
+            case 58:
                 {
                 alt54=3;
                 }
@@ -10047,12 +10217,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             switch (alt54) {
                 case 1 :
-                    // InternalMGLang.g:3748:3: (enumLiteral_0= '+' )
+                    // InternalMGLang.g:3821:3: (enumLiteral_0= '+' )
                     {
-                    // InternalMGLang.g:3748:3: (enumLiteral_0= '+' )
-                    // InternalMGLang.g:3749:4: enumLiteral_0= '+'
+                    // InternalMGLang.g:3821:3: (enumLiteral_0= '+' )
+                    // InternalMGLang.g:3822:4: enumLiteral_0= '+'
                     {
-                    enumLiteral_0=(Token)match(input,56,FOLLOW_2); 
+                    enumLiteral_0=(Token)match(input,57,FOLLOW_2); 
 
                     				current = grammarAccess.getTertiaryOpAccess().getPLUSEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_0, grammarAccess.getTertiaryOpAccess().getPLUSEnumLiteralDeclaration_0());
@@ -10064,12 +10234,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:3756:3: (enumLiteral_1= '-' )
+                    // InternalMGLang.g:3829:3: (enumLiteral_1= '-' )
                     {
-                    // InternalMGLang.g:3756:3: (enumLiteral_1= '-' )
-                    // InternalMGLang.g:3757:4: enumLiteral_1= '-'
+                    // InternalMGLang.g:3829:3: (enumLiteral_1= '-' )
+                    // InternalMGLang.g:3830:4: enumLiteral_1= '-'
                     {
-                    enumLiteral_1=(Token)match(input,33,FOLLOW_2); 
+                    enumLiteral_1=(Token)match(input,34,FOLLOW_2); 
 
                     				current = grammarAccess.getTertiaryOpAccess().getMINUSEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_1, grammarAccess.getTertiaryOpAccess().getMINUSEnumLiteralDeclaration_1());
@@ -10081,12 +10251,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMGLang.g:3764:3: (enumLiteral_2= '||' )
+                    // InternalMGLang.g:3837:3: (enumLiteral_2= '||' )
                     {
-                    // InternalMGLang.g:3764:3: (enumLiteral_2= '||' )
-                    // InternalMGLang.g:3765:4: enumLiteral_2= '||'
+                    // InternalMGLang.g:3837:3: (enumLiteral_2= '||' )
+                    // InternalMGLang.g:3838:4: enumLiteral_2= '||'
                     {
-                    enumLiteral_2=(Token)match(input,57,FOLLOW_2); 
+                    enumLiteral_2=(Token)match(input,58,FOLLOW_2); 
 
                     				current = grammarAccess.getTertiaryOpAccess().getOREnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_2, grammarAccess.getTertiaryOpAccess().getOREnumLiteralDeclaration_2());
@@ -10120,7 +10290,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSecondaryOp"
-    // InternalMGLang.g:3775:1: ruleSecondaryOp returns [Enumerator current=null] : ( (enumLiteral_0= '%' ) | (enumLiteral_1= '^' ) ) ;
+    // InternalMGLang.g:3848:1: ruleSecondaryOp returns [Enumerator current=null] : ( (enumLiteral_0= '%' ) | (enumLiteral_1= '^' ) ) ;
     public final Enumerator ruleSecondaryOp() throws RecognitionException {
         Enumerator current = null;
 
@@ -10131,17 +10301,17 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3781:2: ( ( (enumLiteral_0= '%' ) | (enumLiteral_1= '^' ) ) )
-            // InternalMGLang.g:3782:2: ( (enumLiteral_0= '%' ) | (enumLiteral_1= '^' ) )
+            // InternalMGLang.g:3854:2: ( ( (enumLiteral_0= '%' ) | (enumLiteral_1= '^' ) ) )
+            // InternalMGLang.g:3855:2: ( (enumLiteral_0= '%' ) | (enumLiteral_1= '^' ) )
             {
-            // InternalMGLang.g:3782:2: ( (enumLiteral_0= '%' ) | (enumLiteral_1= '^' ) )
+            // InternalMGLang.g:3855:2: ( (enumLiteral_0= '%' ) | (enumLiteral_1= '^' ) )
             int alt55=2;
             int LA55_0 = input.LA(1);
 
-            if ( (LA55_0==58) ) {
+            if ( (LA55_0==59) ) {
                 alt55=1;
             }
-            else if ( (LA55_0==59) ) {
+            else if ( (LA55_0==60) ) {
                 alt55=2;
             }
             else {
@@ -10152,12 +10322,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
             }
             switch (alt55) {
                 case 1 :
-                    // InternalMGLang.g:3783:3: (enumLiteral_0= '%' )
+                    // InternalMGLang.g:3856:3: (enumLiteral_0= '%' )
                     {
-                    // InternalMGLang.g:3783:3: (enumLiteral_0= '%' )
-                    // InternalMGLang.g:3784:4: enumLiteral_0= '%'
+                    // InternalMGLang.g:3856:3: (enumLiteral_0= '%' )
+                    // InternalMGLang.g:3857:4: enumLiteral_0= '%'
                     {
-                    enumLiteral_0=(Token)match(input,58,FOLLOW_2); 
+                    enumLiteral_0=(Token)match(input,59,FOLLOW_2); 
 
                     				current = grammarAccess.getSecondaryOpAccess().getMODEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_0, grammarAccess.getSecondaryOpAccess().getMODEnumLiteralDeclaration_0());
@@ -10169,12 +10339,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:3791:3: (enumLiteral_1= '^' )
+                    // InternalMGLang.g:3864:3: (enumLiteral_1= '^' )
                     {
-                    // InternalMGLang.g:3791:3: (enumLiteral_1= '^' )
-                    // InternalMGLang.g:3792:4: enumLiteral_1= '^'
+                    // InternalMGLang.g:3864:3: (enumLiteral_1= '^' )
+                    // InternalMGLang.g:3865:4: enumLiteral_1= '^'
                     {
-                    enumLiteral_1=(Token)match(input,59,FOLLOW_2); 
+                    enumLiteral_1=(Token)match(input,60,FOLLOW_2); 
 
                     				current = grammarAccess.getSecondaryOpAccess().getXOREnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_1, grammarAccess.getSecondaryOpAccess().getXOREnumLiteralDeclaration_1());
@@ -10208,7 +10378,7 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "rulePrimaryOp"
-    // InternalMGLang.g:3802:1: rulePrimaryOp returns [Enumerator current=null] : ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '&&' ) ) ;
+    // InternalMGLang.g:3875:1: rulePrimaryOp returns [Enumerator current=null] : ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '&&' ) ) ;
     public final Enumerator rulePrimaryOp() throws RecognitionException {
         Enumerator current = null;
 
@@ -10220,23 +10390,23 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalMGLang.g:3808:2: ( ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '&&' ) ) )
-            // InternalMGLang.g:3809:2: ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '&&' ) )
+            // InternalMGLang.g:3881:2: ( ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '&&' ) ) )
+            // InternalMGLang.g:3882:2: ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '&&' ) )
             {
-            // InternalMGLang.g:3809:2: ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '&&' ) )
+            // InternalMGLang.g:3882:2: ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '&&' ) )
             int alt56=3;
             switch ( input.LA(1) ) {
-            case 60:
+            case 61:
                 {
                 alt56=1;
                 }
                 break;
-            case 61:
+            case 62:
                 {
                 alt56=2;
                 }
                 break;
-            case 62:
+            case 63:
                 {
                 alt56=3;
                 }
@@ -10250,12 +10420,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
 
             switch (alt56) {
                 case 1 :
-                    // InternalMGLang.g:3810:3: (enumLiteral_0= '*' )
+                    // InternalMGLang.g:3883:3: (enumLiteral_0= '*' )
                     {
-                    // InternalMGLang.g:3810:3: (enumLiteral_0= '*' )
-                    // InternalMGLang.g:3811:4: enumLiteral_0= '*'
+                    // InternalMGLang.g:3883:3: (enumLiteral_0= '*' )
+                    // InternalMGLang.g:3884:4: enumLiteral_0= '*'
                     {
-                    enumLiteral_0=(Token)match(input,60,FOLLOW_2); 
+                    enumLiteral_0=(Token)match(input,61,FOLLOW_2); 
 
                     				current = grammarAccess.getPrimaryOpAccess().getMULEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_0, grammarAccess.getPrimaryOpAccess().getMULEnumLiteralDeclaration_0());
@@ -10267,12 +10437,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalMGLang.g:3818:3: (enumLiteral_1= '/' )
+                    // InternalMGLang.g:3891:3: (enumLiteral_1= '/' )
                     {
-                    // InternalMGLang.g:3818:3: (enumLiteral_1= '/' )
-                    // InternalMGLang.g:3819:4: enumLiteral_1= '/'
+                    // InternalMGLang.g:3891:3: (enumLiteral_1= '/' )
+                    // InternalMGLang.g:3892:4: enumLiteral_1= '/'
                     {
-                    enumLiteral_1=(Token)match(input,61,FOLLOW_2); 
+                    enumLiteral_1=(Token)match(input,62,FOLLOW_2); 
 
                     				current = grammarAccess.getPrimaryOpAccess().getDIVEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_1, grammarAccess.getPrimaryOpAccess().getDIVEnumLiteralDeclaration_1());
@@ -10284,12 +10454,12 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalMGLang.g:3826:3: (enumLiteral_2= '&&' )
+                    // InternalMGLang.g:3899:3: (enumLiteral_2= '&&' )
                     {
-                    // InternalMGLang.g:3826:3: (enumLiteral_2= '&&' )
-                    // InternalMGLang.g:3827:4: enumLiteral_2= '&&'
+                    // InternalMGLang.g:3899:3: (enumLiteral_2= '&&' )
+                    // InternalMGLang.g:3900:4: enumLiteral_2= '&&'
                     {
-                    enumLiteral_2=(Token)match(input,62,FOLLOW_2); 
+                    enumLiteral_2=(Token)match(input,63,FOLLOW_2); 
 
                     				current = grammarAccess.getPrimaryOpAccess().getANDEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
                     				newLeafNode(enumLiteral_2, grammarAccess.getPrimaryOpAccess().getANDEnumLiteralDeclaration_2());
@@ -10337,41 +10507,41 @@ public class InternalMGLangParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_9 = new BitSet(new long[]{0x0000000000100000L});
     public static final BitSet FOLLOW_10 = new BitSet(new long[]{0x0000000000200000L});
     public static final BitSet FOLLOW_11 = new BitSet(new long[]{0x0000000000C00000L});
-    public static final BitSet FOLLOW_12 = new BitSet(new long[]{0x0003C00000100020L});
+    public static final BitSet FOLLOW_12 = new BitSet(new long[]{0x0007800000100020L});
     public static final BitSet FOLLOW_13 = new BitSet(new long[]{0x0000000002100000L});
-    public static final BitSet FOLLOW_14 = new BitSet(new long[]{0x0003C00000000020L});
-    public static final BitSet FOLLOW_15 = new BitSet(new long[]{0x0000048400400020L});
+    public static final BitSet FOLLOW_14 = new BitSet(new long[]{0x0007800000000020L});
+    public static final BitSet FOLLOW_15 = new BitSet(new long[]{0x0000090800400020L});
     public static final BitSet FOLLOW_16 = new BitSet(new long[]{0x0000000004000002L});
     public static final BitSet FOLLOW_17 = new BitSet(new long[]{0x0000000008000000L});
     public static final BitSet FOLLOW_18 = new BitSet(new long[]{0x0000000010000002L});
     public static final BitSet FOLLOW_19 = new BitSet(new long[]{0x0000000000200042L});
-    public static final BitSet FOLLOW_20 = new BitSet(new long[]{0x0000380000180730L});
-    public static final BitSet FOLLOW_21 = new BitSet(new long[]{0x0000380000080730L});
+    public static final BitSet FOLLOW_20 = new BitSet(new long[]{0x0000700000180730L});
+    public static final BitSet FOLLOW_21 = new BitSet(new long[]{0x0000700000080730L});
     public static final BitSet FOLLOW_22 = new BitSet(new long[]{0x0000000020000000L});
     public static final BitSet FOLLOW_23 = new BitSet(new long[]{0x0000000000000040L});
     public static final BitSet FOLLOW_24 = new BitSet(new long[]{0x0000000010000000L});
     public static final BitSet FOLLOW_25 = new BitSet(new long[]{0x0000000010080002L});
     public static final BitSet FOLLOW_26 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_27 = new BitSet(new long[]{0x0000048480400020L});
+    public static final BitSet FOLLOW_27 = new BitSet(new long[]{0x0000090980400020L});
     public static final BitSet FOLLOW_28 = new BitSet(new long[]{0x0000000000400000L});
-    public static final BitSet FOLLOW_29 = new BitSet(new long[]{0x0000000100000000L});
-    public static final BitSet FOLLOW_30 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_31 = new BitSet(new long[]{0x0000048480000022L});
-    public static final BitSet FOLLOW_32 = new BitSet(new long[]{0x0000000800000000L});
-    public static final BitSet FOLLOW_33 = new BitSet(new long[]{0x0000002800400000L});
-    public static final BitSet FOLLOW_34 = new BitSet(new long[]{0x0000001000000000L});
-    public static final BitSet FOLLOW_35 = new BitSet(new long[]{0x0000048480200020L});
-    public static final BitSet FOLLOW_36 = new BitSet(new long[]{0x0000005000000000L});
-    public static final BitSet FOLLOW_37 = new BitSet(new long[]{0x0000048480600020L});
+    public static final BitSet FOLLOW_29 = new BitSet(new long[]{0x0000000200000000L});
+    public static final BitSet FOLLOW_30 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_31 = new BitSet(new long[]{0x0000090980000022L});
+    public static final BitSet FOLLOW_32 = new BitSet(new long[]{0x0000001000000000L});
+    public static final BitSet FOLLOW_33 = new BitSet(new long[]{0x0000005000400000L});
+    public static final BitSet FOLLOW_34 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_35 = new BitSet(new long[]{0x0000090900200020L});
+    public static final BitSet FOLLOW_36 = new BitSet(new long[]{0x000000A000000000L});
+    public static final BitSet FOLLOW_37 = new BitSet(new long[]{0x0000090900600020L});
     public static final BitSet FOLLOW_38 = new BitSet(new long[]{0x0000000000000080L});
     public static final BitSet FOLLOW_39 = new BitSet(new long[]{0x0000000000000042L});
-    public static final BitSet FOLLOW_40 = new BitSet(new long[]{0x0000390000080730L});
+    public static final BitSet FOLLOW_40 = new BitSet(new long[]{0x0000720000080730L});
     public static final BitSet FOLLOW_41 = new BitSet(new long[]{0x0000000000000710L});
-    public static final BitSet FOLLOW_42 = new BitSet(new long[]{0x0000020002000000L});
+    public static final BitSet FOLLOW_42 = new BitSet(new long[]{0x0000040002000000L});
     public static final BitSet FOLLOW_43 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_44 = new BitSet(new long[]{0x0300000200000002L});
-    public static final BitSet FOLLOW_45 = new BitSet(new long[]{0x0C00000000000002L});
-    public static final BitSet FOLLOW_46 = new BitSet(new long[]{0x7000000000000002L});
-    public static final BitSet FOLLOW_47 = new BitSet(new long[]{0x00FC000000000002L});
+    public static final BitSet FOLLOW_44 = new BitSet(new long[]{0x0600000400000002L});
+    public static final BitSet FOLLOW_45 = new BitSet(new long[]{0x1800000000000002L});
+    public static final BitSet FOLLOW_46 = new BitSet(new long[]{0xE000000000000002L});
+    public static final BitSet FOLLOW_47 = new BitSet(new long[]{0x01F8000000000002L});
 
 }

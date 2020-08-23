@@ -222,6 +222,15 @@ public interface MGLangFactory extends EFactory
   PatternVariable createPatternVariable();
 
   /**
+   * Returns a new object of class '<em>Variable</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Variable</em>'.
+   * @generated
+   */
+  Variable createVariable();
+
+  /**
    * Returns a new object of class '<em>For Statement</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

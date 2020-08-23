@@ -78,10 +78,14 @@ Generator:
 	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
-	ForStatement | Switch | Collection | PatternCall | PatternVariable;
+	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable;
 
 PatternVariable:
 	type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall;
+
+Variable:
+	'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression
+;
 
 ForStatement:
 	'for' head=ForHead '{' body=ForBody '}';
@@ -96,7 +100,7 @@ ForEachHead:
 	src=RefOrCall '-' eref=[ecore::EReference] '->' iteratorVar=ID;
 
 RefType:
-	Node | Parameter | Collection;
+	Node | Parameter | Collection | Variable;
 
 ForBody:
 	{ForBody} (commands+=GeneratorExpression)*;

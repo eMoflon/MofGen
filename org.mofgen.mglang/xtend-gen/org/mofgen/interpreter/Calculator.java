@@ -23,6 +23,7 @@ import org.mofgen.mGLang.SecondaryOp;
 import org.mofgen.mGLang.StringLiteral;
 import org.mofgen.mGLang.Tertiary;
 import org.mofgen.mGLang.TertiaryOp;
+import org.mofgen.mGLang.Variable;
 
 @SuppressWarnings("all")
 public class Calculator {
@@ -56,6 +57,12 @@ public class Calculator {
       if (Objects.equal(_class, EOperation.class)) {
         _matched=true;
         return ((EOperation) result);
+      }
+    }
+    if (!_matched) {
+      if (Objects.equal(_class, Variable.class)) {
+        _matched=true;
+        return this.evaluate(((Variable) result).getValue());
       }
     }
     return result;

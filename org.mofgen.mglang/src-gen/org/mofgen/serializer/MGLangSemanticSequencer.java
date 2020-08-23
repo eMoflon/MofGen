@@ -57,6 +57,7 @@ import org.mofgen.mGLang.Secondary;
 import org.mofgen.mGLang.StringLiteral;
 import org.mofgen.mGLang.SwitchCase;
 import org.mofgen.mGLang.Tertiary;
+import org.mofgen.mGLang.Variable;
 import org.mofgen.services.MGLangGrammarAccess;
 
 @SuppressWarnings("all")
@@ -198,6 +199,9 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				return; 
 			case MGLangPackage.TERTIARY:
 				sequence_TertiaryExpression(context, (Tertiary) semanticObject); 
+				return; 
+			case MGLangPackage.VARIABLE:
+				sequence_Variable(context, (Variable) semanticObject); 
 				return; 
 			}
 		if (errorAcceptor != null)
@@ -1048,6 +1052,29 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 		feeder.accept(grammarAccess.getTertiaryExpressionAccess().getTertiaryLeftAction_1_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getTertiaryExpressionAccess().getOpTertiaryOpEnumRuleCall_1_1_0(), semanticObject.getOp());
 		feeder.accept(grammarAccess.getTertiaryExpressionAccess().getRightSecondaryExpressionParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     GeneratorExpression returns Variable
+	 *     Variable returns Variable
+	 *     RefType returns Variable
+	 *
+	 * Constraint:
+	 *     (name=ID value=ArithmeticExpression)
+	 */
+	protected void sequence_Variable(ISerializationContext context, Variable semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.REF_TYPE__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.REF_TYPE__NAME));
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.VARIABLE__VALUE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.VARIABLE__VALUE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getVariableAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getVariableAccess().getValueArithmeticExpressionParserRuleCall_3_0(), semanticObject.getValue());
 		feeder.finish();
 	}
 	

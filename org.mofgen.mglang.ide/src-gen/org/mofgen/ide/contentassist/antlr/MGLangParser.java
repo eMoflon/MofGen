@@ -83,6 +83,7 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getRefParamsAccess().getGroup_1(), "rule__RefParams__Group_1__0");
 			builder.put(grammarAccess.getGeneratorAccess().getGroup(), "rule__Generator__Group__0");
 			builder.put(grammarAccess.getPatternVariableAccess().getGroup(), "rule__PatternVariable__Group__0");
+			builder.put(grammarAccess.getVariableAccess().getGroup(), "rule__Variable__Group__0");
 			builder.put(grammarAccess.getForStatementAccess().getGroup(), "rule__ForStatement__Group__0");
 			builder.put(grammarAccess.getGeneralForHeadAccess().getGroup(), "rule__GeneralForHead__Group__0");
 			builder.put(grammarAccess.getForEachHeadAccess().getGroup(), "rule__ForEachHead__Group__0");
@@ -158,6 +159,8 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getPatternVariableAccess().getTypeAssignment_0(), "rule__PatternVariable__TypeAssignment_0");
 			builder.put(grammarAccess.getPatternVariableAccess().getNameAssignment_1(), "rule__PatternVariable__NameAssignment_1");
 			builder.put(grammarAccess.getPatternVariableAccess().getPatternCallAssignment_3(), "rule__PatternVariable__PatternCallAssignment_3");
+			builder.put(grammarAccess.getVariableAccess().getNameAssignment_1(), "rule__Variable__NameAssignment_1");
+			builder.put(grammarAccess.getVariableAccess().getValueAssignment_3(), "rule__Variable__ValueAssignment_3");
 			builder.put(grammarAccess.getForStatementAccess().getHeadAssignment_1(), "rule__ForStatement__HeadAssignment_1");
 			builder.put(grammarAccess.getForStatementAccess().getBodyAssignment_3(), "rule__ForStatement__BodyAssignment_3");
 			builder.put(grammarAccess.getGeneralForHeadAccess().getIteratorVarAssignment_0(), "rule__GeneralForHead__IteratorVarAssignment_0");

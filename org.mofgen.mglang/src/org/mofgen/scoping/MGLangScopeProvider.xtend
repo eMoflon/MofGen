@@ -26,6 +26,7 @@ import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.PatternVariable
 import org.mofgen.mGLang.Import
 import org.mofgen.mGLang.ParameterNode
+import org.mofgen.mGLang.Variable
 
 /**
  * This class contains custom scoping description.
@@ -62,7 +63,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 
 		return super.getScope(context, reference)
-	// return IScope.NULLSCOPE;
 	}
 	
 	def getScopeForParameterNodeType(ParameterNode paramNode){
@@ -140,18 +140,21 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			
 			var params = new ArrayList<EObject>()
 			var patternNodes = new ArrayList<Node>()
-			
+						
+
+			val vars = new ArrayList<Variable>()
 			var collections = new ArrayList<Collection>()
 			
-			if (pattern !== null){
+						if (pattern !== null){
 				params.addAll(pattern.parameters)
 				// get nodes of pattern
-//				patternNodes.addAll(pattern.nodes)
 				patternNodes.addAll(pattern.commands.filter(Node))
 				
 				collections.addAll(EcoreUtil2.getAllContentsOfType(pattern, Collection))
+				vars.addAll(EcoreUtil2.getAllContentsOfType(pattern, Variable))
 			}else{
 				collections.addAll(EcoreUtil2.getAllContentsOfType(gen, Collection))
+				vars.addAll(EcoreUtil2.getAllContentsOfType(gen, Variable))
 			}
 			// TODO Collections as return values? Saved in "List"/"Map" Objects or in "var"? --> Expand Scope!
 
@@ -167,11 +170,12 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					}
 				}
 			}
-
 			for (index : indicesToRemove.reverse) {
 				patternNodes.remove(index)
 			}
-			return Scopes.scopeFor(params + patternNodes + collections)
+
+			
+			return Scopes.scopeFor(params + patternNodes + collections + vars)
 			
 		} else {
 			val trg = r.target

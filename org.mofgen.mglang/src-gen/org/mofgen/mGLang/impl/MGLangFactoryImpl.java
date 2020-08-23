@@ -88,6 +88,7 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.GENERATOR: return createGenerator();
       case MGLangPackage.GENERATOR_EXPRESSION: return createGeneratorExpression();
       case MGLangPackage.PATTERN_VARIABLE: return createPatternVariable();
+      case MGLangPackage.VARIABLE: return createVariable();
       case MGLangPackage.FOR_STATEMENT: return createForStatement();
       case MGLangPackage.FOR_HEAD: return createForHead();
       case MGLangPackage.GENERAL_FOR_HEAD: return createGeneralForHead();
@@ -445,6 +446,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     PatternVariableImpl patternVariable = new PatternVariableImpl();
     return patternVariable;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Variable createVariable()
+  {
+    VariableImpl variable = new VariableImpl();
+    return variable;
   }
 
   /**

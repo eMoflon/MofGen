@@ -38,6 +38,7 @@ import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternNodeReference;
 import org.mofgen.mGLang.PatternVariable;
 import org.mofgen.mGLang.RefOrCall;
+import org.mofgen.mGLang.Variable;
 import org.mofgen.scoping.AbstractMGLangScopeProvider;
 import org.mofgen.utils.MofgenModelUtils;
 
@@ -176,13 +177,16 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
       final Generator gen = EcoreUtil2.<Generator>getContainerOfType(r, Generator.class);
       ArrayList<EObject> params = new ArrayList<EObject>();
       ArrayList<Node> patternNodes = new ArrayList<Node>();
+      final ArrayList<Variable> vars = new ArrayList<Variable>();
       ArrayList<Collection> collections = new ArrayList<Collection>();
       if ((pattern != null)) {
         params.addAll(pattern.getParameters());
         Iterables.<Node>addAll(patternNodes, Iterables.<Node>filter(pattern.getCommands(), Node.class));
         collections.addAll(EcoreUtil2.<Collection>getAllContentsOfType(pattern, Collection.class));
+        vars.addAll(EcoreUtil2.<Variable>getAllContentsOfType(pattern, Variable.class));
       } else {
         collections.addAll(EcoreUtil2.<Collection>getAllContentsOfType(gen, Collection.class));
+        vars.addAll(EcoreUtil2.<Variable>getAllContentsOfType(gen, Variable.class));
       }
       final Iterable<Node> shadowingNodes = this.getEventuallyShadowingNodes(r);
       final ArrayList<Integer> indicesToRemove = CollectionLiterals.<Integer>newArrayList();
@@ -200,7 +204,8 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
       }
       Iterable<EObject> _plus = Iterables.<EObject>concat(params, patternNodes);
       Iterable<EObject> _plus_1 = Iterables.<EObject>concat(_plus, collections);
-      return Scopes.scopeFor(_plus_1);
+      Iterable<EObject> _plus_2 = Iterables.<EObject>concat(_plus_1, vars);
+      return Scopes.scopeFor(_plus_2);
     } else {
       final RefOrCall trg = r.getTarget();
       final EObject ref = trg.getRef();
@@ -215,8 +220,8 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
       }
       final EList<EAttribute> attrs = refClass.getEAllAttributes();
       final EList<EReference> refs = refClass.getEAllReferences();
-      Iterable<EStructuralFeature> _plus_2 = Iterables.<EStructuralFeature>concat(attrs, refs);
-      return Scopes.scopeFor(_plus_2);
+      Iterable<EStructuralFeature> _plus_3 = Iterables.<EStructuralFeature>concat(attrs, refs);
+      return Scopes.scopeFor(_plus_3);
     }
   }
   

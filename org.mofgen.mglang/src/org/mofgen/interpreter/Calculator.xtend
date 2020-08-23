@@ -13,6 +13,7 @@ import org.mofgen.mGLang.BooleanLiteral
 import org.mofgen.mGLang.NumberLiteral
 import org.mofgen.mGLang.StringLiteral
 import org.eclipse.emf.ecore.EOperation
+import org.mofgen.mGLang.Variable
 
 class Calculator {
 	
@@ -24,6 +25,7 @@ class Calculator {
 			case String: return result as String
 			case Boolean: return result as Boolean
 			case EOperation: return result as EOperation
+			case Variable: return evaluate((result as Variable).value)
 		}
 		return result
 	}
