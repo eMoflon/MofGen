@@ -124,22 +124,22 @@ public interface MGLangPackage extends EPackage
   int IMPORT = 1;
 
   /**
+   * The feature id for the '<em><b>Uri</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int IMPORT__URI = 0;
+
+  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int IMPORT__NAME = 0;
-
-  /**
-   * The feature id for the '<em><b>Alias</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int IMPORT__ALIAS = 1;
+  int IMPORT__NAME = 1;
 
   /**
    * The number of structural features of the '<em>Import</em>' class.
@@ -680,13 +680,22 @@ public interface MGLangPackage extends EPackage
   int PARAMETER_NODE__NAME = PARAMETER__NAME;
 
   /**
+   * The feature id for the '<em><b>Src Model</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PARAMETER_NODE__SRC_MODEL = PARAMETER_FEATURE_COUNT + 0;
+
+  /**
    * The feature id for the '<em><b>Type</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PARAMETER_NODE__TYPE = PARAMETER_FEATURE_COUNT + 0;
+  int PARAMETER_NODE__TYPE = PARAMETER_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Parameter Node</em>' class.
@@ -695,7 +704,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PARAMETER_NODE_FEATURE_COUNT = PARAMETER_FEATURE_COUNT + 1;
+  int PARAMETER_NODE_FEATURE_COUNT = PARAMETER_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.ListAssignmentImpl <em>List Assignment</em>}' class.
@@ -2103,6 +2112,17 @@ public interface MGLangPackage extends EPackage
   EClass getImport();
 
   /**
+   * Returns the meta object for the attribute '{@link org.mofgen.mGLang.Import#getUri <em>Uri</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Uri</em>'.
+   * @see org.mofgen.mGLang.Import#getUri()
+   * @see #getImport()
+   * @generated
+   */
+  EAttribute getImport_Uri();
+
+  /**
    * Returns the meta object for the attribute '{@link org.mofgen.mGLang.Import#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2112,17 +2132,6 @@ public interface MGLangPackage extends EPackage
    * @generated
    */
   EAttribute getImport_Name();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.mofgen.mGLang.Import#getAlias <em>Alias</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Alias</em>'.
-   * @see org.mofgen.mGLang.Import#getAlias()
-   * @see #getImport()
-   * @generated
-   */
-  EAttribute getImport_Alias();
 
   /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.Config <em>Config</em>}'.
@@ -2484,6 +2493,17 @@ public interface MGLangPackage extends EPackage
    * @generated
    */
   EClass getParameterNode();
+
+  /**
+   * Returns the meta object for the reference '{@link org.mofgen.mGLang.ParameterNode#getSrcModel <em>Src Model</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Src Model</em>'.
+   * @see org.mofgen.mGLang.ParameterNode#getSrcModel()
+   * @see #getParameterNode()
+   * @generated
+   */
+  EReference getParameterNode_SrcModel();
 
   /**
    * Returns the meta object for the reference '{@link org.mofgen.mGLang.ParameterNode#getType <em>Type</em>}'.
@@ -3636,20 +3656,20 @@ public interface MGLangPackage extends EPackage
     EClass IMPORT = eINSTANCE.getImport();
 
     /**
+     * The meta object literal for the '<em><b>Uri</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute IMPORT__URI = eINSTANCE.getImport_Uri();
+
+    /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EAttribute IMPORT__NAME = eINSTANCE.getImport_Name();
-
-    /**
-     * The meta object literal for the '<em><b>Alias</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute IMPORT__ALIAS = eINSTANCE.getImport_Alias();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.ConfigImpl <em>Config</em>}' class.
@@ -3948,6 +3968,14 @@ public interface MGLangPackage extends EPackage
      * @generated
      */
     EClass PARAMETER_NODE = eINSTANCE.getParameterNode();
+
+    /**
+     * The meta object literal for the '<em><b>Src Model</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PARAMETER_NODE__SRC_MODEL = eINSTANCE.getParameterNode_SrcModel();
 
     /**
      * The meta object literal for the '<em><b>Type</b></em>' reference feature.

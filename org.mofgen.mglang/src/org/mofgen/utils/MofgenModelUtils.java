@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
+import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MofgenFile;
 
 public class MofgenModelUtils {
@@ -36,10 +37,20 @@ public class MofgenModelUtils {
 	public static ArrayList<EClass> getClasses(final MofgenFile file) {
 		final ArrayList<EClass> classes = new ArrayList<>();
 		file.getImports().forEach(i -> {
-			loadEcoreModel(i.getName()).ifPresent(m -> classes.addAll(getElements(m, EClass.class)));
+			loadEcoreModel(i.getUri()).ifPresent(m -> classes.addAll(getElements(m, EClass.class)));
 		});
-		
 
+		return classes;
+	}
+	
+	/**
+	 * Returns all EClasses imported by the given Import-Object
+	 * 
+	 * @param imp the import object
+	 */
+	public static ArrayList<EClass> getClassesFromImport(final Import imp){
+		final ArrayList<EClass> classes = new ArrayList<>();
+		loadEcoreModel(imp.getUri()).ifPresent(m -> classes.addAll(getElements(m, EClass.class)));
 		return classes;
 	}
 

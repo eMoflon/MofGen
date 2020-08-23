@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EClassifier;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.mofgen.mGLang.ParameterNode#getSrcModel <em>Src Model</em>}</li>
  *   <li>{@link org.mofgen.mGLang.ParameterNode#getType <em>Type</em>}</li>
  * </ul>
  *
@@ -23,6 +24,28 @@ import org.eclipse.emf.ecore.EClassifier;
  */
 public interface ParameterNode extends Parameter
 {
+  /**
+   * Returns the value of the '<em><b>Src Model</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Src Model</em>' reference.
+   * @see #setSrcModel(Import)
+   * @see org.mofgen.mGLang.MGLangPackage#getParameterNode_SrcModel()
+   * @model
+   * @generated
+   */
+  Import getSrcModel();
+
+  /**
+   * Sets the value of the '{@link org.mofgen.mGLang.ParameterNode#getSrcModel <em>Src Model</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Src Model</em>' reference.
+   * @see #getSrcModel()
+   * @generated
+   */
+  void setSrcModel(Import value);
+
   /**
    * Returns the value of the '<em><b>Type</b></em>' reference.
    * <!-- begin-user-doc -->

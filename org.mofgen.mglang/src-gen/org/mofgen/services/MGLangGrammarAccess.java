@@ -82,36 +82,36 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Import");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cImportKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameSTRINGTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Assignment cUriAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cUriSTRINGTerminalRuleCall_1_0 = (RuleCall)cUriAssignment_1.eContents().get(0);
 		private final Keyword cAsKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cAliasAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cAliasIDTerminalRuleCall_3_0 = (RuleCall)cAliasAssignment_3.eContents().get(0);
+		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cNameIDTerminalRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
 		
 		//Import:
-		//	'import' name=STRING 'as' alias=ID;
+		//	'import' uri=STRING 'as' name=ID;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'import' name=STRING 'as' alias=ID
+		//'import' uri=STRING 'as' name=ID
 		public Group getGroup() { return cGroup; }
 		
 		//'import'
 		public Keyword getImportKeyword_0() { return cImportKeyword_0; }
 		
-		//name=STRING
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		//uri=STRING
+		public Assignment getUriAssignment_1() { return cUriAssignment_1; }
 		
 		//STRING
-		public RuleCall getNameSTRINGTerminalRuleCall_1_0() { return cNameSTRINGTerminalRuleCall_1_0; }
+		public RuleCall getUriSTRINGTerminalRuleCall_1_0() { return cUriSTRINGTerminalRuleCall_1_0; }
 		
 		//'as'
 		public Keyword getAsKeyword_2() { return cAsKeyword_2; }
 		
-		//alias=ID
-		public Assignment getAliasAssignment_3() { return cAliasAssignment_3; }
+		//name=ID
+		public Assignment getNameAssignment_3() { return cNameAssignment_3; }
 		
 		//ID
-		public RuleCall getAliasIDTerminalRuleCall_3_0() { return cAliasIDTerminalRuleCall_3_0; }
+		public RuleCall getNameIDTerminalRuleCall_3_0() { return cNameIDTerminalRuleCall_3_0; }
 	}
 	public class ConfigElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Config");
@@ -657,33 +657,53 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	public class ParameterNodeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.ParameterNode");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final CrossReference cTypeEClassifierCrossReference_0_0 = (CrossReference)cTypeAssignment_0.eContents().get(0);
-		private final RuleCall cTypeEClassifierIDTerminalRuleCall_0_0_1 = (RuleCall)cTypeEClassifierCrossReference_0_0.eContents().get(1);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Group cGroup_0 = (Group)cGroup.eContents().get(0);
+		private final Assignment cSrcModelAssignment_0_0 = (Assignment)cGroup_0.eContents().get(0);
+		private final CrossReference cSrcModelImportCrossReference_0_0_0 = (CrossReference)cSrcModelAssignment_0_0.eContents().get(0);
+		private final RuleCall cSrcModelImportIDTerminalRuleCall_0_0_0_1 = (RuleCall)cSrcModelImportCrossReference_0_0_0.eContents().get(1);
+		private final Keyword cFullStopKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
+		private final Assignment cTypeAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final CrossReference cTypeEClassifierCrossReference_1_0 = (CrossReference)cTypeAssignment_1.eContents().get(0);
+		private final RuleCall cTypeEClassifierIDTerminalRuleCall_1_0_1 = (RuleCall)cTypeEClassifierCrossReference_1_0.eContents().get(1);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameIDTerminalRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
 		
 		//ParameterNode:
-		//	type=[ecore::EClassifier] name=ID;
+		//	(srcModel=[Import] '.')? type=[ecore::EClassifier] name=ID;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//type=[ecore::EClassifier] name=ID
+		//(srcModel=[Import] '.')? type=[ecore::EClassifier] name=ID
 		public Group getGroup() { return cGroup; }
 		
+		//(srcModel=[Import] '.')?
+		public Group getGroup_0() { return cGroup_0; }
+		
+		//srcModel=[Import]
+		public Assignment getSrcModelAssignment_0_0() { return cSrcModelAssignment_0_0; }
+		
+		//[Import]
+		public CrossReference getSrcModelImportCrossReference_0_0_0() { return cSrcModelImportCrossReference_0_0_0; }
+		
+		//ID
+		public RuleCall getSrcModelImportIDTerminalRuleCall_0_0_0_1() { return cSrcModelImportIDTerminalRuleCall_0_0_0_1; }
+		
+		//'.'
+		public Keyword getFullStopKeyword_0_1() { return cFullStopKeyword_0_1; }
+		
 		//type=[ecore::EClassifier]
-		public Assignment getTypeAssignment_0() { return cTypeAssignment_0; }
+		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
 		
 		//[ecore::EClassifier]
-		public CrossReference getTypeEClassifierCrossReference_0_0() { return cTypeEClassifierCrossReference_0_0; }
+		public CrossReference getTypeEClassifierCrossReference_1_0() { return cTypeEClassifierCrossReference_1_0; }
 		
 		//ID
-		public RuleCall getTypeEClassifierIDTerminalRuleCall_0_0_1() { return cTypeEClassifierIDTerminalRuleCall_0_0_1; }
+		public RuleCall getTypeEClassifierIDTerminalRuleCall_1_0_1() { return cTypeEClassifierIDTerminalRuleCall_1_0_1; }
 		
 		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 	}
 	public class RefOrCallElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.RefOrCall");
@@ -703,6 +723,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cParamsRefParamsParserRuleCall_1_3_1_0 = (RuleCall)cParamsAssignment_1_3_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_1_3_2 = (Keyword)cGroup_1_3.eContents().get(2);
 		
+		////TODO: Handling if no srcModel is given?
 		//RefOrCall:
 		//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? ')')?)*;
 		@Override public ParserRule getRule() { return rule; }
@@ -766,11 +787,9 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		////	ArithmeticExpression ({RefParams.last=current} ',' next=ArithmeticExpression)*;
 		//params+=ArithmeticExpression (',' params+=ArithmeticExpression)*
 		public Group getGroup() { return cGroup; }
 		
-		////	ArithmeticExpression ({RefParams.last=current} ',' next=ArithmeticExpression)*;
 		//params+=ArithmeticExpression
 		public Assignment getParamsAssignment_0() { return cParamsAssignment_0; }
 		
@@ -2509,7 +2528,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Import:
-	//	'import' name=STRING 'as' alias=ID;
+	//	'import' uri=STRING 'as' name=ID;
 	public ImportElements getImportAccess() {
 		return pImport;
 	}
@@ -2654,7 +2673,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//ParameterNode:
-	//	type=[ecore::EClassifier] name=ID;
+	//	(srcModel=[Import] '.')? type=[ecore::EClassifier] name=ID;
 	public ParameterNodeElements getParameterNodeAccess() {
 		return pParameterNode;
 	}
@@ -2663,6 +2682,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getParameterNodeAccess().getRule();
 	}
 	
+	////TODO: Handling if no srcModel is given?
 	//RefOrCall:
 	//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? ')')?)*;
 	public RefOrCallElements getRefOrCallAccess() {

@@ -45,8 +45,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/generators"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Import">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Import/uri"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Import/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Import/alias"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Config">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Config/expressions"/>
@@ -92,6 +92,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//PrimitiveParameter/type"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//ParameterNode">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ParameterNode/srcModel"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ParameterNode/type"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//RefOrCall">

@@ -524,18 +524,18 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     Import returns Import
 	 *
 	 * Constraint:
-	 *     (name=STRING alias=ID)
+	 *     (uri=STRING name=ID)
 	 */
 	protected void sequence_Import(ISerializationContext context, Import semanticObject) {
 		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.IMPORT__URI) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.IMPORT__URI));
 			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.IMPORT__NAME) == ValueTransient.YES)
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.IMPORT__NAME));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.IMPORT__ALIAS) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.IMPORT__ALIAS));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getImportAccess().getNameSTRINGTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getImportAccess().getAliasIDTerminalRuleCall_3_0(), semanticObject.getAlias());
+		feeder.accept(grammarAccess.getImportAccess().getUriSTRINGTerminalRuleCall_1_0(), semanticObject.getUri());
+		feeder.accept(grammarAccess.getImportAccess().getNameIDTerminalRuleCall_3_0(), semanticObject.getName());
 		feeder.finish();
 	}
 	
@@ -713,19 +713,10 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     RefType returns ParameterNode
 	 *
 	 * Constraint:
-	 *     (type=[EClassifier|ID] name=ID)
+	 *     (srcModel=[Import|ID]? type=[EClassifier|ID] name=ID)
 	 */
 	protected void sequence_ParameterNode(ISerializationContext context, ParameterNode semanticObject) {
-		if (errorAcceptor != null) {
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.PARAMETER_NODE__TYPE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.PARAMETER_NODE__TYPE));
-			if (transientValues.isValueTransient(semanticObject, MGLangPackage.Literals.REF_TYPE__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.REF_TYPE__NAME));
-		}
-		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getParameterNodeAccess().getTypeEClassifierIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.PARAMETER_NODE__TYPE, false));
-		feeder.accept(grammarAccess.getParameterNodeAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

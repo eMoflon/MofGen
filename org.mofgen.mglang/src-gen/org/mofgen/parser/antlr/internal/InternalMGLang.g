@@ -181,9 +181,9 @@ ruleImport returns [EObject current=null]
 		}
 		(
 			(
-				lv_name_1_0=RULE_STRING
+				lv_uri_1_0=RULE_STRING
 				{
-					newLeafNode(lv_name_1_0, grammarAccess.getImportAccess().getNameSTRINGTerminalRuleCall_1_0());
+					newLeafNode(lv_uri_1_0, grammarAccess.getImportAccess().getUriSTRINGTerminalRuleCall_1_0());
 				}
 				{
 					if ($current==null) {
@@ -191,8 +191,8 @@ ruleImport returns [EObject current=null]
 					}
 					setWithLastConsumed(
 						$current,
-						"name",
-						lv_name_1_0,
+						"uri",
+						lv_uri_1_0,
 						"org.eclipse.xtext.common.Terminals.STRING");
 				}
 			)
@@ -203,9 +203,9 @@ ruleImport returns [EObject current=null]
 		}
 		(
 			(
-				lv_alias_3_0=RULE_ID
+				lv_name_3_0=RULE_ID
 				{
-					newLeafNode(lv_alias_3_0, grammarAccess.getImportAccess().getAliasIDTerminalRuleCall_3_0());
+					newLeafNode(lv_name_3_0, grammarAccess.getImportAccess().getNameIDTerminalRuleCall_3_0());
 				}
 				{
 					if ($current==null) {
@@ -213,8 +213,8 @@ ruleImport returns [EObject current=null]
 					}
 					setWithLastConsumed(
 						$current,
-						"alias",
-						lv_alias_3_0,
+						"name",
+						lv_name_3_0,
 						"org.eclipse.xtext.common.Terminals.ID");
 				}
 			)
@@ -1158,22 +1158,41 @@ ruleParameterNode returns [EObject current=null]
 	(
 		(
 			(
+				(
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getParameterNodeRule());
+						}
+					}
+					otherlv_0=RULE_ID
+					{
+						newLeafNode(otherlv_0, grammarAccess.getParameterNodeAccess().getSrcModelImportCrossReference_0_0_0());
+					}
+				)
+			)
+			otherlv_1='.'
+			{
+				newLeafNode(otherlv_1, grammarAccess.getParameterNodeAccess().getFullStopKeyword_0_1());
+			}
+		)?
+		(
+			(
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getParameterNodeRule());
 					}
 				}
-				otherlv_0=RULE_ID
+				otherlv_2=RULE_ID
 				{
-					newLeafNode(otherlv_0, grammarAccess.getParameterNodeAccess().getTypeEClassifierCrossReference_0_0());
+					newLeafNode(otherlv_2, grammarAccess.getParameterNodeAccess().getTypeEClassifierCrossReference_1_0());
 				}
 			)
 		)
 		(
 			(
-				lv_name_1_0=RULE_ID
+				lv_name_3_0=RULE_ID
 				{
-					newLeafNode(lv_name_1_0, grammarAccess.getParameterNodeAccess().getNameIDTerminalRuleCall_1_0());
+					newLeafNode(lv_name_3_0, grammarAccess.getParameterNodeAccess().getNameIDTerminalRuleCall_2_0());
 				}
 				{
 					if ($current==null) {
@@ -1182,7 +1201,7 @@ ruleParameterNode returns [EObject current=null]
 					setWithLastConsumed(
 						$current,
 						"name",
-						lv_name_1_0,
+						lv_name_3_0,
 						"org.eclipse.xtext.common.Terminals.ID");
 				}
 			)

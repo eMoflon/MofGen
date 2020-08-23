@@ -21,14 +21,34 @@ import org.mofgen.mGLang.MGLangPackage;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link org.mofgen.mGLang.impl.ImportImpl#getUri <em>Uri</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.ImportImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.ImportImpl#getAlias <em>Alias</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ImportImpl extends MinimalEObjectImpl.Container implements Import
 {
+  /**
+   * The default value of the '{@link #getUri() <em>Uri</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getUri()
+   * @generated
+   * @ordered
+   */
+  protected static final String URI_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getUri() <em>Uri</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getUri()
+   * @generated
+   * @ordered
+   */
+  protected String uri = URI_EDEFAULT;
+
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -50,26 +70,6 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getAlias() <em>Alias</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAlias()
-   * @generated
-   * @ordered
-   */
-  protected static final String ALIAS_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getAlias() <em>Alias</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAlias()
-   * @generated
-   * @ordered
-   */
-  protected String alias = ALIAS_EDEFAULT;
-
-  /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -88,6 +88,31 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   protected EClass eStaticClass()
   {
     return MGLangPackage.Literals.IMPORT;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String getUri()
+  {
+    return uri;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setUri(String newUri)
+  {
+    String oldUri = uri;
+    uri = newUri;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.IMPORT__URI, oldUri, uri));
   }
 
   /**
@@ -121,39 +146,14 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
    * @generated
    */
   @Override
-  public String getAlias()
-  {
-    return alias;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setAlias(String newAlias)
-  {
-    String oldAlias = alias;
-    alias = newAlias;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.IMPORT__ALIAS, oldAlias, alias));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
     switch (featureID)
     {
+      case MGLangPackage.IMPORT__URI:
+        return getUri();
       case MGLangPackage.IMPORT__NAME:
         return getName();
-      case MGLangPackage.IMPORT__ALIAS:
-        return getAlias();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -168,11 +168,11 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   {
     switch (featureID)
     {
+      case MGLangPackage.IMPORT__URI:
+        setUri((String)newValue);
+        return;
       case MGLangPackage.IMPORT__NAME:
         setName((String)newValue);
-        return;
-      case MGLangPackage.IMPORT__ALIAS:
-        setAlias((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -188,11 +188,11 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   {
     switch (featureID)
     {
+      case MGLangPackage.IMPORT__URI:
+        setUri(URI_EDEFAULT);
+        return;
       case MGLangPackage.IMPORT__NAME:
         setName(NAME_EDEFAULT);
-        return;
-      case MGLangPackage.IMPORT__ALIAS:
-        setAlias(ALIAS_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -208,10 +208,10 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
   {
     switch (featureID)
     {
+      case MGLangPackage.IMPORT__URI:
+        return URI_EDEFAULT == null ? uri != null : !URI_EDEFAULT.equals(uri);
       case MGLangPackage.IMPORT__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case MGLangPackage.IMPORT__ALIAS:
-        return ALIAS_EDEFAULT == null ? alias != null : !ALIAS_EDEFAULT.equals(alias);
     }
     return super.eIsSet(featureID);
   }
@@ -227,10 +227,10 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import
     if (eIsProxy()) return super.toString();
 
     StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (name: ");
+    result.append(" (uri: ");
+    result.append(uri);
+    result.append(", name: ");
     result.append(name);
-    result.append(", alias: ");
-    result.append(alias);
     result.append(')');
     return result.toString();
   }

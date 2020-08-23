@@ -162,6 +162,10 @@ rulePrimitiveParameter:
 
 // Rule ParameterNode
 ruleParameterNode:
+	(
+		RULE_ID
+		'.'
+	)?
 	RULE_ID
 	RULE_ID
 ;

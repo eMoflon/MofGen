@@ -24,6 +24,8 @@ import java.util.ArrayList
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.PatternVariable
+import org.mofgen.mGLang.Import
+import org.mofgen.mGLang.ParameterNode
 
 /**
  * This class contains custom scoping description.
@@ -52,9 +54,26 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if(isPatternVariableType(context, reference)){
 			return getScopeForPatternVariableType(context as PatternVariable)
 		}
+		if(isParameterNodeSrcModel(context, reference)){
+			return getScopeForParameterNodeSrcModel(context as ParameterNode)
+		}
+		if(isParameterNodeType(context, reference)){
+			return getScopeForParameterNodeType(context as ParameterNode)
+		}
 
 		return super.getScope(context, reference)
 	// return IScope.NULLSCOPE;
+	}
+	
+	def getScopeForParameterNodeType(ParameterNode paramNode){
+		val imp = paramNode.srcModel
+		val classes = MofgenModelUtils.getClassesFromImport(imp)
+		return Scopes.scopeFor(classes)
+	}
+	
+	def getScopeForParameterNodeSrcModel(ParameterNode paramNode){
+		val imports = EcoreUtil2.getAllContentsOfType(getRootFile(paramNode), Import)
+		return Scopes.scopeFor(imports)
 	}
 
 	def getScopeForPatternVariableType(PatternVariable pVar){
@@ -200,6 +219,14 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	
 	def isPatternVariableType(EObject context, EReference reference){
 		return context instanceof PatternVariable && reference == MGLangPackage.Literals.PATTERN_VARIABLE__TYPE
+	}
+	
+	def isParameterNodeSrcModel(EObject context, EReference reference){
+		return context instanceof ParameterNode && reference == MGLangPackage.Literals.PARAMETER_NODE__SRC_MODEL
+	}
+	
+	def isParameterNodeType(EObject context, EReference reference){
+		return context instanceof ParameterNode && reference == MGLangPackage.Literals.PARAMETER_NODE__TYPE
 	}
 
 	def getRootFile(EObject context) {

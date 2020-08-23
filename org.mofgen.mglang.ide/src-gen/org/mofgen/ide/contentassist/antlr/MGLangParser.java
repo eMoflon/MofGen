@@ -74,6 +74,7 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAssignmentAccess().getGroup(), "rule__Assignment__Group__0");
 			builder.put(grammarAccess.getPrimitiveParameterAccess().getGroup(), "rule__PrimitiveParameter__Group__0");
 			builder.put(grammarAccess.getParameterNodeAccess().getGroup(), "rule__ParameterNode__Group__0");
+			builder.put(grammarAccess.getParameterNodeAccess().getGroup_0(), "rule__ParameterNode__Group_0__0");
 			builder.put(grammarAccess.getRefOrCallAccess().getGroup(), "rule__RefOrCall__Group__0");
 			builder.put(grammarAccess.getRefOrCallAccess().getGroup_1(), "rule__RefOrCall__Group_1__0");
 			builder.put(grammarAccess.getRefOrCallAccess().getGroup_1_3(), "rule__RefOrCall__Group_1_3__0");
@@ -119,8 +120,8 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getMofgenFileAccess().getConfigAssignment_1(), "rule__MofgenFile__ConfigAssignment_1");
 			builder.put(grammarAccess.getMofgenFileAccess().getPatternsAssignment_2_0(), "rule__MofgenFile__PatternsAssignment_2_0");
 			builder.put(grammarAccess.getMofgenFileAccess().getGeneratorsAssignment_2_1(), "rule__MofgenFile__GeneratorsAssignment_2_1");
-			builder.put(grammarAccess.getImportAccess().getNameAssignment_1(), "rule__Import__NameAssignment_1");
-			builder.put(grammarAccess.getImportAccess().getAliasAssignment_3(), "rule__Import__AliasAssignment_3");
+			builder.put(grammarAccess.getImportAccess().getUriAssignment_1(), "rule__Import__UriAssignment_1");
+			builder.put(grammarAccess.getImportAccess().getNameAssignment_3(), "rule__Import__NameAssignment_3");
 			builder.put(grammarAccess.getConfigAccess().getExpressionsAssignment_5(), "rule__Config__ExpressionsAssignment_5");
 			builder.put(grammarAccess.getPatternAccess().getNameAssignment_1(), "rule__Pattern__NameAssignment_1");
 			builder.put(grammarAccess.getPatternAccess().getParametersAssignment_2_1_0(), "rule__Pattern__ParametersAssignment_2_1_0");
@@ -147,8 +148,9 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getAssignmentAccess().getValueAssignment_2(), "rule__Assignment__ValueAssignment_2");
 			builder.put(grammarAccess.getPrimitiveParameterAccess().getTypeAssignment_0(), "rule__PrimitiveParameter__TypeAssignment_0");
 			builder.put(grammarAccess.getPrimitiveParameterAccess().getNameAssignment_1(), "rule__PrimitiveParameter__NameAssignment_1");
-			builder.put(grammarAccess.getParameterNodeAccess().getTypeAssignment_0(), "rule__ParameterNode__TypeAssignment_0");
-			builder.put(grammarAccess.getParameterNodeAccess().getNameAssignment_1(), "rule__ParameterNode__NameAssignment_1");
+			builder.put(grammarAccess.getParameterNodeAccess().getSrcModelAssignment_0_0(), "rule__ParameterNode__SrcModelAssignment_0_0");
+			builder.put(grammarAccess.getParameterNodeAccess().getTypeAssignment_1(), "rule__ParameterNode__TypeAssignment_1");
+			builder.put(grammarAccess.getParameterNodeAccess().getNameAssignment_2(), "rule__ParameterNode__NameAssignment_2");
 			builder.put(grammarAccess.getRefOrCallAccess().getRefAssignment_0(), "rule__RefOrCall__RefAssignment_0");
 			builder.put(grammarAccess.getRefOrCallAccess().getRefAssignment_1_2(), "rule__RefOrCall__RefAssignment_1_2");
 			builder.put(grammarAccess.getRefOrCallAccess().getParamsAssignment_1_3_1(), "rule__RefOrCall__ParamsAssignment_1_3_1");

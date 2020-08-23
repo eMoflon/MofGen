@@ -28,10 +28,12 @@ import org.mofgen.mGLang.Assignment;
 import org.mofgen.mGLang.CaseWithCast;
 import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.Generator;
+import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.Map;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
+import org.mofgen.mGLang.ParameterNode;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternNodeReference;
 import org.mofgen.mGLang.PatternVariable;
@@ -73,7 +75,26 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
     if (_isPatternVariableType) {
       return this.getScopeForPatternVariableType(((PatternVariable) context));
     }
+    boolean _isParameterNodeSrcModel = this.isParameterNodeSrcModel(context, reference);
+    if (_isParameterNodeSrcModel) {
+      return this.getScopeForParameterNodeSrcModel(((ParameterNode) context));
+    }
+    boolean _isParameterNodeType = this.isParameterNodeType(context, reference);
+    if (_isParameterNodeType) {
+      return this.getScopeForParameterNodeType(((ParameterNode) context));
+    }
     return super.getScope(context, reference);
+  }
+  
+  public IScope getScopeForParameterNodeType(final ParameterNode paramNode) {
+    final Import imp = paramNode.getSrcModel();
+    final ArrayList<EClass> classes = MofgenModelUtils.getClassesFromImport(imp);
+    return Scopes.scopeFor(classes);
+  }
+  
+  public IScope getScopeForParameterNodeSrcModel(final ParameterNode paramNode) {
+    final List<Import> imports = EcoreUtil2.<Import>getAllContentsOfType(this.getRootFile(paramNode), Import.class);
+    return Scopes.scopeFor(imports);
   }
   
   public IScope getScopeForPatternVariableType(final PatternVariable pVar) {
@@ -227,6 +248,14 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   
   public boolean isPatternVariableType(final EObject context, final EReference reference) {
     return ((context instanceof PatternVariable) && Objects.equal(reference, MGLangPackage.Literals.PATTERN_VARIABLE__TYPE));
+  }
+  
+  public boolean isParameterNodeSrcModel(final EObject context, final EReference reference) {
+    return ((context instanceof ParameterNode) && Objects.equal(reference, MGLangPackage.Literals.PARAMETER_NODE__SRC_MODEL));
+  }
+  
+  public boolean isParameterNodeType(final EObject context, final EReference reference) {
+    return ((context instanceof ParameterNode) && Objects.equal(reference, MGLangPackage.Literals.PARAMETER_NODE__TYPE));
   }
   
   public MofgenFile getRootFile(final EObject context) {

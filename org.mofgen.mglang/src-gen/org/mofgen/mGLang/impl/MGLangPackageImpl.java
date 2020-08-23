@@ -653,7 +653,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getImport_Name()
+  public EAttribute getImport_Uri()
   {
     return (EAttribute)importEClass.getEStructuralFeatures().get(0);
   }
@@ -664,7 +664,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getImport_Alias()
+  public EAttribute getImport_Name()
   {
     return (EAttribute)importEClass.getEStructuralFeatures().get(1);
   }
@@ -1049,9 +1049,20 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getParameterNode_Type()
+  public EReference getParameterNode_SrcModel()
   {
     return (EReference)parameterNodeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getParameterNode_Type()
+  {
+    return (EReference)parameterNodeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2203,8 +2214,8 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(mofgenFileEClass, MOFGEN_FILE__GENERATORS);
 
     importEClass = createEClass(IMPORT);
+    createEAttribute(importEClass, IMPORT__URI);
     createEAttribute(importEClass, IMPORT__NAME);
-    createEAttribute(importEClass, IMPORT__ALIAS);
 
     configEClass = createEClass(CONFIG);
     createEAttribute(configEClass, CONFIG__EXPRESSIONS);
@@ -2252,6 +2263,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEAttribute(primitiveParameterEClass, PRIMITIVE_PARAMETER__TYPE);
 
     parameterNodeEClass = createEClass(PARAMETER_NODE);
+    createEReference(parameterNodeEClass, PARAMETER_NODE__SRC_MODEL);
     createEReference(parameterNodeEClass, PARAMETER_NODE__TYPE);
 
     refOrCallEClass = createEClass(REF_OR_CALL);
@@ -2479,8 +2491,8 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getMofgenFile_Generators(), this.getGenerator(), null, "generators", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(importEClass, Import.class, "Import", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getImport_Uri(), ecorePackage.getEString(), "uri", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getImport_Name(), ecorePackage.getEString(), "name", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getImport_Alias(), ecorePackage.getEString(), "alias", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(configEClass, Config.class, "Config", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getConfig_Expressions(), ecorePackage.getEString(), "expressions", null, 0, -1, Config.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2528,6 +2540,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEAttribute(getPrimitiveParameter_Type(), this.getPrimitiveType(), "type", null, 0, 1, PrimitiveParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(parameterNodeEClass, ParameterNode.class, "ParameterNode", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getParameterNode_SrcModel(), this.getImport(), null, "srcModel", null, 0, 1, ParameterNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getParameterNode_Type(), ecorePackage.getEClassifier(), null, "type", null, 0, 1, ParameterNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(refOrCallEClass, RefOrCall.class, "RefOrCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

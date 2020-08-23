@@ -14,8 +14,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link org.mofgen.mGLang.Import#getUri <em>Uri</em>}</li>
  *   <li>{@link org.mofgen.mGLang.Import#getName <em>Name</em>}</li>
- *   <li>{@link org.mofgen.mGLang.Import#getAlias <em>Alias</em>}</li>
  * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getImport()
@@ -24,6 +24,28 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Import extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Uri</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Uri</em>' attribute.
+   * @see #setUri(String)
+   * @see org.mofgen.mGLang.MGLangPackage#getImport_Uri()
+   * @model
+   * @generated
+   */
+  String getUri();
+
+  /**
+   * Sets the value of the '{@link org.mofgen.mGLang.Import#getUri <em>Uri</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Uri</em>' attribute.
+   * @see #getUri()
+   * @generated
+   */
+  void setUri(String value);
+
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
@@ -45,27 +67,5 @@ public interface Import extends EObject
    * @generated
    */
   void setName(String value);
-
-  /**
-   * Returns the value of the '<em><b>Alias</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Alias</em>' attribute.
-   * @see #setAlias(String)
-   * @see org.mofgen.mGLang.MGLangPackage#getImport_Alias()
-   * @model
-   * @generated
-   */
-  String getAlias();
-
-  /**
-   * Sets the value of the '{@link org.mofgen.mGLang.Import#getAlias <em>Alias</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Alias</em>' attribute.
-   * @see #getAlias()
-   * @generated
-   */
-  void setAlias(String value);
 
 } // Import
