@@ -12,6 +12,7 @@ import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.BooleanLiteral
 import org.mofgen.mGLang.NumberLiteral
 import org.mofgen.mGLang.StringLiteral
+import org.eclipse.emf.ecore.EOperation
 
 class Calculator {
 	
@@ -22,7 +23,9 @@ class Calculator {
 			case Integer: return result as Integer
 			case String: return result as String
 			case Boolean: return result as Boolean
+			case EOperation: return result as EOperation
 		}
+		return result
 	}
 
 	def dispatch private internalEvaluate(Tertiary tertiary) {

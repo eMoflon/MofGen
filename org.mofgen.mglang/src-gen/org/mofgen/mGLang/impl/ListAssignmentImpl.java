@@ -5,6 +5,8 @@ package org.mofgen.mGLang.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.mofgen.mGLang.ListAssignment;
 import org.mofgen.mGLang.MGLangPackage;
 
@@ -15,7 +17,7 @@ import org.mofgen.mGLang.MGLangPackage;
  *
  * @generated
  */
-public class ListAssignmentImpl extends ListImpl implements ListAssignment
+public class ListAssignmentImpl extends MinimalEObjectImpl.Container implements ListAssignment
 {
   /**
    * <!-- begin-user-doc -->

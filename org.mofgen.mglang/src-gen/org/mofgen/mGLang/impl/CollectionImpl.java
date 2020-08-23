@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.RefType;
+import org.mofgen.mGLang.SwitchExpression;
 
 /**
  * <!-- begin-user-doc -->
@@ -176,6 +177,13 @@ public class CollectionImpl extends GeneratorExpressionImpl implements Collectio
         default: return -1;
       }
     }
+    if (baseClass == SwitchExpression.class)
+    {
+      switch (derivedFeatureID)
+      {
+        default: return -1;
+      }
+    }
     return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
   }
 
@@ -192,6 +200,13 @@ public class CollectionImpl extends GeneratorExpressionImpl implements Collectio
       switch (baseFeatureID)
       {
         case MGLangPackage.REF_TYPE__NAME: return MGLangPackage.COLLECTION__NAME;
+        default: return -1;
+      }
+    }
+    if (baseClass == SwitchExpression.class)
+    {
+      switch (baseFeatureID)
+      {
         default: return -1;
       }
     }

@@ -5,13 +5,18 @@ package org.mofgen.mGLang.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.mofgen.mGLang.ListAdHoc;
+import org.mofgen.mGLang.Literal;
 import org.mofgen.mGLang.MGLangPackage;
 
 /**
@@ -30,14 +35,14 @@ import org.mofgen.mGLang.MGLangPackage;
 public class ListAdHocImpl extends ListAssignmentImpl implements ListAdHoc
 {
   /**
-   * The cached value of the '{@link #getElements() <em>Elements</em>}' attribute list.
+   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getElements()
    * @generated
    * @ordered
    */
-  protected EList<String> elements;
+  protected EList<Literal> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -66,13 +71,29 @@ public class ListAdHocImpl extends ListAssignmentImpl implements ListAdHoc
    * @generated
    */
   @Override
-  public EList<String> getElements()
+  public EList<Literal> getElements()
   {
     if (elements == null)
     {
-      elements = new EDataTypeEList<String>(String.class, this, MGLangPackage.LIST_AD_HOC__ELEMENTS);
+      elements = new EObjectContainmentEList<Literal>(Literal.class, this, MGLangPackage.LIST_AD_HOC__ELEMENTS);
     }
     return elements;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.LIST_AD_HOC__ELEMENTS:
+        return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -104,7 +125,7 @@ public class ListAdHocImpl extends ListAssignmentImpl implements ListAdHoc
     {
       case MGLangPackage.LIST_AD_HOC__ELEMENTS:
         getElements().clear();
-        getElements().addAll((Collection<? extends String>)newValue);
+        getElements().addAll((Collection<? extends Literal>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -141,23 +162,6 @@ public class ListAdHocImpl extends ListAssignmentImpl implements ListAdHoc
         return elements != null && !elements.isEmpty();
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (elements: ");
-    result.append(elements);
-    result.append(')');
-    return result.toString();
   }
 
 } //ListAdHocImpl

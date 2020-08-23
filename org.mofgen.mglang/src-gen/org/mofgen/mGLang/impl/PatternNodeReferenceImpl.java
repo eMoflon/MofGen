@@ -29,7 +29,7 @@ import org.mofgen.mGLang.PatternNodeReference;
  *
  * @generated
  */
-public class PatternNodeReferenceImpl extends NodeReferenceOrAssignmentImpl implements PatternNodeReference
+public class PatternNodeReferenceImpl extends NodeReferenceOrAssignmentOrControlFlowImpl implements PatternNodeReference
 {
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' reference.

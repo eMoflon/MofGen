@@ -68,20 +68,21 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
     {
       case MGLangPackage.MOFGEN_FILE: return createMofgenFile();
       case MGLangPackage.IMPORT: return createImport();
+      case MGLangPackage.CONFIG: return createConfig();
       case MGLangPackage.PATTERN: return createPattern();
       case MGLangPackage.PATTERN_RETURN: return createPatternReturn();
       case MGLangPackage.PARAM_MANIPULATION: return createParamManipulation();
       case MGLangPackage.NODE: return createNode();
       case MGLangPackage.NODE_CONTENT: return createNodeContent();
       case MGLangPackage.PATTERN_CALL: return createPatternCall();
-      case MGLangPackage.NODE_REFERENCE_OR_ASSIGNMENT: return createNodeReferenceOrAssignment();
+      case MGLangPackage.NODE_REFERENCE_OR_ASSIGNMENT_OR_CONTROL_FLOW: return createNodeReferenceOrAssignmentOrControlFlow();
       case MGLangPackage.PATTERN_NODE_REFERENCE: return createPatternNodeReference();
       case MGLangPackage.ASSIGNMENT: return createAssignment();
       case MGLangPackage.PARAMETER: return createParameter();
       case MGLangPackage.PRIMITIVE_PARAMETER: return createPrimitiveParameter();
       case MGLangPackage.PARAMETER_NODE: return createParameterNode();
       case MGLangPackage.REF_OR_CALL: return createRefOrCall();
-      case MGLangPackage.REF_OR_CALL2: return createRefOrCall2();
+      case MGLangPackage.REF_PARAMS: return createRefParams();
       case MGLangPackage.GENERATOR: return createGenerator();
       case MGLangPackage.GENERATOR_EXPRESSION: return createGeneratorExpression();
       case MGLangPackage.PATTERN_OBJECT_CREATION: return createPatternObjectCreation();
@@ -92,12 +93,15 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.FOR_EACH_HEAD: return createForEachHead();
       case MGLangPackage.REF_TYPE: return createRefType();
       case MGLangPackage.FOR_BODY: return createForBody();
+      case MGLangPackage.SWITCH_EXPRESSION: return createSwitchExpression();
       case MGLangPackage.SWITCH: return createSwitch();
       case MGLangPackage.IF_ELSE_SWITCH: return createIfElseSwitch();
       case MGLangPackage.IF_ELSE_CASE: return createIfElseCase();
       case MGLangPackage.DEFAULT: return createDefault();
       case MGLangPackage.SWITCH_CASE: return createSwitchCase();
       case MGLangPackage.CASE: return createCase();
+      case MGLangPackage.CASE_WITH_CAST: return createCaseWithCast();
+      case MGLangPackage.CASE_WITHOUT_CAST: return createCaseWithoutCast();
       case MGLangPackage.CASE_BODY: return createCaseBody();
       case MGLangPackage.COLLECTION: return createCollection();
       case MGLangPackage.LIST: return createList();
@@ -109,13 +113,16 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
       case MGLangPackage.MAP_TUPEL: return createMapTupel();
       case MGLangPackage.FOR_RANGE: return createForRange();
       case MGLangPackage.ARITHMETIC_EXPRESSION: return createArithmeticExpression();
+      case MGLangPackage.LITERAL: return createLiteral();
+      case MGLangPackage.BOOLEAN_LITERAL: return createBooleanLiteral();
+      case MGLangPackage.STRING_LITERAL: return createStringLiteral();
+      case MGLangPackage.NUMBER_LITERAL: return createNumberLiteral();
       case MGLangPackage.TERTIARY: return createTertiary();
       case MGLangPackage.SECONDARY: return createSecondary();
       case MGLangPackage.PRIMARY: return createPrimary();
       case MGLangPackage.REL: return createRel();
       case MGLangPackage.NEGATION_EXPRESSION: return createNegationExpression();
       case MGLangPackage.FUNCTION_CALL: return createFunctionCall();
-      case MGLangPackage.LITERAL: return createLiteral();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -205,6 +212,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
+  public Config createConfig()
+  {
+    ConfigImpl config = new ConfigImpl();
+    return config;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Pattern createPattern()
   {
     PatternImpl pattern = new PatternImpl();
@@ -277,10 +296,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public NodeReferenceOrAssignment createNodeReferenceOrAssignment()
+  public NodeReferenceOrAssignmentOrControlFlow createNodeReferenceOrAssignmentOrControlFlow()
   {
-    NodeReferenceOrAssignmentImpl nodeReferenceOrAssignment = new NodeReferenceOrAssignmentImpl();
-    return nodeReferenceOrAssignment;
+    NodeReferenceOrAssignmentOrControlFlowImpl nodeReferenceOrAssignmentOrControlFlow = new NodeReferenceOrAssignmentOrControlFlowImpl();
+    return nodeReferenceOrAssignmentOrControlFlow;
   }
 
   /**
@@ -361,10 +380,10 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
-  public RefOrCall2 createRefOrCall2()
+  public RefParams createRefParams()
   {
-    RefOrCall2Impl refOrCall2 = new RefOrCall2Impl();
-    return refOrCall2;
+    RefParamsImpl refParams = new RefParamsImpl();
+    return refParams;
   }
 
   /**
@@ -493,6 +512,18 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
+  public SwitchExpression createSwitchExpression()
+  {
+    SwitchExpressionImpl switchExpression = new SwitchExpressionImpl();
+    return switchExpression;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Switch createSwitch()
   {
     SwitchImpl switch_ = new SwitchImpl();
@@ -557,6 +588,30 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     CaseImpl case_ = new CaseImpl();
     return case_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public CaseWithCast createCaseWithCast()
+  {
+    CaseWithCastImpl caseWithCast = new CaseWithCastImpl();
+    return caseWithCast;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public CaseWithoutCast createCaseWithoutCast()
+  {
+    CaseWithoutCastImpl caseWithoutCast = new CaseWithoutCastImpl();
+    return caseWithoutCast;
   }
 
   /**
@@ -697,6 +752,54 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
    * @generated
    */
   @Override
+  public Literal createLiteral()
+  {
+    LiteralImpl literal = new LiteralImpl();
+    return literal;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public BooleanLiteral createBooleanLiteral()
+  {
+    BooleanLiteralImpl booleanLiteral = new BooleanLiteralImpl();
+    return booleanLiteral;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public StringLiteral createStringLiteral()
+  {
+    StringLiteralImpl stringLiteral = new StringLiteralImpl();
+    return stringLiteral;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NumberLiteral createNumberLiteral()
+  {
+    NumberLiteralImpl numberLiteral = new NumberLiteralImpl();
+    return numberLiteral;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public Tertiary createTertiary()
   {
     TertiaryImpl tertiary = new TertiaryImpl();
@@ -761,18 +864,6 @@ public class MGLangFactoryImpl extends EFactoryImpl implements MGLangFactory
   {
     FunctionCallImpl functionCall = new FunctionCallImpl();
     return functionCall;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Literal createLiteral()
-  {
-    LiteralImpl literal = new LiteralImpl();
-    return literal;
   }
 
   /**

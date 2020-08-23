@@ -16,8 +16,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.mofgen.mGLang.CaseBody;
-import org.mofgen.mGLang.GeneratorExpression;
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.SwitchExpression;
 
 /**
  * <!-- begin-user-doc -->
@@ -42,7 +42,7 @@ public class CaseBodyImpl extends DefaultImpl implements CaseBody
    * @generated
    * @ordered
    */
-  protected EList<GeneratorExpression> expressions;
+  protected EList<SwitchExpression> expressions;
 
   /**
    * <!-- begin-user-doc -->
@@ -71,11 +71,11 @@ public class CaseBodyImpl extends DefaultImpl implements CaseBody
    * @generated
    */
   @Override
-  public EList<GeneratorExpression> getExpressions()
+  public EList<SwitchExpression> getExpressions()
   {
     if (expressions == null)
     {
-      expressions = new EObjectContainmentEList<GeneratorExpression>(GeneratorExpression.class, this, MGLangPackage.CASE_BODY__EXPRESSIONS);
+      expressions = new EObjectContainmentEList<SwitchExpression>(SwitchExpression.class, this, MGLangPackage.CASE_BODY__EXPRESSIONS);
     }
     return expressions;
   }
@@ -125,7 +125,7 @@ public class CaseBodyImpl extends DefaultImpl implements CaseBody
     {
       case MGLangPackage.CASE_BODY__EXPRESSIONS:
         getExpressions().clear();
-        getExpressions().addAll((Collection<? extends GeneratorExpression>)newValue);
+        getExpressions().addAll((Collection<? extends SwitchExpression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

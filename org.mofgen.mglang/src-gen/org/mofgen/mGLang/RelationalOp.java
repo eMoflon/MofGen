@@ -61,24 +61,24 @@ public enum RelationalOp implements Enumerator
   UNEQUAL(3, "UNEQUAL", "!="),
 
   /**
-   * The '<em><b>SMALLER OR EQUAL</b></em>' literal object.
+   * The '<em><b>LESS OR EQUAL</b></em>' literal object.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #SMALLER_OR_EQUAL_VALUE
+   * @see #LESS_OR_EQUAL_VALUE
    * @generated
    * @ordered
    */
-  SMALLER_OR_EQUAL(4, "SMALLER_OR_EQUAL", "<="),
+  LESS_OR_EQUAL(4, "LESS_OR_EQUAL", "<="),
 
   /**
-   * The '<em><b>SMALLER</b></em>' literal object.
+   * The '<em><b>LESS</b></em>' literal object.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #SMALLER_VALUE
+   * @see #LESS_VALUE
    * @generated
    * @ordered
    */
-  SMALLER(5, "SMALLER", "<");
+  LESS(5, "LESS", "<");
 
   /**
    * The '<em><b>GREATER</b></em>' literal value.
@@ -125,26 +125,26 @@ public enum RelationalOp implements Enumerator
   public static final int UNEQUAL_VALUE = 3;
 
   /**
-   * The '<em><b>SMALLER OR EQUAL</b></em>' literal value.
+   * The '<em><b>LESS OR EQUAL</b></em>' literal value.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #SMALLER_OR_EQUAL
+   * @see #LESS_OR_EQUAL
    * @model literal="&lt;="
    * @generated
    * @ordered
    */
-  public static final int SMALLER_OR_EQUAL_VALUE = 4;
+  public static final int LESS_OR_EQUAL_VALUE = 4;
 
   /**
-   * The '<em><b>SMALLER</b></em>' literal value.
+   * The '<em><b>LESS</b></em>' literal value.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #SMALLER
+   * @see #LESS
    * @model literal="&lt;"
    * @generated
    * @ordered
    */
-  public static final int SMALLER_VALUE = 5;
+  public static final int LESS_VALUE = 5;
 
   /**
    * An array of all the '<em><b>Relational Op</b></em>' enumerators.
@@ -159,8 +159,8 @@ public enum RelationalOp implements Enumerator
       GREATER_OR_EQUAL,
       EQUAL,
       UNEQUAL,
-      SMALLER_OR_EQUAL,
-      SMALLER,
+      LESS_OR_EQUAL,
+      LESS,
     };
 
   /**
@@ -229,8 +229,8 @@ public enum RelationalOp implements Enumerator
       case GREATER_OR_EQUAL_VALUE: return GREATER_OR_EQUAL;
       case EQUAL_VALUE: return EQUAL;
       case UNEQUAL_VALUE: return UNEQUAL;
-      case SMALLER_OR_EQUAL_VALUE: return SMALLER_OR_EQUAL;
-      case SMALLER_VALUE: return SMALLER;
+      case LESS_OR_EQUAL_VALUE: return LESS_OR_EQUAL;
+      case LESS_VALUE: return LESS;
     }
     return null;
   }

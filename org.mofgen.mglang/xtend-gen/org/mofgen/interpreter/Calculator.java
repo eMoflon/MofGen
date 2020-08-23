@@ -2,6 +2,7 @@ package org.mofgen.interpreter;
 
 import com.google.common.base.Objects;
 import java.util.Arrays;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.xtext.xbase.lib.DoubleExtensions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.mofgen.interpreter.CalculatorException;
@@ -51,7 +52,13 @@ public class Calculator {
         return ((Boolean) result);
       }
     }
-    return null;
+    if (!_matched) {
+      if (Objects.equal(_class, EOperation.class)) {
+        _matched=true;
+        return ((EOperation) result);
+      }
+    }
+    return result;
   }
   
   private Object _internalEvaluate(final Tertiary tertiary) {
@@ -472,30 +479,30 @@ public class Calculator {
     return roc.getRef();
   }
   
-  private Object internalEvaluate(final ArithmeticExpression roc) {
-    if (roc instanceof RefOrCall) {
-      return _internalEvaluate((RefOrCall)roc);
-    } else if (roc instanceof BooleanLiteral) {
-      return _internalEvaluate((BooleanLiteral)roc);
-    } else if (roc instanceof NumberLiteral) {
-      return _internalEvaluate((NumberLiteral)roc);
-    } else if (roc instanceof StringLiteral) {
-      return _internalEvaluate((StringLiteral)roc);
-    } else if (roc instanceof FunctionCall) {
-      return _internalEvaluate((FunctionCall)roc);
-    } else if (roc instanceof NegationExpression) {
-      return _internalEvaluate((NegationExpression)roc);
-    } else if (roc instanceof Primary) {
-      return _internalEvaluate((Primary)roc);
-    } else if (roc instanceof Rel) {
-      return _internalEvaluate((Rel)roc);
-    } else if (roc instanceof Secondary) {
-      return _internalEvaluate((Secondary)roc);
-    } else if (roc instanceof Tertiary) {
-      return _internalEvaluate((Tertiary)roc);
+  private Object internalEvaluate(final ArithmeticExpression lit) {
+    if (lit instanceof BooleanLiteral) {
+      return _internalEvaluate((BooleanLiteral)lit);
+    } else if (lit instanceof NumberLiteral) {
+      return _internalEvaluate((NumberLiteral)lit);
+    } else if (lit instanceof StringLiteral) {
+      return _internalEvaluate((StringLiteral)lit);
+    } else if (lit instanceof FunctionCall) {
+      return _internalEvaluate((FunctionCall)lit);
+    } else if (lit instanceof NegationExpression) {
+      return _internalEvaluate((NegationExpression)lit);
+    } else if (lit instanceof Primary) {
+      return _internalEvaluate((Primary)lit);
+    } else if (lit instanceof RefOrCall) {
+      return _internalEvaluate((RefOrCall)lit);
+    } else if (lit instanceof Rel) {
+      return _internalEvaluate((Rel)lit);
+    } else if (lit instanceof Secondary) {
+      return _internalEvaluate((Secondary)lit);
+    } else if (lit instanceof Tertiary) {
+      return _internalEvaluate((Tertiary)lit);
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
-        Arrays.<Object>asList(roc).toString());
+        Arrays.<Object>asList(lit).toString());
     }
   }
 }

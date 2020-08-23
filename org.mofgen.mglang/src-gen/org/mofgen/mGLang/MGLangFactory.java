@@ -42,6 +42,15 @@ public interface MGLangFactory extends EFactory
   Import createImport();
 
   /**
+   * Returns a new object of class '<em>Config</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Config</em>'.
+   * @generated
+   */
+  Config createConfig();
+
+  /**
    * Returns a new object of class '<em>Pattern</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -96,13 +105,13 @@ public interface MGLangFactory extends EFactory
   PatternCall createPatternCall();
 
   /**
-   * Returns a new object of class '<em>Node Reference Or Assignment</em>'.
+   * Returns a new object of class '<em>Node Reference Or Assignment Or Control Flow</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Node Reference Or Assignment</em>'.
+   * @return a new object of class '<em>Node Reference Or Assignment Or Control Flow</em>'.
    * @generated
    */
-  NodeReferenceOrAssignment createNodeReferenceOrAssignment();
+  NodeReferenceOrAssignmentOrControlFlow createNodeReferenceOrAssignmentOrControlFlow();
 
   /**
    * Returns a new object of class '<em>Pattern Node Reference</em>'.
@@ -159,13 +168,13 @@ public interface MGLangFactory extends EFactory
   RefOrCall createRefOrCall();
 
   /**
-   * Returns a new object of class '<em>Ref Or Call2</em>'.
+   * Returns a new object of class '<em>Ref Params</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Ref Or Call2</em>'.
+   * @return a new object of class '<em>Ref Params</em>'.
    * @generated
    */
-  RefOrCall2 createRefOrCall2();
+  RefParams createRefParams();
 
   /**
    * Returns a new object of class '<em>Generator</em>'.
@@ -258,6 +267,15 @@ public interface MGLangFactory extends EFactory
   ForBody createForBody();
 
   /**
+   * Returns a new object of class '<em>Switch Expression</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Switch Expression</em>'.
+   * @generated
+   */
+  SwitchExpression createSwitchExpression();
+
+  /**
    * Returns a new object of class '<em>Switch</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -310,6 +328,24 @@ public interface MGLangFactory extends EFactory
    * @generated
    */
   Case createCase();
+
+  /**
+   * Returns a new object of class '<em>Case With Cast</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Case With Cast</em>'.
+   * @generated
+   */
+  CaseWithCast createCaseWithCast();
+
+  /**
+   * Returns a new object of class '<em>Case Without Cast</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Case Without Cast</em>'.
+   * @generated
+   */
+  CaseWithoutCast createCaseWithoutCast();
 
   /**
    * Returns a new object of class '<em>Case Body</em>'.
@@ -411,6 +447,42 @@ public interface MGLangFactory extends EFactory
   ArithmeticExpression createArithmeticExpression();
 
   /**
+   * Returns a new object of class '<em>Literal</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Literal</em>'.
+   * @generated
+   */
+  Literal createLiteral();
+
+  /**
+   * Returns a new object of class '<em>Boolean Literal</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Boolean Literal</em>'.
+   * @generated
+   */
+  BooleanLiteral createBooleanLiteral();
+
+  /**
+   * Returns a new object of class '<em>String Literal</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>String Literal</em>'.
+   * @generated
+   */
+  StringLiteral createStringLiteral();
+
+  /**
+   * Returns a new object of class '<em>Number Literal</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Number Literal</em>'.
+   * @generated
+   */
+  NumberLiteral createNumberLiteral();
+
+  /**
    * Returns a new object of class '<em>Tertiary</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -463,15 +535,6 @@ public interface MGLangFactory extends EFactory
    * @generated
    */
   FunctionCall createFunctionCall();
-
-  /**
-   * Returns a new object of class '<em>Literal</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Literal</em>'.
-   * @generated
-   */
-  Literal createLiteral();
 
   /**
    * Returns the package supported by this factory.

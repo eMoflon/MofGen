@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.NodeContent;
-import org.mofgen.mGLang.NodeReferenceOrAssignment;
+import org.mofgen.mGLang.NodeReferenceOrAssignmentOrControlFlow;
 
 /**
  * <!-- begin-user-doc -->
@@ -44,7 +44,7 @@ public class NodeContentImpl extends MinimalEObjectImpl.Container implements Nod
    * @generated
    * @ordered
    */
-  protected EList<NodeReferenceOrAssignment> refsAssigns;
+  protected EList<NodeReferenceOrAssignmentOrControlFlow> refsAssigns;
 
   /**
    * <!-- begin-user-doc -->
@@ -73,11 +73,11 @@ public class NodeContentImpl extends MinimalEObjectImpl.Container implements Nod
    * @generated
    */
   @Override
-  public EList<NodeReferenceOrAssignment> getRefsAssigns()
+  public EList<NodeReferenceOrAssignmentOrControlFlow> getRefsAssigns()
   {
     if (refsAssigns == null)
     {
-      refsAssigns = new EObjectContainmentEList<NodeReferenceOrAssignment>(NodeReferenceOrAssignment.class, this, MGLangPackage.NODE_CONTENT__REFS_ASSIGNS);
+      refsAssigns = new EObjectContainmentEList<NodeReferenceOrAssignmentOrControlFlow>(NodeReferenceOrAssignmentOrControlFlow.class, this, MGLangPackage.NODE_CONTENT__REFS_ASSIGNS);
     }
     return refsAssigns;
   }
@@ -127,7 +127,7 @@ public class NodeContentImpl extends MinimalEObjectImpl.Container implements Nod
     {
       case MGLangPackage.NODE_CONTENT__REFS_ASSIGNS:
         getRefsAssigns().clear();
-        getRefsAssigns().addAll((Collection<? extends NodeReferenceOrAssignment>)newValue);
+        getRefsAssigns().addAll((Collection<? extends NodeReferenceOrAssignmentOrControlFlow>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

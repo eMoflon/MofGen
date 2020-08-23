@@ -41,26 +41,26 @@ public interface MofgenFile extends EObject
   EList<Import> getImports();
 
   /**
-   * Returns the value of the '<em><b>Config</b></em>' attribute.
+   * Returns the value of the '<em><b>Config</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Config</em>' attribute.
-   * @see #setConfig(String)
+   * @return the value of the '<em>Config</em>' containment reference.
+   * @see #setConfig(Config)
    * @see org.mofgen.mGLang.MGLangPackage#getMofgenFile_Config()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  String getConfig();
+  Config getConfig();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.MofgenFile#getConfig <em>Config</em>}' attribute.
+   * Sets the value of the '{@link org.mofgen.mGLang.MofgenFile#getConfig <em>Config</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Config</em>' attribute.
+   * @param value the new value of the '<em>Config</em>' containment reference.
    * @see #getConfig()
    * @generated
    */
-  void setConfig(String value);
+  void setConfig(Config value);
 
   /**
    * Returns the value of the '<em><b>Patterns</b></em>' containment reference list.

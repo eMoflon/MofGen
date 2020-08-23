@@ -12,11 +12,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.Case;
 import org.mofgen.mGLang.CaseBody;
 import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.Node;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,8 +24,6 @@ import org.mofgen.mGLang.Node;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.mofgen.mGLang.impl.CaseImpl#getNode <em>Node</em>}</li>
- *   <li>{@link org.mofgen.mGLang.impl.CaseImpl#getWhen <em>When</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.CaseImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
@@ -35,26 +31,6 @@ import org.mofgen.mGLang.Node;
  */
 public class CaseImpl extends MinimalEObjectImpl.Container implements Case
 {
-  /**
-   * The cached value of the '{@link #getNode() <em>Node</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getNode()
-   * @generated
-   * @ordered
-   */
-  protected Node node;
-
-  /**
-   * The cached value of the '{@link #getWhen() <em>When</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getWhen()
-   * @generated
-   * @ordered
-   */
-  protected ArithmeticExpression when;
-
   /**
    * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -84,106 +60,6 @@ public class CaseImpl extends MinimalEObjectImpl.Container implements Case
   protected EClass eStaticClass()
   {
     return MGLangPackage.Literals.CASE;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Node getNode()
-  {
-    return node;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetNode(Node newNode, NotificationChain msgs)
-  {
-    Node oldNode = node;
-    node = newNode;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.CASE__NODE, oldNode, newNode);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setNode(Node newNode)
-  {
-    if (newNode != node)
-    {
-      NotificationChain msgs = null;
-      if (node != null)
-        msgs = ((InternalEObject)node).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.CASE__NODE, null, msgs);
-      if (newNode != null)
-        msgs = ((InternalEObject)newNode).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.CASE__NODE, null, msgs);
-      msgs = basicSetNode(newNode, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.CASE__NODE, newNode, newNode));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public ArithmeticExpression getWhen()
-  {
-    return when;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetWhen(ArithmeticExpression newWhen, NotificationChain msgs)
-  {
-    ArithmeticExpression oldWhen = when;
-    when = newWhen;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.CASE__WHEN, oldWhen, newWhen);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public void setWhen(ArithmeticExpression newWhen)
-  {
-    if (newWhen != when)
-    {
-      NotificationChain msgs = null;
-      if (when != null)
-        msgs = ((InternalEObject)when).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.CASE__WHEN, null, msgs);
-      if (newWhen != null)
-        msgs = ((InternalEObject)newWhen).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.CASE__WHEN, null, msgs);
-      msgs = basicSetWhen(newWhen, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.CASE__WHEN, newWhen, newWhen));
   }
 
   /**
@@ -246,10 +122,6 @@ public class CaseImpl extends MinimalEObjectImpl.Container implements Case
   {
     switch (featureID)
     {
-      case MGLangPackage.CASE__NODE:
-        return basicSetNode(null, msgs);
-      case MGLangPackage.CASE__WHEN:
-        return basicSetWhen(null, msgs);
       case MGLangPackage.CASE__BODY:
         return basicSetBody(null, msgs);
     }
@@ -266,10 +138,6 @@ public class CaseImpl extends MinimalEObjectImpl.Container implements Case
   {
     switch (featureID)
     {
-      case MGLangPackage.CASE__NODE:
-        return getNode();
-      case MGLangPackage.CASE__WHEN:
-        return getWhen();
       case MGLangPackage.CASE__BODY:
         return getBody();
     }
@@ -286,12 +154,6 @@ public class CaseImpl extends MinimalEObjectImpl.Container implements Case
   {
     switch (featureID)
     {
-      case MGLangPackage.CASE__NODE:
-        setNode((Node)newValue);
-        return;
-      case MGLangPackage.CASE__WHEN:
-        setWhen((ArithmeticExpression)newValue);
-        return;
       case MGLangPackage.CASE__BODY:
         setBody((CaseBody)newValue);
         return;
@@ -309,12 +171,6 @@ public class CaseImpl extends MinimalEObjectImpl.Container implements Case
   {
     switch (featureID)
     {
-      case MGLangPackage.CASE__NODE:
-        setNode((Node)null);
-        return;
-      case MGLangPackage.CASE__WHEN:
-        setWhen((ArithmeticExpression)null);
-        return;
       case MGLangPackage.CASE__BODY:
         setBody((CaseBody)null);
         return;
@@ -332,10 +188,6 @@ public class CaseImpl extends MinimalEObjectImpl.Container implements Case
   {
     switch (featureID)
     {
-      case MGLangPackage.CASE__NODE:
-        return node != null;
-      case MGLangPackage.CASE__WHEN:
-        return when != null;
       case MGLangPackage.CASE__BODY:
         return body != null;
     }

@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EAttribute;
  * @model
  * @generated
  */
-public interface Assignment extends NodeReferenceOrAssignment
+public interface Assignment extends NodeReferenceOrAssignmentOrControlFlow
 {
   /**
    * Returns the value of the '<em><b>Target</b></em>' reference.

@@ -21,7 +21,7 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface PatternObjectCreation extends GeneratorExpression
+public interface PatternObjectCreation extends GeneratorExpression, SwitchExpression
 {
   /**
    * Returns the value of the '<em><b>PObject</b></em>' containment reference.

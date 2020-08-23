@@ -25,26 +25,26 @@ import org.eclipse.emf.ecore.EObject;
 public interface MapTupel extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Key</b></em>' attribute.
+   * Returns the value of the '<em><b>Key</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Key</em>' attribute.
-   * @see #setKey(String)
+   * @return the value of the '<em>Key</em>' containment reference.
+   * @see #setKey(Literal)
    * @see org.mofgen.mGLang.MGLangPackage#getMapTupel_Key()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  String getKey();
+  Literal getKey();
 
   /**
-   * Sets the value of the '{@link org.mofgen.mGLang.MapTupel#getKey <em>Key</em>}' attribute.
+   * Sets the value of the '{@link org.mofgen.mGLang.MapTupel#getKey <em>Key</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Key</em>' attribute.
+   * @param value the new value of the '<em>Key</em>' containment reference.
    * @see #getKey()
    * @generated
    */
-  void setKey(String value);
+  void setKey(Literal value);
 
   /**
    * Returns the value of the '<em><b>Value</b></em>' containment reference.

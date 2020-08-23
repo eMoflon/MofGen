@@ -3,6 +3,17 @@
  */
 package org.mofgen.validation
 
+import org.mofgen.mGLang.PatternCall
+import org.eclipse.xtext.validation.Check
+import org.mofgen.mGLang.MGLangPackage
+import org.mofgen.mGLang.ArithmeticExpression
+import org.mofgen.mGLang.Parameter
+import org.mofgen.interpreter.Calculator
+import com.google.inject.Inject
+import org.mofgen.mGLang.GeneralForHead
+import org.mofgen.mGLang.util.MGLangAdapterFactory
+import org.mofgen.mGLang.PrimitiveParameter
+import org.eclipse.emf.ecore.EOperation
 
 /**
  * This class contains custom validation rules. 
@@ -11,15 +22,75 @@ package org.mofgen.validation
  */
 class MGLangValidator extends AbstractMGLangValidator {
 	
-//	public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					MGLangPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+	@Inject Calculator calc
+	
+	@Check
+	def validForRange(GeneralForHead head){
+		val start = calc.evaluate(head.range.start)
+		val end = calc.evaluate(head.range.end)
+		
+		if(!(start instanceof Number)){
+			error("For-Range needs numerical bounds but was given " + start, MGLangPackage.Literals.FOR_RANGE__START)
+		}
+		if(!(end instanceof Number)){
+			error("For-Range needs numerical bounds but was given " + end, MGLangPackage.Literals.FOR_RANGE__END)
+		}
+		
+		val castStart = start as Double
+		val castEnd = end as Double
+		if(castStart > castEnd){
+			error("Limiting bound is less than starting value", MGLangPackage.Literals.GENERAL_FOR_HEAD__RANGE)
+		}
+	}
+	
+	@Check
+	def matchingParameterArguments(PatternCall pc){
+		var neededParams = 0
+		var actualParams = 0
+				
+		if(pc.called.parameters !== null){
+			neededParams = pc.called.parameters.length
+		}
+		if(pc.params !== null){
+			actualParams = pc.params.length
+		}
+		
+		if(neededParams != actualParams){
+			error("Pattern " + pc.called.name + " expects " + neededParams + " parameters but was given " + actualParams, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+		}
+	}
+	
+	@Check
+	def matchingParameterTypes(PatternCall pc){
+		for(i : 0  ..< pc.params.length){
+			val given = pc.params.get(i)
+			val needed = pc.called.parameters.get(i)
+			if(areTypesMatching(given, needed) == false){
+				error("Given object " + given + " does not match needed type " + needed, MGLangPackage.Literals.PATTERN_CALL__PARAMS)				
+			}
+		}
+	}
+
+	def private areTypesMatching(ArithmeticExpression givenExpression, Parameter neededObj){
+		val eval = calc.evaluate(givenExpression)
+		
+		if(eval instanceof EOperation){
+			val op = eval as EOperation
+			return true;	//TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection?
+		}
+		
+		if(neededObj instanceof PrimitiveParameter){
+			switch(neededObj.type){
+				case INT: return eval instanceof Double && (Math.floor(eval as Double) == eval)
+				case CHAR: return false //TODO
+				case DOUBLE: return eval instanceof Double
+				case STRING: return eval instanceof String
+			}
+		}else{
+			//TODO
+		}
+		return false
+	}
+	
 	
 }

@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EReference;
  * @model
  * @generated
  */
-public interface PatternNodeReference extends NodeReferenceOrAssignment
+public interface PatternNodeReference extends NodeReferenceOrAssignmentOrControlFlow
 {
   /**
    * Returns the value of the '<em><b>Type</b></em>' reference.

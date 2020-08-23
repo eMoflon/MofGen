@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.mofgen.mGLang.Config;
 import org.mofgen.mGLang.Generator;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MGLangPackage;
@@ -54,24 +55,14 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
   protected EList<Import> imports;
 
   /**
-   * The default value of the '{@link #getConfig() <em>Config</em>}' attribute.
+   * The cached value of the '{@link #getConfig() <em>Config</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getConfig()
    * @generated
    * @ordered
    */
-  protected static final String CONFIG_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getConfig() <em>Config</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getConfig()
-   * @generated
-   * @ordered
-   */
-  protected String config = CONFIG_EDEFAULT;
+  protected Config config;
 
   /**
    * The cached value of the '{@link #getPatterns() <em>Patterns</em>}' containment reference list.
@@ -135,7 +126,7 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
    * @generated
    */
   @Override
-  public String getConfig()
+  public Config getConfig()
   {
     return config;
   }
@@ -145,13 +136,38 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setConfig(String newConfig)
+  public NotificationChain basicSetConfig(Config newConfig, NotificationChain msgs)
   {
-    String oldConfig = config;
+    Config oldConfig = config;
     config = newConfig;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.MOFGEN_FILE__CONFIG, oldConfig, config));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.MOFGEN_FILE__CONFIG, oldConfig, newConfig);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setConfig(Config newConfig)
+  {
+    if (newConfig != config)
+    {
+      NotificationChain msgs = null;
+      if (config != null)
+        msgs = ((InternalEObject)config).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.MOFGEN_FILE__CONFIG, null, msgs);
+      if (newConfig != null)
+        msgs = ((InternalEObject)newConfig).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.MOFGEN_FILE__CONFIG, null, msgs);
+      msgs = basicSetConfig(newConfig, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.MOFGEN_FILE__CONFIG, newConfig, newConfig));
   }
 
   /**
@@ -196,6 +212,8 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
     {
       case MGLangPackage.MOFGEN_FILE__IMPORTS:
         return ((InternalEList<?>)getImports()).basicRemove(otherEnd, msgs);
+      case MGLangPackage.MOFGEN_FILE__CONFIG:
+        return basicSetConfig(null, msgs);
       case MGLangPackage.MOFGEN_FILE__PATTERNS:
         return ((InternalEList<?>)getPatterns()).basicRemove(otherEnd, msgs);
       case MGLangPackage.MOFGEN_FILE__GENERATORS:
@@ -242,7 +260,7 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
         getImports().addAll((Collection<? extends Import>)newValue);
         return;
       case MGLangPackage.MOFGEN_FILE__CONFIG:
-        setConfig((String)newValue);
+        setConfig((Config)newValue);
         return;
       case MGLangPackage.MOFGEN_FILE__PATTERNS:
         getPatterns().clear();
@@ -270,7 +288,7 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
         getImports().clear();
         return;
       case MGLangPackage.MOFGEN_FILE__CONFIG:
-        setConfig(CONFIG_EDEFAULT);
+        setConfig((Config)null);
         return;
       case MGLangPackage.MOFGEN_FILE__PATTERNS:
         getPatterns().clear();
@@ -295,30 +313,13 @@ public class MofgenFileImpl extends MinimalEObjectImpl.Container implements Mofg
       case MGLangPackage.MOFGEN_FILE__IMPORTS:
         return imports != null && !imports.isEmpty();
       case MGLangPackage.MOFGEN_FILE__CONFIG:
-        return CONFIG_EDEFAULT == null ? config != null : !CONFIG_EDEFAULT.equals(config);
+        return config != null;
       case MGLangPackage.MOFGEN_FILE__PATTERNS:
         return patterns != null && !patterns.isEmpty();
       case MGLangPackage.MOFGEN_FILE__GENERATORS:
         return generators != null && !generators.isEmpty();
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (config: ");
-    result.append(config);
-    result.append(')');
-    return result.toString();
   }
 
 } //MofgenFileImpl

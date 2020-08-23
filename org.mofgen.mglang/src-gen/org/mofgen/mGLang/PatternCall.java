@@ -22,7 +22,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface PatternCall extends GeneratorExpression
+public interface PatternCall extends GeneratorExpression, SwitchExpression
 {
   /**
    * Returns the value of the '<em><b>Called</b></em>' reference.

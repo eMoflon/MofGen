@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.mofgen.mGLang.ArithmeticExpression;
+import org.mofgen.mGLang.Literal;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MapTupel;
 
@@ -33,24 +34,14 @@ import org.mofgen.mGLang.MapTupel;
 public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTupel
 {
   /**
-   * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
+   * The cached value of the '{@link #getKey() <em>Key</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getKey()
    * @generated
    * @ordered
    */
-  protected static final String KEY_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getKey() <em>Key</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getKey()
-   * @generated
-   * @ordered
-   */
-  protected String key = KEY_EDEFAULT;
+  protected Literal key;
 
   /**
    * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
@@ -89,7 +80,7 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
    * @generated
    */
   @Override
-  public String getKey()
+  public Literal getKey()
   {
     return key;
   }
@@ -99,13 +90,38 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setKey(String newKey)
+  public NotificationChain basicSetKey(Literal newKey, NotificationChain msgs)
   {
-    String oldKey = key;
+    Literal oldKey = key;
     key = newKey;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.MAP_TUPEL__KEY, oldKey, key));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.MAP_TUPEL__KEY, oldKey, newKey);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setKey(Literal newKey)
+  {
+    if (newKey != key)
+    {
+      NotificationChain msgs = null;
+      if (key != null)
+        msgs = ((InternalEObject)key).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.MAP_TUPEL__KEY, null, msgs);
+      if (newKey != null)
+        msgs = ((InternalEObject)newKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.MAP_TUPEL__KEY, null, msgs);
+      msgs = basicSetKey(newKey, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.MAP_TUPEL__KEY, newKey, newKey));
   }
 
   /**
@@ -168,6 +184,8 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
   {
     switch (featureID)
     {
+      case MGLangPackage.MAP_TUPEL__KEY:
+        return basicSetKey(null, msgs);
       case MGLangPackage.MAP_TUPEL__VALUE:
         return basicSetValue(null, msgs);
     }
@@ -203,7 +221,7 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
     switch (featureID)
     {
       case MGLangPackage.MAP_TUPEL__KEY:
-        setKey((String)newValue);
+        setKey((Literal)newValue);
         return;
       case MGLangPackage.MAP_TUPEL__VALUE:
         setValue((ArithmeticExpression)newValue);
@@ -223,7 +241,7 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
     switch (featureID)
     {
       case MGLangPackage.MAP_TUPEL__KEY:
-        setKey(KEY_EDEFAULT);
+        setKey((Literal)null);
         return;
       case MGLangPackage.MAP_TUPEL__VALUE:
         setValue((ArithmeticExpression)null);
@@ -243,28 +261,11 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
     switch (featureID)
     {
       case MGLangPackage.MAP_TUPEL__KEY:
-        return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
+        return key != null;
       case MGLangPackage.MAP_TUPEL__VALUE:
         return value != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (key: ");
-    result.append(key);
-    result.append(')');
-    return result.toString();
   }
 
 } //MapTupelImpl

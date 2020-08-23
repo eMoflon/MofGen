@@ -25,7 +25,7 @@ public interface CaseBody extends Default
 {
   /**
    * Returns the value of the '<em><b>Expressions</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.GeneratorExpression}.
+   * The list contents are of type {@link org.mofgen.mGLang.SwitchExpression}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Expressions</em>' containment reference list.
@@ -33,6 +33,6 @@ public interface CaseBody extends Default
    * @model containment="true"
    * @generated
    */
-  EList<GeneratorExpression> getExpressions();
+  EList<SwitchExpression> getExpressions();
 
 } // CaseBody

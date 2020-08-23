@@ -2,11 +2,11 @@ grammar org.mofgen.MGLang with org.eclipse.xtext.common.Terminals
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate mGLang "http://www.mofgen.org/MGLang"
-
-//TODO: How to get map and list methods? EList and EMap are not accessible. => Create Map and List from separate Ecore Model? --> Probably best thus they are directly usable....
+//TODO: Make Aliases accessible
+//TODO: Variables
 MofgenFile:
 	(imports+=Import)*
-	(config = Config)
+	(config=Config)
 	(patterns+=Pattern |
 	generators+=Generator)*;
 
@@ -14,13 +14,19 @@ Import:
 	'import' name=STRING 'as' alias=ID;
 
 Config:
-	'___'
+	{Config} 'config' '(' ')' '{'
+	(expressions += ConfigExpression)*
+	'}'
+	;
+
+ConfigExpression:
+	'test'
 ;
 
 Pattern:
-//(abstract?='abstract')? // 'Abstract' necessary? TODO
 	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (((colls+=Collection)*)? &
-	((nodes+=Node)*)? & ((paramManipulations+=ParamManipulation)*)? & ((switches+=Switch)*)?) '}' (return=PatternReturn)?;
+	((nodes+=Node)*)? & ((paramManipulations+=ParamManipulation)*)? & ((switches+=Switch)*)?) '}'
+	(return=PatternReturn)?;
 
 PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
@@ -32,14 +38,13 @@ Node:
 	type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP createdBy=PatternCall))?;
 
 NodeContent:
-	{NodeContent} '{' (refsAssigns+=NodeReferenceOrAssignment)* '}';
+	{NodeContent} '{' (refsAssigns+=NodeReferenceOrAssignmentOrControlFlow)* '}';
 
 PatternCall:
-	called=[Pattern] '(' (params+=ArithmeticExpression)* ')';
+	called=[Pattern] '(' (params+= ArithmeticExpression (',' params+=ArithmeticExpression)*)? ')';
 
-NodeReferenceOrAssignment:
-	(PatternNodeReference | Assignment)
-;
+NodeReferenceOrAssignmentOrControlFlow:
+	(PatternNodeReference | Assignment | Switch);
 
 PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
@@ -47,7 +52,6 @@ PatternNodeReference:
 Assignment:
 	target=[ecore::EAttribute] ASSIGNMENT_OP value=ArithmeticExpression;
 	//TODO make Enum Assignments possible
-
 Parameter:
 	PrimitiveParameter | ParameterNode;
 
@@ -57,16 +61,16 @@ PrimitiveParameter:
 ParameterNode:
 	type=[ecore::EClassifier] name=ID;
 
-
 RefOrCall:
-	ref=[RefType] ({RefOrCall.target = current} '.' ref=[ecore::ETypedElement])* // Making Eoperations, attributes and reference accessible
-	// TODO: parameter lists for EOperations?
-;
+	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' (params = RefParams)? ')')?)*;	//TODO: Map and List Operations
+
+RefParams:
+//	ArithmeticExpression ({RefParams.last=current} ',' next=ArithmeticExpression)*;
+	params += ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
 Generator:
 	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
-	//TODO Wie hier patterns wie "examplePattern" und PatternObjects dazu mittels "ExamplePattern" ermöglichen? Eventuell in Scoping einklinken, alle Patterns holen und dann in PatternObject übersetzen?
 GeneratorExpression: //Only serves as super class for all possible commands within generator
 	ForStatement | Switch | Collection | PatternCall | PatternObjectCreation;
 
@@ -94,9 +98,12 @@ RefType:
 ForBody:
 	{ForBody} (commands+=GeneratorExpression)*;
 
-Switch:
-	IfElseSwitch | SwitchCase
+SwitchExpression:
+	ForStatement | Collection | PatternCall | PatternObjectCreation | NodeReferenceOrAssignmentOrControlFlow
 ;
+
+Switch:
+	IfElseSwitch | SwitchCase;
 
 IfElseSwitch:
 	'switch' '{' (cases+=IfElseCase)+ (default=Default)? '}';
@@ -111,39 +118,45 @@ SwitchCase:
 	'switch' '(' attribute=RefOrCall ')' '{' (cases+=Case)+ (default=Default)? '}';
 
 Case:
-	'case' node = Node ('when' when=ArithmeticExpression)? ':' body=CaseBody;
+	CaseWithCast | CaseWithoutCast;
+
+CaseWithCast:
+	// TODO: Check that arithmetic expression really yields boolean value
+	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=CaseBody;
+
+CaseWithoutCast:
+	'case' val=ArithmeticExpression ':' body=CaseBody;
 
 CaseBody:
-	{CaseBody} '{' (expressions+=GeneratorExpression)* '}' | (expressions+=GeneratorExpression NEWLINE); //TODO: Test Newline?
-	
+	{CaseBody} '{' (expressions+=SwitchExpression)* '}' | (expressions+=SwitchExpression NEWLINE);
+
 Collection:
 	List | Map;
 
 List:
-	'List' name=ID (ASSIGNMENT_OP ListAssignment);
+	'List' name=ID (ASSIGNMENT_OP createdBy=ListAssignment)?;
 
-ListAssignment:
+ListAssignment: //TODO Returns List?
 	ListAdHoc | RefOrCall;
 
-ListAdHoc:
+ListAdHoc: //TODO Returns List?
 	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
 ;
 
 Map:
-	'Map' name=ID (ASSIGNMENT_OP MapAssignment);
+	'Map' name=ID (ASSIGNMENT_OP createdBy=MapAssignment)?;
 
-MapAssignment:
-	MapAdHoc | RefOrCall;
+MapAssignment:	//TODO Returns Map?
+	MapAdHoc | RefOrCall;	
 
-MapAdHoc:
+MapAdHoc: //TODO Returns Map?
 	'[' entries+=MapTupel (',' entries+=MapTupel)* ']';
 
 MapTupel:
 	'(' key=Literal ',' value=ArithmeticExpression ')';
 
 ForRange:
-	start=INT ':' end=INT;
-
+	start=ArithmeticExpression ':' end=ArithmeticExpression;
 
 	//======================================Arithmetics============================================
 ArithmeticExpression:
@@ -163,25 +176,30 @@ RelationExpression returns ArithmeticExpression:
 
 BaseExpr returns ArithmeticExpression:
 	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
-	expr=ArithmeticExpression ')' | {Literal} Literal |
-	RefOrCall;
+	expr=ArithmeticExpression ')' | Literal | RefOrCall;
 
 Literal:
 	BooleanLiteral | StringLiteral | NumberLiteral;
 
-BooleanLiteral returns ecore::EBoolean:
-	TRUE | FALSE;
+BooleanLiteral:
+	val = (TRUE|FALSE)
+;
 
-StringLiteral returns ecore::EString:
-	STRING;
+StringLiteral:
+	val = STRING;
 
-NumberLiteral returns ecore::EDouble:
-	INT ('.' INT)?; //TODO: Negative Numbers?
+NumberLiteral:
+	val = DOUBLE; //TODO: Negative Numbers?
+	
 enum MathFunc:
 	SQRT='sqrt' | ABS='abs';
 
 enum PrimitiveType:
 	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' //TODO: String as Primitive? (and therefore also better lowercase?)
+;
+
+terminal DOUBLE returns ecore::EDouble:
+	INT ('.' INT)?
 ;
 
 terminal TRUE returns ecore::EBoolean:
@@ -195,8 +213,8 @@ enum RelationalOp:
 	GREATER_OR_EQUAL='>=' |
 	EQUAL='==' |
 	UNEQUAL='!=' |
-	SMALLER_OR_EQUAL='<=' |
-	SMALLER='<';
+	LESS_OR_EQUAL='<=' |
+	LESS ='<';
 
 enum TertiaryOp:
 	PLUS='+' |

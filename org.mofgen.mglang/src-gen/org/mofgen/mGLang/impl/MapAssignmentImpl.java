@@ -5,6 +5,8 @@ package org.mofgen.mGLang.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MapAssignment;
 
@@ -15,7 +17,7 @@ import org.mofgen.mGLang.MapAssignment;
  *
  * @generated
  */
-public class MapAssignmentImpl extends MapImpl implements MapAssignment
+public class MapAssignmentImpl extends MinimalEObjectImpl.Container implements MapAssignment
 {
   /**
    * <!-- begin-user-doc -->

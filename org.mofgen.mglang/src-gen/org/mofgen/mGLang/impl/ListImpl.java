@@ -3,20 +3,43 @@
  */
 package org.mofgen.mGLang.impl;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.mofgen.mGLang.List;
+import org.mofgen.mGLang.ListAssignment;
 import org.mofgen.mGLang.MGLangPackage;
 
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>List</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ *   <li>{@link org.mofgen.mGLang.impl.ListImpl#getCreatedBy <em>Created By</em>}</li>
+ * </ul>
  *
  * @generated
  */
 public class ListImpl extends CollectionImpl implements List
 {
+  /**
+   * The cached value of the '{@link #getCreatedBy() <em>Created By</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getCreatedBy()
+   * @generated
+   * @ordered
+   */
+  protected ListAssignment createdBy;
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -36,6 +59,138 @@ public class ListImpl extends CollectionImpl implements List
   protected EClass eStaticClass()
   {
     return MGLangPackage.Literals.LIST;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ListAssignment getCreatedBy()
+  {
+    return createdBy;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetCreatedBy(ListAssignment newCreatedBy, NotificationChain msgs)
+  {
+    ListAssignment oldCreatedBy = createdBy;
+    createdBy = newCreatedBy;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.LIST__CREATED_BY, oldCreatedBy, newCreatedBy);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setCreatedBy(ListAssignment newCreatedBy)
+  {
+    if (newCreatedBy != createdBy)
+    {
+      NotificationChain msgs = null;
+      if (createdBy != null)
+        msgs = ((InternalEObject)createdBy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.LIST__CREATED_BY, null, msgs);
+      if (newCreatedBy != null)
+        msgs = ((InternalEObject)newCreatedBy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.LIST__CREATED_BY, null, msgs);
+      msgs = basicSetCreatedBy(newCreatedBy, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.LIST__CREATED_BY, newCreatedBy, newCreatedBy));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.LIST__CREATED_BY:
+        return basicSetCreatedBy(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Object eGet(int featureID, boolean resolve, boolean coreType)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.LIST__CREATED_BY:
+        return getCreatedBy();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eSet(int featureID, Object newValue)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.LIST__CREATED_BY:
+        setCreatedBy((ListAssignment)newValue);
+        return;
+    }
+    super.eSet(featureID, newValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void eUnset(int featureID)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.LIST__CREATED_BY:
+        setCreatedBy((ListAssignment)null);
+        return;
+    }
+    super.eUnset(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public boolean eIsSet(int featureID)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.LIST__CREATED_BY:
+        return createdBy != null;
+    }
+    return super.eIsSet(featureID);
   }
 
 } //ListImpl

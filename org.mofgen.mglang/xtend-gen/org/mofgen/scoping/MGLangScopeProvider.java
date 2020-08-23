@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.ETypedElement;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
@@ -23,17 +23,18 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
+import org.mofgen.collectionModel.CollectionModelPackage;
 import org.mofgen.mGLang.Assignment;
-import org.mofgen.mGLang.Case;
+import org.mofgen.mGLang.CaseWithCast;
+import org.mofgen.mGLang.Collection;
+import org.mofgen.mGLang.Generator;
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.Map;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
-import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PatternNodeReference;
 import org.mofgen.mGLang.RefOrCall;
-import org.mofgen.mGLang.RefOrCall2;
-import org.mofgen.mGLang.RefType;
 import org.mofgen.scoping.AbstractMGLangScopeProvider;
 import org.mofgen.utils.MofgenModelUtils;
 
@@ -128,43 +129,30 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
     }
   }
   
-  public IScope getScopeForRefOrCallRef(final RefOrCall r) {
-    final Pattern pattern = EcoreUtil2.<Pattern>getContainerOfType(r, Pattern.class);
-    final EList<Parameter> params = pattern.getParameters();
-    final EList<Node> patternNodes = pattern.getNodes();
-    final Iterable<Node> shadowingNodes = this.getEventuallyShadowingNodes(r);
-    final ArrayList<Integer> indicesToRemove = CollectionLiterals.<Integer>newArrayList();
-    for (final Node pNode : patternNodes) {
-      for (final Node node : shadowingNodes) {
-        boolean _equals = node.getName().equals(pNode.getName());
-        if (_equals) {
-          indicesToRemove.add(Integer.valueOf(patternNodes.indexOf(pNode)));
-        }
-      }
-    }
-    List<Integer> _reverse = ListExtensions.<Integer>reverse(indicesToRemove);
-    for (final Integer index : _reverse) {
-      patternNodes.remove(index);
-    }
-    Iterable<RefType> _plus = Iterables.<RefType>concat(params, patternNodes);
-    return Scopes.scopeFor(_plus);
-  }
-  
   public Iterable<Node> getEventuallyShadowingNodes(final EObject obj) {
-    final Iterable<Case> parentCases = Iterables.<Case>filter(EcoreUtil2.getAllContainers(obj), Case.class);
-    final Function1<Case, Node> _function = (Case c) -> {
+    final Iterable<CaseWithCast> parentCases = Iterables.<CaseWithCast>filter(EcoreUtil2.getAllContainers(obj), CaseWithCast.class);
+    final Function1<CaseWithCast, Node> _function = (CaseWithCast c) -> {
       return c.getNode();
     };
-    return IterableExtensions.<Case, Node>map(parentCases, _function);
+    return IterableExtensions.<CaseWithCast, Node>map(parentCases, _function);
   }
   
   public IScope getScopeForRefOrCall(final RefOrCall r) {
-    RefOrCall2 _target = r.getTarget();
+    RefOrCall _target = r.getTarget();
     boolean _tripleEquals = (_target == null);
     if (_tripleEquals) {
       final Pattern pattern = EcoreUtil2.<Pattern>getContainerOfType(r, Pattern.class);
-      final EList<Parameter> params = pattern.getParameters();
-      final EList<Node> patternNodes = pattern.getNodes();
+      final Generator gen = EcoreUtil2.<Generator>getContainerOfType(r, Generator.class);
+      ArrayList<EObject> params = new ArrayList<EObject>();
+      ArrayList<Node> patternNodes = new ArrayList<Node>();
+      ArrayList<Collection> collections = new ArrayList<Collection>();
+      if ((pattern != null)) {
+        params.addAll(pattern.getParameters());
+        patternNodes.addAll(pattern.getNodes());
+        collections.addAll(EcoreUtil2.<Collection>getAllContentsOfType(pattern, Collection.class));
+      } else {
+        collections.addAll(EcoreUtil2.<Collection>getAllContentsOfType(gen, Collection.class));
+      }
       final Iterable<Node> shadowingNodes = this.getEventuallyShadowingNodes(r);
       final ArrayList<Integer> indicesToRemove = CollectionLiterals.<Integer>newArrayList();
       for (final Node pNode : patternNodes) {
@@ -179,16 +167,24 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
       for (final Integer index : _reverse) {
         patternNodes.remove(index);
       }
-      Iterable<RefType> _plus = Iterables.<RefType>concat(params, patternNodes);
-      return Scopes.scopeFor(_plus);
+      Iterable<EObject> _plus = Iterables.<EObject>concat(params, patternNodes);
+      Iterable<EObject> _plus_1 = Iterables.<EObject>concat(_plus, collections);
+      return Scopes.scopeFor(_plus_1);
     } else {
-      final RefOrCall2 trg = r.getTarget();
-      final EClass refClass = trg.getRef().eClass();
-      final EList<EOperation> ops = refClass.getEAllOperations();
+      final RefOrCall trg = r.getTarget();
+      final EObject ref = trg.getRef();
+      final EClass refClass = ref.eClass();
+      if ((ref instanceof Map)) {
+        final EList<EOperation> ops = CollectionModelPackage.Literals.MAP.getEAllOperations();
+        return Scopes.scopeFor(ops);
+      }
+      if ((ref instanceof org.mofgen.mGLang.List)) {
+        final EList<EOperation> ops_1 = CollectionModelPackage.Literals.LIST.getEAllOperations();
+        return Scopes.scopeFor(ops_1);
+      }
       final EList<EAttribute> attrs = refClass.getEAllAttributes();
-      final EList<EReference> refs = refClass.getEReferences();
-      Iterable<ETypedElement> _plus_1 = Iterables.<ETypedElement>concat(ops, attrs);
-      Iterable<ETypedElement> _plus_2 = Iterables.<ETypedElement>concat(_plus_1, refs);
+      final EList<EReference> refs = refClass.getEAllReferences();
+      Iterable<EStructuralFeature> _plus_2 = Iterables.<EStructuralFeature>concat(attrs, refs);
       return Scopes.scopeFor(_plus_2);
     }
   }
@@ -213,6 +209,10 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   
   public boolean isRefOrCall(final EObject context) {
     return (context instanceof RefOrCall);
+  }
+  
+  public boolean isRefOrCallRef(final EObject context, final EReference reference) {
+    return ((context instanceof RefOrCall) && Objects.equal(reference, MGLangPackage.Literals.REF_OR_CALL__REF));
   }
   
   public MofgenFile getRootFile(final EObject context) {

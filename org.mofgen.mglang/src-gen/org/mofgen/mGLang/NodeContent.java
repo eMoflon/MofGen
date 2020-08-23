@@ -27,7 +27,7 @@ public interface NodeContent extends EObject
 {
   /**
    * Returns the value of the '<em><b>Refs Assigns</b></em>' containment reference list.
-   * The list contents are of type {@link org.mofgen.mGLang.NodeReferenceOrAssignment}.
+   * The list contents are of type {@link org.mofgen.mGLang.NodeReferenceOrAssignmentOrControlFlow}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Refs Assigns</em>' containment reference list.
@@ -35,6 +35,6 @@ public interface NodeContent extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<NodeReferenceOrAssignment> getRefsAssigns();
+  EList<NodeReferenceOrAssignmentOrControlFlow> getRefsAssigns();
 
 } // NodeContent

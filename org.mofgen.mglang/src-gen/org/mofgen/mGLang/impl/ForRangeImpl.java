@@ -4,12 +4,15 @@
 package org.mofgen.mGLang.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.ForRange;
 import org.mofgen.mGLang.MGLangPackage;
 
@@ -30,44 +33,24 @@ import org.mofgen.mGLang.MGLangPackage;
 public class ForRangeImpl extends MinimalEObjectImpl.Container implements ForRange
 {
   /**
-   * The default value of the '{@link #getStart() <em>Start</em>}' attribute.
+   * The cached value of the '{@link #getStart() <em>Start</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getStart()
    * @generated
    * @ordered
    */
-  protected static final int START_EDEFAULT = 0;
+  protected ArithmeticExpression start;
 
   /**
-   * The cached value of the '{@link #getStart() <em>Start</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getStart()
-   * @generated
-   * @ordered
-   */
-  protected int start = START_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getEnd() <em>End</em>}' attribute.
+   * The cached value of the '{@link #getEnd() <em>End</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getEnd()
    * @generated
    * @ordered
    */
-  protected static final int END_EDEFAULT = 0;
-
-  /**
-   * The cached value of the '{@link #getEnd() <em>End</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getEnd()
-   * @generated
-   * @ordered
-   */
-  protected int end = END_EDEFAULT;
+  protected ArithmeticExpression end;
 
   /**
    * <!-- begin-user-doc -->
@@ -96,7 +79,7 @@ public class ForRangeImpl extends MinimalEObjectImpl.Container implements ForRan
    * @generated
    */
   @Override
-  public int getStart()
+  public ArithmeticExpression getStart()
   {
     return start;
   }
@@ -106,13 +89,16 @@ public class ForRangeImpl extends MinimalEObjectImpl.Container implements ForRan
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setStart(int newStart)
+  public NotificationChain basicSetStart(ArithmeticExpression newStart, NotificationChain msgs)
   {
-    int oldStart = start;
+    ArithmeticExpression oldStart = start;
     start = newStart;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_RANGE__START, oldStart, start));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_RANGE__START, oldStart, newStart);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
   }
 
   /**
@@ -121,7 +107,29 @@ public class ForRangeImpl extends MinimalEObjectImpl.Container implements ForRan
    * @generated
    */
   @Override
-  public int getEnd()
+  public void setStart(ArithmeticExpression newStart)
+  {
+    if (newStart != start)
+    {
+      NotificationChain msgs = null;
+      if (start != null)
+        msgs = ((InternalEObject)start).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.FOR_RANGE__START, null, msgs);
+      if (newStart != null)
+        msgs = ((InternalEObject)newStart).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.FOR_RANGE__START, null, msgs);
+      msgs = basicSetStart(newStart, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_RANGE__START, newStart, newStart));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public ArithmeticExpression getEnd()
   {
     return end;
   }
@@ -131,13 +139,56 @@ public class ForRangeImpl extends MinimalEObjectImpl.Container implements ForRan
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public void setEnd(int newEnd)
+  public NotificationChain basicSetEnd(ArithmeticExpression newEnd, NotificationChain msgs)
   {
-    int oldEnd = end;
+    ArithmeticExpression oldEnd = end;
     end = newEnd;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_RANGE__END, oldEnd, end));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_RANGE__END, oldEnd, newEnd);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setEnd(ArithmeticExpression newEnd)
+  {
+    if (newEnd != end)
+    {
+      NotificationChain msgs = null;
+      if (end != null)
+        msgs = ((InternalEObject)end).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.FOR_RANGE__END, null, msgs);
+      if (newEnd != null)
+        msgs = ((InternalEObject)newEnd).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - MGLangPackage.FOR_RANGE__END, null, msgs);
+      msgs = basicSetEnd(newEnd, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.FOR_RANGE__END, newEnd, newEnd));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case MGLangPackage.FOR_RANGE__START:
+        return basicSetStart(null, msgs);
+      case MGLangPackage.FOR_RANGE__END:
+        return basicSetEnd(null, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -169,10 +220,10 @@ public class ForRangeImpl extends MinimalEObjectImpl.Container implements ForRan
     switch (featureID)
     {
       case MGLangPackage.FOR_RANGE__START:
-        setStart((Integer)newValue);
+        setStart((ArithmeticExpression)newValue);
         return;
       case MGLangPackage.FOR_RANGE__END:
-        setEnd((Integer)newValue);
+        setEnd((ArithmeticExpression)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -189,10 +240,10 @@ public class ForRangeImpl extends MinimalEObjectImpl.Container implements ForRan
     switch (featureID)
     {
       case MGLangPackage.FOR_RANGE__START:
-        setStart(START_EDEFAULT);
+        setStart((ArithmeticExpression)null);
         return;
       case MGLangPackage.FOR_RANGE__END:
-        setEnd(END_EDEFAULT);
+        setEnd((ArithmeticExpression)null);
         return;
     }
     super.eUnset(featureID);
@@ -209,30 +260,11 @@ public class ForRangeImpl extends MinimalEObjectImpl.Container implements ForRan
     switch (featureID)
     {
       case MGLangPackage.FOR_RANGE__START:
-        return start != START_EDEFAULT;
+        return start != null;
       case MGLangPackage.FOR_RANGE__END:
-        return end != END_EDEFAULT;
+        return end != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuilder result = new StringBuilder(super.toString());
-    result.append(" (start: ");
-    result.append(start);
-    result.append(", end: ");
-    result.append(end);
-    result.append(')');
-    return result.toString();
   }
 
 } //ForRangeImpl

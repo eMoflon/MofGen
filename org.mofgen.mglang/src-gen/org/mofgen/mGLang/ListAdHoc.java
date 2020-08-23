@@ -24,15 +24,15 @@ import org.eclipse.emf.common.util.EList;
 public interface ListAdHoc extends ListAssignment
 {
   /**
-   * Returns the value of the '<em><b>Elements</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
+   * The list contents are of type {@link org.mofgen.mGLang.Literal}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Elements</em>' attribute list.
+   * @return the value of the '<em>Elements</em>' containment reference list.
    * @see org.mofgen.mGLang.MGLangPackage#getListAdHoc_Elements()
-   * @model unique="false"
+   * @model containment="true"
    * @generated
    */
-  EList<String> getElements();
+  EList<Literal> getElements();
 
 } // ListAdHoc

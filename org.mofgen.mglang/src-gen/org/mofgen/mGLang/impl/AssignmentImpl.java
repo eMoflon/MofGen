@@ -30,7 +30,7 @@ import org.mofgen.mGLang.MGLangPackage;
  *
  * @generated
  */
-public class AssignmentImpl extends NodeReferenceOrAssignmentImpl implements Assignment
+public class AssignmentImpl extends NodeReferenceOrAssignmentOrControlFlowImpl implements Assignment
 {
   /**
    * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.

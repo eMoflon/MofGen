@@ -13,9 +13,13 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.Assignment;
+import org.mofgen.mGLang.BooleanLiteral;
 import org.mofgen.mGLang.Case;
 import org.mofgen.mGLang.CaseBody;
+import org.mofgen.mGLang.CaseWithCast;
+import org.mofgen.mGLang.CaseWithoutCast;
 import org.mofgen.mGLang.Collection;
+import org.mofgen.mGLang.Config;
 import org.mofgen.mGLang.Default;
 import org.mofgen.mGLang.ForBody;
 import org.mofgen.mGLang.ForEachHead;
@@ -44,7 +48,8 @@ import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.NegationExpression;
 import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.NodeContent;
-import org.mofgen.mGLang.NodeReferenceOrAssignment;
+import org.mofgen.mGLang.NodeReferenceOrAssignmentOrControlFlow;
+import org.mofgen.mGLang.NumberLiteral;
 import org.mofgen.mGLang.ParamManipulation;
 import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.ParameterNode;
@@ -59,14 +64,16 @@ import org.mofgen.mGLang.PrimaryOp;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.mGLang.PrimitiveType;
 import org.mofgen.mGLang.RefOrCall;
-import org.mofgen.mGLang.RefOrCall2;
+import org.mofgen.mGLang.RefParams;
 import org.mofgen.mGLang.RefType;
 import org.mofgen.mGLang.Rel;
 import org.mofgen.mGLang.RelationalOp;
 import org.mofgen.mGLang.Secondary;
 import org.mofgen.mGLang.SecondaryOp;
+import org.mofgen.mGLang.StringLiteral;
 import org.mofgen.mGLang.Switch;
 import org.mofgen.mGLang.SwitchCase;
+import org.mofgen.mGLang.SwitchExpression;
 import org.mofgen.mGLang.Tertiary;
 import org.mofgen.mGLang.TertiaryOp;
 
@@ -91,6 +98,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   private EClass importEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass configEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -139,7 +153,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass nodeReferenceOrAssignmentEClass = null;
+  private EClass nodeReferenceOrAssignmentOrControlFlowEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -188,7 +202,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass refOrCall2EClass = null;
+  private EClass refParamsEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -265,6 +279,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass switchExpressionEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass switchEClass = null;
 
   /**
@@ -301,6 +322,20 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   private EClass caseEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass caseWithCastEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass caseWithoutCastEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -384,6 +419,34 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass literalEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass booleanLiteralEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass stringLiteralEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass numberLiteralEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass tertiaryEClass = null;
 
   /**
@@ -420,13 +483,6 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   private EClass functionCallEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass literalEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -561,9 +617,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getMofgenFile_Config()
+  public EReference getMofgenFile_Config()
   {
-    return (EAttribute)mofgenFileEClass.getEStructuralFeatures().get(1);
+    return (EReference)mofgenFileEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -619,6 +675,28 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
   public EAttribute getImport_Alias()
   {
     return (EAttribute)importEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getConfig()
+  {
+    return configEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getConfig_Expressions()
+  {
+    return (EAttribute)configEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -858,9 +936,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getNodeReferenceOrAssignment()
+  public EClass getNodeReferenceOrAssignmentOrControlFlow()
   {
-    return nodeReferenceOrAssignmentEClass;
+    return nodeReferenceOrAssignmentOrControlFlowEClass;
   }
 
   /**
@@ -1001,7 +1079,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getRefOrCall_Target()
+  public EReference getRefOrCall_Ref()
   {
     return (EReference)refOrCallEClass.getEStructuralFeatures().get(0);
   }
@@ -1012,7 +1090,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getRefOrCall_Params()
+  public EReference getRefOrCall_Target()
   {
     return (EReference)refOrCallEClass.getEStructuralFeatures().get(1);
   }
@@ -1023,9 +1101,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getRefOrCall2()
+  public EReference getRefOrCall_Params()
   {
-    return refOrCall2EClass;
+    return (EReference)refOrCallEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1034,9 +1112,20 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getRefOrCall2_Ref()
+  public EClass getRefParams()
   {
-    return (EReference)refOrCall2EClass.getEStructuralFeatures().get(0);
+    return refParamsEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getRefParams_Params()
+  {
+    return (EReference)refParamsEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1309,6 +1398,17 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
+  public EClass getSwitchExpression()
+  {
+    return switchExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getSwitch()
   {
     return switchEClass;
@@ -1441,7 +1541,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getCase_Node()
+  public EReference getCase_Body()
   {
     return (EReference)caseEClass.getEStructuralFeatures().get(0);
   }
@@ -1452,9 +1552,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getCase_When()
+  public EClass getCaseWithCast()
   {
-    return (EReference)caseEClass.getEStructuralFeatures().get(1);
+    return caseWithCastEClass;
   }
 
   /**
@@ -1463,9 +1563,42 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getCase_Body()
+  public EReference getCaseWithCast_Node()
   {
-    return (EReference)caseEClass.getEStructuralFeatures().get(2);
+    return (EReference)caseWithCastEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getCaseWithCast_When()
+  {
+    return (EReference)caseWithCastEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getCaseWithoutCast()
+  {
+    return caseWithoutCastEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getCaseWithoutCast_Val()
+  {
+    return (EReference)caseWithoutCastEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1518,6 +1651,17 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
+  public EReference getList_CreatedBy()
+  {
+    return (EReference)listEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getListAssignment()
   {
     return listAssignmentEClass;
@@ -1540,9 +1684,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getListAdHoc_Elements()
+  public EReference getListAdHoc_Elements()
   {
-    return (EAttribute)listAdHocEClass.getEStructuralFeatures().get(0);
+    return (EReference)listAdHocEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1554,6 +1698,17 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
   public EClass getMap()
   {
     return mapEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getMap_CreatedBy()
+  {
+    return (EReference)mapEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1606,9 +1761,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getMapTupel_Key()
+  public EReference getMapTupel_Key()
   {
-    return (EAttribute)mapTupelEClass.getEStructuralFeatures().get(0);
+    return (EReference)mapTupelEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1639,9 +1794,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getForRange_Start()
+  public EReference getForRange_Start()
   {
-    return (EAttribute)forRangeEClass.getEStructuralFeatures().get(0);
+    return (EReference)forRangeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1650,9 +1805,9 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EAttribute getForRange_End()
+  public EReference getForRange_End()
   {
-    return (EAttribute)forRangeEClass.getEStructuralFeatures().get(1);
+    return (EReference)forRangeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1664,6 +1819,83 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
   public EClass getArithmeticExpression()
   {
     return arithmeticExpressionEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getLiteral()
+  {
+    return literalEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getBooleanLiteral()
+  {
+    return booleanLiteralEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getBooleanLiteral_Val()
+  {
+    return (EAttribute)booleanLiteralEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getStringLiteral()
+  {
+    return stringLiteralEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getStringLiteral_Val()
+  {
+    return (EAttribute)stringLiteralEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EClass getNumberLiteral()
+  {
+    return numberLiteralEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EAttribute getNumberLiteral_Val()
+  {
+    return (EAttribute)numberLiteralEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1903,17 +2135,6 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EClass getLiteral()
-  {
-    return literalEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public EEnum getMathFunc()
   {
     return mathFuncEEnum;
@@ -2007,13 +2228,16 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     // Create classes and their features
     mofgenFileEClass = createEClass(MOFGEN_FILE);
     createEReference(mofgenFileEClass, MOFGEN_FILE__IMPORTS);
-    createEAttribute(mofgenFileEClass, MOFGEN_FILE__CONFIG);
+    createEReference(mofgenFileEClass, MOFGEN_FILE__CONFIG);
     createEReference(mofgenFileEClass, MOFGEN_FILE__PATTERNS);
     createEReference(mofgenFileEClass, MOFGEN_FILE__GENERATORS);
 
     importEClass = createEClass(IMPORT);
     createEAttribute(importEClass, IMPORT__NAME);
     createEAttribute(importEClass, IMPORT__ALIAS);
+
+    configEClass = createEClass(CONFIG);
+    createEAttribute(configEClass, CONFIG__EXPRESSIONS);
 
     patternEClass = createEClass(PATTERN);
     createEAttribute(patternEClass, PATTERN__NAME);
@@ -2042,7 +2266,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(patternCallEClass, PATTERN_CALL__CALLED);
     createEReference(patternCallEClass, PATTERN_CALL__PARAMS);
 
-    nodeReferenceOrAssignmentEClass = createEClass(NODE_REFERENCE_OR_ASSIGNMENT);
+    nodeReferenceOrAssignmentOrControlFlowEClass = createEClass(NODE_REFERENCE_OR_ASSIGNMENT_OR_CONTROL_FLOW);
 
     patternNodeReferenceEClass = createEClass(PATTERN_NODE_REFERENCE);
     createEReference(patternNodeReferenceEClass, PATTERN_NODE_REFERENCE__TYPE);
@@ -2061,11 +2285,12 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(parameterNodeEClass, PARAMETER_NODE__TYPE);
 
     refOrCallEClass = createEClass(REF_OR_CALL);
+    createEReference(refOrCallEClass, REF_OR_CALL__REF);
     createEReference(refOrCallEClass, REF_OR_CALL__TARGET);
     createEReference(refOrCallEClass, REF_OR_CALL__PARAMS);
 
-    refOrCall2EClass = createEClass(REF_OR_CALL2);
-    createEReference(refOrCall2EClass, REF_OR_CALL2__REF);
+    refParamsEClass = createEClass(REF_PARAMS);
+    createEReference(refParamsEClass, REF_PARAMS__PARAMS);
 
     generatorEClass = createEClass(GENERATOR);
     createEReference(generatorEClass, GENERATOR__PARAMS);
@@ -2101,6 +2326,8 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     forBodyEClass = createEClass(FOR_BODY);
     createEReference(forBodyEClass, FOR_BODY__COMMANDS);
 
+    switchExpressionEClass = createEClass(SWITCH_EXPRESSION);
+
     switchEClass = createEClass(SWITCH);
     createEReference(switchEClass, SWITCH__DEFAULT);
 
@@ -2118,9 +2345,14 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(switchCaseEClass, SWITCH_CASE__CASES);
 
     caseEClass = createEClass(CASE);
-    createEReference(caseEClass, CASE__NODE);
-    createEReference(caseEClass, CASE__WHEN);
     createEReference(caseEClass, CASE__BODY);
+
+    caseWithCastEClass = createEClass(CASE_WITH_CAST);
+    createEReference(caseWithCastEClass, CASE_WITH_CAST__NODE);
+    createEReference(caseWithCastEClass, CASE_WITH_CAST__WHEN);
+
+    caseWithoutCastEClass = createEClass(CASE_WITHOUT_CAST);
+    createEReference(caseWithoutCastEClass, CASE_WITHOUT_CAST__VAL);
 
     caseBodyEClass = createEClass(CASE_BODY);
     createEReference(caseBodyEClass, CASE_BODY__EXPRESSIONS);
@@ -2128,13 +2360,15 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     collectionEClass = createEClass(COLLECTION);
 
     listEClass = createEClass(LIST);
+    createEReference(listEClass, LIST__CREATED_BY);
 
     listAssignmentEClass = createEClass(LIST_ASSIGNMENT);
 
     listAdHocEClass = createEClass(LIST_AD_HOC);
-    createEAttribute(listAdHocEClass, LIST_AD_HOC__ELEMENTS);
+    createEReference(listAdHocEClass, LIST_AD_HOC__ELEMENTS);
 
     mapEClass = createEClass(MAP);
+    createEReference(mapEClass, MAP__CREATED_BY);
 
     mapAssignmentEClass = createEClass(MAP_ASSIGNMENT);
 
@@ -2142,14 +2376,25 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(mapAdHocEClass, MAP_AD_HOC__ENTRIES);
 
     mapTupelEClass = createEClass(MAP_TUPEL);
-    createEAttribute(mapTupelEClass, MAP_TUPEL__KEY);
+    createEReference(mapTupelEClass, MAP_TUPEL__KEY);
     createEReference(mapTupelEClass, MAP_TUPEL__VALUE);
 
     forRangeEClass = createEClass(FOR_RANGE);
-    createEAttribute(forRangeEClass, FOR_RANGE__START);
-    createEAttribute(forRangeEClass, FOR_RANGE__END);
+    createEReference(forRangeEClass, FOR_RANGE__START);
+    createEReference(forRangeEClass, FOR_RANGE__END);
 
     arithmeticExpressionEClass = createEClass(ARITHMETIC_EXPRESSION);
+
+    literalEClass = createEClass(LITERAL);
+
+    booleanLiteralEClass = createEClass(BOOLEAN_LITERAL);
+    createEAttribute(booleanLiteralEClass, BOOLEAN_LITERAL__VAL);
+
+    stringLiteralEClass = createEClass(STRING_LITERAL);
+    createEAttribute(stringLiteralEClass, STRING_LITERAL__VAL);
+
+    numberLiteralEClass = createEClass(NUMBER_LITERAL);
+    createEAttribute(numberLiteralEClass, NUMBER_LITERAL__VAL);
 
     tertiaryEClass = createEClass(TERTIARY);
     createEReference(tertiaryEClass, TERTIARY__LEFT);
@@ -2177,8 +2422,6 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     functionCallEClass = createEClass(FUNCTION_CALL);
     createEAttribute(functionCallEClass, FUNCTION_CALL__FUNC);
     createEReference(functionCallEClass, FUNCTION_CALL__EXPR);
-
-    literalEClass = createEClass(LITERAL);
 
     // Create enums
     mathFuncEEnum = createEEnum(MATH_FUNC);
@@ -2220,49 +2463,60 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     // Add supertypes to classes
     nodeEClass.getESuperTypes().add(this.getRefType());
     patternCallEClass.getESuperTypes().add(this.getGeneratorExpression());
-    patternNodeReferenceEClass.getESuperTypes().add(this.getNodeReferenceOrAssignment());
-    assignmentEClass.getESuperTypes().add(this.getNodeReferenceOrAssignment());
+    patternCallEClass.getESuperTypes().add(this.getSwitchExpression());
+    nodeReferenceOrAssignmentOrControlFlowEClass.getESuperTypes().add(this.getSwitchExpression());
+    patternNodeReferenceEClass.getESuperTypes().add(this.getNodeReferenceOrAssignmentOrControlFlow());
+    assignmentEClass.getESuperTypes().add(this.getNodeReferenceOrAssignmentOrControlFlow());
     parameterEClass.getESuperTypes().add(this.getRefType());
     primitiveParameterEClass.getESuperTypes().add(this.getParameter());
     parameterNodeEClass.getESuperTypes().add(this.getParameter());
-    refOrCallEClass.getESuperTypes().add(this.getRefOrCall2());
     refOrCallEClass.getESuperTypes().add(this.getListAssignment());
     refOrCallEClass.getESuperTypes().add(this.getMapAssignment());
     refOrCallEClass.getESuperTypes().add(this.getArithmeticExpression());
     patternObjectCreationEClass.getESuperTypes().add(this.getGeneratorExpression());
+    patternObjectCreationEClass.getESuperTypes().add(this.getSwitchExpression());
     forStatementEClass.getESuperTypes().add(this.getGeneratorExpression());
+    forStatementEClass.getESuperTypes().add(this.getSwitchExpression());
     generalForHeadEClass.getESuperTypes().add(this.getForHead());
     forEachHeadEClass.getESuperTypes().add(this.getForHead());
+    switchEClass.getESuperTypes().add(this.getNodeReferenceOrAssignmentOrControlFlow());
     switchEClass.getESuperTypes().add(this.getGeneratorExpression());
     ifElseSwitchEClass.getESuperTypes().add(this.getSwitch());
     switchCaseEClass.getESuperTypes().add(this.getSwitch());
+    caseWithCastEClass.getESuperTypes().add(this.getCase());
+    caseWithoutCastEClass.getESuperTypes().add(this.getCase());
     caseBodyEClass.getESuperTypes().add(this.getDefault());
     collectionEClass.getESuperTypes().add(this.getGeneratorExpression());
     collectionEClass.getESuperTypes().add(this.getRefType());
+    collectionEClass.getESuperTypes().add(this.getSwitchExpression());
     listEClass.getESuperTypes().add(this.getCollection());
-    listAssignmentEClass.getESuperTypes().add(this.getList());
     listAdHocEClass.getESuperTypes().add(this.getListAssignment());
     mapEClass.getESuperTypes().add(this.getCollection());
-    mapAssignmentEClass.getESuperTypes().add(this.getMap());
     mapAdHocEClass.getESuperTypes().add(this.getMapAssignment());
+    literalEClass.getESuperTypes().add(this.getArithmeticExpression());
+    booleanLiteralEClass.getESuperTypes().add(this.getLiteral());
+    stringLiteralEClass.getESuperTypes().add(this.getLiteral());
+    numberLiteralEClass.getESuperTypes().add(this.getLiteral());
     tertiaryEClass.getESuperTypes().add(this.getArithmeticExpression());
     secondaryEClass.getESuperTypes().add(this.getArithmeticExpression());
     primaryEClass.getESuperTypes().add(this.getArithmeticExpression());
     relEClass.getESuperTypes().add(this.getArithmeticExpression());
     negationExpressionEClass.getESuperTypes().add(this.getArithmeticExpression());
     functionCallEClass.getESuperTypes().add(this.getArithmeticExpression());
-    literalEClass.getESuperTypes().add(this.getArithmeticExpression());
 
     // Initialize classes and features; add operations and parameters
     initEClass(mofgenFileEClass, MofgenFile.class, "MofgenFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMofgenFile_Imports(), this.getImport(), null, "imports", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getMofgenFile_Config(), ecorePackage.getEString(), "config", null, 0, 1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMofgenFile_Config(), this.getConfig(), null, "config", null, 0, 1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMofgenFile_Patterns(), this.getPattern(), null, "patterns", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMofgenFile_Generators(), this.getGenerator(), null, "generators", null, 0, -1, MofgenFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(importEClass, Import.class, "Import", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getImport_Name(), ecorePackage.getEString(), "name", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getImport_Alias(), ecorePackage.getEString(), "alias", null, 0, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(configEClass, Config.class, "Config", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getConfig_Expressions(), ecorePackage.getEString(), "expressions", null, 0, -1, Config.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(patternEClass, Pattern.class, "Pattern", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getPattern_Name(), ecorePackage.getEString(), "name", null, 0, 1, Pattern.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2285,13 +2539,13 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getNode_CreatedBy(), ecorePackage.getEObject(), null, "createdBy", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeContentEClass, NodeContent.class, "NodeContent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNodeContent_RefsAssigns(), this.getNodeReferenceOrAssignment(), null, "refsAssigns", null, 0, -1, NodeContent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNodeContent_RefsAssigns(), this.getNodeReferenceOrAssignmentOrControlFlow(), null, "refsAssigns", null, 0, -1, NodeContent.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(patternCallEClass, PatternCall.class, "PatternCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getPatternCall_Called(), this.getPattern(), null, "called", null, 0, 1, PatternCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPatternCall_Params(), this.getArithmeticExpression(), null, "params", null, 0, -1, PatternCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(nodeReferenceOrAssignmentEClass, NodeReferenceOrAssignment.class, "NodeReferenceOrAssignment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEClass(nodeReferenceOrAssignmentOrControlFlowEClass, NodeReferenceOrAssignmentOrControlFlow.class, "NodeReferenceOrAssignmentOrControlFlow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(patternNodeReferenceEClass, PatternNodeReference.class, "PatternNodeReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getPatternNodeReference_Type(), ecorePackage.getEReference(), null, "type", null, 0, 1, PatternNodeReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2310,11 +2564,12 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getParameterNode_Type(), ecorePackage.getEClassifier(), null, "type", null, 0, 1, ParameterNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(refOrCallEClass, RefOrCall.class, "RefOrCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRefOrCall_Target(), this.getRefOrCall2(), null, "target", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRefOrCall_Params(), this.getNode(), null, "params", null, 0, -1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRefOrCall_Ref(), ecorePackage.getEObject(), null, "ref", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRefOrCall_Target(), this.getRefOrCall(), null, "target", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRefOrCall_Params(), this.getRefParams(), null, "params", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(refOrCall2EClass, RefOrCall2.class, "RefOrCall2", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRefOrCall2_Ref(), ecorePackage.getEObject(), null, "ref", null, 0, 1, RefOrCall2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(refParamsEClass, RefParams.class, "RefParams", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRefParams_Params(), this.getArithmeticExpression(), null, "params", null, 0, -1, RefParams.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(generatorEClass, Generator.class, "Generator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getGenerator_Params(), this.getParameter(), null, "params", null, 0, -1, Generator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2350,6 +2605,8 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEClass(forBodyEClass, ForBody.class, "ForBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getForBody_Commands(), this.getGeneratorExpression(), null, "commands", null, 0, -1, ForBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(switchExpressionEClass, SwitchExpression.class, "SwitchExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
     initEClass(switchEClass, Switch.class, "Switch", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getSwitch_Default(), this.getDefault(), null, "default", null, 0, 1, Switch.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2367,23 +2624,30 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getSwitchCase_Cases(), this.getCase(), null, "cases", null, 0, -1, SwitchCase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(caseEClass, Case.class, "Case", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCase_Node(), this.getNode(), null, "node", null, 0, 1, Case.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCase_When(), this.getArithmeticExpression(), null, "when", null, 0, 1, Case.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCase_Body(), this.getCaseBody(), null, "body", null, 0, 1, Case.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(caseWithCastEClass, CaseWithCast.class, "CaseWithCast", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCaseWithCast_Node(), this.getNode(), null, "node", null, 0, 1, CaseWithCast.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCaseWithCast_When(), this.getArithmeticExpression(), null, "when", null, 0, 1, CaseWithCast.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(caseWithoutCastEClass, CaseWithoutCast.class, "CaseWithoutCast", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCaseWithoutCast_Val(), this.getArithmeticExpression(), null, "val", null, 0, 1, CaseWithoutCast.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(caseBodyEClass, CaseBody.class, "CaseBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCaseBody_Expressions(), this.getGeneratorExpression(), null, "expressions", null, 0, -1, CaseBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCaseBody_Expressions(), this.getSwitchExpression(), null, "expressions", null, 0, -1, CaseBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(collectionEClass, Collection.class, "Collection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(listEClass, List.class, "List", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getList_CreatedBy(), this.getListAssignment(), null, "createdBy", null, 0, 1, List.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(listAssignmentEClass, ListAssignment.class, "ListAssignment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(listAdHocEClass, ListAdHoc.class, "ListAdHoc", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getListAdHoc_Elements(), ecorePackage.getEString(), "elements", null, 0, -1, ListAdHoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getListAdHoc_Elements(), this.getLiteral(), null, "elements", null, 0, -1, ListAdHoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mapEClass, Map.class, "Map", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getMap_CreatedBy(), this.getMapAssignment(), null, "createdBy", null, 0, 1, Map.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mapAssignmentEClass, MapAssignment.class, "MapAssignment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -2391,14 +2655,25 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getMapAdHoc_Entries(), this.getMapTupel(), null, "entries", null, 0, -1, MapAdHoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mapTupelEClass, MapTupel.class, "MapTupel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getMapTupel_Key(), ecorePackage.getEString(), "key", null, 0, 1, MapTupel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapTupel_Key(), this.getLiteral(), null, "key", null, 0, 1, MapTupel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapTupel_Value(), this.getArithmeticExpression(), null, "value", null, 0, 1, MapTupel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(forRangeEClass, ForRange.class, "ForRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getForRange_Start(), ecorePackage.getEInt(), "start", null, 0, 1, ForRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getForRange_End(), ecorePackage.getEInt(), "end", null, 0, 1, ForRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForRange_Start(), this.getArithmeticExpression(), null, "start", null, 0, 1, ForRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForRange_End(), this.getArithmeticExpression(), null, "end", null, 0, 1, ForRange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(arithmeticExpressionEClass, ArithmeticExpression.class, "ArithmeticExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(literalEClass, Literal.class, "Literal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(booleanLiteralEClass, BooleanLiteral.class, "BooleanLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getBooleanLiteral_Val(), ecorePackage.getEBoolean(), "val", null, 0, 1, BooleanLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(stringLiteralEClass, StringLiteral.class, "StringLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getStringLiteral_Val(), ecorePackage.getEString(), "val", null, 0, 1, StringLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(numberLiteralEClass, NumberLiteral.class, "NumberLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getNumberLiteral_Val(), ecorePackage.getEDouble(), "val", null, 0, 1, NumberLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tertiaryEClass, Tertiary.class, "Tertiary", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTertiary_Left(), this.getArithmeticExpression(), null, "left", null, 0, 1, Tertiary.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2427,8 +2702,6 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEAttribute(getFunctionCall_Func(), this.getMathFunc(), "func", null, 0, 1, FunctionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFunctionCall_Expr(), this.getArithmeticExpression(), null, "expr", null, 0, 1, FunctionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(literalEClass, Literal.class, "Literal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
     // Initialize enums and add enum literals
     initEEnum(mathFuncEEnum, MathFunc.class, "MathFunc");
     addEEnumLiteral(mathFuncEEnum, MathFunc.SQRT);
@@ -2445,8 +2718,8 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     addEEnumLiteral(relationalOpEEnum, RelationalOp.GREATER_OR_EQUAL);
     addEEnumLiteral(relationalOpEEnum, RelationalOp.EQUAL);
     addEEnumLiteral(relationalOpEEnum, RelationalOp.UNEQUAL);
-    addEEnumLiteral(relationalOpEEnum, RelationalOp.SMALLER_OR_EQUAL);
-    addEEnumLiteral(relationalOpEEnum, RelationalOp.SMALLER);
+    addEEnumLiteral(relationalOpEEnum, RelationalOp.LESS_OR_EQUAL);
+    addEEnumLiteral(relationalOpEEnum, RelationalOp.LESS);
 
     initEEnum(tertiaryOpEEnum, TertiaryOp.class, "TertiaryOp");
     addEEnumLiteral(tertiaryOpEEnum, TertiaryOp.PLUS);

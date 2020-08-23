@@ -21,7 +21,7 @@ package org.mofgen.mGLang;
  * @model
  * @generated
  */
-public interface ForStatement extends GeneratorExpression
+public interface ForStatement extends GeneratorExpression, SwitchExpression
 {
   /**
    * Returns the value of the '<em><b>Head</b></em>' containment reference.
