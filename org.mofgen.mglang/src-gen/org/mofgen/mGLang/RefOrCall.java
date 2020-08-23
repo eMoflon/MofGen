@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.mofgen.mGLang.RefOrCall#getRef <em>Ref</em>}</li>
  *   <li>{@link org.mofgen.mGLang.RefOrCall#getTarget <em>Target</em>}</li>
  *   <li>{@link org.mofgen.mGLang.RefOrCall#getParams <em>Params</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.RefOrCall#isBracesSet <em>Braces Set</em>}</li>
  * </ul>
  *
  * @see org.mofgen.mGLang.MGLangPackage#getRefOrCall()
@@ -90,5 +91,27 @@ public interface RefOrCall extends ListAssignment, MapAssignment, ArithmeticExpr
    * @generated
    */
   void setParams(RefParams value);
+
+  /**
+   * Returns the value of the '<em><b>Braces Set</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Braces Set</em>' attribute.
+   * @see #setBracesSet(boolean)
+   * @see org.mofgen.mGLang.MGLangPackage#getRefOrCall_BracesSet()
+   * @model
+   * @generated
+   */
+  boolean isBracesSet();
+
+  /**
+   * Sets the value of the '{@link org.mofgen.mGLang.RefOrCall#isBracesSet <em>Braces Set</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Braces Set</em>' attribute.
+   * @see #isBracesSet()
+   * @generated
+   */
+  void setBracesSet(boolean value);
 
 } // RefOrCall

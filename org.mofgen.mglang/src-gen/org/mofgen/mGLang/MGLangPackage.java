@@ -765,13 +765,22 @@ public interface MGLangPackage extends EPackage
   int REF_OR_CALL__PARAMS = LIST_ASSIGNMENT_FEATURE_COUNT + 2;
 
   /**
+   * The feature id for the '<em><b>Braces Set</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int REF_OR_CALL__BRACES_SET = LIST_ASSIGNMENT_FEATURE_COUNT + 3;
+
+  /**
    * The number of structural features of the '<em>Ref Or Call</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int REF_OR_CALL_FEATURE_COUNT = LIST_ASSIGNMENT_FEATURE_COUNT + 3;
+  int REF_OR_CALL_FEATURE_COUNT = LIST_ASSIGNMENT_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.RefParamsImpl <em>Ref Params</em>}' class.
@@ -2575,6 +2584,17 @@ public interface MGLangPackage extends EPackage
   EReference getRefOrCall_Params();
 
   /**
+   * Returns the meta object for the attribute '{@link org.mofgen.mGLang.RefOrCall#isBracesSet <em>Braces Set</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Braces Set</em>'.
+   * @see org.mofgen.mGLang.RefOrCall#isBracesSet()
+   * @see #getRefOrCall()
+   * @generated
+   */
+  EAttribute getRefOrCall_BracesSet();
+
+  /**
    * Returns the meta object for class '{@link org.mofgen.mGLang.RefParams <em>Ref Params</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -4042,6 +4062,14 @@ public interface MGLangPackage extends EPackage
      * @generated
      */
     EReference REF_OR_CALL__PARAMS = eINSTANCE.getRefOrCall_Params();
+
+    /**
+     * The meta object literal for the '<em><b>Braces Set</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute REF_OR_CALL__BRACES_SET = eINSTANCE.getRefOrCall_BracesSet();
 
     /**
      * The meta object literal for the '{@link org.mofgen.mGLang.impl.RefParamsImpl <em>Ref Params</em>}' class.

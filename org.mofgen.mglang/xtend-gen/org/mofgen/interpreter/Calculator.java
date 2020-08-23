@@ -2,6 +2,7 @@ package org.mofgen.interpreter;
 
 import com.google.common.base.Objects;
 import java.util.Arrays;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.xtext.xbase.lib.DoubleExtensions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
@@ -13,6 +14,7 @@ import org.mofgen.mGLang.FunctionCall;
 import org.mofgen.mGLang.MathFunc;
 import org.mofgen.mGLang.NegationExpression;
 import org.mofgen.mGLang.NumberLiteral;
+import org.mofgen.mGLang.PatternCall;
 import org.mofgen.mGLang.Primary;
 import org.mofgen.mGLang.PrimaryOp;
 import org.mofgen.mGLang.RefOrCall;
@@ -57,12 +59,6 @@ public class Calculator {
       if (Objects.equal(_class, EOperation.class)) {
         _matched=true;
         return ((EOperation) result);
-      }
-    }
-    if (!_matched) {
-      if (Objects.equal(_class, Variable.class)) {
-        _matched=true;
-        return this.evaluate(((Variable) result).getValue());
       }
     }
     return result;
@@ -483,7 +479,16 @@ public class Calculator {
   }
   
   private Object _internalEvaluate(final RefOrCall roc) {
+    EObject _ref = roc.getRef();
+    if ((_ref instanceof Variable)) {
+      EObject _ref_1 = roc.getRef();
+      return this.internalEvaluate(((Variable) _ref_1).getValue());
+    }
     return roc.getRef();
+  }
+  
+  private Object _internalEvaluate(final PatternCall pc) {
+    return pc;
   }
   
   private Object internalEvaluate(final ArithmeticExpression lit) {
@@ -497,6 +502,8 @@ public class Calculator {
       return _internalEvaluate((FunctionCall)lit);
     } else if (lit instanceof NegationExpression) {
       return _internalEvaluate((NegationExpression)lit);
+    } else if (lit instanceof PatternCall) {
+      return _internalEvaluate((PatternCall)lit);
     } else if (lit instanceof Primary) {
       return _internalEvaluate((Primary)lit);
     } else if (lit instanceof RefOrCall) {

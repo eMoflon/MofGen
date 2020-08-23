@@ -37,7 +37,6 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cCommandsAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cCommandsFileCommandParserRuleCall_2_0 = (RuleCall)cCommandsAssignment_2.eContents().get(0);
 		
-		////TODO: Variables
 		//MofgenFile:
 		//	imports+=Import*
 		//	config=Config commands+=FileCommand*;
@@ -579,27 +578,28 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Assignment");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cTargetAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final CrossReference cTargetEAttributeCrossReference_0_0 = (CrossReference)cTargetAssignment_0.eContents().get(0);
-		private final RuleCall cTargetEAttributeIDTerminalRuleCall_0_0_1 = (RuleCall)cTargetEAttributeCrossReference_0_0.eContents().get(1);
+		private final CrossReference cTargetENamedElementCrossReference_0_0 = (CrossReference)cTargetAssignment_0.eContents().get(0);
+		private final RuleCall cTargetENamedElementIDTerminalRuleCall_0_0_1 = (RuleCall)cTargetENamedElementCrossReference_0_0.eContents().get(1);
 		private final RuleCall cASSIGNMENT_OPTerminalRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		private final Assignment cValueAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cValueArithmeticExpressionParserRuleCall_2_0 = (RuleCall)cValueAssignment_2.eContents().get(0);
 		
 		//Assignment:
-		//	target=[ecore::EAttribute] ASSIGNMENT_OP value=ArithmeticExpression;
+		//	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression //TODO make Enum Assignments possible?
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//target=[ecore::EAttribute] ASSIGNMENT_OP value=ArithmeticExpression
+		//target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression
 		public Group getGroup() { return cGroup; }
 		
-		//target=[ecore::EAttribute]
+		//target=[ecore::ENamedElement]
 		public Assignment getTargetAssignment_0() { return cTargetAssignment_0; }
 		
-		//[ecore::EAttribute]
-		public CrossReference getTargetEAttributeCrossReference_0_0() { return cTargetEAttributeCrossReference_0_0; }
+		//[ecore::ENamedElement]
+		public CrossReference getTargetENamedElementCrossReference_0_0() { return cTargetENamedElementCrossReference_0_0; }
 		
 		//ID
-		public RuleCall getTargetEAttributeIDTerminalRuleCall_0_0_1() { return cTargetEAttributeIDTerminalRuleCall_0_0_1; }
+		public RuleCall getTargetENamedElementIDTerminalRuleCall_0_0_1() { return cTargetENamedElementIDTerminalRuleCall_0_0_1; }
 		
 		//ASSIGNMENT_OP
 		public RuleCall getASSIGNMENT_OPTerminalRuleCall_1() { return cASSIGNMENT_OPTerminalRuleCall_1; }
@@ -616,7 +616,6 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cPrimitiveParameterParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cParameterNodeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		////TODO make Enum Assignments possible
 		//Parameter:
 		//	PrimitiveParameter | ParameterNode;
 		@Override public ParserRule getRule() { return rule; }
@@ -724,14 +723,15 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cLeftParenthesisKeyword_1_3_0 = (Keyword)cGroup_1_3.eContents().get(0);
 		private final Assignment cParamsAssignment_1_3_1 = (Assignment)cGroup_1_3.eContents().get(1);
 		private final RuleCall cParamsRefParamsParserRuleCall_1_3_1_0 = (RuleCall)cParamsAssignment_1_3_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_1_3_2 = (Keyword)cGroup_1_3.eContents().get(2);
+		private final Assignment cBracesSetAssignment_1_3_2 = (Assignment)cGroup_1_3.eContents().get(2);
+		private final Keyword cBracesSetRightParenthesisKeyword_1_3_2_0 = (Keyword)cBracesSetAssignment_1_3_2.eContents().get(0);
 		
-		////TODO: Handling if no srcModel is given? And show warning!
+		////TODO: Handling if no srcModel is given but duplicate classes exist? And show warning!
 		//RefOrCall:
-		//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? ')')?)*;
+		//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? bracesSet?=')')?)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? ')')?)*
+		//ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? bracesSet?=')')?)*
 		public Group getGroup() { return cGroup; }
 		
 		//ref=[RefType]
@@ -743,7 +743,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getRefRefTypeIDTerminalRuleCall_0_0_1() { return cRefRefTypeIDTerminalRuleCall_0_0_1; }
 		
-		//({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? ')')?)*
+		//({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? bracesSet?=')')?)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//{RefOrCall.target=current}
@@ -761,7 +761,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getRefETypedElementIDTerminalRuleCall_1_2_0_1() { return cRefETypedElementIDTerminalRuleCall_1_2_0_1; }
 		
-		//('(' params=RefParams? ')')?
+		//('(' params=RefParams? bracesSet?=')')?
 		public Group getGroup_1_3() { return cGroup_1_3; }
 		
 		//'('
@@ -773,8 +773,11 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//RefParams
 		public RuleCall getParamsRefParamsParserRuleCall_1_3_1_0() { return cParamsRefParamsParserRuleCall_1_3_1_0; }
 		
+		//bracesSet?=')'
+		public Assignment getBracesSetAssignment_1_3_2() { return cBracesSetAssignment_1_3_2; }
+		
 		//')'
-		public Keyword getRightParenthesisKeyword_1_3_2() { return cRightParenthesisKeyword_1_3_2; }
+		public Keyword getBracesSetRightParenthesisKeyword_1_3_2_0() { return cBracesSetRightParenthesisKeyword_1_3_2_0; }
 	}
 	public class RefParamsElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.RefParams");
@@ -1398,15 +1401,13 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cBodyAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cBodyCaseBodyParserRuleCall_4_0 = (RuleCall)cBodyAssignment_4.eContents().get(0);
 		
-		//CaseWithCast: // TODO: Check that arithmetic expression really yields boolean value
+		//CaseWithCast:
 		//	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=CaseBody;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//// TODO: Check that arithmetic expression really yields boolean value
 		//'case' node=Node ('when' when=ArithmeticExpression)? ':' body=CaseBody
 		public Group getGroup() { return cGroup; }
 		
-		//// TODO: Check that arithmetic expression really yields boolean value
 		//'case'
 		public Keyword getCaseKeyword_0() { return cCaseKeyword_0; }
 		
@@ -1605,41 +1606,41 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cLeftSquareBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cElementsLiteralParserRuleCall_1_0 = (RuleCall)cElementsAssignment_1.eContents().get(0);
+		private final RuleCall cElementsArithmeticExpressionParserRuleCall_1_0 = (RuleCall)cElementsAssignment_1.eContents().get(0);
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cCommaKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final Assignment cElementsAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cElementsLiteralParserRuleCall_2_1_0 = (RuleCall)cElementsAssignment_2_1.eContents().get(0);
+		private final RuleCall cElementsArithmeticExpressionParserRuleCall_2_1_0 = (RuleCall)cElementsAssignment_2_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		//ListAdHoc:
-		//	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
+		//	'[' elements+=ArithmeticExpression (',' elements+=ArithmeticExpression)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'[' elements+=Literal (',' elements+=Literal)* ']'
+		//'[' elements+=ArithmeticExpression (',' elements+=ArithmeticExpression)* ']'
 		public Group getGroup() { return cGroup; }
 		
 		//'['
 		public Keyword getLeftSquareBracketKeyword_0() { return cLeftSquareBracketKeyword_0; }
 		
-		//elements+=Literal
+		//elements+=ArithmeticExpression
 		public Assignment getElementsAssignment_1() { return cElementsAssignment_1; }
 		
-		//Literal
-		public RuleCall getElementsLiteralParserRuleCall_1_0() { return cElementsLiteralParserRuleCall_1_0; }
+		//ArithmeticExpression
+		public RuleCall getElementsArithmeticExpressionParserRuleCall_1_0() { return cElementsArithmeticExpressionParserRuleCall_1_0; }
 		
-		//(',' elements+=Literal)*
+		//(',' elements+=ArithmeticExpression)*
 		public Group getGroup_2() { return cGroup_2; }
 		
 		//','
 		public Keyword getCommaKeyword_2_0() { return cCommaKeyword_2_0; }
 		
-		//elements+=Literal
+		//elements+=ArithmeticExpression
 		public Assignment getElementsAssignment_2_1() { return cElementsAssignment_2_1; }
 		
-		//Literal
-		public RuleCall getElementsLiteralParserRuleCall_2_1_0() { return cElementsLiteralParserRuleCall_2_1_0; }
+		//ArithmeticExpression
+		public RuleCall getElementsArithmeticExpressionParserRuleCall_2_1_0() { return cElementsArithmeticExpressionParserRuleCall_2_1_0; }
 		
 		//']'
 		public Keyword getRightSquareBracketKeyword_3() { return cRightSquareBracketKeyword_3; }
@@ -1750,27 +1751,27 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cLeftParenthesisKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cKeyAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cKeyLiteralParserRuleCall_1_0 = (RuleCall)cKeyAssignment_1.eContents().get(0);
+		private final RuleCall cKeyArithmeticExpressionParserRuleCall_1_0 = (RuleCall)cKeyAssignment_1.eContents().get(0);
 		private final Keyword cCommaKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cValueArithmeticExpressionParserRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//MapTupel:
-		//	'(' key=Literal ',' value=ArithmeticExpression ')';
+		//	'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'(' key=Literal ',' value=ArithmeticExpression ')'
+		//'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')'
 		public Group getGroup() { return cGroup; }
 		
 		//'('
 		public Keyword getLeftParenthesisKeyword_0() { return cLeftParenthesisKeyword_0; }
 		
-		//key=Literal
+		//key=ArithmeticExpression
 		public Assignment getKeyAssignment_1() { return cKeyAssignment_1; }
 		
-		//Literal
-		public RuleCall getKeyLiteralParserRuleCall_1_0() { return cKeyLiteralParserRuleCall_1_0; }
+		//ArithmeticExpression
+		public RuleCall getKeyArithmeticExpressionParserRuleCall_1_0() { return cKeyArithmeticExpressionParserRuleCall_1_0; }
 		
 		//','
 		public Keyword getCommaKeyword_2() { return cCommaKeyword_2; }
@@ -2005,14 +2006,15 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightParenthesisKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
 		private final RuleCall cLiteralParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cRefOrCallParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		private final RuleCall cPatternCallParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
 		
 		//BaseExpr ArithmeticExpression:
 		//	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
-		//	expr=ArithmeticExpression ')' | Literal | RefOrCall;
+		//	expr=ArithmeticExpression ')' | Literal | RefOrCall | PatternCall;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
-		//expr=ArithmeticExpression ')' | Literal | RefOrCall
+		//expr=ArithmeticExpression ')' | Literal | RefOrCall | PatternCall
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//'(' ArithmeticExpression ')'
@@ -2071,6 +2073,9 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//RefOrCall
 		public RuleCall getRefOrCallParserRuleCall_4() { return cRefOrCallParserRuleCall_4; }
+		
+		//PatternCall
+		public RuleCall getPatternCallParserRuleCall_5() { return cPatternCallParserRuleCall_5; }
 	}
 	public class LiteralElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Literal");
@@ -2566,7 +2571,6 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	
-	////TODO: Variables
 	//MofgenFile:
 	//	imports+=Import*
 	//	config=Config commands+=FileCommand*;
@@ -2712,7 +2716,8 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Assignment:
-	//	target=[ecore::EAttribute] ASSIGNMENT_OP value=ArithmeticExpression;
+	//	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression //TODO make Enum Assignments possible?
+	//;
 	public AssignmentElements getAssignmentAccess() {
 		return pAssignment;
 	}
@@ -2721,7 +2726,6 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getAssignmentAccess().getRule();
 	}
 	
-	////TODO make Enum Assignments possible
 	//Parameter:
 	//	PrimitiveParameter | ParameterNode;
 	public ParameterElements getParameterAccess() {
@@ -2752,9 +2756,9 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getParameterNodeAccess().getRule();
 	}
 	
-	////TODO: Handling if no srcModel is given? And show warning!
+	////TODO: Handling if no srcModel is given but duplicate classes exist? And show warning!
 	//RefOrCall:
-	//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? ')')?)*;
+	//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? bracesSet?=')')?)*;
 	public RefOrCallElements getRefOrCallAccess() {
 		return pRefOrCall;
 	}
@@ -2943,7 +2947,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getCaseAccess().getRule();
 	}
 	
-	//CaseWithCast: // TODO: Check that arithmetic expression really yields boolean value
+	//CaseWithCast:
 	//	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=CaseBody;
 	public CaseWithCastElements getCaseWithCastAccess() {
 		return pCaseWithCast;
@@ -3004,7 +3008,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//ListAdHoc:
-	//	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
+	//	'[' elements+=ArithmeticExpression (',' elements+=ArithmeticExpression)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
 	//;
 	public ListAdHocElements getListAdHocAccess() {
 		return pListAdHoc;
@@ -3045,7 +3049,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//MapTupel:
-	//	'(' key=Literal ',' value=ArithmeticExpression ')';
+	//	'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')';
 	public MapTupelElements getMapTupelAccess() {
 		return pMapTupel;
 	}
@@ -3117,7 +3121,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//BaseExpr ArithmeticExpression:
 	//	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
-	//	expr=ArithmeticExpression ')' | Literal | RefOrCall;
+	//	expr=ArithmeticExpression ')' | Literal | RefOrCall | PatternCall;
 	public BaseExprElements getBaseExprAccess() {
 		return pBaseExpr;
 	}

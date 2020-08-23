@@ -152,6 +152,7 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getRefOrCallAccess().getRefAssignment_0(), "rule__RefOrCall__RefAssignment_0");
 			builder.put(grammarAccess.getRefOrCallAccess().getRefAssignment_1_2(), "rule__RefOrCall__RefAssignment_1_2");
 			builder.put(grammarAccess.getRefOrCallAccess().getParamsAssignment_1_3_1(), "rule__RefOrCall__ParamsAssignment_1_3_1");
+			builder.put(grammarAccess.getRefOrCallAccess().getBracesSetAssignment_1_3_2(), "rule__RefOrCall__BracesSetAssignment_1_3_2");
 			builder.put(grammarAccess.getRefParamsAccess().getParamsAssignment_0(), "rule__RefParams__ParamsAssignment_0");
 			builder.put(grammarAccess.getRefParamsAccess().getParamsAssignment_1_1(), "rule__RefParams__ParamsAssignment_1_1");
 			builder.put(grammarAccess.getGeneratorAccess().getParamsAssignment_3(), "rule__Generator__ParamsAssignment_3");

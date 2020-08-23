@@ -18,106 +18,155 @@ import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.ParameterNode
+import org.mofgen.mGLang.CaseWithCast
+import org.mofgen.mGLang.RefOrCall
+import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.Collection
 
 /**
  * This class contains custom validation rules. 
- *
+ * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class MGLangValidator extends AbstractMGLangValidator {
-	
+
 	@Inject Calculator calc
-	
+
+	// TODO Check if there are sufficient null checks so no strange error occur in the editor
+
 	@Check
-	def validForRange(GeneralForHead head){
+	def validForRange(GeneralForHead head) {
 		val start = calc.evaluate(head.range.start)
 		val end = calc.evaluate(head.range.end)
-		
-		if(!(start instanceof Number)){
+
+		if (!(start instanceof Number)) {
 			error("For-Range needs numerical bounds but was given " + start, MGLangPackage.Literals.FOR_RANGE__START)
 		}
-		if(!(end instanceof Number)){
+		if (!(end instanceof Number)) {
 			error("For-Range needs numerical bounds but was given " + end, MGLangPackage.Literals.FOR_RANGE__END)
 		}
-		
+
 		val castStart = start as Double
 		val castEnd = end as Double
-		if(castStart > castEnd){
+		if (castStart > castEnd) {
 			error("Limiting bound is less than starting value", MGLangPackage.Literals.GENERAL_FOR_HEAD__RANGE)
 		}
 	}
-	
+
 	@Check
-	def checkForImportConclicts(Import imp){
+	def checkBooleanWhen(CaseWithCast caze) {
+		if (caze.when !== null) {
+			val res = calc.evaluate(caze.when)
+			if (!(res instanceof Boolean)) {
+				error("Needed boolean value for conditional expression", MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
+			}
+		}
+	}
+
+	@Check
+	def checkForImportConclicts(Import imp) {
 		var imports = EcoreUtil2.getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import)
 		imports.remove(imp)
 		val duplicateClasses = checkImportsForDuplicates(imports, imp)
-		if(!duplicateClasses.isEmpty){
-			warning("Import conflict for classes with names" + duplicateClasses.toString, MGLangPackage.Literals.IMPORT__URI)
+		if (!duplicateClasses.isEmpty) {
+			warning("Import conflict for classes with names" + duplicateClasses.toString,
+				MGLangPackage.Literals.IMPORT__URI)
 		}
 	}
-	
-	def checkImportsForDuplicates(List<Import> imps, Import otherImp){
+
+	def checkImportsForDuplicates(List<Import> imps, Import otherImp) {
+		var conflicts = newLinkedList()
+
+		if(imps.isEmpty) return conflicts
+		
 		val classes = MofgenModelUtils.getClassesFromImportList(imps)
 		val otherClasses = MofgenModelUtils.getClassesFromImport(otherImp)
-		var conflicts = newLinkedList()
-		for(otherClass : otherClasses){
-			if(classes.contains(otherClass)){
+		for (otherClass : otherClasses) {
+			if (classes.contains(otherClass)) {
 				conflicts.add(otherClass.name)
 			}
 		}
 		return conflicts
 	}
-	
+
 	@Check
-	def matchingParameterArguments(PatternCall pc){
+	def matchingParameterArguments(PatternCall pc) {
 		var neededParams = 0
 		var actualParams = 0
-				
-		if(pc.called.parameters !== null){
+
+		if (pc.called.parameters !== null) {
 			neededParams = pc.called.parameters.length
 		}
-		if(pc.params !== null){
+		if (pc.params !== null) {
 			actualParams = pc.params.length
 		}
-		
-		if(neededParams != actualParams){
-			error("Pattern " + pc.called.name + " expects " + neededParams + " parameters but was given " + actualParams, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+
+		if (neededParams != actualParams) {
+			error("Pattern " + pc.called.name + " expects " + neededParams + " parameters but was given " +
+				actualParams, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 		}
 	}
-	
+
 	@Check
-	def matchingParameterTypes(PatternCall pc){
-		for(i : 0  ..< pc.params.length){
+	def matchingParameterTypes(PatternCall pc) {
+		for (i : 0 ..< pc.params.length) {
 			val given = pc.params.get(i)
 			val needed = pc.called.parameters.get(i)
-			if(areTypesMatching(given, needed) == false){
-				error("Given object " + given + " does not match needed type " + needed, MGLangPackage.Literals.PATTERN_CALL__PARAMS)				
+			if (isTypeMatchingWithParameter(given, needed) == false) {
+				error("Given object " + given + " does not match needed type " + needed,
+					MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 			}
 		}
 	}
 
-	def private areTypesMatching(ArithmeticExpression givenExpression, Parameter neededObj){
-		val eval = calc.evaluate(givenExpression)
-		
-		if(eval instanceof EOperation){
-			//val op = eval as EOperation
-			return true;	//TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection? Or possibly only do this at runtime?
+	@Check
+	def matchingParameterArguments_roc(RefOrCall roc) {
+		if (roc.ref instanceof EOperation && !roc.bracesSet) {
+			error("Missing parameter list", MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+			return;
 		}
-		
-		if(neededObj instanceof PrimitiveParameter){
-			switch(neededObj.type){
+		if (roc.ref instanceof EOperation) {
+			val op = roc.ref as EOperation
+			val givenParams = roc.params.params
+			val neededParams = op.EParameters
+
+			// Check parameter count
+			if (givenParams.size != neededParams.size) {
+				error("Method " + op.name + " expects " + neededParams.size + " parameters but was given " +
+					givenParams.size, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+				return;
+			}
+
+			// TODO Check parameter types ?
+		}
+	}
+
+	def private isTypeMatchingWithParameter(ArithmeticExpression givenExpression, Parameter neededObj) {
+		val eval = calc.evaluate(givenExpression)
+
+		if (eval instanceof EOperation) {
+			// val op = eval as EOperation
+			return true; // TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection? ==> Possible do this only at runtime and fall back to EObject in the case of conflicts
+		}
+		if (eval instanceof PatternCall){
+			return true; // TODO Type Checking for pattern calls?
+		}
+
+		if (neededObj instanceof PrimitiveParameter) {
+			switch (neededObj.type) {
 				case INT: return eval instanceof Double && (Math.floor(eval as Double) == eval)
-				case CHAR: return false //TODO
 				case DOUBLE: return eval instanceof Double
 				case STRING: return eval instanceof String
+				case CHAR: return eval instanceof Character || eval instanceof String && (eval as String).length == 1
 			}
 		}
-		if(neededObj instanceof ParameterNode){
-			//TODO
+		if (neededObj instanceof ParameterNode) {
+			return eval instanceof Node || eval instanceof ParameterNode
 		}
-		return false
+		if (neededObj instanceof Collection){
+			return eval instanceof Collection
+		}
+		
 	}
-	
-	
+
 }

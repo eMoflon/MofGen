@@ -3,7 +3,6 @@ grammar org.mofgen.MGLang with org.eclipse.xtext.common.Terminals
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate mGLang "http://www.mofgen.org/MGLang"
 
-//TODO: Variables
 MofgenFile:
 	(imports+=Import)*
 	(config=Config)
@@ -57,8 +56,9 @@ PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
 
 Assignment:
-	target=[ecore::EAttribute] ASSIGNMENT_OP value=ArithmeticExpression;
-	//TODO make Enum Assignments possible
+	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression //TODO make Enum Assignments possible?
+;
+	
 Parameter:
 	PrimitiveParameter | ParameterNode;
 
@@ -66,10 +66,10 @@ PrimitiveParameter:
 	type=PrimitiveType name=ID;
 
 ParameterNode:
-	(srcModel=[Import]'.')? type=[ecore::EClassifier] name=ID;	//TODO: Handling if no srcModel is given? And show warning!
+	(srcModel=[Import]'.')? type=[ecore::EClassifier] name=ID;	//TODO: Handling if no srcModel is given but duplicate classes exist? And show warning!
 
 RefOrCall:
-	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' (params = RefParams)? ')')?)*;
+	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' (params = RefParams)? bracesSet?=')')?)*;
 
 RefParams:
 	params += ArithmeticExpression (',' params+=ArithmeticExpression)*;
@@ -128,7 +128,6 @@ Case:
 	CaseWithCast | CaseWithoutCast;
 
 CaseWithCast:
-	// TODO: Check that arithmetic expression really yields boolean value
 	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=CaseBody;
 
 CaseWithoutCast:
@@ -147,7 +146,7 @@ ListAssignment:
 	ListAdHoc | RefOrCall;
 
 ListAdHoc:
-	'[' elements+=Literal (',' elements+=Literal)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
+	'[' elements+=ArithmeticExpression (',' elements+=ArithmeticExpression)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
 ;
 
 Map:
@@ -160,7 +159,7 @@ MapAdHoc:
 	'[' entries+=MapTupel (',' entries+=MapTupel)* ']';
 
 MapTupel:
-	'(' key=Literal ',' value=ArithmeticExpression ')';
+	'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')';
 
 ForRange:
 	start=ArithmeticExpression ':' end=ArithmeticExpression;
@@ -183,7 +182,7 @@ RelationExpression returns ArithmeticExpression:
 
 BaseExpr returns ArithmeticExpression:
 	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
-	expr=ArithmeticExpression ')' | Literal | RefOrCall;
+	expr=ArithmeticExpression ')' | Literal | RefOrCall | PatternCall;
 
 Literal:
 	BooleanLiteral | StringLiteral | NumberLiteral;

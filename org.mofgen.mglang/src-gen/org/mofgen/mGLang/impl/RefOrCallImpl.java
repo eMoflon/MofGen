@@ -27,6 +27,7 @@ import org.mofgen.mGLang.RefParams;
  *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getRef <em>Ref</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getTarget <em>Target</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#getParams <em>Params</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.RefOrCallImpl#isBracesSet <em>Braces Set</em>}</li>
  * </ul>
  *
  * @generated
@@ -62,6 +63,26 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @ordered
    */
   protected RefParams params;
+
+  /**
+   * The default value of the '{@link #isBracesSet() <em>Braces Set</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isBracesSet()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean BRACES_SET_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isBracesSet() <em>Braces Set</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isBracesSet()
+   * @generated
+   * @ordered
+   */
+  protected boolean bracesSet = BRACES_SET_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -235,6 +256,31 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
    * @generated
    */
   @Override
+  public boolean isBracesSet()
+  {
+    return bracesSet;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setBracesSet(boolean newBracesSet)
+  {
+    boolean oldBracesSet = bracesSet;
+    bracesSet = newBracesSet;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.REF_OR_CALL__BRACES_SET, oldBracesSet, bracesSet));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
@@ -264,6 +310,8 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
         return getTarget();
       case MGLangPackage.REF_OR_CALL__PARAMS:
         return getParams();
+      case MGLangPackage.REF_OR_CALL__BRACES_SET:
+        return isBracesSet();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -286,6 +334,9 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
         return;
       case MGLangPackage.REF_OR_CALL__PARAMS:
         setParams((RefParams)newValue);
+        return;
+      case MGLangPackage.REF_OR_CALL__BRACES_SET:
+        setBracesSet((Boolean)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -310,6 +361,9 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
       case MGLangPackage.REF_OR_CALL__PARAMS:
         setParams((RefParams)null);
         return;
+      case MGLangPackage.REF_OR_CALL__BRACES_SET:
+        setBracesSet(BRACES_SET_EDEFAULT);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -330,8 +384,27 @@ public class RefOrCallImpl extends ListAssignmentImpl implements RefOrCall
         return target != null;
       case MGLangPackage.REF_OR_CALL__PARAMS:
         return params != null;
+      case MGLangPackage.REF_OR_CALL__BRACES_SET:
+        return bracesSet != BRACES_SET_EDEFAULT;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (bracesSet: ");
+    result.append(bracesSet);
+    result.append(')');
+    return result.toString();
   }
 
 } //RefOrCallImpl

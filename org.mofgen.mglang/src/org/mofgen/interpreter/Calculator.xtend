@@ -5,7 +5,7 @@ import org.mofgen.mGLang.Tertiary
 import org.mofgen.mGLang.Secondary
 import org.mofgen.mGLang.Primary
 import org.mofgen.mGLang.Rel
-import org.mofgen.mGLang.Literal
+import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.NegationExpression
 import org.mofgen.mGLang.FunctionCall
 import org.mofgen.mGLang.RefOrCall
@@ -25,7 +25,6 @@ class Calculator {
 			case String: return result as String
 			case Boolean: return result as Boolean
 			case EOperation: return result as EOperation
-			case Variable: return evaluate((result as Variable).value)
 		}
 		return result
 	}
@@ -277,7 +276,15 @@ class Calculator {
 	}
 	
 	def dispatch private internalEvaluate(RefOrCall roc){
+		if(roc.ref instanceof Variable){
+			return internalEvaluate((roc.ref as Variable).value)
+		}
 		return roc.ref
 	}
+	
+	def dispatch private internalEvaluate(PatternCall pc){
+		return pc
+	}
 
+	//TODO: Idea: One evaluator for actual evaluation and one evaluator only for type checking?
 }

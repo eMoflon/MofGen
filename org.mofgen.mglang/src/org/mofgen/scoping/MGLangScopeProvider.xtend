@@ -8,12 +8,10 @@ import org.eclipse.emf.ecore.EReference
 import org.mofgen.mGLang.MGLangPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.eclipse.xtext.scoping.Scopes
-import org.mofgen.mGLang.MofgenFile
 import org.mofgen.mGLang.PatternNodeReference
 import org.eclipse.xtext.scoping.IScope
 import org.mofgen.mGLang.Node
 import org.eclipse.xtext.EcoreUtil2
-import org.mofgen.mGLang.Assignment
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.CaseWithCast
@@ -27,6 +25,7 @@ import org.mofgen.mGLang.PatternVariable
 import org.mofgen.mGLang.Import
 import org.mofgen.mGLang.ParameterNode
 import org.mofgen.mGLang.Variable
+import org.mofgen.mGLang.Assignment
 
 /**
  * This class contains custom scoping description.
@@ -67,8 +66,14 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	
 	def getScopeForParameterNodeType(ParameterNode paramNode){
 		val imp = paramNode.srcModel
-		val classes = MofgenModelUtils.getClassesFromImport(imp)
-		return Scopes.scopeFor(classes)
+		if(imp !== null){
+			val classes = MofgenModelUtils.getClassesFromImport(imp)
+			return Scopes.scopeFor(classes)
+		}else{
+			val classes = MofgenModelUtils.getClasses(MofgenModelUtils.getRootFile(paramNode))
+			return Scopes.scopeFor(classes)
+		}
+
 	}
 	
 	def getScopeForParameterNodeSrcModel(ParameterNode paramNode){
@@ -113,13 +118,16 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	def getScopeForNodeAssignmentType(Assignment ass) {
 		val srcNode = EcoreUtil2.getContainerOfType(ass, Node)
 		val file = getRootFile(ass)
-		val clazzez = MofgenModelUtils.getClasses(file)
+		val classes = MofgenModelUtils.getClasses(file)
 		try {
-			val filteredClazzez = clazzez.filter[c|c == srcNode.type]
-			if (filteredClazzez.isEmpty) {
+			val filteredClasses = classes.filter[c|c == srcNode.type]
+			val attrs = newArrayList()
+			val enums = newArrayList()
+			if (filteredClasses.isEmpty) {
 				return IScope.NULLSCOPE
 			} else {
-				return Scopes.scopeFor(filteredClazzez.get(0).EAllAttributes)
+				attrs.addAll(filteredClasses.get(0).EAllAttributes)
+				return Scopes.scopeFor(attrs)
 			}
 		} catch (NullPointerException e) {
 			return IScope.NULLSCOPE

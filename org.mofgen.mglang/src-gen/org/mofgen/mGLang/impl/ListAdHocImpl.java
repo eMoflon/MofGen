@@ -15,8 +15,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.ListAdHoc;
-import org.mofgen.mGLang.Literal;
 import org.mofgen.mGLang.MGLangPackage;
 
 /**
@@ -42,7 +42,7 @@ public class ListAdHocImpl extends ListAssignmentImpl implements ListAdHoc
    * @generated
    * @ordered
    */
-  protected EList<Literal> elements;
+  protected EList<ArithmeticExpression> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -71,11 +71,11 @@ public class ListAdHocImpl extends ListAssignmentImpl implements ListAdHoc
    * @generated
    */
   @Override
-  public EList<Literal> getElements()
+  public EList<ArithmeticExpression> getElements()
   {
     if (elements == null)
     {
-      elements = new EObjectContainmentEList<Literal>(Literal.class, this, MGLangPackage.LIST_AD_HOC__ELEMENTS);
+      elements = new EObjectContainmentEList<ArithmeticExpression>(ArithmeticExpression.class, this, MGLangPackage.LIST_AD_HOC__ELEMENTS);
     }
     return elements;
   }
@@ -125,7 +125,7 @@ public class ListAdHocImpl extends ListAssignmentImpl implements ListAdHoc
     {
       case MGLangPackage.LIST_AD_HOC__ELEMENTS:
         getElements().clear();
-        getElements().addAll((Collection<? extends Literal>)newValue);
+        getElements().addAll((Collection<? extends ArithmeticExpression>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

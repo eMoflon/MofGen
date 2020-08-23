@@ -10,7 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -18,14 +20,18 @@ import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 import org.mofgen.interpreter.Calculator;
 import org.mofgen.mGLang.ArithmeticExpression;
+import org.mofgen.mGLang.CaseWithCast;
+import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.GeneralForHead;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.ParameterNode;
 import org.mofgen.mGLang.PatternCall;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.mGLang.PrimitiveType;
+import org.mofgen.mGLang.RefOrCall;
 import org.mofgen.utils.MofgenModelUtils;
 import org.mofgen.validation.AbstractMGLangValidator;
 
@@ -58,6 +64,18 @@ public class MGLangValidator extends AbstractMGLangValidator {
   }
   
   @Check
+  public void checkBooleanWhen(final CaseWithCast caze) {
+    ArithmeticExpression _when = caze.getWhen();
+    boolean _tripleNotEquals = (_when != null);
+    if (_tripleNotEquals) {
+      final Object res = this.calc.evaluate(caze.getWhen());
+      if ((!(res instanceof Boolean))) {
+        this.error("Needed boolean value for conditional expression", MGLangPackage.Literals.CASE_WITH_CAST__WHEN);
+      }
+    }
+  }
+  
+  @Check
   public void checkForImportConclicts(final Import imp) {
     List<Import> imports = EcoreUtil2.<Import>getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import.class);
     imports.remove(imp);
@@ -67,14 +85,19 @@ public class MGLangValidator extends AbstractMGLangValidator {
     if (_not) {
       String _string = duplicateClasses.toString();
       String _plus = ("Import conflict for classes with names" + _string);
-      this.warning(_plus, MGLangPackage.Literals.IMPORT__URI);
+      this.warning(_plus, 
+        MGLangPackage.Literals.IMPORT__URI);
     }
   }
   
   public LinkedList<String> checkImportsForDuplicates(final List<Import> imps, final Import otherImp) {
+    LinkedList<String> conflicts = CollectionLiterals.<String>newLinkedList();
+    boolean _isEmpty = imps.isEmpty();
+    if (_isEmpty) {
+      return conflicts;
+    }
     final ArrayList<EClass> classes = MofgenModelUtils.getClassesFromImportList(imps);
     final ArrayList<EClass> otherClasses = MofgenModelUtils.getClassesFromImport(otherImp);
-    LinkedList<String> conflicts = CollectionLiterals.<String>newLinkedList();
     for (final EClass otherClass : otherClasses) {
       boolean _contains = classes.contains(otherClass);
       if (_contains) {
@@ -117,18 +140,52 @@ public class MGLangValidator extends AbstractMGLangValidator {
       {
         final ArithmeticExpression given = pc.getParams().get((i).intValue());
         final Parameter needed = pc.getCalled().getParameters().get((i).intValue());
-        boolean _areTypesMatching = this.areTypesMatching(given, needed);
-        boolean _equals = (_areTypesMatching == false);
+        boolean _isTypeMatchingWithParameter = this.isTypeMatchingWithParameter(given, needed);
+        boolean _equals = (_isTypeMatchingWithParameter == false);
         if (_equals) {
-          this.error(((("Given object " + given) + " does not match needed type ") + needed), MGLangPackage.Literals.PATTERN_CALL__PARAMS);
+          this.error(((("Given object " + given) + " does not match needed type ") + needed), 
+            MGLangPackage.Literals.PATTERN_CALL__PARAMS);
         }
       }
     }
   }
   
-  private boolean areTypesMatching(final ArithmeticExpression givenExpression, final Parameter neededObj) {
+  @Check
+  public void matchingParameterArguments_roc(final RefOrCall roc) {
+    if (((roc.getRef() instanceof EOperation) && (!roc.isBracesSet()))) {
+      this.error("Missing parameter list", MGLangPackage.Literals.REF_OR_CALL__PARAMS);
+      return;
+    }
+    EObject _ref = roc.getRef();
+    if ((_ref instanceof EOperation)) {
+      EObject _ref_1 = roc.getRef();
+      final EOperation op = ((EOperation) _ref_1);
+      final EList<ArithmeticExpression> givenParams = roc.getParams().getParams();
+      final EList<EParameter> neededParams = op.getEParameters();
+      int _size = givenParams.size();
+      int _size_1 = neededParams.size();
+      boolean _notEquals = (_size != _size_1);
+      if (_notEquals) {
+        String _name = op.getName();
+        String _plus = ("Method " + _name);
+        String _plus_1 = (_plus + " expects ");
+        int _size_2 = neededParams.size();
+        String _plus_2 = (_plus_1 + Integer.valueOf(_size_2));
+        String _plus_3 = (_plus_2 + " parameters but was given ");
+        int _size_3 = givenParams.size();
+        String _plus_4 = (_plus_3 + Integer.valueOf(_size_3));
+        this.error(_plus_4, MGLangPackage.Literals.REF_OR_CALL__PARAMS);
+        return;
+      }
+    }
+  }
+  
+  private boolean isTypeMatchingWithParameter(final ArithmeticExpression givenExpression, final Parameter neededObj) {
     final Object eval = this.calc.evaluate(givenExpression);
     if ((eval instanceof EOperation)) {
+      return true;
+    }
+    if ((eval instanceof PatternCall)) {
       return true;
     }
     if ((neededObj instanceof PrimitiveParameter)) {
@@ -137,18 +194,22 @@ public class MGLangValidator extends AbstractMGLangValidator {
         switch (_type) {
           case INT:
             return ((eval instanceof Double) && Objects.equal(Double.valueOf(Math.floor((((Double) eval)).doubleValue())), eval));
-          case CHAR:
-            return false;
           case DOUBLE:
             return (eval instanceof Double);
           case STRING:
             return (eval instanceof String);
+          case CHAR:
+            return ((eval instanceof Character) || ((eval instanceof String) && (((String) eval).length() == 1)));
           default:
             break;
         }
       }
     }
     if ((neededObj instanceof ParameterNode)) {
+      return ((eval instanceof Node) || (eval instanceof ParameterNode));
+    }
+    if ((neededObj instanceof Collection)) {
+      return (eval instanceof Collection);
     }
     return false;
   }

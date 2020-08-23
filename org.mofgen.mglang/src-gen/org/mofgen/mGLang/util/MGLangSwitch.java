@@ -153,6 +153,7 @@ public class MGLangSwitch<T> extends Switch<T>
         T result = casePatternCall(patternCall);
         if (result == null) result = caseGeneratorExpression(patternCall);
         if (result == null) result = caseSwitchExpression(patternCall);
+        if (result == null) result = caseArithmeticExpression(patternCall);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }

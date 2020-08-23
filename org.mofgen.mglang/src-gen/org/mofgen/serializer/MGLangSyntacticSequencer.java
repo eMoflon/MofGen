@@ -10,7 +10,6 @@ import org.eclipse.xtext.IGrammarAccess;
 import org.eclipse.xtext.RuleCall;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.AbstractElementAlias;
-import org.eclipse.xtext.serializer.analysis.GrammarAlias.GroupAlias;
 import org.eclipse.xtext.serializer.analysis.GrammarAlias.TokenAlias;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynNavigable;
 import org.eclipse.xtext.serializer.analysis.ISyntacticSequencerPDAProvider.ISynTransition;
@@ -23,14 +22,12 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected MGLangGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_BaseExpr_LeftParenthesisKeyword_0_0_a;
 	protected AbstractElementAlias match_BaseExpr_LeftParenthesisKeyword_0_0_p;
-	protected AbstractElementAlias match_RefOrCall___LeftParenthesisKeyword_1_3_0_RightParenthesisKeyword_1_3_2__q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (MGLangGrammarAccess) access;
 		match_BaseExpr_LeftParenthesisKeyword_0_0_a = new TokenAlias(true, true, grammarAccess.getBaseExprAccess().getLeftParenthesisKeyword_0_0());
 		match_BaseExpr_LeftParenthesisKeyword_0_0_p = new TokenAlias(true, false, grammarAccess.getBaseExprAccess().getLeftParenthesisKeyword_0_0());
-		match_RefOrCall___LeftParenthesisKeyword_1_3_0_RightParenthesisKeyword_1_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getRefOrCallAccess().getLeftParenthesisKeyword_1_3_0()), new TokenAlias(false, false, grammarAccess.getRefOrCallAccess().getRightParenthesisKeyword_1_3_2()));
 	}
 	
 	@Override
@@ -72,8 +69,6 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_BaseExpr_LeftParenthesisKeyword_0_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_BaseExpr_LeftParenthesisKeyword_0_0_p.equals(syntax))
 				emit_BaseExpr_LeftParenthesisKeyword_0_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_RefOrCall___LeftParenthesisKeyword_1_3_0_RightParenthesisKeyword_1_3_2__q.equals(syntax))
-				emit_RefOrCall___LeftParenthesisKeyword_1_3_0_RightParenthesisKeyword_1_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -84,6 +79,7 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     (rule start) (ambiguity) '!' expr=BaseExpr
+	 *     (rule start) (ambiguity) called=[Pattern|ID]
 	 *     (rule start) (ambiguity) func=MathFunc
 	 *     (rule start) (ambiguity) ref=[RefType|ID]
 	 *     (rule start) (ambiguity) val=DOUBLE
@@ -111,17 +107,6 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) {Tertiary.left=}
 	 */
 	protected void emit_BaseExpr_LeftParenthesisKeyword_0_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     ('(' ')')?
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     ref=[ETypedElement|ID] (ambiguity) (rule end)
-	 */
-	protected void emit_RefOrCall___LeftParenthesisKeyword_1_3_0_RightParenthesisKeyword_1_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

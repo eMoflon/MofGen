@@ -3,7 +3,7 @@
  */
 package org.mofgen.mGLang;
 
-import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.ENamedElement;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,12 +29,12 @@ public interface Assignment extends NodeReferenceOrAssignmentOrControlFlow
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Target</em>' reference.
-   * @see #setTarget(EAttribute)
+   * @see #setTarget(ENamedElement)
    * @see org.mofgen.mGLang.MGLangPackage#getAssignment_Target()
    * @model
    * @generated
    */
-  EAttribute getTarget();
+  ENamedElement getTarget();
 
   /**
    * Sets the value of the '{@link org.mofgen.mGLang.Assignment#getTarget <em>Target</em>}' reference.
@@ -44,7 +44,7 @@ public interface Assignment extends NodeReferenceOrAssignmentOrControlFlow
    * @see #getTarget()
    * @generated
    */
-  void setTarget(EAttribute value);
+  void setTarget(ENamedElement value);
 
   /**
    * Returns the value of the '<em><b>Value</b></em>' containment reference.

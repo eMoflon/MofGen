@@ -6,8 +6,8 @@ package org.mofgen.mGLang.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -40,7 +40,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentOrControlFlowImpl i
    * @generated
    * @ordered
    */
-  protected EAttribute target;
+  protected ENamedElement target;
 
   /**
    * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
@@ -79,12 +79,12 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentOrControlFlowImpl i
    * @generated
    */
   @Override
-  public EAttribute getTarget()
+  public ENamedElement getTarget()
   {
     if (target != null && target.eIsProxy())
     {
       InternalEObject oldTarget = (InternalEObject)target;
-      target = (EAttribute)eResolveProxy(oldTarget);
+      target = (ENamedElement)eResolveProxy(oldTarget);
       if (target != oldTarget)
       {
         if (eNotificationRequired())
@@ -99,7 +99,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentOrControlFlowImpl i
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute basicGetTarget()
+  public ENamedElement basicGetTarget()
   {
     return target;
   }
@@ -110,9 +110,9 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentOrControlFlowImpl i
    * @generated
    */
   @Override
-  public void setTarget(EAttribute newTarget)
+  public void setTarget(ENamedElement newTarget)
   {
-    EAttribute oldTarget = target;
+    ENamedElement oldTarget = target;
     target = newTarget;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.ASSIGNMENT__TARGET, oldTarget, target));
@@ -214,7 +214,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentOrControlFlowImpl i
     switch (featureID)
     {
       case MGLangPackage.ASSIGNMENT__TARGET:
-        setTarget((EAttribute)newValue);
+        setTarget((ENamedElement)newValue);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
         setValue((ArithmeticExpression)newValue);
@@ -234,7 +234,7 @@ public class AssignmentImpl extends NodeReferenceOrAssignmentOrControlFlowImpl i
     switch (featureID)
     {
       case MGLangPackage.ASSIGNMENT__TARGET:
-        setTarget((EAttribute)null);
+        setTarget((ENamedElement)null);
         return;
       case MGLangPackage.ASSIGNMENT__VALUE:
         setValue((ArithmeticExpression)null);

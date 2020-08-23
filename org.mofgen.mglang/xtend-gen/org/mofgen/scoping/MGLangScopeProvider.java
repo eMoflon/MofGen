@@ -89,8 +89,13 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   
   public IScope getScopeForParameterNodeType(final ParameterNode paramNode) {
     final Import imp = paramNode.getSrcModel();
-    final ArrayList<EClass> classes = MofgenModelUtils.getClassesFromImport(imp);
-    return Scopes.scopeFor(classes);
+    if ((imp != null)) {
+      final ArrayList<EClass> classes = MofgenModelUtils.getClassesFromImport(imp);
+      return Scopes.scopeFor(classes);
+    } else {
+      final ArrayList<EClass> classes_1 = MofgenModelUtils.getClasses(MofgenModelUtils.getRootFile(paramNode));
+      return Scopes.scopeFor(classes_1);
+    }
   }
   
   public IScope getScopeForParameterNodeSrcModel(final ParameterNode paramNode) {
@@ -139,18 +144,21 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   public IScope getScopeForNodeAssignmentType(final Assignment ass) {
     final Node srcNode = EcoreUtil2.<Node>getContainerOfType(ass, Node.class);
     final MofgenFile file = this.getRootFile(ass);
-    final ArrayList<EClass> clazzez = MofgenModelUtils.getClasses(file);
+    final ArrayList<EClass> classes = MofgenModelUtils.getClasses(file);
     try {
       final Function1<EClass, Boolean> _function = (EClass c) -> {
         EClass _type = srcNode.getType();
         return Boolean.valueOf(Objects.equal(c, _type));
       };
-      final Iterable<EClass> filteredClazzez = IterableExtensions.<EClass>filter(clazzez, _function);
-      boolean _isEmpty = IterableExtensions.isEmpty(filteredClazzez);
+      final Iterable<EClass> filteredClasses = IterableExtensions.<EClass>filter(classes, _function);
+      final ArrayList<EAttribute> attrs = CollectionLiterals.<EAttribute>newArrayList();
+      final ArrayList<Object> enums = CollectionLiterals.<Object>newArrayList();
+      boolean _isEmpty = IterableExtensions.isEmpty(filteredClasses);
       if (_isEmpty) {
         return IScope.NULLSCOPE;
       } else {
-        return Scopes.scopeFor((((EClass[])Conversions.unwrapArray(filteredClazzez, EClass.class))[0]).getEAllAttributes());
+        attrs.addAll((((EClass[])Conversions.unwrapArray(filteredClasses, EClass.class))[0]).getEAllAttributes());
+        return Scopes.scopeFor(attrs);
       }
     } catch (final Throwable _t) {
       if (_t instanceof NullPointerException) {

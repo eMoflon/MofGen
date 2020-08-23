@@ -29,12 +29,12 @@ public interface MapTupel extends EObject
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the value of the '<em>Key</em>' containment reference.
-   * @see #setKey(Literal)
+   * @see #setKey(ArithmeticExpression)
    * @see org.mofgen.mGLang.MGLangPackage#getMapTupel_Key()
    * @model containment="true"
    * @generated
    */
-  Literal getKey();
+  ArithmeticExpression getKey();
 
   /**
    * Sets the value of the '{@link org.mofgen.mGLang.MapTupel#getKey <em>Key</em>}' containment reference.
@@ -44,7 +44,7 @@ public interface MapTupel extends EObject
    * @see #getKey()
    * @generated
    */
-  void setKey(Literal value);
+  void setKey(ArithmeticExpression value);
 
   /**
    * Returns the value of the '<em><b>Value</b></em>' containment reference.

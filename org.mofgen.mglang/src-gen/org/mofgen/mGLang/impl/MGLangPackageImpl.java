@@ -1117,6 +1117,17 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
+  public EAttribute getRefOrCall_BracesSet()
+  {
+    return (EAttribute)refOrCallEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public EClass getRefParams()
   {
     return refParamsEClass;
@@ -2294,6 +2305,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(refOrCallEClass, REF_OR_CALL__REF);
     createEReference(refOrCallEClass, REF_OR_CALL__TARGET);
     createEReference(refOrCallEClass, REF_OR_CALL__PARAMS);
+    createEAttribute(refOrCallEClass, REF_OR_CALL__BRACES_SET);
 
     refParamsEClass = createEClass(REF_PARAMS);
     createEReference(refParamsEClass, REF_PARAMS__PARAMS);
@@ -2473,6 +2485,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     nodeEClass.getESuperTypes().add(this.getRefType());
     patternCallEClass.getESuperTypes().add(this.getGeneratorExpression());
     patternCallEClass.getESuperTypes().add(this.getSwitchExpression());
+    patternCallEClass.getESuperTypes().add(this.getArithmeticExpression());
     nodeReferenceOrAssignmentOrControlFlowEClass.getESuperTypes().add(this.getSwitchExpression());
     patternNodeReferenceEClass.getESuperTypes().add(this.getNodeReferenceOrAssignmentOrControlFlow());
     assignmentEClass.getESuperTypes().add(this.getNodeReferenceOrAssignmentOrControlFlow());
@@ -2566,7 +2579,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getPatternNodeReference_Target(), this.getNode(), null, "target", null, 0, 1, PatternNodeReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(assignmentEClass, Assignment.class, "Assignment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAssignment_Target(), ecorePackage.getEAttribute(), null, "target", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAssignment_Target(), ecorePackage.getENamedElement(), null, "target", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getAssignment_Value(), this.getArithmeticExpression(), null, "value", null, 0, 1, Assignment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(parameterEClass, Parameter.class, "Parameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2582,6 +2595,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getRefOrCall_Ref(), ecorePackage.getEObject(), null, "ref", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRefOrCall_Target(), this.getRefOrCall(), null, "target", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRefOrCall_Params(), this.getRefParams(), null, "params", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRefOrCall_BracesSet(), ecorePackage.getEBoolean(), "bracesSet", null, 0, 1, RefOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(refParamsEClass, RefParams.class, "RefParams", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getRefParams_Params(), this.getArithmeticExpression(), null, "params", null, 0, -1, RefParams.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2659,7 +2673,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEClass(listAssignmentEClass, ListAssignment.class, "ListAssignment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(listAdHocEClass, ListAdHoc.class, "ListAdHoc", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getListAdHoc_Elements(), this.getLiteral(), null, "elements", null, 0, -1, ListAdHoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getListAdHoc_Elements(), this.getArithmeticExpression(), null, "elements", null, 0, -1, ListAdHoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mapEClass, Map.class, "Map", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMap_CreatedBy(), this.getMapAssignment(), null, "createdBy", null, 0, 1, Map.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2670,7 +2684,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getMapAdHoc_Entries(), this.getMapTupel(), null, "entries", null, 0, -1, MapAdHoc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(mapTupelEClass, MapTupel.class, "MapTupel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getMapTupel_Key(), this.getLiteral(), null, "key", null, 0, 1, MapTupel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getMapTupel_Key(), this.getArithmeticExpression(), null, "key", null, 0, 1, MapTupel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getMapTupel_Value(), this.getArithmeticExpression(), null, "value", null, 0, 1, MapTupel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(forRangeEClass, ForRange.class, "ForRange", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

@@ -215,7 +215,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     SwitchExpression returns Assignment
 	 *
 	 * Constraint:
-	 *     (target=[EAttribute|ID] value=ArithmeticExpression)
+	 *     (target=[ENamedElement|ID] value=ArithmeticExpression)
 	 */
 	protected void sequence_Assignment(ISerializationContext context, Assignment semanticObject) {
 		if (errorAcceptor != null) {
@@ -225,7 +225,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.ASSIGNMENT__VALUE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getAssignmentAccess().getTargetEAttributeIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.ASSIGNMENT__TARGET, false));
+		feeder.accept(grammarAccess.getAssignmentAccess().getTargetENamedElementIDTerminalRuleCall_0_0_1(), semanticObject.eGet(MGLangPackage.Literals.ASSIGNMENT__TARGET, false));
 		feeder.accept(grammarAccess.getAssignmentAccess().getValueArithmeticExpressionParserRuleCall_2_0(), semanticObject.getValue());
 		feeder.finish();
 	}
@@ -552,7 +552,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     ListAdHoc returns ListAdHoc
 	 *
 	 * Constraint:
-	 *     (elements+=Literal elements+=Literal*)
+	 *     (elements+=ArithmeticExpression elements+=ArithmeticExpression*)
 	 */
 	protected void sequence_ListAdHoc(ISerializationContext context, ListAdHoc semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -594,7 +594,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     MapTupel returns MapTupel
 	 *
 	 * Constraint:
-	 *     (key=Literal value=ArithmeticExpression)
+	 *     (key=ArithmeticExpression value=ArithmeticExpression)
 	 */
 	protected void sequence_MapTupel(ISerializationContext context, MapTupel semanticObject) {
 		if (errorAcceptor != null) {
@@ -604,7 +604,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, MGLangPackage.Literals.MAP_TUPEL__VALUE));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getMapTupelAccess().getKeyLiteralParserRuleCall_1_0(), semanticObject.getKey());
+		feeder.accept(grammarAccess.getMapTupelAccess().getKeyArithmeticExpressionParserRuleCall_1_0(), semanticObject.getKey());
 		feeder.accept(grammarAccess.getMapTupelAccess().getValueArithmeticExpressionParserRuleCall_3_0(), semanticObject.getValue());
 		feeder.finish();
 	}
@@ -735,6 +735,16 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     PatternCall returns PatternCall
 	 *     GeneratorExpression returns PatternCall
 	 *     SwitchExpression returns PatternCall
+	 *     ArithmeticExpression returns PatternCall
+	 *     TertiaryExpression returns PatternCall
+	 *     TertiaryExpression.Tertiary_1_0 returns PatternCall
+	 *     SecondaryExpression returns PatternCall
+	 *     SecondaryExpression.Secondary_1_0 returns PatternCall
+	 *     PrimaryExpr returns PatternCall
+	 *     PrimaryExpr.Primary_1_0 returns PatternCall
+	 *     RelationExpression returns PatternCall
+	 *     RelationExpression.Rel_1_0 returns PatternCall
+	 *     BaseExpr returns PatternCall
 	 *
 	 * Constraint:
 	 *     (called=[Pattern|ID] (params+=ArithmeticExpression params+=ArithmeticExpression*)?)
@@ -892,7 +902,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     BaseExpr returns RefOrCall
 	 *
 	 * Constraint:
-	 *     (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID] params=RefParams?))
+	 *     (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID] (params=RefParams? bracesSet?=')')?))
 	 */
 	protected void sequence_RefOrCall(ISerializationContext context, RefOrCall semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

@@ -45,7 +45,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="refsAssigns" upperBound="-1"
         eType="#//NodeReferenceOrAssignmentOrControlFlow" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternCall" eSuperTypes="#//GeneratorExpression #//SwitchExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCall" eSuperTypes="#//GeneratorExpression #//SwitchExpression #//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="called" eType="#//Pattern"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//ArithmeticExpression" containment="true"/>
@@ -57,7 +57,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Node"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Assignment" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EAttribute"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//ENamedElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
@@ -75,6 +75,7 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" eType="#//RefParams"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bracesSet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RefParams">
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
@@ -169,7 +170,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ListAssignment"/>
   <eClassifiers xsi:type="ecore:EClass" name="ListAdHoc" eSuperTypes="#//ListAssignment">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//Literal" containment="true"/>
+        eType="#//ArithmeticExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Map" eSuperTypes="#//Collection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="#//MapAssignment"
@@ -181,7 +182,7 @@
         eType="#//MapTupel" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MapTupel">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="key" eType="#//Literal"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="key" eType="#//ArithmeticExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ArithmeticExpression"
         containment="true"/>

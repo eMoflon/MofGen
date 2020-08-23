@@ -426,10 +426,10 @@ ruleListAssignment:
 // Rule ListAdHoc
 ruleListAdHoc:
 	'['
-	ruleLiteral
+	ruleArithmeticExpression
 	(
 		','
-		ruleLiteral
+		ruleArithmeticExpression
 	)*
 	']'
 ;
@@ -467,7 +467,7 @@ ruleMapAdHoc:
 // Rule MapTupel
 ruleMapTupel:
 	'('
-	ruleLiteral
+	ruleArithmeticExpression
 	','
 	ruleArithmeticExpression
 	')'
@@ -539,6 +539,8 @@ ruleBaseExpr:
 		ruleLiteral
 		    |
 		ruleRefOrCall
+		    |
+		rulePatternCall
 	)
 ;
 

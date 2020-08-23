@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.mofgen.mGLang.ArithmeticExpression;
-import org.mofgen.mGLang.Literal;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MapTupel;
 
@@ -41,7 +40,7 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
    * @generated
    * @ordered
    */
-  protected Literal key;
+  protected ArithmeticExpression key;
 
   /**
    * The cached value of the '{@link #getValue() <em>Value</em>}' containment reference.
@@ -80,7 +79,7 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
    * @generated
    */
   @Override
-  public Literal getKey()
+  public ArithmeticExpression getKey()
   {
     return key;
   }
@@ -90,9 +89,9 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetKey(Literal newKey, NotificationChain msgs)
+  public NotificationChain basicSetKey(ArithmeticExpression newKey, NotificationChain msgs)
   {
-    Literal oldKey = key;
+    ArithmeticExpression oldKey = key;
     key = newKey;
     if (eNotificationRequired())
     {
@@ -108,7 +107,7 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
    * @generated
    */
   @Override
-  public void setKey(Literal newKey)
+  public void setKey(ArithmeticExpression newKey)
   {
     if (newKey != key)
     {
@@ -221,7 +220,7 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
     switch (featureID)
     {
       case MGLangPackage.MAP_TUPEL__KEY:
-        setKey((Literal)newValue);
+        setKey((ArithmeticExpression)newValue);
         return;
       case MGLangPackage.MAP_TUPEL__VALUE:
         setValue((ArithmeticExpression)newValue);
@@ -241,7 +240,7 @@ public class MapTupelImpl extends MinimalEObjectImpl.Container implements MapTup
     switch (featureID)
     {
       case MGLangPackage.MAP_TUPEL__KEY:
-        setKey((Literal)null);
+        setKey((ArithmeticExpression)null);
         return;
       case MGLangPackage.MAP_TUPEL__VALUE:
         setValue((ArithmeticExpression)null);

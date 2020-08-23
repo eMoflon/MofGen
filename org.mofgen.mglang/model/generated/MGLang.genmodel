@@ -97,6 +97,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/ref"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/target"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/params"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//RefOrCall/bracesSet"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//RefParams">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefParams/params"/>
