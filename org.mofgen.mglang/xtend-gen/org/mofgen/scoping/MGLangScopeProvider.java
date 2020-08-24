@@ -10,6 +10,8 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
@@ -236,26 +238,69 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
       for (final Integer index : _reverse) {
         patternNodes.remove(index);
       }
+      final MofgenFile root = MofgenModelUtils.getRootFile(r);
+      final ArrayList<EEnum> enums = MofgenModelUtils.getEnums(root);
+      final List<Import> imports = EcoreUtil2.<Import>getAllContentsOfType(root, Import.class);
       Iterable<EObject> _plus = Iterables.<EObject>concat(params, patternNodes);
       Iterable<EObject> _plus_1 = Iterables.<EObject>concat(_plus, collections);
       Iterable<EObject> _plus_2 = Iterables.<EObject>concat(_plus_1, vars);
-      return Scopes.scopeFor(_plus_2);
+      Iterable<EObject> _plus_3 = Iterables.<EObject>concat(_plus_2, imports);
+      Iterable<EObject> _plus_4 = Iterables.<EObject>concat(_plus_3, enums);
+      return Scopes.scopeFor(_plus_4);
     } else {
       final RefOrCall trg = r.getTarget();
       final EObject ref = trg.getRef();
       final EClass refClass = ref.eClass();
-      if ((ref instanceof Map)) {
+      boolean _matched = false;
+      if (ref instanceof Map) {
+        _matched=true;
         final EList<EOperation> ops = CollectionModelPackage.Literals.MAP.getEAllOperations();
         return Scopes.scopeFor(ops);
       }
-      if ((ref instanceof org.mofgen.mGLang.List)) {
-        final EList<EOperation> ops_1 = CollectionModelPackage.Literals.LIST.getEAllOperations();
-        return Scopes.scopeFor(ops_1);
+      if (!_matched) {
+        if (ref instanceof org.mofgen.mGLang.List) {
+          _matched=true;
+          final EList<EOperation> ops = CollectionModelPackage.Literals.LIST.getEAllOperations();
+          return Scopes.scopeFor(ops);
+        }
       }
-      final EList<EAttribute> attrs = refClass.getEAllAttributes();
-      final EList<EReference> refs = refClass.getEAllReferences();
-      Iterable<EStructuralFeature> _plus_3 = Iterables.<EStructuralFeature>concat(attrs, refs);
-      return Scopes.scopeFor(_plus_3);
+      if (!_matched) {
+        if (ref instanceof Import) {
+          _matched=true;
+          final ArrayList<EEnum> enums_1 = MofgenModelUtils.getEnumsFromImport(((Import) ref));
+          return Scopes.scopeFor(enums_1);
+        }
+      }
+      if (!_matched) {
+        if (ref instanceof EEnum) {
+          _matched=true;
+          final EList<EEnumLiteral> enumLiterals = ((EEnum) ref).getELiterals();
+          return Scopes.scopeFor(enumLiterals);
+        }
+      }
+      if (!_matched) {
+        if (ref instanceof Variable) {
+          _matched=true;
+          return IScope.NULLSCOPE;
+        }
+      }
+      if (!_matched) {
+        if (ref instanceof Node) {
+          _matched=true;
+        }
+        if (!_matched) {
+          if (ref instanceof ParameterNode) {
+            _matched=true;
+          }
+        }
+        if (_matched) {
+          final EList<EAttribute> attrs = refClass.getEAllAttributes();
+          final EList<EReference> refs = refClass.getEAllReferences();
+          Iterable<EStructuralFeature> _plus_5 = Iterables.<EStructuralFeature>concat(attrs, refs);
+          return Scopes.scopeFor(_plus_5);
+        }
+      }
+      return IScope.NULLSCOPE;
     }
   }
   

@@ -58,7 +58,17 @@ public enum PrimitiveType implements Enumerator
    * @generated
    * @ordered
    */
-  STRING(3, "STRING", "String");
+  STRING(3, "STRING", "String"),
+
+  /**
+   * The '<em><b>BOOLEAN</b></em>' literal object.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #BOOLEAN_VALUE
+   * @generated
+   * @ordered
+   */
+  BOOLEAN(4, "BOOLEAN", "boolean");
 
   /**
    * The '<em><b>INT</b></em>' literal value.
@@ -105,6 +115,17 @@ public enum PrimitiveType implements Enumerator
   public static final int STRING_VALUE = 3;
 
   /**
+   * The '<em><b>BOOLEAN</b></em>' literal value.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #BOOLEAN
+   * @model literal="boolean"
+   * @generated
+   * @ordered
+   */
+  public static final int BOOLEAN_VALUE = 4;
+
+  /**
    * An array of all the '<em><b>Primitive Type</b></em>' enumerators.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -117,6 +138,7 @@ public enum PrimitiveType implements Enumerator
       CHAR,
       DOUBLE,
       STRING,
+      BOOLEAN,
     };
 
   /**
@@ -185,6 +207,7 @@ public enum PrimitiveType implements Enumerator
       case CHAR_VALUE: return CHAR;
       case DOUBLE_VALUE: return DOUBLE;
       case STRING_VALUE: return STRING;
+      case BOOLEAN_VALUE: return BOOLEAN;
     }
     return null;
   }

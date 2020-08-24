@@ -1214,7 +1214,7 @@ ruleRefOrCall returns [EObject current=null]
 				}
 				otherlv_0=RULE_ID
 				{
-					newLeafNode(otherlv_0, grammarAccess.getRefOrCallAccess().getRefRefTypeCrossReference_0_0());
+					newLeafNode(otherlv_0, grammarAccess.getRefOrCallAccess().getRefEObjectCrossReference_0_0());
 				}
 			)
 		)
@@ -1239,7 +1239,7 @@ ruleRefOrCall returns [EObject current=null]
 					}
 					otherlv_3=RULE_ID
 					{
-						newLeafNode(otherlv_3, grammarAccess.getRefOrCallAccess().getRefETypedElementCrossReference_1_2_0());
+						newLeafNode(otherlv_3, grammarAccess.getRefOrCallAccess().getRefENamedElementCrossReference_1_2_0());
 					}
 				)
 			)
@@ -3783,6 +3783,14 @@ rulePrimitiveType returns [Enumerator current=null]
 			{
 				$current = grammarAccess.getPrimitiveTypeAccess().getSTRINGEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
 				newLeafNode(enumLiteral_3, grammarAccess.getPrimitiveTypeAccess().getSTRINGEnumLiteralDeclaration_3());
+			}
+		)
+		    |
+		(
+			enumLiteral_4='boolean'
+			{
+				$current = grammarAccess.getPrimitiveTypeAccess().getBOOLEANEnumLiteralDeclaration_4().getEnumLiteral().getInstance();
+				newLeafNode(enumLiteral_4, grammarAccess.getPrimitiveTypeAccess().getBOOLEANEnumLiteralDeclaration_4());
 			}
 		)
 	)

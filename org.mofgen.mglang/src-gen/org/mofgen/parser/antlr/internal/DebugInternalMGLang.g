@@ -596,6 +596,8 @@ rulePrimitiveType:
 		'double'
 		    |
 		'String'
+		    |
+		'boolean'
 	)
 ;
 

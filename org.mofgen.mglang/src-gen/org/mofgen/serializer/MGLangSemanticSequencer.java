@@ -902,7 +902,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     BaseExpr returns RefOrCall
 	 *
 	 * Constraint:
-	 *     (ref=[RefType|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ETypedElement|ID] (params=RefParams? bracesSet?=')')?))
+	 *     (ref=[EObject|ID] | (target=RefOrCall_RefOrCall_1_0 ref=[ENamedElement|ID] (params=RefParams? bracesSet?=')')?))
 	 */
 	protected void sequence_RefOrCall(ISerializationContext context, RefOrCall semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

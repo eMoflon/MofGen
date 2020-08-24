@@ -15,6 +15,7 @@
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/CHAR"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/DOUBLE"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/STRING"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//PrimitiveType/BOOLEAN"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="MGLang.ecore#//RelationalOp">
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/GREATER"/>

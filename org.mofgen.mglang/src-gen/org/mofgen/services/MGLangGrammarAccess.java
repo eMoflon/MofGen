@@ -605,8 +605,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cValueArithmeticExpressionParserRuleCall_2_0 = (RuleCall)cValueAssignment_2.eContents().get(0);
 		
 		//Assignment:
-		//	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression //TODO make Enum Assignments possible?
-		//;
+		//	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression
@@ -731,14 +730,14 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.RefOrCall");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cRefAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final CrossReference cRefRefTypeCrossReference_0_0 = (CrossReference)cRefAssignment_0.eContents().get(0);
-		private final RuleCall cRefRefTypeIDTerminalRuleCall_0_0_1 = (RuleCall)cRefRefTypeCrossReference_0_0.eContents().get(1);
+		private final CrossReference cRefEObjectCrossReference_0_0 = (CrossReference)cRefAssignment_0.eContents().get(0);
+		private final RuleCall cRefEObjectIDTerminalRuleCall_0_0_1 = (RuleCall)cRefEObjectCrossReference_0_0.eContents().get(1);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Action cRefOrCallTargetAction_1_0 = (Action)cGroup_1.eContents().get(0);
 		private final Keyword cFullStopKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
 		private final Assignment cRefAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
-		private final CrossReference cRefETypedElementCrossReference_1_2_0 = (CrossReference)cRefAssignment_1_2.eContents().get(0);
-		private final RuleCall cRefETypedElementIDTerminalRuleCall_1_2_0_1 = (RuleCall)cRefETypedElementCrossReference_1_2_0.eContents().get(1);
+		private final CrossReference cRefENamedElementCrossReference_1_2_0 = (CrossReference)cRefAssignment_1_2.eContents().get(0);
+		private final RuleCall cRefENamedElementIDTerminalRuleCall_1_2_0_1 = (RuleCall)cRefENamedElementCrossReference_1_2_0.eContents().get(1);
 		private final Group cGroup_1_3 = (Group)cGroup_1.eContents().get(3);
 		private final Keyword cLeftParenthesisKeyword_1_3_0 = (Keyword)cGroup_1_3.eContents().get(0);
 		private final Assignment cParamsAssignment_1_3_1 = (Assignment)cGroup_1_3.eContents().get(1);
@@ -746,24 +745,26 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cBracesSetAssignment_1_3_2 = (Assignment)cGroup_1_3.eContents().get(2);
 		private final Keyword cBracesSetRightParenthesisKeyword_1_3_2_0 = (Keyword)cBracesSetAssignment_1_3_2.eContents().get(0);
 		
-		////TODO: Handling if no srcModel is given but duplicate classes exist? And show warning!
+		////Using generic eobject references to make enums possible.
 		//RefOrCall:
-		//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? bracesSet?=')')?)*;
+		//	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' params=RefParams?
+		//	bracesSet?=')')?)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? bracesSet?=')')?)*
+		//ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' params=RefParams?
+		//bracesSet?=')')?)*
 		public Group getGroup() { return cGroup; }
 		
-		//ref=[RefType]
+		//ref=[ecore::EObject]
 		public Assignment getRefAssignment_0() { return cRefAssignment_0; }
 		
-		//[RefType]
-		public CrossReference getRefRefTypeCrossReference_0_0() { return cRefRefTypeCrossReference_0_0; }
+		//[ecore::EObject]
+		public CrossReference getRefEObjectCrossReference_0_0() { return cRefEObjectCrossReference_0_0; }
 		
 		//ID
-		public RuleCall getRefRefTypeIDTerminalRuleCall_0_0_1() { return cRefRefTypeIDTerminalRuleCall_0_0_1; }
+		public RuleCall getRefEObjectIDTerminalRuleCall_0_0_1() { return cRefEObjectIDTerminalRuleCall_0_0_1; }
 		
-		//({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? bracesSet?=')')?)*
+		//({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' params=RefParams? bracesSet?=')')?)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//{RefOrCall.target=current}
@@ -772,14 +773,14 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		//'.'
 		public Keyword getFullStopKeyword_1_1() { return cFullStopKeyword_1_1; }
 		
-		//ref=[ecore::ETypedElement]
+		//ref=[ecore::ENamedElement]
 		public Assignment getRefAssignment_1_2() { return cRefAssignment_1_2; }
 		
-		//[ecore::ETypedElement]
-		public CrossReference getRefETypedElementCrossReference_1_2_0() { return cRefETypedElementCrossReference_1_2_0; }
+		//[ecore::ENamedElement]
+		public CrossReference getRefENamedElementCrossReference_1_2_0() { return cRefENamedElementCrossReference_1_2_0; }
 		
 		//ID
-		public RuleCall getRefETypedElementIDTerminalRuleCall_1_2_0_1() { return cRefETypedElementIDTerminalRuleCall_1_2_0_1; }
+		public RuleCall getRefENamedElementIDTerminalRuleCall_1_2_0_1() { return cRefENamedElementIDTerminalRuleCall_1_2_0_1; }
 		
 		//('(' params=RefParams? bracesSet?=')')?
 		public Group getGroup_1_3() { return cGroup_1_3; }
@@ -2212,13 +2213,15 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cDOUBLEDoubleKeyword_2_0 = (Keyword)cDOUBLEEnumLiteralDeclaration_2.eContents().get(0);
 		private final EnumLiteralDeclaration cSTRINGEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
 		private final Keyword cSTRINGStringKeyword_3_0 = (Keyword)cSTRINGEnumLiteralDeclaration_3.eContents().get(0);
+		private final EnumLiteralDeclaration cBOOLEANEnumLiteralDeclaration_4 = (EnumLiteralDeclaration)cAlternatives.eContents().get(4);
+		private final Keyword cBOOLEANBooleanKeyword_4_0 = (Keyword)cBOOLEANEnumLiteralDeclaration_4.eContents().get(0);
 		
 		//enum PrimitiveType:
-		//	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' //TODO: String as Primitive? (and therefore also better lowercase?)
+		//	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' | BOOLEAN='boolean' //TODO: String as Primitive? (and therefore also better lowercase?)
 		//;
 		public EnumRule getRule() { return rule; }
 		
-		//INT='int' | CHAR='char' | DOUBLE='double' | STRING='String'
+		//INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' | BOOLEAN='boolean'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//INT='int'
@@ -2244,6 +2247,12 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//'String'
 		public Keyword getSTRINGStringKeyword_3_0() { return cSTRINGStringKeyword_3_0; }
+		
+		//BOOLEAN='boolean'
+		public EnumLiteralDeclaration getBOOLEANEnumLiteralDeclaration_4() { return cBOOLEANEnumLiteralDeclaration_4; }
+		
+		//'boolean'
+		public Keyword getBOOLEANBooleanKeyword_4_0() { return cBOOLEANBooleanKeyword_4_0; }
 	}
 	public class RelationalOpElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.RelationalOp");
@@ -2736,8 +2745,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Assignment:
-	//	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression //TODO make Enum Assignments possible?
-	//;
+	//	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression;
 	public AssignmentElements getAssignmentAccess() {
 		return pAssignment;
 	}
@@ -2776,9 +2784,10 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 		return getParameterNodeAccess().getRule();
 	}
 	
-	////TODO: Handling if no srcModel is given but duplicate classes exist? And show warning!
+	////Using generic eobject references to make enums possible.
 	//RefOrCall:
-	//	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' params=RefParams? bracesSet?=')')?)*;
+	//	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' params=RefParams?
+	//	bracesSet?=')')?)*;
 	public RefOrCallElements getRefOrCallAccess() {
 		return pRefOrCall;
 	}
@@ -3201,7 +3210,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//enum PrimitiveType:
-	//	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' //TODO: String as Primitive? (and therefore also better lowercase?)
+	//	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' | BOOLEAN='boolean' //TODO: String as Primitive? (and therefore also better lowercase?)
 	//;
 	public PrimitiveTypeElements getPrimitiveTypeAccess() {
 		return ePrimitiveType;

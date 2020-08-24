@@ -13,6 +13,7 @@ import java.util.Set;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -129,7 +130,80 @@ public class MofgenModelUtils {
 		});
 		return types;
 	}
+	
+	/**
+	 * Returns all EEnums imported into the given file.
+	 * 
+	 * @param file the Mofgen file
+	 */
+	public static ArrayList<EEnum> getEnums(final MofgenFile file) {
+		final ArrayList<EEnum> enums = new ArrayList<>();
+		file.getImports().forEach(i -> {
+			loadEcoreModel(i.getUri()).ifPresent(m -> enums.addAll(getElements(m, EEnum.class)));
+		});
 
+		return enums;
+	}
+
+	/**
+	 * Returns all EEnums imported into the given file without name conflicts. If
+	 * there are several enums with the same name in different imports, only the
+	 * enum imported first is considered.
+	 * 
+	 * @param file the Mofgen file
+	 */
+	public static ArrayList<EEnum> getUniqueEnums(final MofgenFile file) {
+		final ArrayList<EEnum> enums = new ArrayList<>();
+		file.getImports().forEach(i -> {
+			loadEcoreModel(i.getUri()).ifPresent(m -> addIfEnumNamesNotContained(m, enums));
+		});
+
+		return enums;
+	}
+
+	/**
+	 * Adds the enums given by the resource m to the given list
+	 * 
+	 * @param m       - the resource to load enums from
+	 * @param enums - the list to add the enums to
+	 * @return true if all operations succeeded, false otherwise
+	 */
+	private static boolean addIfEnumNamesNotContained(Resource m, ArrayList<EEnum> enums) {
+		for (EEnum eenum : getElements(m, EEnum.class)) {
+			if (!containsEnum(enums, eenum)) {
+				if (!enums.add(eenum)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @return true if an enum with the same name as the given enum is contained in
+	 *         the given list, false otherwise
+	 */
+	private static boolean containsEnum(ArrayList<EEnum> enums, EEnum insertedEnum) {
+		for (EEnum clazz : enums) {
+			if (clazz.getName().equals(insertedEnum.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns all EEnums imported by the given Import-Object
+	 * 
+	 * @param imp the import object
+	 */
+	public static ArrayList<EEnum> getEnumsFromImport(final Import imp) {
+		final ArrayList<EEnum> enums = new ArrayList<>();
+		loadEcoreModel(imp.getUri()).ifPresent(m -> enums.addAll(getElements(m, EEnum.class)));
+		return enums;
+	}
+	
+	
 	/**
 	 * Returns all objects from the given resource.
 	 * 

@@ -56,7 +56,7 @@ PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
 
 Assignment:
-	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression //TODO make Enum Assignments possible?
+	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression
 ;
 	
 Parameter:
@@ -66,10 +66,11 @@ PrimitiveParameter:
 	type=PrimitiveType name=ID;
 
 ParameterNode:
-	(srcModel=[Import]'.')? type=[ecore::EClassifier] name=ID;	//TODO: Handling if no srcModel is given but duplicate classes exist? And show warning!
+	(srcModel=[Import]'.')? type=[ecore::EClassifier] name=ID;
 
+//Using generic eobject references to make enums possible.
 RefOrCall:
-	ref=[RefType] ({RefOrCall.target=current} '.' ref=[ecore::ETypedElement] ('(' (params = RefParams)? bracesSet?=')')?)*;
+	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params = RefParams)? bracesSet?=')')?)*;
 
 RefParams:
 	params += ArithmeticExpression (',' params+=ArithmeticExpression)*;
@@ -201,7 +202,7 @@ enum MathFunc:
 	SQRT='sqrt' | ABS='abs';
 
 enum PrimitiveType:
-	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' //TODO: String as Primitive? (and therefore also better lowercase?)
+	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' | BOOLEAN='boolean' //TODO: String as Primitive? (and therefore also better lowercase?)
 ;
 
 terminal DOUBLE returns ecore::EDouble:

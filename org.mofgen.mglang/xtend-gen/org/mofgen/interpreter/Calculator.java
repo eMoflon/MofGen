@@ -17,6 +17,8 @@ import org.mofgen.mGLang.NumberLiteral;
 import org.mofgen.mGLang.PatternCall;
 import org.mofgen.mGLang.Primary;
 import org.mofgen.mGLang.PrimaryOp;
+import org.mofgen.mGLang.PrimitiveParameter;
+import org.mofgen.mGLang.PrimitiveType;
 import org.mofgen.mGLang.RefOrCall;
 import org.mofgen.mGLang.Rel;
 import org.mofgen.mGLang.RelationalOp;
@@ -99,7 +101,7 @@ public class Calculator {
                   String _string = castRight_1.toString();
                   return (castLeft_1 + _string);
                 case MINUS:
-                  throw new MismatchingTypesException("Cannot subtract Strings");
+                  throw new MismatchingTypesException("Cannot subtract from Strings");
                 case OR:
                   throw new MismatchingTypesException("Cannot use logical OR on Strings");
                 default:
@@ -483,6 +485,26 @@ public class Calculator {
     if ((_ref instanceof Variable)) {
       EObject _ref_1 = roc.getRef();
       return this.internalEvaluate(((Variable) _ref_1).getValue());
+    }
+    EObject _ref_2 = roc.getRef();
+    if ((_ref_2 instanceof PrimitiveParameter)) {
+      EObject _ref_3 = roc.getRef();
+      final PrimitiveParameter primPram = ((PrimitiveParameter) _ref_3);
+      PrimitiveType _type = primPram.getType();
+      if (_type != null) {
+        switch (_type) {
+          case DOUBLE:
+          case INT:
+            return Integer.valueOf(0);
+          case STRING:
+          case CHAR:
+            return "";
+          case BOOLEAN:
+            return Boolean.valueOf(false);
+          default:
+            break;
+        }
+      }
     }
     return roc.getRef();
   }

@@ -81,7 +81,7 @@ public class MGLangSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) '!' expr=BaseExpr
 	 *     (rule start) (ambiguity) called=[Pattern|ID]
 	 *     (rule start) (ambiguity) func=MathFunc
-	 *     (rule start) (ambiguity) ref=[RefType|ID]
+	 *     (rule start) (ambiguity) ref=[EObject|ID]
 	 *     (rule start) (ambiguity) val=DOUBLE
 	 *     (rule start) (ambiguity) val=FALSE
 	 *     (rule start) (ambiguity) val=STRING

@@ -214,6 +214,7 @@
     <eLiterals name="CHAR" value="1" literal="char"/>
     <eLiterals name="DOUBLE" value="2" literal="double"/>
     <eLiterals name="STRING" value="3" literal="String"/>
+    <eLiterals name="BOOLEAN" value="4" literal="boolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RelationalOp">
     <eLiterals name="GREATER" literal=">"/>

@@ -2754,6 +2754,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     addEEnumLiteral(primitiveTypeEEnum, PrimitiveType.CHAR);
     addEEnumLiteral(primitiveTypeEEnum, PrimitiveType.DOUBLE);
     addEEnumLiteral(primitiveTypeEEnum, PrimitiveType.STRING);
+    addEEnumLiteral(primitiveTypeEEnum, PrimitiveType.BOOLEAN);
 
     initEEnum(relationalOpEEnum, RelationalOp.class, "RelationalOp");
     addEEnumLiteral(relationalOpEEnum, RelationalOp.GREATER);

@@ -22,6 +22,10 @@ import org.mofgen.mGLang.CaseWithCast
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Collection
+import org.mofgen.mGLang.Assignment
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.EEnumLiteral
 
 /**
  * This class contains custom validation rules. 
@@ -32,8 +36,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 	@Inject Calculator calc
 
-	// TODO Check if there are sufficient null checks so no strange error occur in the editor
-
+	// TODO Check if there are sufficient null checks so no strange errors occur in the editor
 	@Check
 	def validForRange(GeneralForHead head) {
 		val start = calc.evaluate(head.range.start)
@@ -78,7 +81,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		var conflicts = newLinkedList()
 
 		if(imps.isEmpty) return conflicts
-		
+
 		val classes = MofgenModelUtils.getClassesFromImportList(imps)
 		val otherClasses = MofgenModelUtils.getClassesFromImport(otherImp)
 		for (otherClass : otherClasses) {
@@ -87,6 +90,28 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 		return conflicts
+	}
+
+	@Check
+	def checkAttributeType(Assignment ass) {
+		val trg = ass.target
+		val assignedValue = calc.evaluate(ass.value)
+
+		if (trg instanceof EAttribute) {
+			val attribute = trg as EAttribute
+			val attributeType = attribute.EAttributeType
+			if (attributeType instanceof EEnum) {
+				if (!(assignedValue instanceof EEnumLiteral)) {
+					error("Can only assign enum values to enum attribute " + attribute.name,
+						MGLangPackage.Literals.ASSIGNMENT__VALUE)
+				}
+			} else {
+				if(assignedValue instanceof EEnumLiteral){
+					error("Cannot assign enum value to non-enum attribute " + attribute.name,
+						MGLangPackage.Literals.ASSIGNMENT__VALUE)
+				}
+			}
+		}
 	}
 
 	@Check
@@ -137,7 +162,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 				return;
 			}
 
-			// TODO Check parameter types ?
+		// TODO Check parameter types ?
 		}
 	}
 
@@ -148,8 +173,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 			// val op = eval as EOperation
 			return true; // TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection? ==> Possible do this only at runtime and fall back to EObject in the case of conflicts
 		}
-		if (eval instanceof PatternCall){
-			return true; // TODO Type Checking for pattern calls?
+		if (eval instanceof PatternCall) {
+			return true; // TODO Type Checking for pattern calls? --> Even allow pattern calls in parameter lists or need to separate return-value into variable?
 		}
 
 		if (neededObj instanceof PrimitiveParameter) {
@@ -163,10 +188,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 		if (neededObj instanceof ParameterNode) {
 			return eval instanceof Node || eval instanceof ParameterNode
 		}
-		if (neededObj instanceof Collection){
+		if (neededObj instanceof Collection) {
 			return eval instanceof Collection
 		}
-		
+
 	}
 
 }

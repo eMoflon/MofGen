@@ -2091,6 +2091,12 @@ rule__PrimitiveType__Alternatives
 		('String')
 		{ after(grammarAccess.getPrimitiveTypeAccess().getSTRINGEnumLiteralDeclaration_3()); }
 	)
+	|
+	(
+		{ before(grammarAccess.getPrimitiveTypeAccess().getBOOLEANEnumLiteralDeclaration_4()); }
+		('boolean')
+		{ after(grammarAccess.getPrimitiveTypeAccess().getBOOLEANEnumLiteralDeclaration_4()); }
+	)
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -8453,13 +8459,13 @@ rule__RefOrCall__RefAssignment_0
 	}
 :
 	(
-		{ before(grammarAccess.getRefOrCallAccess().getRefRefTypeCrossReference_0_0()); }
+		{ before(grammarAccess.getRefOrCallAccess().getRefEObjectCrossReference_0_0()); }
 		(
-			{ before(grammarAccess.getRefOrCallAccess().getRefRefTypeIDTerminalRuleCall_0_0_1()); }
+			{ before(grammarAccess.getRefOrCallAccess().getRefEObjectIDTerminalRuleCall_0_0_1()); }
 			RULE_ID
-			{ after(grammarAccess.getRefOrCallAccess().getRefRefTypeIDTerminalRuleCall_0_0_1()); }
+			{ after(grammarAccess.getRefOrCallAccess().getRefEObjectIDTerminalRuleCall_0_0_1()); }
 		)
-		{ after(grammarAccess.getRefOrCallAccess().getRefRefTypeCrossReference_0_0()); }
+		{ after(grammarAccess.getRefOrCallAccess().getRefEObjectCrossReference_0_0()); }
 	)
 ;
 finally {
@@ -8472,13 +8478,13 @@ rule__RefOrCall__RefAssignment_1_2
 	}
 :
 	(
-		{ before(grammarAccess.getRefOrCallAccess().getRefETypedElementCrossReference_1_2_0()); }
+		{ before(grammarAccess.getRefOrCallAccess().getRefENamedElementCrossReference_1_2_0()); }
 		(
-			{ before(grammarAccess.getRefOrCallAccess().getRefETypedElementIDTerminalRuleCall_1_2_0_1()); }
+			{ before(grammarAccess.getRefOrCallAccess().getRefENamedElementIDTerminalRuleCall_1_2_0_1()); }
 			RULE_ID
-			{ after(grammarAccess.getRefOrCallAccess().getRefETypedElementIDTerminalRuleCall_1_2_0_1()); }
+			{ after(grammarAccess.getRefOrCallAccess().getRefENamedElementIDTerminalRuleCall_1_2_0_1()); }
 		)
-		{ after(grammarAccess.getRefOrCallAccess().getRefETypedElementCrossReference_1_2_0()); }
+		{ after(grammarAccess.getRefOrCallAccess().getRefENamedElementCrossReference_1_2_0()); }
 	)
 ;
 finally {

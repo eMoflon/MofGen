@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EParameter;
@@ -20,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.ExclusiveRange;
 import org.mofgen.interpreter.Calculator;
 import org.mofgen.mGLang.ArithmeticExpression;
+import org.mofgen.mGLang.Assignment;
 import org.mofgen.mGLang.CaseWithCast;
 import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.GeneralForHead;
@@ -105,6 +111,31 @@ public class MGLangValidator extends AbstractMGLangValidator {
       }
     }
     return conflicts;
+  }
+  
+  @Check
+  public void checkAttributeType(final Assignment ass) {
+    final ENamedElement trg = ass.getTarget();
+    final Object assignedValue = this.calc.evaluate(ass.getValue());
+    if ((trg instanceof EAttribute)) {
+      final EAttribute attribute = ((EAttribute) trg);
+      final EDataType attributeType = attribute.getEAttributeType();
+      if ((attributeType instanceof EEnum)) {
+        if ((!(assignedValue instanceof EEnumLiteral))) {
+          String _name = attribute.getName();
+          String _plus = ("Can only assign enum values to enum attribute " + _name);
+          this.error(_plus, 
+            MGLangPackage.Literals.ASSIGNMENT__VALUE);
+        }
+      } else {
+        if ((assignedValue instanceof EEnumLiteral)) {
+          String _name_1 = attribute.getName();
+          String _plus_1 = ("Cannot assign enum value to non-enum attribute " + _name_1);
+          this.error(_plus_1, 
+            MGLangPackage.Literals.ASSIGNMENT__VALUE);
+        }
+      }
+    }
   }
   
   @Check
