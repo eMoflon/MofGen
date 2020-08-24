@@ -41,7 +41,7 @@ ParamManipulation:
 	param=[ParameterNode] content=NodeContent;
 
 Node:
-	type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP createdBy=PatternCall))?;
+	(srcModel=[Import]'.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP createdBy=PatternCall))?;
 
 NodeContent:
 	{NodeContent} '{' (refsAssigns+=NodeReferenceOrAssignmentOrControlFlow)* '}';

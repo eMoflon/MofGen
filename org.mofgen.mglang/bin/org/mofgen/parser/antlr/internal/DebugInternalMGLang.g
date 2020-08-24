@@ -97,6 +97,10 @@ ruleParamManipulation:
 
 // Rule Node
 ruleNode:
+	(
+		RULE_ID
+		'.'
+	)?
 	RULE_ID
 	RULE_ID
 	(

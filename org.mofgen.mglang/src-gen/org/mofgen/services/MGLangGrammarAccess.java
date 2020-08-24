@@ -366,61 +366,81 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	public class NodeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.Node");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final CrossReference cTypeEClassCrossReference_0_0 = (CrossReference)cTypeAssignment_0.eContents().get(0);
-		private final RuleCall cTypeEClassIDTerminalRuleCall_0_0_1 = (RuleCall)cTypeEClassCrossReference_0_0.eContents().get(1);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
-		private final Assignment cCreatedByAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
-		private final RuleCall cCreatedByNodeContentParserRuleCall_2_0_0 = (RuleCall)cCreatedByAssignment_2_0.eContents().get(0);
-		private final Group cGroup_2_1 = (Group)cAlternatives_2.eContents().get(1);
-		private final RuleCall cASSIGNMENT_OPTerminalRuleCall_2_1_0 = (RuleCall)cGroup_2_1.eContents().get(0);
-		private final Assignment cCreatedByAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
-		private final RuleCall cCreatedByPatternCallParserRuleCall_2_1_1_0 = (RuleCall)cCreatedByAssignment_2_1_1.eContents().get(0);
+		private final Group cGroup_0 = (Group)cGroup.eContents().get(0);
+		private final Assignment cSrcModelAssignment_0_0 = (Assignment)cGroup_0.eContents().get(0);
+		private final CrossReference cSrcModelImportCrossReference_0_0_0 = (CrossReference)cSrcModelAssignment_0_0.eContents().get(0);
+		private final RuleCall cSrcModelImportIDTerminalRuleCall_0_0_0_1 = (RuleCall)cSrcModelImportCrossReference_0_0_0.eContents().get(1);
+		private final Keyword cFullStopKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
+		private final Assignment cTypeAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final CrossReference cTypeEClassCrossReference_1_0 = (CrossReference)cTypeAssignment_1.eContents().get(0);
+		private final RuleCall cTypeEClassIDTerminalRuleCall_1_0_1 = (RuleCall)cTypeEClassCrossReference_1_0.eContents().get(1);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameIDTerminalRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
+		private final Assignment cCreatedByAssignment_3_0 = (Assignment)cAlternatives_3.eContents().get(0);
+		private final RuleCall cCreatedByNodeContentParserRuleCall_3_0_0 = (RuleCall)cCreatedByAssignment_3_0.eContents().get(0);
+		private final Group cGroup_3_1 = (Group)cAlternatives_3.eContents().get(1);
+		private final RuleCall cASSIGNMENT_OPTerminalRuleCall_3_1_0 = (RuleCall)cGroup_3_1.eContents().get(0);
+		private final Assignment cCreatedByAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
+		private final RuleCall cCreatedByPatternCallParserRuleCall_3_1_1_0 = (RuleCall)cCreatedByAssignment_3_1_1.eContents().get(0);
 		
 		//Node:
-		//	type=[ecore::EClass] name=ID (createdBy=NodeContent | ASSIGNMENT_OP createdBy=PatternCall)?;
+		//	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | ASSIGNMENT_OP createdBy=PatternCall)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//type=[ecore::EClass] name=ID (createdBy=NodeContent | ASSIGNMENT_OP createdBy=PatternCall)?
+		//(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | ASSIGNMENT_OP createdBy=PatternCall)?
 		public Group getGroup() { return cGroup; }
 		
+		//(srcModel=[Import] '.')?
+		public Group getGroup_0() { return cGroup_0; }
+		
+		//srcModel=[Import]
+		public Assignment getSrcModelAssignment_0_0() { return cSrcModelAssignment_0_0; }
+		
+		//[Import]
+		public CrossReference getSrcModelImportCrossReference_0_0_0() { return cSrcModelImportCrossReference_0_0_0; }
+		
+		//ID
+		public RuleCall getSrcModelImportIDTerminalRuleCall_0_0_0_1() { return cSrcModelImportIDTerminalRuleCall_0_0_0_1; }
+		
+		//'.'
+		public Keyword getFullStopKeyword_0_1() { return cFullStopKeyword_0_1; }
+		
 		//type=[ecore::EClass]
-		public Assignment getTypeAssignment_0() { return cTypeAssignment_0; }
+		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
 		
 		//[ecore::EClass]
-		public CrossReference getTypeEClassCrossReference_0_0() { return cTypeEClassCrossReference_0_0; }
+		public CrossReference getTypeEClassCrossReference_1_0() { return cTypeEClassCrossReference_1_0; }
 		
 		//ID
-		public RuleCall getTypeEClassIDTerminalRuleCall_0_0_1() { return cTypeEClassIDTerminalRuleCall_0_0_1; }
+		public RuleCall getTypeEClassIDTerminalRuleCall_1_0_1() { return cTypeEClassIDTerminalRuleCall_1_0_1; }
 		
 		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 		
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 		
 		//(createdBy=NodeContent | ASSIGNMENT_OP createdBy=PatternCall)?
-		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+		public Alternatives getAlternatives_3() { return cAlternatives_3; }
 		
 		//createdBy=NodeContent
-		public Assignment getCreatedByAssignment_2_0() { return cCreatedByAssignment_2_0; }
+		public Assignment getCreatedByAssignment_3_0() { return cCreatedByAssignment_3_0; }
 		
 		//NodeContent
-		public RuleCall getCreatedByNodeContentParserRuleCall_2_0_0() { return cCreatedByNodeContentParserRuleCall_2_0_0; }
+		public RuleCall getCreatedByNodeContentParserRuleCall_3_0_0() { return cCreatedByNodeContentParserRuleCall_3_0_0; }
 		
 		//ASSIGNMENT_OP createdBy=PatternCall
-		public Group getGroup_2_1() { return cGroup_2_1; }
+		public Group getGroup_3_1() { return cGroup_3_1; }
 		
 		//ASSIGNMENT_OP
-		public RuleCall getASSIGNMENT_OPTerminalRuleCall_2_1_0() { return cASSIGNMENT_OPTerminalRuleCall_2_1_0; }
+		public RuleCall getASSIGNMENT_OPTerminalRuleCall_3_1_0() { return cASSIGNMENT_OPTerminalRuleCall_3_1_0; }
 		
 		//createdBy=PatternCall
-		public Assignment getCreatedByAssignment_2_1_1() { return cCreatedByAssignment_2_1_1; }
+		public Assignment getCreatedByAssignment_3_1_1() { return cCreatedByAssignment_3_1_1; }
 		
 		//PatternCall
-		public RuleCall getCreatedByPatternCallParserRuleCall_2_1_1_0() { return cCreatedByPatternCallParserRuleCall_2_1_1_0; }
+		public RuleCall getCreatedByPatternCallParserRuleCall_3_1_1_0() { return cCreatedByPatternCallParserRuleCall_3_1_1_0; }
 	}
 	public class NodeContentElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.mofgen.MGLang.NodeContent");
@@ -2666,7 +2686,7 @@ public class MGLangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Node:
-	//	type=[ecore::EClass] name=ID (createdBy=NodeContent | ASSIGNMENT_OP createdBy=PatternCall)?;
+	//	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | ASSIGNMENT_OP createdBy=PatternCall)?;
 	public NodeElements getNodeAccess() {
 		return pNode;
 	}

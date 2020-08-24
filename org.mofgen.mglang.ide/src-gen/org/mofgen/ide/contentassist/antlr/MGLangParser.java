@@ -33,7 +33,7 @@ public class MGLangParser extends AbstractContentAssistParser {
 		private static void init(ImmutableMap.Builder<AbstractElement, String> builder, MGLangGrammarAccess grammarAccess) {
 			builder.put(grammarAccess.getFileCommandAccess().getAlternatives(), "rule__FileCommand__Alternatives");
 			builder.put(grammarAccess.getPatternCommandAccess().getAlternatives(), "rule__PatternCommand__Alternatives");
-			builder.put(grammarAccess.getNodeAccess().getAlternatives_2(), "rule__Node__Alternatives_2");
+			builder.put(grammarAccess.getNodeAccess().getAlternatives_3(), "rule__Node__Alternatives_3");
 			builder.put(grammarAccess.getNodeReferenceOrAssignmentOrControlFlowAccess().getAlternatives(), "rule__NodeReferenceOrAssignmentOrControlFlow__Alternatives");
 			builder.put(grammarAccess.getParameterAccess().getAlternatives(), "rule__Parameter__Alternatives");
 			builder.put(grammarAccess.getGeneratorExpressionAccess().getAlternatives(), "rule__GeneratorExpression__Alternatives");
@@ -66,7 +66,8 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getPatternReturnAccess().getGroup_3(), "rule__PatternReturn__Group_3__0");
 			builder.put(grammarAccess.getParamManipulationAccess().getGroup(), "rule__ParamManipulation__Group__0");
 			builder.put(grammarAccess.getNodeAccess().getGroup(), "rule__Node__Group__0");
-			builder.put(grammarAccess.getNodeAccess().getGroup_2_1(), "rule__Node__Group_2_1__0");
+			builder.put(grammarAccess.getNodeAccess().getGroup_0(), "rule__Node__Group_0__0");
+			builder.put(grammarAccess.getNodeAccess().getGroup_3_1(), "rule__Node__Group_3_1__0");
 			builder.put(grammarAccess.getNodeContentAccess().getGroup(), "rule__NodeContent__Group__0");
 			builder.put(grammarAccess.getPatternCallAccess().getGroup(), "rule__PatternCall__Group__0");
 			builder.put(grammarAccess.getPatternCallAccess().getGroup_2(), "rule__PatternCall__Group_2__0");
@@ -132,10 +133,11 @@ public class MGLangParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getPatternReturnAccess().getReturnValueAssignment_3_1(), "rule__PatternReturn__ReturnValueAssignment_3_1");
 			builder.put(grammarAccess.getParamManipulationAccess().getParamAssignment_0(), "rule__ParamManipulation__ParamAssignment_0");
 			builder.put(grammarAccess.getParamManipulationAccess().getContentAssignment_1(), "rule__ParamManipulation__ContentAssignment_1");
-			builder.put(grammarAccess.getNodeAccess().getTypeAssignment_0(), "rule__Node__TypeAssignment_0");
-			builder.put(grammarAccess.getNodeAccess().getNameAssignment_1(), "rule__Node__NameAssignment_1");
-			builder.put(grammarAccess.getNodeAccess().getCreatedByAssignment_2_0(), "rule__Node__CreatedByAssignment_2_0");
-			builder.put(grammarAccess.getNodeAccess().getCreatedByAssignment_2_1_1(), "rule__Node__CreatedByAssignment_2_1_1");
+			builder.put(grammarAccess.getNodeAccess().getSrcModelAssignment_0_0(), "rule__Node__SrcModelAssignment_0_0");
+			builder.put(grammarAccess.getNodeAccess().getTypeAssignment_1(), "rule__Node__TypeAssignment_1");
+			builder.put(grammarAccess.getNodeAccess().getNameAssignment_2(), "rule__Node__NameAssignment_2");
+			builder.put(grammarAccess.getNodeAccess().getCreatedByAssignment_3_0(), "rule__Node__CreatedByAssignment_3_0");
+			builder.put(grammarAccess.getNodeAccess().getCreatedByAssignment_3_1_1(), "rule__Node__CreatedByAssignment_3_1_1");
 			builder.put(grammarAccess.getNodeContentAccess().getRefsAssignsAssignment_2(), "rule__NodeContent__RefsAssignsAssignment_2");
 			builder.put(grammarAccess.getPatternCallAccess().getCalledAssignment_0(), "rule__PatternCall__CalledAssignment_0");
 			builder.put(grammarAccess.getPatternCallAccess().getParamsAssignment_2_0(), "rule__PatternCall__ParamsAssignment_2_0");

@@ -45,24 +45,71 @@ public class MofgenModelUtils {
 
 		return classes;
 	}
-	
+
+	/**
+	 * Returns all EClasses imported into the given file without name conflicts. If
+	 * there are several classes with the same name in different imports, only the
+	 * class imported first is considered.
+	 * 
+	 * @param file the Mofgen file
+	 */
+	public static ArrayList<EClass> getUniqueClasses(final MofgenFile file) {
+		final ArrayList<EClass> classes = new ArrayList<>();
+		file.getImports().forEach(i -> {
+			loadEcoreModel(i.getUri()).ifPresent(m -> addIfClassNamesNotContained(m, classes));
+		});
+
+		return classes;
+	}
+
+	/**
+	 * Adds the classes given by the resourece m to the given list
+	 * 
+	 * @param m       - the resource to load classes from
+	 * @param classes - the list to add the classes to
+	 * @return true if all operations succeeded, false otherwise
+	 */
+	private static boolean addIfClassNamesNotContained(Resource m, ArrayList<EClass> classes) {
+		for (EClass clazz : getElements(m, EClass.class)) {
+			if (!containsClass(classes, clazz)) {
+				if (!classes.add(clazz)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @return true if a class with the same name as the given class is contained in
+	 *         the given list, false otherwise
+	 */
+	private static boolean containsClass(ArrayList<EClass> classes, EClass insertedClass) {
+		for (EClass clazz : classes) {
+			if (clazz.getName().equals(insertedClass.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Returns all EClasses imported by the given Import-Object
 	 * 
 	 * @param imp the import object
 	 */
-	public static ArrayList<EClass> getClassesFromImport(final Import imp){
+	public static ArrayList<EClass> getClassesFromImport(final Import imp) {
 		final ArrayList<EClass> classes = new ArrayList<>();
 		loadEcoreModel(imp.getUri()).ifPresent(m -> classes.addAll(getElements(m, EClass.class)));
 		return classes;
 	}
-	
+
 	/**
 	 * Returns all EClasses imported by the imports in the given list
 	 * 
 	 * @param imps the import objects
 	 */
-	public static ArrayList<EClass> getClassesFromImportList(final List<Import> imps){
+	public static ArrayList<EClass> getClassesFromImportList(final List<Import> imps) {
 		final ArrayList<EClass> classes = new ArrayList<>();
 		imps.forEach(i -> {
 			loadEcoreModel(i.getUri()).ifPresent(m -> classes.addAll(getElements(m, EClass.class)));
@@ -93,14 +140,13 @@ public class MofgenModelUtils {
 	public static <T extends EObject> List<T> getElements(final Resource resource, final Class<T> type) {
 		return EcoreUtil2.getAllContentsOfType(resource.getContents().get(0), type);
 	}
-	
+
 	/**
 	 * @return the root container of the given EObject as MofgenFile
 	 */
 	public static MofgenFile getRootFile(final EObject obj) {
 		return (MofgenFile) EcoreUtil2.getRootContainer(obj);
 	}
-	
 
 	/**
 	 * Returns an Optional for the Ecore model resource with the given URI.

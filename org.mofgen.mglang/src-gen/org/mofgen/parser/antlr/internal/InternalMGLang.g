@@ -642,22 +642,41 @@ ruleNode returns [EObject current=null]
 	(
 		(
 			(
+				(
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getNodeRule());
+						}
+					}
+					otherlv_0=RULE_ID
+					{
+						newLeafNode(otherlv_0, grammarAccess.getNodeAccess().getSrcModelImportCrossReference_0_0_0());
+					}
+				)
+			)
+			otherlv_1='.'
+			{
+				newLeafNode(otherlv_1, grammarAccess.getNodeAccess().getFullStopKeyword_0_1());
+			}
+		)?
+		(
+			(
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getNodeRule());
 					}
 				}
-				otherlv_0=RULE_ID
+				otherlv_2=RULE_ID
 				{
-					newLeafNode(otherlv_0, grammarAccess.getNodeAccess().getTypeEClassCrossReference_0_0());
+					newLeafNode(otherlv_2, grammarAccess.getNodeAccess().getTypeEClassCrossReference_1_0());
 				}
 			)
 		)
 		(
 			(
-				lv_name_1_0=RULE_ID
+				lv_name_3_0=RULE_ID
 				{
-					newLeafNode(lv_name_1_0, grammarAccess.getNodeAccess().getNameIDTerminalRuleCall_1_0());
+					newLeafNode(lv_name_3_0, grammarAccess.getNodeAccess().getNameIDTerminalRuleCall_2_0());
 				}
 				{
 					if ($current==null) {
@@ -666,7 +685,7 @@ ruleNode returns [EObject current=null]
 					setWithLastConsumed(
 						$current,
 						"name",
-						lv_name_1_0,
+						lv_name_3_0,
 						"org.eclipse.xtext.common.Terminals.ID");
 				}
 			)
@@ -675,9 +694,9 @@ ruleNode returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getNodeAccess().getCreatedByNodeContentParserRuleCall_2_0_0());
+						newCompositeNode(grammarAccess.getNodeAccess().getCreatedByNodeContentParserRuleCall_3_0_0());
 					}
-					lv_createdBy_2_0=ruleNodeContent
+					lv_createdBy_4_0=ruleNodeContent
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getNodeRule());
@@ -685,7 +704,7 @@ ruleNode returns [EObject current=null]
 						set(
 							$current,
 							"createdBy",
-							lv_createdBy_2_0,
+							lv_createdBy_4_0,
 							"org.mofgen.MGLang.NodeContent");
 						afterParserOrEnumRuleCall();
 					}
@@ -693,16 +712,16 @@ ruleNode returns [EObject current=null]
 			)
 			    |
 			(
-				this_ASSIGNMENT_OP_3=RULE_ASSIGNMENT_OP
+				this_ASSIGNMENT_OP_5=RULE_ASSIGNMENT_OP
 				{
-					newLeafNode(this_ASSIGNMENT_OP_3, grammarAccess.getNodeAccess().getASSIGNMENT_OPTerminalRuleCall_2_1_0());
+					newLeafNode(this_ASSIGNMENT_OP_5, grammarAccess.getNodeAccess().getASSIGNMENT_OPTerminalRuleCall_3_1_0());
 				}
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getNodeAccess().getCreatedByPatternCallParserRuleCall_2_1_1_0());
+							newCompositeNode(grammarAccess.getNodeAccess().getCreatedByPatternCallParserRuleCall_3_1_1_0());
 						}
-						lv_createdBy_4_0=rulePatternCall
+						lv_createdBy_6_0=rulePatternCall
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getNodeRule());
@@ -710,7 +729,7 @@ ruleNode returns [EObject current=null]
 							set(
 								$current,
 								"createdBy",
-								lv_createdBy_4_0,
+								lv_createdBy_6_0,
 								"org.mofgen.MGLang.PatternCall");
 							afterParserOrEnumRuleCall();
 						}

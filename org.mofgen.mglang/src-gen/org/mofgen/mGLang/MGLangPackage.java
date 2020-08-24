@@ -347,13 +347,22 @@ public interface MGLangPackage extends EPackage
   int NODE__NAME = PATTERN_COMMAND_FEATURE_COUNT + 0;
 
   /**
+   * The feature id for the '<em><b>Src Model</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NODE__SRC_MODEL = PATTERN_COMMAND_FEATURE_COUNT + 1;
+
+  /**
    * The feature id for the '<em><b>Type</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int NODE__TYPE = PATTERN_COMMAND_FEATURE_COUNT + 1;
+  int NODE__TYPE = PATTERN_COMMAND_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Created By</b></em>' containment reference.
@@ -362,7 +371,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int NODE__CREATED_BY = PATTERN_COMMAND_FEATURE_COUNT + 2;
+  int NODE__CREATED_BY = PATTERN_COMMAND_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Node</em>' class.
@@ -371,7 +380,7 @@ public interface MGLangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int NODE_FEATURE_COUNT = PATTERN_COMMAND_FEATURE_COUNT + 3;
+  int NODE_FEATURE_COUNT = PATTERN_COMMAND_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.mofgen.mGLang.impl.NodeContentImpl <em>Node Content</em>}' class.
@@ -2329,6 +2338,17 @@ public interface MGLangPackage extends EPackage
   EClass getNode();
 
   /**
+   * Returns the meta object for the reference '{@link org.mofgen.mGLang.Node#getSrcModel <em>Src Model</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Src Model</em>'.
+   * @see org.mofgen.mGLang.Node#getSrcModel()
+   * @see #getNode()
+   * @generated
+   */
+  EReference getNode_SrcModel();
+
+  /**
    * Returns the meta object for the reference '{@link org.mofgen.mGLang.Node#getType <em>Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3852,6 +3872,14 @@ public interface MGLangPackage extends EPackage
      * @generated
      */
     EClass NODE = eINSTANCE.getNode();
+
+    /**
+     * The meta object literal for the '<em><b>Src Model</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NODE__SRC_MODEL = eINSTANCE.getNode_SrcModel();
 
     /**
      * The meta object literal for the '<em><b>Type</b></em>' reference feature.

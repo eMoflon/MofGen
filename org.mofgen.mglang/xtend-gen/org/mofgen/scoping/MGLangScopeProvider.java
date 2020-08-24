@@ -84,7 +84,30 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
     if (_isParameterNodeType) {
       return this.getScopeForParameterNodeType(((ParameterNode) context));
     }
+    boolean _isNodeType = this.isNodeType(context, reference);
+    if (_isNodeType) {
+      return this.getScopeForNodeType(((Node) context));
+    }
+    boolean _isNodeSrcModel = this.isNodeSrcModel(context, reference);
+    if (_isNodeSrcModel) {
+      return this.getScopeForNodeSrcModel(((Node) context));
+    }
     return super.getScope(context, reference);
+  }
+  
+  public IScope getScopeForNodeSrcModel(final Node node) {
+    final List<Import> imports = EcoreUtil2.<Import>getAllContentsOfType(this.getRootFile(node), Import.class);
+    return Scopes.scopeFor(imports);
+  }
+  
+  public IScope getScopeForNodeType(final Node node) {
+    final Import imp = node.getSrcModel();
+    if ((imp != null)) {
+      final ArrayList<EClass> classes = MofgenModelUtils.getClassesFromImport(imp);
+      return Scopes.scopeFor(classes);
+    } else {
+      return this.getScopeForAllImportedClasses(node);
+    }
   }
   
   public IScope getScopeForParameterNodeType(final ParameterNode paramNode) {
@@ -93,9 +116,13 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
       final ArrayList<EClass> classes = MofgenModelUtils.getClassesFromImport(imp);
       return Scopes.scopeFor(classes);
     } else {
-      final ArrayList<EClass> classes_1 = MofgenModelUtils.getClasses(MofgenModelUtils.getRootFile(paramNode));
-      return Scopes.scopeFor(classes_1);
+      return this.getScopeForAllImportedClasses(paramNode);
     }
+  }
+  
+  private IScope getScopeForAllImportedClasses(final EObject obj) {
+    final ArrayList<EClass> classes = MofgenModelUtils.getUniqueClasses(MofgenModelUtils.getRootFile(obj));
+    return Scopes.scopeFor(classes);
   }
   
   public IScope getScopeForParameterNodeSrcModel(final ParameterNode paramNode) {
@@ -152,7 +179,6 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
       };
       final Iterable<EClass> filteredClasses = IterableExtensions.<EClass>filter(classes, _function);
       final ArrayList<EAttribute> attrs = CollectionLiterals.<EAttribute>newArrayList();
-      final ArrayList<Object> enums = CollectionLiterals.<Object>newArrayList();
       boolean _isEmpty = IterableExtensions.isEmpty(filteredClasses);
       if (_isEmpty) {
         return IScope.NULLSCOPE;
@@ -269,6 +295,14 @@ public class MGLangScopeProvider extends AbstractMGLangScopeProvider {
   
   public boolean isParameterNodeType(final EObject context, final EReference reference) {
     return ((context instanceof ParameterNode) && Objects.equal(reference, MGLangPackage.Literals.PARAMETER_NODE__TYPE));
+  }
+  
+  public boolean isNodeSrcModel(final EObject context, final EReference reference) {
+    return ((context instanceof Node) && Objects.equal(reference, MGLangPackage.Literals.NODE__SRC_MODEL));
+  }
+  
+  public boolean isNodeType(final EObject context, final EReference reference) {
+    return ((context instanceof Node) && Objects.equal(reference, MGLangPackage.Literals.NODE__TYPE));
   }
   
   public MofgenFile getRootFile(final EObject context) {

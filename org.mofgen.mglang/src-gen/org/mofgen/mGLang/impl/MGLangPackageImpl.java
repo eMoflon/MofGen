@@ -853,7 +853,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getNode_Type()
+  public EReference getNode_SrcModel()
   {
     return (EReference)nodeEClass.getEStructuralFeatures().get(0);
   }
@@ -864,9 +864,20 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
    * @generated
    */
   @Override
-  public EReference getNode_CreatedBy()
+  public EReference getNode_Type()
   {
     return (EReference)nodeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public EReference getNode_CreatedBy()
+  {
+    return (EReference)nodeEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -2272,6 +2283,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     createEReference(paramManipulationEClass, PARAM_MANIPULATION__CONTENT);
 
     nodeEClass = createEClass(NODE);
+    createEReference(nodeEClass, NODE__SRC_MODEL);
     createEReference(nodeEClass, NODE__TYPE);
     createEReference(nodeEClass, NODE__CREATED_BY);
 
@@ -2562,6 +2574,7 @@ public class MGLangPackageImpl extends EPackageImpl implements MGLangPackage
     initEReference(getParamManipulation_Content(), this.getNodeContent(), null, "content", null, 0, 1, ParamManipulation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNode_SrcModel(), this.getImport(), null, "srcModel", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getNode_Type(), ecorePackage.getEClass(), null, "type", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getNode_CreatedBy(), ecorePackage.getEObject(), null, "createdBy", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

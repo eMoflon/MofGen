@@ -60,8 +60,29 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if(isParameterNodeType(context, reference)){
 			return getScopeForParameterNodeType(context as ParameterNode)
 		}
+		if(isNodeType(context, reference)){
+			return getScopeForNodeType(context as Node)
+		}
+		if(isNodeSrcModel(context, reference)){
+			return getScopeForNodeSrcModel(context as Node)
+		}
 
 		return super.getScope(context, reference)
+	}
+	
+	def getScopeForNodeSrcModel(Node node){
+		val imports = EcoreUtil2.getAllContentsOfType(getRootFile(node), Import)
+		return Scopes.scopeFor(imports)
+	}
+	
+	def getScopeForNodeType(Node node){
+		val imp = node.srcModel
+		if(imp !== null){
+			val classes = MofgenModelUtils.getClassesFromImport(imp)
+			return Scopes.scopeFor(classes)
+		}else{
+			return getScopeForAllImportedClasses(node)
+		}
 	}
 	
 	def getScopeForParameterNodeType(ParameterNode paramNode){
@@ -70,10 +91,14 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			val classes = MofgenModelUtils.getClassesFromImport(imp)
 			return Scopes.scopeFor(classes)
 		}else{
-			val classes = MofgenModelUtils.getClasses(MofgenModelUtils.getRootFile(paramNode))
-			return Scopes.scopeFor(classes)
+			return getScopeForAllImportedClasses(paramNode)
 		}
-
+	}
+	
+	private def getScopeForAllImportedClasses(EObject obj){
+		// in case of naming conflicts only the first class with that name in the first mentioned import is loaded
+		val classes = MofgenModelUtils.getUniqueClasses(MofgenModelUtils.getRootFile(obj))		
+		return Scopes.scopeFor(classes)
 	}
 	
 	def getScopeForParameterNodeSrcModel(ParameterNode paramNode){
@@ -102,7 +127,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		} else {
 			return Scopes.scopeFor(filteredClasses.get(0).EAllReferences)
 		}
-
 	}
 
 	def getScopeForAllNodes(EObject context) {
@@ -122,7 +146,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		try {
 			val filteredClasses = classes.filter[c|c == srcNode.type]
 			val attrs = newArrayList()
-			val enums = newArrayList()
 			if (filteredClasses.isEmpty) {
 				return IScope.NULLSCOPE
 			} else {
@@ -164,7 +187,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				collections.addAll(EcoreUtil2.getAllContentsOfType(gen, Collection))
 				vars.addAll(EcoreUtil2.getAllContentsOfType(gen, Variable))
 			}
-			// TODO Collections as return values? Saved in "List"/"Map" Objects or in "var"? --> Expand Scope!
+			
+			// TODO Collections as return values possible?
 
 			// get nodes of casts in above case-heads (remove names from pattern-nodes eventually)
 			val shadowingNodes = getEventuallyShadowingNodes(r)
@@ -240,6 +264,14 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	
 	def isParameterNodeType(EObject context, EReference reference){
 		return context instanceof ParameterNode && reference == MGLangPackage.Literals.PARAMETER_NODE__TYPE
+	}
+	
+	def isNodeSrcModel(EObject context, EReference reference){
+		return context instanceof Node && reference == MGLangPackage.Literals.NODE__SRC_MODEL
+	}
+	
+	def isNodeType(EObject context, EReference reference){
+		return context instanceof Node && reference == MGLangPackage.Literals.NODE__TYPE
 	}
 
 	def getRootFile(EObject context) {

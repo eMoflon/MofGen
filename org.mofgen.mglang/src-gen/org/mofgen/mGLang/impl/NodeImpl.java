@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.RefType;
@@ -25,6 +26,7 @@ import org.mofgen.mGLang.RefType;
  * </p>
  * <ul>
  *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getSrcModel <em>Src Model</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.mofgen.mGLang.impl.NodeImpl#getCreatedBy <em>Created By</em>}</li>
  * </ul>
@@ -52,6 +54,16 @@ public class NodeImpl extends PatternCommandImpl implements Node
    * @ordered
    */
   protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getSrcModel() <em>Src Model</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSrcModel()
+   * @generated
+   * @ordered
+   */
+  protected Import srcModel;
 
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' reference.
@@ -117,6 +129,51 @@ public class NodeImpl extends PatternCommandImpl implements Node
     name = newName;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.NODE__NAME, oldName, name));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Import getSrcModel()
+  {
+    if (srcModel != null && srcModel.eIsProxy())
+    {
+      InternalEObject oldSrcModel = (InternalEObject)srcModel;
+      srcModel = (Import)eResolveProxy(oldSrcModel);
+      if (srcModel != oldSrcModel)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, MGLangPackage.NODE__SRC_MODEL, oldSrcModel, srcModel));
+      }
+    }
+    return srcModel;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Import basicGetSrcModel()
+  {
+    return srcModel;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public void setSrcModel(Import newSrcModel)
+  {
+    Import oldSrcModel = srcModel;
+    srcModel = newSrcModel;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, MGLangPackage.NODE__SRC_MODEL, oldSrcModel, srcModel));
   }
 
   /**
@@ -242,6 +299,9 @@ public class NodeImpl extends PatternCommandImpl implements Node
     {
       case MGLangPackage.NODE__NAME:
         return getName();
+      case MGLangPackage.NODE__SRC_MODEL:
+        if (resolve) return getSrcModel();
+        return basicGetSrcModel();
       case MGLangPackage.NODE__TYPE:
         if (resolve) return getType();
         return basicGetType();
@@ -263,6 +323,9 @@ public class NodeImpl extends PatternCommandImpl implements Node
     {
       case MGLangPackage.NODE__NAME:
         setName((String)newValue);
+        return;
+      case MGLangPackage.NODE__SRC_MODEL:
+        setSrcModel((Import)newValue);
         return;
       case MGLangPackage.NODE__TYPE:
         setType((EClass)newValue);
@@ -287,6 +350,9 @@ public class NodeImpl extends PatternCommandImpl implements Node
       case MGLangPackage.NODE__NAME:
         setName(NAME_EDEFAULT);
         return;
+      case MGLangPackage.NODE__SRC_MODEL:
+        setSrcModel((Import)null);
+        return;
       case MGLangPackage.NODE__TYPE:
         setType((EClass)null);
         return;
@@ -309,6 +375,8 @@ public class NodeImpl extends PatternCommandImpl implements Node
     {
       case MGLangPackage.NODE__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case MGLangPackage.NODE__SRC_MODEL:
+        return srcModel != null;
       case MGLangPackage.NODE__TYPE:
         return type != null;
       case MGLangPackage.NODE__CREATED_BY:

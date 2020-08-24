@@ -658,7 +658,7 @@ public class MGLangSemanticSequencer extends AbstractDelegatingSemanticSequencer
 	 *     RefType returns Node
 	 *
 	 * Constraint:
-	 *     (type=[EClass|ID] name=ID (createdBy=NodeContent | createdBy=PatternCall)?)
+	 *     (srcModel=[Import|ID]? type=[EClass|ID] name=ID (createdBy=NodeContent | createdBy=PatternCall)?)
 	 */
 	protected void sequence_Node(ISerializationContext context, Node semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
