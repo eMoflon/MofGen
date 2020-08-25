@@ -26,6 +26,9 @@ import org.mofgen.mGLang.Assignment
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
+import org.mofgen.interpreter.MismatchingTypesException
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
 
 /**
  * This class contains custom validation rules. 
@@ -39,29 +42,34 @@ class MGLangValidator extends AbstractMGLangValidator {
 	// TODO Check if there are sufficient null checks so no strange errors occur in the editor
 	@Check
 	def validForRange(GeneralForHead head) {
-		val start = calc.evaluate(head.range.start)
-		val end = calc.evaluate(head.range.end)
 
-		if (!(start instanceof Number)) {
-			error("For-Range needs numerical bounds but was given " + start, MGLangPackage.Literals.FOR_RANGE__START)
-		}
-		if (!(end instanceof Number)) {
-			error("For-Range needs numerical bounds but was given " + end, MGLangPackage.Literals.FOR_RANGE__END)
-		}
-
-		val castStart = start as Double
-		val castEnd = end as Double
+		val forRange = head.range
+		val castStart = checkForNumber(head.range.start, forRange, MGLangPackage.Literals.FOR_RANGE__START) as Double
+		val castEnd = checkForNumber(head.range.end, forRange, MGLangPackage.Literals.FOR_RANGE__END) as Double
+		
 		if (castStart > castEnd) {
 			error("Limiting bound is less than starting value", MGLangPackage.Literals.GENERAL_FOR_HEAD__RANGE)
 		}
 	}
 
+	def private checkForNumber(ArithmeticExpression expr, EObject obj, EReference errorLoc) {
+			val eval = tryEvaluation(expr, obj, errorLoc)
+			if (!(eval instanceof Number)) {
+				error("For-Range needs numerical bounds but was given type " + eval.class.name, obj, errorLoc)
+			}
+			return eval
+	}
+
 	@Check
 	def checkBooleanWhen(CaseWithCast caze) {
 		if (caze.when !== null) {
-			val res = calc.evaluate(caze.when)
+			try{
+			val res = tryEvaluation(caze.when, caze, MGLangPackage.Literals.CASE_WITH_CAST__WHEN) 
 			if (!(res instanceof Boolean)) {
 				error("Needed boolean value for conditional expression", MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
+			}
+			}catch(MismatchingTypesException e){
+				error(e.message, caze, MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
 			}
 		}
 	}
@@ -95,7 +103,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def checkAttributeType(Assignment ass) {
 		val trg = ass.target
-		val assignedValue = calc.evaluate(ass.value)
+		val assignedValue = tryEvaluation(ass.value, ass, MGLangPackage.Literals.ASSIGNMENT__VALUE)
 
 		if (trg instanceof EAttribute) {
 			val attribute = trg as EAttribute
@@ -106,13 +114,14 @@ class MGLangValidator extends AbstractMGLangValidator {
 						MGLangPackage.Literals.ASSIGNMENT__VALUE)
 				}
 			} else {
-				if(assignedValue instanceof EEnumLiteral){
+				if (assignedValue instanceof EEnumLiteral) {
 					error("Cannot assign enum value to non-enum attribute " + attribute.name,
 						MGLangPackage.Literals.ASSIGNMENT__VALUE)
 				}
 			}
 		}
 	}
+
 
 	@Check
 	def matchingParameterArguments(PatternCall pc) {
@@ -137,7 +146,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		for (i : 0 ..< pc.params.length) {
 			val given = pc.params.get(i)
 			val needed = pc.called.parameters.get(i)
-			if (isTypeMatchingWithParameter(given, needed) == false) {
+			if (isTypeMatchingWithParameter(given, needed, pc, MGLangPackage.Literals.PATTERN_CALL__PARAMS) == false) {
 				error("Given object " + given + " does not match needed type " + needed,
 					MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 			}
@@ -165,10 +174,19 @@ class MGLangValidator extends AbstractMGLangValidator {
 		// TODO Check parameter types ?
 		}
 	}
+		
+	def tryEvaluation(ArithmeticExpression expr, EObject errorObj, EReference errorLoc){
+		try{
+			val eval = calc.evaluate(expr)
+			return eval
+		} catch (MismatchingTypesException e){
+			error(e.message, errorObj, errorLoc)
+		}
+	}
 
-	def private isTypeMatchingWithParameter(ArithmeticExpression givenExpression, Parameter neededObj) {
-		val eval = calc.evaluate(givenExpression)
-
+	def private isTypeMatchingWithParameter(ArithmeticExpression givenExpression, Parameter neededObj, EObject errorObj, EReference errorLoc) {
+		val eval = tryEvaluation(givenExpression, errorObj, errorLoc) 
+		
 		if (eval instanceof EOperation) {
 			// val op = eval as EOperation
 			return true; // TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection? ==> Possible do this only at runtime and fall back to EObject in the case of conflicts
