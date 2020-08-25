@@ -16,12 +16,11 @@ import org.eclipse.emf.ecore.EOperation
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.mGLang.PrimitiveType
-import org.mofgen.mGLang.MGLangFactory
 import org.mofgen.mGLang.UnaryMinus
 
 class Calculator {
 
-	def evaluate(ArithmeticExpression expr) {
+	def Object evaluate(ArithmeticExpression expr) {
 		val result = internalEvaluate(expr)
 		switch (result.class) {
 			case Double: return result as Double

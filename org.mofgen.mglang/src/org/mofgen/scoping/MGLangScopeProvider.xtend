@@ -27,6 +27,8 @@ import org.mofgen.mGLang.ParameterNode
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.Assignment
 import org.eclipse.emf.ecore.EEnum
+import org.mofgen.mGLang.ListForHead
+import org.mofgen.mGLang.ForEachHead
 
 /**
  * This class contains custom scoping description.
@@ -67,8 +69,40 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isNodeSrcModel(context, reference)) {
 			return getScopeForNodeSrcModel(context as Node)
 		}
+		if (isListForHeadList(context, reference)) {
+			return getScopeForListForHeadList(context as ListForHead)
+		}
+		if (isForEachHeadERef(context, reference)) {
+			return getScopeForForEachHeadERef(context as ForEachHead)
+		}
 
 		return super.getScope(context, reference)
+	}
+
+	def getScopeForForEachHeadERef(ForEachHead head) {
+
+		val src = head.src
+		if (src !== null) {
+			val ref = src.ref
+			if (ref !== null) {
+				if (ref instanceof Map) {
+					return Scopes.scopeFor(CollectionModelPackage.Literals.MAP.EReferences)
+				}
+				val clazz = src.ref.eClass
+				val ops = clazz.EAllOperations
+				val refs = clazz.EReferences
+				return Scopes.scopeFor(ops + refs)
+			}
+		}
+	}
+
+	def getScopeForListForHeadList(ListForHead head) {
+		val gen = EcoreUtil2.getContainerOfType(head, Generator)
+		if (gen === null) {
+			throw new IllegalStateException("Every for-loop should be contained in a generator")
+		}
+		val lists = EcoreUtil2.getAllContentsOfType(gen, List)
+		return Scopes.scopeFor(lists)
 	}
 
 	def getScopeForNodeSrcModel(Node node) {
@@ -243,7 +277,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					val refs = refClass.EAllReferences
 					return Scopes.scopeFor(attrs + refs)
 				}
-				default: return IScope.NULLSCOPE
+				default:
+					return IScope.NULLSCOPE
 			}
 		}
 	}
@@ -292,6 +327,14 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	def isNodeType(EObject context, EReference reference) {
 		return context instanceof Node && reference == MGLangPackage.Literals.NODE__TYPE
+	}
+
+	def isListForHeadList(EObject context, EReference reference) {
+		return context instanceof ListForHead && reference == MGLangPackage.Literals.LIST_FOR_HEAD__LIST
+	}
+
+	def isForEachHeadERef(EObject context, EReference reference) {
+		return context instanceof ForEachHead && reference == MGLangPackage.Literals.FOR_EACH_HEAD__EREF
 	}
 
 	def getRootFile(EObject context) {

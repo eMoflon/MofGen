@@ -23,11 +23,11 @@ Config:
 	;
 
 ConfigExpression:
-	'test'
+	'test'	//TODO
 ;
 
 Pattern:
-	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands += PatternCommand)* '}'
+	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands += PatternCommand )* '}'
 	(return=PatternReturn)?;
 
 PatternCommand:
@@ -92,16 +92,20 @@ ForStatement:
 	'for' head=ForHead '{' body=ForBody '}';
 
 ForHead:
-	GeneralForHead | ForEachHead;
+	RangeForHead | ForEachHead | ListForHead;
 
-GeneralForHead:
+RangeForHead:
 	iteratorVar=ID 'in' range=ForRange;
+
+ForRange:
+	start=ArithmeticExpression ':' end=ArithmeticExpression;
 
 ForEachHead:
 	src=RefOrCall '-' eref=[ecore::EReference] '->' iteratorVar=ID;
 
-RefType:
-	Node | Parameter | Collection | Variable;
+ListForHead:
+	iteratorVar=ID 'in' list=[List]
+;
 
 ForBody:
 	{ForBody} (commands+=GeneratorExpression)*;
@@ -135,7 +139,7 @@ CaseWithoutCast:
 	'case' val=ArithmeticExpression ':' body=CaseBody;
 
 CaseBody:
-	{CaseBody} '{' (expressions+=SwitchExpression)* '}' | (expressions+=SwitchExpression NEWLINE);
+	{CaseBody} '{' (expressions+=SwitchExpression)* '}' | expressions+=SwitchExpression;
 
 Collection:
 	List | Map;
@@ -162,8 +166,6 @@ MapAdHoc:
 MapTupel:
 	'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')';
 
-ForRange:
-	start=ArithmeticExpression ':' end=ArithmeticExpression;
 
 	//======================================Arithmetics============================================
 ArithmeticExpression:
@@ -240,5 +242,3 @@ enum PrimaryOp:
 terminal ASSIGNMENT_OP:
 	'=';
 
-terminal NEWLINE:
-	'\n';

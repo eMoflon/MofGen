@@ -36,9 +36,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//NodeContent"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//PatternCommand #//RefType">
+  <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//PatternCommand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="srcModel" eType="#//Import"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
   </eClassifiers>
@@ -62,7 +63,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//RefType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PrimitiveParameter" eSuperTypes="#//Parameter">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//PrimitiveType"/>
   </eClassifiers>
@@ -95,7 +98,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="patternCall" eType="#//PatternCall"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//GeneratorExpression #//RefType">
+  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//GeneratorExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
@@ -108,8 +112,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="ForHead">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="iteratorVar" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GeneralForHead" eSuperTypes="#//ForHead">
+  <eClassifiers xsi:type="ecore:EClass" name="RangeForHead" eSuperTypes="#//ForHead">
     <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//ForRange"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ForRange">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="start" eType="#//ArithmeticExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="end" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ForEachHead" eSuperTypes="#//ForHead">
@@ -117,8 +127,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RefType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ListForHead" eSuperTypes="#//ForHead">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" eType="#//List"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ForBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
@@ -163,7 +173,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
         eType="#//SwitchExpression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//PatternCommand #//GeneratorExpression #//RefType #//SwitchExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//PatternCommand #//GeneratorExpression #//SwitchExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="List" eSuperTypes="#//Collection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="#//ListAssignment"
         containment="true"/>
@@ -186,12 +198,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="key" eType="#//ArithmeticExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ArithmeticExpression"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ForRange">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="start" eType="#//ArithmeticExpression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="end" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArithmeticExpression"/>

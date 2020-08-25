@@ -10,7 +10,6 @@ import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.validation.Check
 import org.mofgen.interpreter.Calculator
 import org.mofgen.mGLang.ArithmeticExpression
-import org.mofgen.mGLang.GeneralForHead
 import org.mofgen.mGLang.Import
 import org.mofgen.mGLang.MGLangPackage
 import org.mofgen.mGLang.Parameter
@@ -29,6 +28,8 @@ import org.eclipse.emf.ecore.EEnumLiteral
 import org.mofgen.interpreter.MismatchingTypesException
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.mofgen.mGLang.RangeForHead
+import org.mofgen.mGLang.ForBody
 
 /**
  * This class contains custom validation rules. 
@@ -41,41 +42,53 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 	// TODO Check if there are sufficient null checks so no strange errors occur in the editor
 	@Check
-	def validForRange(GeneralForHead head) {
-
+	def validForRange(RangeForHead head) {
 		val forRange = head.range
-		val castStart = checkForNumber(head.range.start, forRange, MGLangPackage.Literals.FOR_RANGE__START) as Double
-		val castEnd = checkForNumber(head.range.end, forRange, MGLangPackage.Literals.FOR_RANGE__END) as Double
-		
-		if (castStart > castEnd) {
-			error("Limiting bound is less than starting value", MGLangPackage.Literals.GENERAL_FOR_HEAD__RANGE)
+		if (forRange !== null) {
+			if (forRange.start !== null && forRange.end !== null) {
+				val castStart = checkForNumber(forRange.start, forRange,
+					MGLangPackage.Literals.FOR_RANGE__START) as Double
+				val castEnd = checkForNumber(forRange.end, forRange, MGLangPackage.Literals.FOR_RANGE__END) as Double
+				if (castStart > castEnd) {
+					error("Limiting bound is less than starting value", MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
+				}
+			}
 		}
+
 	}
 
 	def private checkForNumber(ArithmeticExpression expr, EObject obj, EReference errorLoc) {
-			val eval = tryEvaluation(expr, obj, errorLoc)
-			if (!(eval instanceof Number)) {
-				error("For-Range needs numerical bounds but was given type " + eval.class.name, obj, errorLoc)
-			}
-			return eval
+		val eval = tryEvaluation(expr, obj, errorLoc)
+		if (!(eval instanceof Number)) {
+			error("For-Range needs numerical bounds but was given type " + eval.class.name, obj, errorLoc)
+		}
+		return eval
+	}
+
+	@Check
+	def warnEmptyForLoop(ForBody body){
+		if(body.commands.empty){
+			warning("empty for-loop", body.eContainer, MGLangPackage.Literals.FOR_STATEMENT__HEAD)
+		}
 	}
 
 	@Check
 	def checkBooleanWhen(CaseWithCast caze) {
 		if (caze.when !== null) {
-			try{
-			val res = tryEvaluation(caze.when, caze, MGLangPackage.Literals.CASE_WITH_CAST__WHEN) 
-			if (!(res instanceof Boolean)) {
-				error("Needed boolean value for conditional expression", MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
-			}
-			}catch(MismatchingTypesException e){
+			try {
+				val res = tryEvaluation(caze.when, caze, MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
+				if (!(res instanceof Boolean)) {
+					error("Needed boolean value for conditional expression",
+						MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
+				}
+			} catch (MismatchingTypesException e) {
 				error(e.message, caze, MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
 			}
 		}
 	}
 
 	@Check
-	def checkForImportConclicts(Import imp) {
+	def checkForImportConflicts(Import imp) {
 		var imports = EcoreUtil2.getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import)
 		imports.remove(imp)
 		val duplicateClasses = checkImportsForDuplicates(imports, imp)
@@ -121,7 +134,6 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 	}
-
 
 	@Check
 	def matchingParameterArguments(PatternCall pc) {
@@ -174,19 +186,20 @@ class MGLangValidator extends AbstractMGLangValidator {
 		// TODO Check parameter types ?
 		}
 	}
-		
-	def tryEvaluation(ArithmeticExpression expr, EObject errorObj, EReference errorLoc){
-		try{
+
+	def tryEvaluation(ArithmeticExpression expr, EObject errorObj, EReference errorLoc) {
+		try {
 			val eval = calc.evaluate(expr)
 			return eval
-		} catch (MismatchingTypesException e){
+		} catch (MismatchingTypesException e) {
 			error(e.message, errorObj, errorLoc)
 		}
 	}
 
-	def private isTypeMatchingWithParameter(ArithmeticExpression givenExpression, Parameter neededObj, EObject errorObj, EReference errorLoc) {
-		val eval = tryEvaluation(givenExpression, errorObj, errorLoc) 
-		
+	def private isTypeMatchingWithParameter(ArithmeticExpression givenExpression, Parameter neededObj, EObject errorObj,
+		EReference errorLoc) {
+		val eval = tryEvaluation(givenExpression, errorObj, errorLoc)
+
 		if (eval instanceof EOperation) {
 			// val op = eval as EOperation
 			return true; // TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection? ==> Possible do this only at runtime and fall back to EObject in the case of conflicts
@@ -201,6 +214,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 				case DOUBLE: return eval instanceof Double
 				case STRING: return eval instanceof String
 				case CHAR: return eval instanceof Character || eval instanceof String && (eval as String).length == 1
+				case BOOLEAN: return eval instanceof Boolean
 			}
 		}
 		if (neededObj instanceof ParameterNode) {
