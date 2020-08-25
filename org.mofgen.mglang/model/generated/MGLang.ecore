@@ -275,4 +275,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnaryMinus" eSuperTypes="#//ArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//ArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

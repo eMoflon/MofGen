@@ -17,6 +17,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.mGLang.PrimitiveType
 import org.mofgen.mGLang.MGLangFactory
+import org.mofgen.mGLang.UnaryMinus
 
 class Calculator {
 
@@ -297,6 +298,17 @@ class Calculator {
 			}
 		}
 		return roc.ref
+	}
+	
+	def dispatch private internalEvaluate(UnaryMinus uMinus){
+		val eval = evaluate(uMinus.expr)
+		if(eval instanceof String){
+			throw new MismatchingTypesException("Cannot negate string.")
+		}
+		if(eval instanceof Boolean){
+			throw new MismatchingTypesException("Cannot use minus-operator on boolean value. For negation use '!' instead.")
+		}
+		return eval;
 	}
 
 	def dispatch private internalEvaluate(PatternCall pc) {

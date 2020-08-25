@@ -227,5 +227,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//FunctionCall/func"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//FunctionCall/expr"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//UnaryMinus">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//UnaryMinus/expr"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

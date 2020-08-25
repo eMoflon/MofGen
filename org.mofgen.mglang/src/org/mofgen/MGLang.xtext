@@ -183,7 +183,7 @@ RelationExpression returns ArithmeticExpression:
 
 BaseExpr returns ArithmeticExpression:
 	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
-	expr=ArithmeticExpression ')' | Literal | RefOrCall | PatternCall;
+	expr=ArithmeticExpression ')' | {UnaryMinus} '-' expr=BaseExpr | Literal | RefOrCall | PatternCall;
 
 Literal:
 	BooleanLiteral | StringLiteral | NumberLiteral;
@@ -202,7 +202,7 @@ enum MathFunc:
 	SQRT='sqrt' | ABS='abs';
 
 enum PrimitiveType:
-	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' | BOOLEAN='boolean' //TODO: String as Primitive? (and therefore also better lowercase?)
+	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' | BOOLEAN='boolean' //String as Primitive? (and therefore also better lowercase?)
 ;
 
 terminal DOUBLE returns ecore::EDouble:
