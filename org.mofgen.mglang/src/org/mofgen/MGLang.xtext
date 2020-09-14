@@ -14,11 +14,10 @@ FileCommand:
 ;
 
 Import:
-	'import' uri=STRING 'as' name=ID;
+	IMPORT_KW uri=STRING 'as' name=ID;
 
-//TODO Config-Block needed or rather only use home-oneliner?
 Config:
-	{Config} 'config' '(' ')' '{'
+	{Config} CONFIG_KW '(' ')' '{'
 	(expressions += ConfigExpression)*
 	'}'
 	;
@@ -36,7 +35,7 @@ UseProjectAsHomeExpression:
 ;
 
 Pattern:
-	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands += PatternCommand )* '}'
+	PATTERN_OPENER name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands += PatternCommand )* '}'
 	(return=PatternReturn)?;
 
 PatternCommand:
@@ -44,7 +43,7 @@ PatternCommand:
 ;
 
 PatternReturn:
-	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
+	{PatternReturn} RETURN_KW THIS_KW ('.' returnValue=[Node])?;
 
 ParamManipulation:
 	param=[ParameterNode] content=NodeContent;
@@ -62,7 +61,7 @@ NodeReferenceOrAssignmentOrControlFlow:
 	(PatternNodeReference | Assignment | Switch);
 
 PatternNodeReference:
-	type=[ecore::EReference] '->' target=[Node];
+	type=[ecore::EReference] REFERENCE_OP target=[Node];
 
 Assignment:
 	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression
@@ -85,7 +84,7 @@ RefParams:
 	params += ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
 Generator:
-	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
+	{Generator} GEN_OPENER '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
 	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable | VariableManipulation | CollectionManipulation;
@@ -102,11 +101,11 @@ PatternVariable:
 	type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall;
 
 Variable:
-	'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression
+	VARIABLE_KW name=ID ASSIGNMENT_OP value=ArithmeticExpression
 ;
 
 ForStatement:
-	'for' head=ForHead '{' body=ForBody '}';
+	FOR_KW head=ForHead '{' body=ForBody '}';
 
 ForHead:
 	RangeForHead | ForEachHead | ListForHead;
@@ -118,7 +117,7 @@ ForRange:
 	start=ArithmeticExpression ':' end=ArithmeticExpression;
 
 ForEachHead:
-	src=RefOrCall '-' eref=[ecore::EReference] '->' iteratorVar=ID;
+	src=RefOrCall '-' eref=[ecore::EReference] REFERENCE_OP iteratorVar=ID;
 
 ListForHead:
 	iteratorVar=ID 'in' list=[List]
@@ -135,25 +134,25 @@ Switch:
 	IfElseSwitch | SwitchCase;
 
 IfElseSwitch:
-	'switch' '{' (cases+=IfElseCase)+ (default=Default)? '}';
+	SWITCH_KW '{' (cases+=IfElseCase)+ (default=Default)? '}';
 
 IfElseCase:
-	'case' val=ArithmeticExpression ':' body=CaseBody;
+	CASE_KW val=ArithmeticExpression ':' body=CaseBody;
 
 Default:
-	'default' ':' CaseBody;
+	DEFAULT_KW ':' CaseBody;
 
 SwitchCase:
-	'switch' '(' attribute=RefOrCall ')' '{' (cases+=Case)+ (default=Default)? '}';
+	SWITCH_KW '(' attribute=RefOrCall ')' '{' (cases+=Case)+ (default=Default)? '}';
 
 Case:
 	CaseWithCast | CaseWithoutCast;
 
 CaseWithCast:
-	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=CaseBody;
+	CASE_KW node=Node (CASE_CONDITION_KW when=ArithmeticExpression)? ':' body=CaseBody;
 
 CaseWithoutCast:
-	'case' val=ArithmeticExpression ':' body=CaseBody;
+	CASE_KW val=ArithmeticExpression ':' body=CaseBody;
 
 CaseBody:
 	{CaseBody} '{' (expressions+=SwitchExpression)* '}' | expressions+=SwitchExpression;
@@ -162,14 +161,14 @@ Collection:
 	List | Map;
 
 List:
-	'List' name=ID (defOrDecl=ListDefOrDecl)?;
+	LIST_KW name=ID (defOrDecl=ListDefOrDecl)?;
 
 ListDefOrDecl:
 	ListDefinition | ListDeclaration
 ;
 
 ListDeclaration:
-	'of' type=[ecore::EClass]
+	COLL_TYPE_KW type=[ecore::EClass]
 ;
 
 ListDefinition:
@@ -180,14 +179,14 @@ ListAdHoc:
 ;
 
 Map:
-	'Map' name=ID (createdBy=MapDefOrDecl)?;
+	MAP_KW name=ID (createdBy=MapDefOrDecl)?;
 
 MapDefOrDecl:
 	MapDefinition | MapDeclaration
 ;
 
 MapDeclaration:
-	'of' keyType=[ecore::EClass] '->' entryType=[ecore::EClass] //TODO: How to signal key to entry relation?
+	COLL_TYPE_KW keyType=[ecore::EClass] MAPPING_OP entryType=[ecore::EClass] //TODO: How to signal key to entry relation?
 ;
 
 MapDefinition:
@@ -275,3 +274,70 @@ enum PrimaryOp:
 terminal ASSIGNMENT_OP:
 	'=';
 
+terminal IMPORT_KW:
+	'import'
+;
+
+terminal CONFIG_KW:
+	'config'
+;
+
+terminal RETURN_KW:
+	'return'
+;
+
+terminal THIS_KW:
+	'this'
+;
+
+terminal REFERENCE_OP:
+	'->'
+;
+
+terminal MAPPING_OP:
+	'->'
+;
+
+terminal VARIABLE_KW:
+	'var'
+;
+
+terminal FOR_KW:
+	'for'
+;
+
+terminal CASE_KW:
+	'case'
+;
+
+terminal SWITCH_KW:
+	'switch'
+;
+
+terminal GEN_OPENER:
+	'gen'
+;
+
+terminal CASE_CONDITION_KW:
+	'when'
+;
+
+terminal COLL_TYPE_KW:
+	'of'
+;
+
+terminal LIST_KW:
+	'List'
+;
+
+terminal MAP_KW:
+	'Map'
+;
+
+terminal DEFAULT_KW:
+	'default'
+;
+
+terminal PATTERN_OPENER:
+	'pattern'
+;
