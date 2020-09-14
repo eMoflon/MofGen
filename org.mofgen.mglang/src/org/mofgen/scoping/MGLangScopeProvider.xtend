@@ -29,6 +29,10 @@ import org.mofgen.mGLang.Assignment
 import org.eclipse.emf.ecore.EEnum
 import org.mofgen.mGLang.ListForHead
 import org.mofgen.mGLang.ForEachHead
+import org.mofgen.mGLang.CollectionManipulation
+import org.mofgen.mGLang.VariableManipulation
+import org.mofgen.mGLang.ListDeclaration
+import org.mofgen.mGLang.MapDeclaration
 
 /**
  * This class contains custom scoping description.
@@ -75,12 +79,69 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isForEachHeadERef(context, reference)) {
 			return getScopeForForEachHeadERef(context as ForEachHead)
 		}
+		if(isCollectionManipulationTrg(context, reference)){
+			return getScopeForCollectionManipulationTrg(context as CollectionManipulation)
+		}
+		if(isCollectionManipulationOp(context, reference)){
+			return getScopeForCollectionManipulationOp(context as CollectionManipulation)
+		}
+		if(isVariableManipulationVar(context, reference)){
+			return getScopeForVariableManipulationVar(context as VariableManipulation)
+		}
+		if(isListDeclarationType(context, reference)){
+			return getScopeForListDeclarationType(context as ListDeclaration)
+		}
+		if(isMapDeclarationKeyType(context, reference)){
+			return getScopeForMapDeclarationKeyType(context as MapDeclaration)
+		}
+		if(isMapDeclarationEntryType(context, reference)){
+			return getScopeForMapDeclarationEntryType(context as MapDeclaration)
+		}
 
 		return super.getScope(context, reference)
 	}
+	
+	def getScopeForListDeclarationType(ListDeclaration decl){
+		val file = getRootFile(decl)
+		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
+	}
+	
+	def getScopeForMapDeclarationKeyType(MapDeclaration decl){
+		val file = getRootFile(decl)
+		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
+	}
+	
+	def getScopeForMapDeclarationEntryType(MapDeclaration decl){
+		val file = getRootFile(decl)
+		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
+	}
+
+	def getScopeForCollectionManipulationTrg(CollectionManipulation cm){
+		val container = EcoreUtil2.getContainerOfType(cm, Generator)
+		val colls = EcoreUtil2.getAllContentsOfType(container, Collection)
+		return Scopes.scopeFor(colls)
+	}
+	
+	def getScopeForCollectionManipulationOp(CollectionManipulation cm){
+		val trg = cm.trg
+		if(trg instanceof Map){
+			val ops = CollectionModelPackage.Literals.MAP.EAllOperations
+			return Scopes.scopeFor(ops)
+		}
+		if(trg instanceof List){
+			val ops = CollectionModelPackage.Literals.LIST.EAllOperations
+			return Scopes.scopeFor(ops)
+		}
+		return IScope.NULLSCOPE
+	}
+	
+	def getScopeForVariableManipulationVar(VariableManipulation vm){
+		val container = EcoreUtil2.getContainerOfType(vm, Generator)
+		val vars = EcoreUtil2.getAllContentsOfType(container, Variable)
+		return Scopes.scopeFor(vars)
+	}
 
 	def getScopeForForEachHeadERef(ForEachHead head) {
-
 		val src = head.src
 		if (src !== null) {
 			val ref = src.ref
@@ -335,6 +396,30 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	def isForEachHeadERef(EObject context, EReference reference) {
 		return context instanceof ForEachHead && reference == MGLangPackage.Literals.FOR_EACH_HEAD__EREF
+	}
+	
+	def isCollectionManipulationTrg(EObject context, EReference reference){
+		return context instanceof CollectionManipulation && reference == MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG
+	}
+	
+	def isCollectionManipulationOp(EObject context, EReference reference){
+		return context instanceof CollectionManipulation && reference == MGLangPackage.Literals.COLLECTION_MANIPULATION__OP
+	}
+	
+	def isVariableManipulationVar(EObject context, EReference reference){
+		return context instanceof VariableManipulation && reference == MGLangPackage.Literals.VARIABLE_MANIPULATION__VAR
+	}
+	
+	def isListDeclarationType(EObject context, EReference reference){
+		return context instanceof ListDeclaration && reference == MGLangPackage.Literals.LIST_DECLARATION__TYPE
+	}
+	
+	def isMapDeclarationKeyType(EObject context, EReference reference){
+		return context instanceof MapDeclaration && reference == MGLangPackage.Literals.MAP_DECLARATION__KEY_TYPE
+	}
+	
+	def isMapDeclarationEntryType(EObject context, EReference reference){
+		return context instanceof MapDeclaration && reference == MGLangPackage.Literals.MAP_DECLARATION__ENTRY_TYPE
 	}
 
 	def getRootFile(EObject context) {

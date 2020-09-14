@@ -16,6 +16,7 @@ FileCommand:
 Import:
 	'import' uri=STRING 'as' name=ID;
 
+//TODO Config-Block needed or rather only use home-oneliner?
 Config:
 	{Config} 'config' '(' ')' '{'
 	(expressions += ConfigExpression)*
@@ -23,7 +24,15 @@ Config:
 	;
 
 ConfigExpression:
-	'test'	//TODO
+	HomeExpression | UseProjectAsHomeExpression
+;
+
+HomeExpression:
+	'home' ASSIGNMENT_OP uri=STRING
+;
+
+UseProjectAsHomeExpression:
+	'useProjectLocationAsHome' ASSIGNMENT_OP val = BooleanLiteral
 ;
 
 Pattern:
@@ -79,7 +88,15 @@ Generator:
 	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
-	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable;
+	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable | VariableManipulation | CollectionManipulation;
+
+CollectionManipulation:
+	trg=[Collection] '.' op=[ecore::EOperation] '(' (params = RefParams)? ')'
+;
+
+VariableManipulation:
+	var=[Variable] ASSIGNMENT_OP val=ArithmeticExpression	
+;
 
 PatternVariable:
 	type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall;
@@ -145,23 +162,39 @@ Collection:
 	List | Map;
 
 List:
-	'List' name=ID (ASSIGNMENT_OP createdBy=ListAssignment)?;
+	'List' name=ID (defOrDecl=ListDefOrDecl)?;
 
-ListAssignment:
-	ListAdHoc | RefOrCall;
+ListDefOrDecl:
+	ListDefinition | ListDeclaration
+;
+
+ListDeclaration:
+	'of' type=[ecore::EClass]
+;
+
+ListDefinition:
+	ASSIGNMENT_OP (ListAdHoc | RefOrCall);	//Can lists even be returned by any calls or is this redundant?
 
 ListAdHoc:
-	'[' elements+=ArithmeticExpression (',' elements+=ArithmeticExpression)* ']' //TODO Allow empty lists? --> Probably have no purpose here since one will not be able to manipulate them, right?
+	{ListAdHoc} '[' (elements+=ArithmeticExpression (',' elements+=ArithmeticExpression)*)? ']'
 ;
 
 Map:
-	'Map' name=ID (ASSIGNMENT_OP createdBy=MapAssignment)?;
+	'Map' name=ID (createdBy=MapDefOrDecl)?;
 
-MapAssignment:
-	MapAdHoc | RefOrCall;	
+MapDefOrDecl:
+	MapDefinition | MapDeclaration
+;
+
+MapDeclaration:
+	'of' keyType=[ecore::EClass] '->' entryType=[ecore::EClass] //TODO: How to signal key to entry relation?
+;
+
+MapDefinition:
+	ASSIGNMENT_OP (MapAdHoc | RefOrCall);	
 
 MapAdHoc:
-	'[' entries+=MapTupel (',' entries+=MapTupel)* ']';
+	{MapAdHoc} '[' (entries+=MapTupel (',' entries+=MapTupel)*)? ']';
 
 MapTupel:
 	'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')';
@@ -198,7 +231,7 @@ StringLiteral:
 	val = STRING;
 
 NumberLiteral:
-	val = DOUBLE; //TODO: Negative Numbers?
+	val = DOUBLE;
 	
 enum MathFunc:
 	SQRT='sqrt' | ABS='abs';

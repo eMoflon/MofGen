@@ -15,8 +15,16 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Config">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expressions" unique="false"
-        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
+        eType="#//ConfigExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConfigExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="HomeExpression" eSuperTypes="#//ConfigExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uri" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UseProjectAsHomeExpression" eSuperTypes="#//ConfigExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//BooleanLiteral"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Pattern" eSuperTypes="#//FileCommand">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -73,7 +81,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="srcModel" eType="#//Import"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//ListAssignment #//MapAssignment #//ArithmeticExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//ListDefinition #//MapDefinition #//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//RefOrCall"
         containment="true"/>
@@ -92,6 +100,17 @@
         eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GeneratorExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CollectionManipulation" eSuperTypes="#//GeneratorExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="trg" eType="#//Collection"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="op" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="params" eType="#//RefParams"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VariableManipulation" eSuperTypes="#//GeneratorExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternVariable" eSuperTypes="#//GeneratorExpression #//SwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Pattern"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -177,20 +196,29 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="List" eSuperTypes="#//Collection">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="#//ListAssignment"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="defOrDecl" eType="#//ListDefOrDecl"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ListAssignment"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ListAdHoc" eSuperTypes="#//ListAssignment">
+  <eClassifiers xsi:type="ecore:EClass" name="ListDefOrDecl"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ListDeclaration" eSuperTypes="#//ListDefOrDecl">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ListDefinition" eSuperTypes="#//ListDefOrDecl"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ListAdHoc" eSuperTypes="#//ListDefinition">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//ArithmeticExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Map" eSuperTypes="#//Collection">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="#//MapAssignment"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="#//MapDefOrDecl"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MapAssignment"/>
-  <eClassifiers xsi:type="ecore:EClass" name="MapAdHoc" eSuperTypes="#//MapAssignment">
+  <eClassifiers xsi:type="ecore:EClass" name="MapDefOrDecl"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MapDeclaration" eSuperTypes="#//MapDefOrDecl">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="keyType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entryType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MapDefinition" eSuperTypes="#//MapDefOrDecl"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MapAdHoc" eSuperTypes="#//MapDefinition">
     <eStructuralFeatures xsi:type="ecore:EReference" name="entries" upperBound="-1"
         eType="#//MapTupel" containment="true"/>
   </eClassifiers>
