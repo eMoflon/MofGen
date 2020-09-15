@@ -57,6 +57,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternCall" eSuperTypes="#//GeneratorExpression #//SwitchExpression #//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="called" eType="#//Pattern"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="params" eType="#//PatternCallParameters"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCallParameters">
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//ArithmeticExpression" containment="true"/>
   </eClassifiers>

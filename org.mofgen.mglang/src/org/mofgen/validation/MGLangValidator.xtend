@@ -4,7 +4,6 @@
 package org.mofgen.validation
 
 import com.google.inject.Inject
-import java.util.List
 import org.eclipse.emf.ecore.EOperation
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.validation.Check
@@ -31,6 +30,10 @@ import org.mofgen.mGLang.PatternCommand
 import org.mofgen.mGLang.Switch
 import org.mofgen.mGLang.IfElseSwitch
 import org.mofgen.mGLang.SwitchCase
+import org.mofgen.interpreter.TypeRegistry
+import org.mofgen.mGLang.List
+import org.mofgen.typeModel.util.TypeModelAdapterFactory
+import org.mofgen.mGLang.Map
 
 /**
  * This class contains custom validation rules. 
@@ -105,7 +108,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		}
 	}
 
-	def checkImportsForDuplicates(List<Import> imps, Import otherImp) {
+	def checkImportsForDuplicates(java.util.List<Import> imps, Import otherImp) {
 		var conflicts = newLinkedList()
 
 		if(imps.isEmpty) return conflicts
@@ -129,11 +132,13 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 			try {
 				val assignedValue = MofgenModelUtils.getEClassForInternalModel(typeChecker.evaluate(ass.value))
-				if (assignedValue != TypeModelPackage.Literals.ENUM_LITERAL && attributeType == TypeModelPackage.Literals.ENUM) {
+				if (assignedValue != TypeModelPackage.Literals.ENUM_LITERAL &&
+					attributeType == TypeModelPackage.Literals.ENUM) {
 					error("Can only assign enum values to enum attribute " + attribute.name,
 						MGLangPackage.Literals.ASSIGNMENT__VALUE)
 				} else {
-					if (assignedValue == TypeModelPackage.Literals.ENUM_LITERAL && attributeType != TypeModelPackage.Literals.ENUM) {
+					if (assignedValue == TypeModelPackage.Literals.ENUM_LITERAL &&
+						attributeType != TypeModelPackage.Literals.ENUM) {
 						error("Cannot assign enum value to non-enum attribute " + attribute.name,
 							MGLangPackage.Literals.ASSIGNMENT__VALUE)
 					}
@@ -141,7 +146,6 @@ class MGLangValidator extends AbstractMGLangValidator {
 			} catch (MismatchingTypesException e) {
 				error(e.message, ass, MGLangPackage.Literals.ASSIGNMENT__VALUE)
 			}
-
 		}
 	}
 
@@ -154,8 +158,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 		if (pc.called.parameters !== null) {
 			neededParams = pc.called.parameters.length
 		}
-		if (pc.params !== null) {
-			actualParams = pc.params.length
+		if (pc.params.params !== null) {
+			actualParams = pc.params.params.length
 		}
 
 		if (neededParams != actualParams) {
@@ -165,74 +169,92 @@ class MGLangValidator extends AbstractMGLangValidator {
 		}
 
 		// check parameter types
-		for (i : 0 ..< pc.params.length) {
-			val givenParameterExpression = pc.params.get(i)
+		for (i : 0 ..< pc.params.params.length) {
+			val givenParameterExpression = pc.params.params.get(i)
 			val neededParameter = pc.called.parameters.get(i)
 
-		val givenParameterType = typeChecker.evaluate(givenParameterExpression)
+			val givenParameterType = typeChecker.evaluate(givenParameterExpression)
 			val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
 
-			if (givenParameterType instanceof EClass && neededParameterType instanceof EClass && 
+			if (givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
 				!(neededParameterType.isSuperTypeOf(givenParameterType))) {
 				// TODO Is it right that any object fits into an eobject parameter?
 				if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
 					if (givenParameterType !== neededParameterType) {
 						error("Given type " + givenParameterType.name + " does not match needed type " +
-							neededParameterType.name, MGLangPackage.Literals.PATTERN_CALL__CALLED)
+							neededParameterType.name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 					}
 				}
 			}
 		}
 	}
 
-//	@Check
-//	def matchingParameters_roc(RefOrCall roc) {
-//		if (roc.ref instanceof EOperation) {
-//			if (!roc.bracesSet) {
-//				error("Missing parameter list", MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-//				return;
-//			} else {
-//				val op = roc.ref as EOperation
-//				val givenParams = roc.params.params
-//				val neededParams = op.EParameters
-//
-//				// Check parameter count
-//				if (givenParams.size != neededParams.size) {
-//					error("Method " + op.name + " expects " + neededParams.size + " parameters but was given " +
-//						givenParams.size, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-//					return;
-//				}
-//
-//				// Check parameter types
-//				for (var i = 0; i < givenParams.size; i++) {
-//					try {
-//						val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
-//							typeChecker.evaluate(givenParams.get(i)))
-//						val neededParameterType = MofgenModelUtils.getEClassForInternalModel(neededParams.get(i).EType)
-//
-//						if (!(givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
-//							neededParameterType.isSuperTypeOf(givenParameterType))) {
-//							// TODO Is it right that any object fits into an eobject parameter?
-//							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
-//								if (givenParameterType !== neededParameterType) {
-//									error(
-//										"Given parameter type " + givenParameterType.name +
-//											" does not match needed parameter type " + neededParameterType.name,
-//										MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-//								}
-//							}
-//						}
-//					} catch (MismatchingTypesException e) {
-//						error(e.message, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-//					}
-//				}
-//			}
-//		} else {
-//			if (roc.bracesSet) {
-//				error(roc.ref + " is not a method", MGLangPackage.Literals.REF_OR_CALL__BRACES_SET) // TODO Correct highlighting?
-//				return;
-//			}
-//		}
-//	}
+	@Check
+	def matchingParameters_roc(RefOrCall roc) {
+		if (roc.ref instanceof EOperation) {
+			if (!roc.bracesSet) {
+				error("Missing parameter list", MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+				return;
+			} else {
+				val op = roc.ref as EOperation
+				val givenParams = roc.params.params
+				var neededParams = newLinkedList()
+
+				if (op == TypeModelPackage.Literals.LIST___INDEX_OF__EOBJECT ||
+					op == TypeModelPackage.Literals.LIST___ADD__EOBJECT ||
+					op == TypeModelPackage.Literals.LIST___REMOVE__EOBJECT ||
+					op == TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT) {
+					neededParams.add(TypeRegistry.getListType(roc.target.ref as List))
+				} else if (op == TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT ||
+					op == TypeModelPackage.Literals.MAP___GET__EOBJECT) {
+					neededParams.add(TypeRegistry.getMapKeyType(roc.target.ref as Map))
+				} else if (op == TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT ||
+					op == TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT) {
+					neededParams.add(TypeRegistry.getMapEntryType(roc.target.ref as Map))
+				} else if (op == TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT) {
+					neededParams.add(TypeRegistry.getMapKeyType(roc.target.ref as Map))
+					neededParams.add(TypeRegistry.getMapEntryType(roc.target.ref as Map))
+				} else {
+					neededParams.addAll(op.EParameters.map[x|x.EType])
+				}
+
+				// Check parameter count
+				if (givenParams.size != neededParams.size) {
+					error("Method " + op.name + " expects " + neededParams.size + " parameters but was given " +
+						givenParams.size, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+					return;
+				}
+
+				// Check parameter types
+				for (var i = 0; i < givenParams.size; i++) {
+					try {
+						val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
+							typeChecker.evaluate(givenParams.get(i)))
+						val neededParameterType = MofgenModelUtils.getEClassForInternalModel(neededParams.get(i))
+
+						if (!(givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
+							neededParameterType.isSuperTypeOf(givenParameterType))) {
+							// TODO Is it right that any object fits into an eobject parameter?
+							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
+								if (givenParameterType !== neededParameterType) {
+									error(
+										"Given parameter type " + givenParameterType.name +
+											" does not match needed parameter type " + neededParameterType.name,
+										MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+								}
+							}
+						}
+					} catch (MismatchingTypesException e) {
+						error(e.message, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+					}
+				}
+			}
+		} else {
+			if (roc.bracesSet) {
+				error(roc.ref + " is not a method", MGLangPackage.Literals.REF_OR_CALL__BRACES_SET) // TODO Correct highlighting?
+				return;
+			}
+		}
+	}
 
 }

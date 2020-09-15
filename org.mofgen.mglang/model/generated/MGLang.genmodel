@@ -86,6 +86,9 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCall/called"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCall/params"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//PatternCallParameters">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCallParameters/params"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//NodeReferenceOrAssignmentOrControlFlow"/>
     <genClasses ecoreClass="MGLang.ecore#//PatternNodeReference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReference/type"/>

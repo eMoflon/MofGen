@@ -22,6 +22,13 @@ import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.Collection;
 
+/**
+ * Keeps track of the types of different Maps and Lists. Updated on every
+ * requesting method call.
+ * 
+ * @author tobnie
+ *
+ */
 public class TypeRegistry {
 
 	public static TypeCalculator typeCalc = new TypeCalculator();
@@ -29,23 +36,27 @@ public class TypeRegistry {
 	public static HashMap<Map, EClass> keyTypes;
 	public static HashMap<Map, EClass> entryTypes;
 
-	public static void init(MofgenFile file) {
-		listTypes = new HashMap<>();
-		keyTypes = new HashMap<>();
-		entryTypes = new HashMap<>();
-		fillRegistry(file);
+	public static void update(MofgenFile file) {
+		if (listTypes == null) {
+			listTypes = new HashMap<>();
+			keyTypes = new HashMap<>();
+			entryTypes = new HashMap<>();
+		}
+		updateListRegistry(file);
+		updateMapRegistry(file);
 	}
 
-	private static void fillRegistry(MofgenFile file) {
-		java.util.List<Collection> colls = EcoreUtil2.getAllContentsOfType(file, Collection.class);
+	private static void updateListRegistry(MofgenFile file) {
+		java.util.List<List> lists = EcoreUtil2.getAllContentsOfType(file, List.class);
+		for (List list : lists) {
+			putList(list);
+		}
+	}
 
-		for (Collection coll : colls) {
-			if (coll instanceof List) {
-				putList((List) coll);
-			}
-			if (coll instanceof Map) {
-				putMap((Map) coll);
-			}
+	private static void updateMapRegistry(MofgenFile file) {
+		java.util.List<Map> maps = EcoreUtil2.getAllContentsOfType(file, Map.class);
+		for (Map map : maps) {
+			putMap(map);
 		}
 	}
 
@@ -54,11 +65,11 @@ public class TypeRegistry {
 		if (defOrDecl instanceof ListDefinition) {
 			if (defOrDecl instanceof ListAdHoc) {
 				EList<ArithmeticExpression> elements = ((ListAdHoc) defOrDecl).getElements();
-				if(elements.isEmpty()) {
+				if (elements.isEmpty()) {
 					listTypes.put(list, EcorePackage.Literals.EOBJECT);
 					return;
 				}
-				
+
 				EClass listType = typeCalc.evaluate(elements.get(0));
 				for (int i = 1; i < elements.size(); i++) {
 					EClass clazz = typeCalc.evaluate(elements.get(i));
@@ -85,14 +96,14 @@ public class TypeRegistry {
 		MapDefOrDecl defOrDecl = map.getDefOrDecl();
 		if (defOrDecl instanceof MapDefinition) {
 			if (defOrDecl instanceof MapAdHoc) {
-				
+
 				EList<MapTupel> elements = ((MapAdHoc) defOrDecl).getEntries();
-				if(elements.isEmpty()) {
+				if (elements.isEmpty()) {
 					keyTypes.put(map, EcorePackage.Literals.EOBJECT);
 					entryTypes.put(map, EcorePackage.Literals.EOBJECT);
 					return;
 				}
-				
+
 				// find keyType
 				EClass keyType = typeCalc.evaluate(elements.get(0).getKey());
 				for (int i = 1; i < elements.size(); i++) {
@@ -103,7 +114,7 @@ public class TypeRegistry {
 					}
 				}
 				keyTypes.put(map, keyType);
-				
+
 				// find entryType
 				EClass entryType = typeCalc.evaluate(elements.get(0).getValue());
 				for (int i = 1; i < elements.size(); i++) {
@@ -113,7 +124,7 @@ public class TypeRegistry {
 						break;
 					}
 				}
-				keyTypes.put(map, entryType);
+				entryTypes.put(map, entryType);
 			} else {
 				// Map by RefOrCall
 				// TODO: Can this even happen? Probably not! --> eventually remove from grammar
@@ -131,23 +142,17 @@ public class TypeRegistry {
 	}
 
 	public static EClass getListType(List list) {
-		if(listTypes == null) {
-			init((MofgenFile)EcoreUtil2.getRootContainer(list));
-		}
+		update((MofgenFile) EcoreUtil2.getRootContainer(list));
 		return listTypes.get(list);
 	}
 
 	public static EClass getMapKeyType(Map map) {
-		if(listTypes == null) {
-			init((MofgenFile)EcoreUtil2.getRootContainer(map));
-		}
+		update((MofgenFile) EcoreUtil2.getRootContainer(map));
 		return keyTypes.get(map);
 	}
 
 	public static EClass getMapEntryType(Map map) {
-		if(listTypes == null) {
-			init((MofgenFile)EcoreUtil2.getRootContainer(map));
-		}
+		update((MofgenFile) EcoreUtil2.getRootContainer(map));
 		return entryTypes.get(map);
 	}
 
