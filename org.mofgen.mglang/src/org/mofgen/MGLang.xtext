@@ -46,7 +46,7 @@ PatternReturn:
 	{PatternReturn} RETURN_KW THIS_KW ('.' returnValue=[Node])?;
 
 ParamManipulation:
-	param=[ParameterNode] content=NodeContent;
+	param=[ParameterNode] content=NodeContent;	// TODO wollten wir das nicht eigentlich verbieten?
 
 Node:
 	(srcModel=[Import]'.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP createdBy=PatternCall))?;
@@ -232,7 +232,7 @@ StringLiteral:
 NumberLiteral:
 	val = DOUBLE;
 	
-enum MathFunc:
+enum MathFunc:	//TODO Replace by methods of java.math or similar
 	SQRT='sqrt' | ABS='abs';
 
 enum PrimitiveType:

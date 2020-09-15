@@ -17,7 +17,7 @@ import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.CaseWithCast
 import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.List
-import org.mofgen.collectionModel.CollectionModelPackage
+import org.mofgen.typeModel.TypeModelPackage
 import java.util.ArrayList
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.Generator
@@ -125,11 +125,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	def getScopeForCollectionManipulationOp(CollectionManipulation cm){
 		val trg = cm.trg
 		if(trg instanceof Map){
-			val ops = CollectionModelPackage.Literals.MAP.EAllOperations
+			val ops = TypeModelPackage.Literals.MAP.EAllOperations
 			return Scopes.scopeFor(ops)
 		}
 		if(trg instanceof List){
-			val ops = CollectionModelPackage.Literals.LIST.EAllOperations
+			val ops = TypeModelPackage.Literals.LIST.EAllOperations
 			return Scopes.scopeFor(ops)
 		}
 		return IScope.NULLSCOPE
@@ -147,7 +147,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			val ref = src.ref
 			if (ref !== null) {
 				if (ref instanceof Map) {
-					return Scopes.scopeFor(CollectionModelPackage.Literals.MAP.EReferences)
+					return Scopes.scopeFor(TypeModelPackage.Literals.MAP.EReferences)
 				}
 				val clazz = src.ref.eClass
 				val ops = clazz.EAllOperations
@@ -314,11 +314,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 			switch ref {
 				Map: {
-					val ops = CollectionModelPackage.Literals.MAP.EAllOperations
+					val ops = TypeModelPackage.Literals.MAP.EAllOperations
 					return Scopes.scopeFor(ops)
 				}
 				List: {
-					val ops = CollectionModelPackage.Literals.LIST.EAllOperations
+					val ops = TypeModelPackage.Literals.LIST.EAllOperations
 					return Scopes.scopeFor(ops)
 				}
 				Import: {

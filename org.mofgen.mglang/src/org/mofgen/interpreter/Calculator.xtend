@@ -17,10 +17,18 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.mGLang.PrimitiveType
 import org.mofgen.mGLang.UnaryMinus
+import com.google.inject.Inject
 
 class Calculator {
 
+	@Inject TypeCalculator typeChecker
+	
 	def Object evaluate(ArithmeticExpression expr) {
+		
+		// This will already throw an exception if any types are not compatible
+		typeChecker.evaluate(expr)
+		
+		//Actual calculation
 		val result = internalEvaluate(expr)
 		switch (result.class) {
 			case Double: return result as Double

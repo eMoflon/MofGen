@@ -27,7 +27,7 @@ public class MofgenModelUtils {
 	 * The set of meta-model resources loaded.
 	 */
 	private static Map<URI, Resource> metaModelResources = new HashMap<>();
-
+	
 	/**
 	 * The resource set used for loading the meta-model resources.
 	 */
