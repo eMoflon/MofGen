@@ -10,24 +10,32 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.activation.UnsupportedDataTypeException;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MofgenFile;
+import org.mofgen.mGLang.Parameter;
+import org.mofgen.mGLang.ParameterNode;
+import org.mofgen.mGLang.PrimitiveParameter;
+import org.mofgen.typeModel.TypeModelPackage;
 
 public class MofgenModelUtils {
 	/**
 	 * The set of meta-model resources loaded.
 	 */
 	private static Map<URI, Resource> metaModelResources = new HashMap<>();
-	
+
 	/**
 	 * The resource set used for loading the meta-model resources.
 	 */
@@ -130,7 +138,7 @@ public class MofgenModelUtils {
 		});
 		return types;
 	}
-	
+
 	/**
 	 * Returns all EEnums imported into the given file.
 	 * 
@@ -164,7 +172,7 @@ public class MofgenModelUtils {
 	/**
 	 * Adds the enums given by the resource m to the given list
 	 * 
-	 * @param m       - the resource to load enums from
+	 * @param m     - the resource to load enums from
 	 * @param enums - the list to add the enums to
 	 * @return true if all operations succeeded, false otherwise
 	 */
@@ -202,8 +210,7 @@ public class MofgenModelUtils {
 		loadEcoreModel(imp.getUri()).ifPresent(m -> enums.addAll(getElements(m, EEnum.class)));
 		return enums;
 	}
-	
-	
+
 	/**
 	 * Returns all objects from the given resource.
 	 * 
@@ -282,5 +289,73 @@ public class MofgenModelUtils {
 		resource.load(null);
 		EcoreUtil.resolveAll(resourceSet);
 		metaModelResources.put(uri, resource);
+	}
+
+	public static EClass getInternalParameterType(Parameter param) {
+		if (param instanceof PrimitiveParameter) {
+			PrimitiveParameter primPram = (PrimitiveParameter) param;
+			switch (primPram.getType()) {
+			case INT:
+				return TypeModelPackage.Literals.NUMBER;
+			case DOUBLE:
+				return TypeModelPackage.Literals.NUMBER;
+			case STRING:
+				return TypeModelPackage.Literals.STRING;
+			case CHAR:
+				return TypeModelPackage.Literals.STRING;
+			case BOOLEAN:
+				return TypeModelPackage.Literals.BOOLEAN;
+			default:
+				throw new IllegalArgumentException(
+						"Unexpected type " + primPram.getType() + " for parameter " + param.getName());
+			}
+		}
+		if (param instanceof ParameterNode) {
+			return getEClassForInternalModel(((ParameterNode) param).getType());
+		}
+		throw new IllegalArgumentException("Unknown parameter type for parameter " + param.getName());
+	}
+
+	public static EClass getEClassForInternalModel(EClassifier classifier) {
+		if (classifier != null && classifier instanceof EClass) {
+			return (EClass) classifier;
+		}
+		if(classifier != null && classifier instanceof EEnum) {
+			return TypeModelPackage.Literals.ENUM;
+		}
+		if (classifier != null && classifier instanceof EDataType) {
+			EDataType datatype = (EDataType) classifier;
+			if (datatype == EcorePackage.Literals.EBIG_DECIMAL)
+				return TypeModelPackage.Literals.NUMBER;
+			if (datatype == EcorePackage.Literals.EBIG_INTEGER)
+				return TypeModelPackage.Literals.NUMBER;
+			if (datatype == EcorePackage.Literals.EBYTE)
+				return TypeModelPackage.Literals.NUMBER;
+			if (datatype == EcorePackage.Literals.EDOUBLE)
+				return TypeModelPackage.Literals.NUMBER;
+			if (datatype == EcorePackage.Literals.EFLOAT)
+				return TypeModelPackage.Literals.NUMBER;
+			if (datatype == EcorePackage.Literals.EINT)
+				return TypeModelPackage.Literals.NUMBER;
+			if (datatype == EcorePackage.Literals.ELONG)
+				return TypeModelPackage.Literals.NUMBER;
+
+			// Enums
+			if (datatype == EcorePackage.Literals.EENUM)
+				return TypeModelPackage.Literals.ENUM;
+			if (datatype == EcorePackage.Literals.EENUM_LITERAL)
+				return TypeModelPackage.Literals.ENUM_LITERAL;
+
+			// Booleans
+			if (datatype == EcorePackage.Literals.EBOOLEAN)
+				return TypeModelPackage.Literals.BOOLEAN;
+
+			// Strings
+			if (datatype == EcorePackage.Literals.ESTRING)
+				return TypeModelPackage.Literals.STRING;
+			if (datatype == EcorePackage.Literals.ECHAR)
+				return TypeModelPackage.Literals.STRING;
+		}
+		throw new IllegalStateException("Could not convert eClassifier " + classifier.getName());
 	}
 }

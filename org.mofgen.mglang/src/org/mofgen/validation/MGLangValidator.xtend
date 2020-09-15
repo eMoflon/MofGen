@@ -12,24 +12,25 @@ import org.mofgen.interpreter.Calculator
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Import
 import org.mofgen.mGLang.MGLangPackage
-import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.ParameterNode
 import org.mofgen.mGLang.CaseWithCast
 import org.mofgen.mGLang.RefOrCall
-import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.Assignment
 import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EEnum
-import org.eclipse.emf.ecore.EEnumLiteral
 import org.mofgen.interpreter.MismatchingTypesException
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.ForBody
+import org.mofgen.interpreter.TypeCalculator
+import org.mofgen.typeModel.TypeModelPackage
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.EClass
+import org.mofgen.mGLang.PatternCommand
+import org.mofgen.mGLang.Switch
+import org.mofgen.mGLang.IfElseSwitch
+import org.mofgen.mGLang.SwitchCase
 
 /**
  * This class contains custom validation rules. 
@@ -39,35 +40,41 @@ import org.mofgen.mGLang.ForBody
 class MGLangValidator extends AbstractMGLangValidator {
 
 	@Inject Calculator calc
+	@Inject TypeCalculator typeChecker
 
-	// TODO Check if there are sufficient null checks so no strange errors occur in the editor
+// TODO Check if there are sufficient null checks so no strange errors occur in the editor
 	@Check
 	def validForRange(RangeForHead head) {
 		val forRange = head.range
 		if (forRange !== null) {
 			if (forRange.start !== null && forRange.end !== null) {
-				val castStart = checkForNumber(forRange.start, forRange,
-					MGLangPackage.Literals.FOR_RANGE__START) as Double
-				val castEnd = checkForNumber(forRange.end, forRange, MGLangPackage.Literals.FOR_RANGE__END) as Double
+				val start = forRange.start
+				val end = forRange.end
+				checkForNumber(forRange.start, forRange, MGLangPackage.Literals.FOR_RANGE__START)
+				checkForNumber(forRange.end, forRange, MGLangPackage.Literals.FOR_RANGE__END)
+				val castStart = calc.evaluate(start) as Double
+				val castEnd = calc.evaluate(end) as Double
 				if (castStart > castEnd) {
 					error("Limiting bound is less than starting value", MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
 				}
 			}
 		}
-
 	}
 
 	def private checkForNumber(ArithmeticExpression expr, EObject obj, EReference errorLoc) {
-		val eval = tryEvaluation(expr, obj, errorLoc)
-		if (!(eval instanceof Number)) {
-			error("For-Range needs numerical bounds but was given type " + eval.class.name, obj, errorLoc)
+		try {
+			val eval = typeChecker.evaluate(expr)
+			if (eval !== TypeModelPackage.Literals.NUMBER) {
+				error("For-Range needs numerical bounds but was given type " + eval.name, obj, errorLoc)
+			}
+		} catch (MismatchingTypesException e) {
+			error(e.message, obj, errorLoc)
 		}
-		return eval
 	}
 
 	@Check
-	def warnEmptyForLoop(ForBody body){
-		if(body.commands.empty){
+	def warnEmptyForLoop(ForBody body) {
+		if (body.commands.empty) {
 			warning("empty for-loop", body.eContainer, MGLangPackage.Literals.FOR_STATEMENT__HEAD)
 		}
 	}
@@ -76,9 +83,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def checkBooleanWhen(CaseWithCast caze) {
 		if (caze.when !== null) {
 			try {
-				val res = tryEvaluation(caze.when, caze, MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
-				if (!(res instanceof Boolean)) {
-					error("Needed boolean value for conditional expression",
+				val res = typeChecker.evaluate(caze.when)
+				if (res !== TypeModelPackage.Literals.BOOLEAN) {
+					error("Needs boolean value for conditional expression", caze,
 						MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
 				}
 			} catch (MismatchingTypesException e) {
@@ -116,27 +123,31 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def checkAttributeType(Assignment ass) {
 		val trg = ass.target
-		val assignedValue = tryEvaluation(ass.value, ass, MGLangPackage.Literals.ASSIGNMENT__VALUE)
-
 		if (trg instanceof EAttribute) {
 			val attribute = trg as EAttribute
-			val attributeType = attribute.EAttributeType
-			if (attributeType instanceof EEnum) {
-				if (!(assignedValue instanceof EEnumLiteral)) {
+			val attributeType = MofgenModelUtils.getEClassForInternalModel(attribute.EAttributeType)
+
+			try {
+				val assignedValue = MofgenModelUtils.getEClassForInternalModel(typeChecker.evaluate(ass.value))
+				if (assignedValue != TypeModelPackage.Literals.ENUM_LITERAL && attributeType == TypeModelPackage.Literals.ENUM) {
 					error("Can only assign enum values to enum attribute " + attribute.name,
 						MGLangPackage.Literals.ASSIGNMENT__VALUE)
+				} else {
+					if (assignedValue == TypeModelPackage.Literals.ENUM_LITERAL && attributeType != TypeModelPackage.Literals.ENUM) {
+						error("Cannot assign enum value to non-enum attribute " + attribute.name,
+							MGLangPackage.Literals.ASSIGNMENT__VALUE)
+					}
 				}
-			} else {
-				if (assignedValue instanceof EEnumLiteral) {
-					error("Cannot assign enum value to non-enum attribute " + attribute.name,
-						MGLangPackage.Literals.ASSIGNMENT__VALUE)
-				}
+			} catch (MismatchingTypesException e) {
+				error(e.message, ass, MGLangPackage.Literals.ASSIGNMENT__VALUE)
 			}
+
 		}
 	}
 
 	@Check
-	def matchingParameterArguments(PatternCall pc) {
+	def matchingParameters_pc(PatternCall pc) {
+		// check parameter count
 		var neededParams = 0
 		var actualParams = 0
 
@@ -150,80 +161,78 @@ class MGLangValidator extends AbstractMGLangValidator {
 		if (neededParams != actualParams) {
 			error("Pattern " + pc.called.name + " expects " + neededParams + " parameters but was given " +
 				actualParams, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
-		}
-	}
-
-	@Check
-	def matchingParameterTypes(PatternCall pc) {
-		for (i : 0 ..< pc.params.length) {
-			val given = pc.params.get(i)
-			val needed = pc.called.parameters.get(i)
-			if (isTypeMatchingWithParameter(given, needed, pc, MGLangPackage.Literals.PATTERN_CALL__PARAMS) == false) {
-				error("Given object " + given + " does not match needed type " + needed,
-					MGLangPackage.Literals.PATTERN_CALL__PARAMS)
-			}
-		}
-	}
-
-	@Check
-	def matchingParameterArguments_roc(RefOrCall roc) {
-		if (roc.ref instanceof EOperation && !roc.bracesSet) {
-			error("Missing parameter list", MGLangPackage.Literals.REF_OR_CALL__PARAMS)
 			return;
 		}
-		if (roc.ref instanceof EOperation) {
-			val op = roc.ref as EOperation
-			val givenParams = roc.params.params
-			val neededParams = op.EParameters
 
-			// Check parameter count
-			if (givenParams.size != neededParams.size) {
-				error("Method " + op.name + " expects " + neededParams.size + " parameters but was given " +
-					givenParams.size, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-				return;
-			}
+		// check parameter types
+		for (i : 0 ..< pc.params.length) {
+			val givenParameterExpression = pc.params.get(i)
+			val neededParameter = pc.called.parameters.get(i)
 
-		// TODO Check parameter types ?
-		}
-	}
+		val givenParameterType = typeChecker.evaluate(givenParameterExpression)
+			val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
 
-	def tryEvaluation(ArithmeticExpression expr, EObject errorObj, EReference errorLoc) {
-		try {
-			val eval = calc.evaluate(expr)
-			return eval
-		} catch (MismatchingTypesException e) {
-			error(e.message, errorObj, errorLoc)
-		}
-	}
-
-	def private isTypeMatchingWithParameter(ArithmeticExpression givenExpression, Parameter neededObj, EObject errorObj,
-		EReference errorLoc) {
-		val eval = tryEvaluation(givenExpression, errorObj, errorLoc)
-
-		if (eval instanceof EOperation) {
-			// val op = eval as EOperation
-			return true; // TODO Type checking with maps and lists? e.g. get? how to infer/keep track of type of collection? ==> Possible do this only at runtime and fall back to EObject in the case of conflicts
-		}
-		if (eval instanceof PatternCall) {
-			return true; // TODO Type Checking for pattern calls? --> Even allow pattern calls in parameter lists or need to separate return-value into variable?
-		}
-
-		if (neededObj instanceof PrimitiveParameter) {
-			switch (neededObj.type) {
-				case INT: return eval instanceof Double && (Math.floor(eval as Double) == eval)
-				case DOUBLE: return eval instanceof Double
-				case STRING: return eval instanceof String
-				case CHAR: return eval instanceof Character || eval instanceof String && (eval as String).length == 1
-				case BOOLEAN: return eval instanceof Boolean
+			if (givenParameterType instanceof EClass && neededParameterType instanceof EClass && 
+				!(neededParameterType.isSuperTypeOf(givenParameterType))) {
+				// TODO Is it right that any object fits into an eobject parameter?
+				if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
+					if (givenParameterType !== neededParameterType) {
+						error("Given type " + givenParameterType.name + " does not match needed type " +
+							neededParameterType.name, MGLangPackage.Literals.PATTERN_CALL__CALLED)
+					}
+				}
 			}
 		}
-		if (neededObj instanceof ParameterNode) {
-			return eval instanceof Node || eval instanceof ParameterNode
-		}
-		if (neededObj instanceof Collection) {
-			return eval instanceof Collection
-		}
-
 	}
+
+//	@Check
+//	def matchingParameters_roc(RefOrCall roc) {
+//		if (roc.ref instanceof EOperation) {
+//			if (!roc.bracesSet) {
+//				error("Missing parameter list", MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+//				return;
+//			} else {
+//				val op = roc.ref as EOperation
+//				val givenParams = roc.params.params
+//				val neededParams = op.EParameters
+//
+//				// Check parameter count
+//				if (givenParams.size != neededParams.size) {
+//					error("Method " + op.name + " expects " + neededParams.size + " parameters but was given " +
+//						givenParams.size, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+//					return;
+//				}
+//
+//				// Check parameter types
+//				for (var i = 0; i < givenParams.size; i++) {
+//					try {
+//						val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
+//							typeChecker.evaluate(givenParams.get(i)))
+//						val neededParameterType = MofgenModelUtils.getEClassForInternalModel(neededParams.get(i).EType)
+//
+//						if (!(givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
+//							neededParameterType.isSuperTypeOf(givenParameterType))) {
+//							// TODO Is it right that any object fits into an eobject parameter?
+//							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
+//								if (givenParameterType !== neededParameterType) {
+//									error(
+//										"Given parameter type " + givenParameterType.name +
+//											" does not match needed parameter type " + neededParameterType.name,
+//										MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+//								}
+//							}
+//						}
+//					} catch (MismatchingTypesException e) {
+//						error(e.message, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+//					}
+//				}
+//			}
+//		} else {
+//			if (roc.bracesSet) {
+//				error(roc.ref + " is not a method", MGLangPackage.Literals.REF_OR_CALL__BRACES_SET) // TODO Correct highlighting?
+//				return;
+//			}
+//		}
+//	}
 
 }

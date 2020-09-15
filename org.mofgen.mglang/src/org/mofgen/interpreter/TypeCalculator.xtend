@@ -18,7 +18,6 @@ import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.mGLang.PrimitiveType
 import org.mofgen.mGLang.UnaryMinus
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EClassifier
 import org.mofgen.mGLang.ParameterNode
 import org.eclipse.emf.ecore.EEnum
 import org.mofgen.typeModel.TypeModelPackage
@@ -29,8 +28,7 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EEnumLiteral
-import org.eclipse.emf.ecore.EDataType
-import javax.activation.UnsupportedDataTypeException
+import org.mofgen.utils.MofgenModelUtils
 
 class TypeCalculator {
 
@@ -224,12 +222,13 @@ class TypeCalculator {
 	}
 
 	def dispatch private internalEvaluate(RefOrCall roc) {
-		switch roc.ref {
-			case Variable:
-				return internalEvaluate((roc.ref as Variable).value)
-			case PrimitiveParameter: {
-				val primPram = roc.ref as PrimitiveParameter
-				switch primPram.type {
+		
+		var ref = roc.ref
+		switch ref {
+			 Variable :
+				return internalEvaluate(ref.value)
+			PrimitiveParameter: {
+				switch ref.type {
 					case PrimitiveType.DOUBLE,
 					case PrimitiveType.INT: {
 						return TypeModelPackage.Literals.NUMBER
@@ -243,36 +242,48 @@ class TypeCalculator {
 					}
 				}
 			}
-			case ParameterNode: {
-				val type = (roc.ref as ParameterNode).type
-				return getEClass(type)
+			ParameterNode: {
+				val type = ref.type
+				return MofgenModelUtils.getEClassForInternalModel(type)
 			}
-			case EEnum: {
-				return EcorePackage.Literals.EENUM
+			EEnum: {
+				return TypeModelPackage.Literals.ENUM
 			}
-			case EEnumLiteral: {
-				return EcorePackage.Literals.EENUM_LITERAL
+			EEnumLiteral: {
+				return TypeModelPackage.Literals.ENUM_LITERAL
 			}
-			case Node: {
+			Node: {
 				return (roc.ref as Node).type
 			}
-			case Map: {
+			Map: {
 				return TypeModelPackage.Literals.MAP
 			}
-			case List: {
+			List: {
 				return TypeModelPackage.Literals.LIST
 			}
-			case EAttribute: {
-				val eattr = roc.ref as EAttribute
-				return getEClass(eattr.EType)
+			EAttribute: {
+				return MofgenModelUtils.getEClassForInternalModel(ref.EType)
 			}
-			case EReference: {
-				val eref = roc.ref as EReference
-				return getEClass(eref.EType)
+			EReference: {
+				return MofgenModelUtils.getEClassForInternalModel(ref.EType)
 			}
-			case EOperation: {
-				val op = roc.ref as EOperation
-				return getEClass(op.EType)
+			EOperation: {
+				val op = ref
+				val trg = roc.target
+				if (trg.ref instanceof List) {
+					if (op == TypeModelPackage.Literals.LIST___GET__INT) {
+						return TypeRegistry.getListType(trg.ref as List)
+					}
+				}
+				if (trg.ref instanceof Map) {
+					if (op == TypeModelPackage.Literals.MAP___GET__EOBJECT) {
+						return TypeRegistry.getMapEntryType(trg.ref as Map)
+					}
+					if (op == TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT) {
+						return TypeRegistry.getMapKeyType(trg.ref as Map)
+					}
+				}
+				return MofgenModelUtils.getEClassForInternalModel(op.EType)
 			}
 			default: {
 				throw new IllegalStateException("Could not handle type of " + roc.ref)
@@ -296,42 +307,4 @@ class TypeCalculator {
 		return pc
 	}
 
-	def private getEClass(EClassifier classifier) {
-		if (classifier !== null && classifier instanceof EClass) {
-			return classifier as EClass
-		}
-		if (classifier !== null && classifier instanceof EDataType) {
-			val datatype = classifier as EDataType
-			switch datatype {
-				case EcorePackage.Literals.EBIG_DECIMAL:
-					return TypeModelPackage.Literals.NUMBER
-				case EcorePackage.Literals.EBIG_INTEGER:
-					return TypeModelPackage.Literals.NUMBER
-				case EcorePackage.Literals.EBYTE:
-					return TypeModelPackage.Literals.NUMBER
-				case EcorePackage.Literals.EDOUBLE:
-					return TypeModelPackage.Literals.NUMBER
-				case EcorePackage.Literals.EFLOAT:
-					return TypeModelPackage.Literals.NUMBER
-				case EcorePackage.Literals.EINT:
-					return TypeModelPackage.Literals.NUMBER
-				case EcorePackage.Literals.ELONG:
-					return TypeModelPackage.Literals.NUMBER
-				case EcorePackage.Literals.EENUM:
-					return TypeModelPackage.Literals.ENUM
-				case EcorePackage.Literals.EENUM_LITERAL:
-					return TypeModelPackage.Literals.ENUM_LITERAL
-				case EcorePackage.Literals.EBOOLEAN:
-					return TypeModelPackage.Literals.BOOLEAN
-				case EcorePackage.Literals.ESTRING:
-					return TypeModelPackage.Literals.STRING
-				case EcorePackage.Literals.ECHAR:
-					return TypeModelPackage.Literals.STRING
-				default: {
-					throw new UnsupportedDataTypeException(
-						"Could not infer type for internal type model from " + datatype.name);
-				}
-			}
-		}
-	}
 }

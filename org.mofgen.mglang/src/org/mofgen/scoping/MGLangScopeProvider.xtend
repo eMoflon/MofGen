@@ -27,12 +27,15 @@ import org.mofgen.mGLang.ParameterNode
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.Assignment
 import org.eclipse.emf.ecore.EEnum
-import org.mofgen.mGLang.ListForHead
-import org.mofgen.mGLang.ForEachHead
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.mGLang.ListDeclaration
 import org.mofgen.mGLang.MapDeclaration
+import org.mofgen.mGLang.IteratorVariable
+import org.mofgen.mGLang.ForStatement
+import java.util.LinkedList
+import org.mofgen.mGLang.ListForEachHead
+import org.mofgen.mGLang.GeneralForEachHead
 
 /**
  * This class contains custom scoping description.
@@ -73,11 +76,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isNodeSrcModel(context, reference)) {
 			return getScopeForNodeSrcModel(context as Node)
 		}
-		if (isListForHeadList(context, reference)) {
-			return getScopeForListForHeadList(context as ListForHead)
+		if (isListForEachHeadList(context, reference)) {
+			return getScopeForListForEachHeadList(context as ListForEachHead)
 		}
-		if (isForEachHeadERef(context, reference)) {
-			return getScopeForForEachHeadERef(context as ForEachHead)
+		if (isGeneralForEachHeadERef(context, reference)) {
+			return getScopeForGeneralForEachHeadERef(context as GeneralForEachHead)
 		}
 		if(isCollectionManipulationTrg(context, reference)){
 			return getScopeForCollectionManipulationTrg(context as CollectionManipulation)
@@ -141,7 +144,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(vars)
 	}
 
-	def getScopeForForEachHeadERef(ForEachHead head) {
+	def getScopeForGeneralForEachHeadERef(GeneralForEachHead head) {
 		val src = head.src
 		if (src !== null) {
 			val ref = src.ref
@@ -157,7 +160,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 	}
 
-	def getScopeForListForHeadList(ListForHead head) {
+	def getScopeForListForEachHeadList(ListForEachHead head) {
 		val gen = EcoreUtil2.getContainerOfType(head, Generator)
 		if (gen === null) {
 			throw new IllegalStateException("Every for-loop should be contained in a generator")
@@ -302,10 +305,39 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			// collect enums
 			val root = MofgenModelUtils.getRootFile(r)
 			val enums = MofgenModelUtils.getEnums(root)
+			
 			// collect imports
 			val imports = EcoreUtil2.getAllContentsOfType(root, Import)
 
-			return Scopes.scopeFor(params + patternNodes + collections + vars + imports + enums)
+			// collect iterator variables
+			val containers = EcoreUtil2.getAllContainers(r);
+			var forStatements = newLinkedList()
+			var iteratorVars = newLinkedList()
+			for(cont : containers){
+				if(cont instanceof ForStatement){
+					forStatements.add(cont as ForStatement)
+				}
+			}
+			for(statement : forStatements){
+				val head = statement.head
+				if(head instanceof GeneralForEachHead){
+					val forEachHead = head as GeneralForEachHead
+					iteratorVars.add(forEachHead.iteratorVar)
+				}
+				if(head instanceof ListForEachHead){
+					val forEachHead = head as ListForEachHead
+					iteratorVars.add(forEachHead.iteratorVar)
+				}
+			}
+			
+			// add casted nodes of switch if in switch
+			val switchNodes = newLinkedList()
+			val castContainer = EcoreUtil2.getContainerOfType(r, CaseWithCast) as CaseWithCast
+			if(castContainer !== null){
+				switchNodes.add(castContainer.node)
+			}
+
+			return Scopes.scopeFor(params + patternNodes + collections + vars + imports + enums + iteratorVars + switchNodes)
 
 		} else {
 			val trg = r.target
@@ -330,6 +362,9 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					return Scopes.scopeFor(enumLiterals)
 				}
 				Variable: {
+					return IScope.NULLSCOPE
+				}
+				IteratorVariable:{
 					return IScope.NULLSCOPE
 				}
 				Node,
@@ -390,12 +425,12 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return context instanceof Node && reference == MGLangPackage.Literals.NODE__TYPE
 	}
 
-	def isListForHeadList(EObject context, EReference reference) {
-		return context instanceof ListForHead && reference == MGLangPackage.Literals.LIST_FOR_HEAD__LIST
+	def isListForEachHeadList(EObject context, EReference reference) {
+		return context instanceof ListForEachHead && reference == MGLangPackage.Literals.LIST_FOR_EACH_HEAD__LIST
 	}
 
-	def isForEachHeadERef(EObject context, EReference reference) {
-		return context instanceof ForEachHead && reference == MGLangPackage.Literals.FOR_EACH_HEAD__EREF
+	def isGeneralForEachHeadERef(EObject context, EReference reference) {
+		return context instanceof GeneralForEachHead && reference == MGLangPackage.Literals.GENERAL_FOR_EACH_HEAD__EREF
 	}
 	
 	def isCollectionManipulationTrg(EObject context, EReference reference){

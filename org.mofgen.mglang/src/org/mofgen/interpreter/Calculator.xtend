@@ -18,16 +18,13 @@ import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.mGLang.PrimitiveType
 import org.mofgen.mGLang.UnaryMinus
 import com.google.inject.Inject
+import org.mofgen.typeModel.TypeModelPackage
 
 class Calculator {
 
 	@Inject TypeCalculator typeChecker
 	
 	def Object evaluate(ArithmeticExpression expr) {
-		
-		// This will already throw an exception if any types are not compatible
-		typeChecker.evaluate(expr)
-		
 		//Actual calculation
 		val result = internalEvaluate(expr)
 		switch (result.class) {
@@ -84,7 +81,7 @@ class Calculator {
 				case OR: return castLeft || castRight
 			}
 
-		} else if (evalLeft instanceof Double && evalRight instanceof Double) {
+		} else if(typeChecker.evaluate(tertiary.left) === TypeModelPackage.Literals.NUMBER && typeChecker.evaluate(tertiary.right) === TypeModelPackage.Literals.NUMBER) {
 			// -------------------- Numerical Values -----------------------	
 			val castLeft = evalLeft as Double
 			val castRight = evalRight as Double

@@ -14,10 +14,10 @@ FileCommand:
 ;
 
 Import:
-	IMPORT_KW uri=STRING 'as' name=ID;
+	'import' uri=STRING 'as' name=ID;
 
 Config:
-	{Config} CONFIG_KW '(' ')' '{'
+	{Config} 'config' '(' ')' '{'
 	(expressions += ConfigExpression)*
 	'}'
 	;
@@ -35,15 +35,15 @@ UseProjectAsHomeExpression:
 ;
 
 Pattern:
-	PATTERN_OPENER name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands += PatternCommand )* '}'
+	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands += PatternCommand )* '}'
 	(return=PatternReturn)?;
 
 PatternCommand:
-	Collection | Node | ParamManipulation | Switch
+	Node | ParamManipulation | Switch //TODO Need special PatternSwitch to reduce to allowed commands within switch!
 ;
 
 PatternReturn:
-	{PatternReturn} RETURN_KW THIS_KW ('.' returnValue=[Node])?;
+	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
 
 ParamManipulation:
 	param=[ParameterNode] content=NodeContent;	// TODO wollten wir das nicht eigentlich verbieten?
@@ -61,7 +61,7 @@ NodeReferenceOrAssignmentOrControlFlow:
 	(PatternNodeReference | Assignment | Switch);
 
 PatternNodeReference:
-	type=[ecore::EReference] REFERENCE_OP target=[Node];
+	type=[ecore::EReference] '->' target=[Node];
 
 Assignment:
 	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression
@@ -78,13 +78,13 @@ ParameterNode:
 
 //Using generic eobject references to make enums possible.
 RefOrCall:
-	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params = RefParams)? bracesSet?=')')?)*;
+	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params = RefParams)? bracesSet?=')')?)*;	//Expand ref scope to IteratorVariables
 
 RefParams:
 	params += ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
 Generator:
-	{Generator} GEN_OPENER '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
+	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
 	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable | VariableManipulation | CollectionManipulation;
@@ -101,14 +101,14 @@ PatternVariable:
 	type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall;
 
 Variable:
-	VARIABLE_KW name=ID ASSIGNMENT_OP value=ArithmeticExpression
+	'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression
 ;
 
 ForStatement:
-	FOR_KW head=ForHead '{' body=ForBody '}';
+	'for' head=ForHead '{' body=ForBody '}';
 
 ForHead:
-	RangeForHead | ForEachHead | ListForHead;
+	RangeForHead | GeneralForEachHead | ListForEachHead;
 
 RangeForHead:
 	iteratorVar=ID 'in' range=ForRange;
@@ -116,11 +116,15 @@ RangeForHead:
 ForRange:
 	start=ArithmeticExpression ':' end=ArithmeticExpression;
 
-ForEachHead:
-	src=RefOrCall '-' eref=[ecore::EReference] REFERENCE_OP iteratorVar=ID;
+GeneralForEachHead:
+	src=RefOrCall '-' eref=[ecore::EReference] '->' iteratorVar=IteratorVariable;	
 
-ListForHead:
-	iteratorVar=ID 'in' list=[List]
+ListForEachHead:
+	iteratorVar=IteratorVariable 'in' list=[List]
+;
+
+IteratorVariable:
+	name=ID
 ;
 
 ForBody:
@@ -134,25 +138,25 @@ Switch:
 	IfElseSwitch | SwitchCase;
 
 IfElseSwitch:
-	SWITCH_KW '{' (cases+=IfElseCase)+ (default=Default)? '}';
+	'switch' '{' (cases+=IfElseCase)+ (default=Default)? '}';
 
 IfElseCase:
-	CASE_KW val=ArithmeticExpression ':' body=CaseBody;
+	'case' val=ArithmeticExpression ':' body=CaseBody;
 
 Default:
-	DEFAULT_KW ':' CaseBody;
+	'default' ':' CaseBody;
 
 SwitchCase:
-	SWITCH_KW '(' attribute=RefOrCall ')' '{' (cases+=Case)+ (default=Default)? '}';
+	'switch' '(' attribute=RefOrCall ')' '{' (cases+=Case)+ (default=Default)? '}';
 
 Case:
 	CaseWithCast | CaseWithoutCast;
 
 CaseWithCast:
-	CASE_KW node=Node (CASE_CONDITION_KW when=ArithmeticExpression)? ':' body=CaseBody;
+	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=CaseBody;
 
 CaseWithoutCast:
-	CASE_KW val=ArithmeticExpression ':' body=CaseBody;
+	'case' val=ArithmeticExpression ':' body=CaseBody;
 
 CaseBody:
 	{CaseBody} '{' (expressions+=SwitchExpression)* '}' | expressions+=SwitchExpression;
@@ -161,14 +165,14 @@ Collection:
 	List | Map;
 
 List:
-	LIST_KW name=ID (defOrDecl=ListDefOrDecl)?;
+	'List' name=ID (defOrDecl=ListDefOrDecl)?;
 
 ListDefOrDecl:
 	ListDefinition | ListDeclaration
 ;
 
 ListDeclaration:
-	COLL_TYPE_KW type=[ecore::EClass]
+	'of' type=[ecore::EClass]
 ;
 
 ListDefinition:
@@ -179,14 +183,14 @@ ListAdHoc:
 ;
 
 Map:
-	MAP_KW name=ID (createdBy=MapDefOrDecl)?;
+	'Map' name=ID (defOrDecl=MapDefOrDecl)?;
 
 MapDefOrDecl:
 	MapDefinition | MapDeclaration
 ;
 
 MapDeclaration:
-	COLL_TYPE_KW keyType=[ecore::EClass] MAPPING_OP entryType=[ecore::EClass] //TODO: How to signal key to entry relation?
+	'of' keyType=[ecore::EClass] '->' entryType=[ecore::EClass] //TODO: How to signal key to entry relation?
 ;
 
 MapDefinition:
@@ -273,71 +277,3 @@ enum PrimaryOp:
 
 terminal ASSIGNMENT_OP:
 	'=';
-
-terminal IMPORT_KW:
-	'import'
-;
-
-terminal CONFIG_KW:
-	'config'
-;
-
-terminal RETURN_KW:
-	'return'
-;
-
-terminal THIS_KW:
-	'this'
-;
-
-terminal REFERENCE_OP:
-	'->'
-;
-
-terminal MAPPING_OP:
-	'->'
-;
-
-terminal VARIABLE_KW:
-	'var'
-;
-
-terminal FOR_KW:
-	'for'
-;
-
-terminal CASE_KW:
-	'case'
-;
-
-terminal SWITCH_KW:
-	'switch'
-;
-
-terminal GEN_OPENER:
-	'gen'
-;
-
-terminal CASE_CONDITION_KW:
-	'when'
-;
-
-terminal COLL_TYPE_KW:
-	'of'
-;
-
-terminal LIST_KW:
-	'List'
-;
-
-terminal MAP_KW:
-	'Map'
-;
-
-terminal DEFAULT_KW:
-	'default'
-;
-
-terminal PATTERN_OPENER:
-	'pattern'
-;
