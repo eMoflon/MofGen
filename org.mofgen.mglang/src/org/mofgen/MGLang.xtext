@@ -102,6 +102,7 @@ Case:
 RefOrCall:
 	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params=RefParams)?
 	bracesSet?=')')?)*; //Expand ref scope to IteratorVariables
+	
 RefParams:
 	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
@@ -109,7 +110,7 @@ Generator:
 	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
-	ForStatement | GenSwitch | Collection | PatternCall | PatternVariable | Variable | VariableManipulation |
+	ForStatement | GenSwitch | Collection | PatternCall | PatternObject | Variable | VariableManipulation |
 	CollectionManipulation;
 
 CollectionManipulation:
@@ -118,7 +119,7 @@ CollectionManipulation:
 VariableManipulation:
 	var=[Variable] ASSIGNMENT_OP val=ArithmeticExpression;
 
-PatternVariable:
+PatternObject:
 	type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall;
 
 Variable:
@@ -149,7 +150,7 @@ ForBody:
 	{ForBody} (commands+=GeneratorExpression)*;
 
 GenSwitchExpression:
-	ForStatement | Collection | PatternCall | PatternVariable | NodeReferenceOrAssignmentOrControlFlow;
+	ForStatement | Collection | PatternCall | PatternObject | NodeReferenceOrAssignmentOrControlFlow;
 
 GenSwitch:
 	GenIfElseSwitch | GenSwitchCase;

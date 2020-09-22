@@ -18,9 +18,7 @@ import org.mofgen.mGLang.MapDefOrDecl;
 import org.mofgen.mGLang.MapDefinition;
 import org.mofgen.mGLang.MapTupel;
 import org.mofgen.mGLang.MofgenFile;
-
 import org.mofgen.mGLang.ArithmeticExpression;
-import org.mofgen.mGLang.Collection;
 
 /**
  * Keeps track of the types of different Maps and Lists. Updated on every

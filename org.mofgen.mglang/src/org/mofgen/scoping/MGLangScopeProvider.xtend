@@ -20,7 +20,7 @@ import org.mofgen.typeModel.TypeModelPackage
 import java.util.ArrayList
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.Generator
-import org.mofgen.mGLang.PatternVariable
+import org.mofgen.mGLang.PatternObject
 import org.mofgen.mGLang.Import
 import org.mofgen.mGLang.ParameterNode
 import org.mofgen.mGLang.Variable
@@ -60,8 +60,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isRefOrCall(context)) {
 			return getScopeForRefOrCall(context as RefOrCall)
 		}
-		if (isPatternVariableType(context, reference)) {
-			return getScopeForPatternVariableType(context as PatternVariable)
+		if (isPatternObjectType(context, reference)) {
+			return getScopeForPatternObjectType(context as PatternObject)
 		}
 		if (isParameterNodeSrcModel(context, reference)) {
 			return getScopeForParameterNodeSrcModel(context as ParameterNode)
@@ -204,7 +204,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(imports)
 	}
 
-	def getScopeForPatternVariableType(PatternVariable pVar) {
+	def getScopeForPatternObjectType(PatternObject pVar) {
 		val patterns = EcoreUtil2.getAllContentsOfType(getRootFile(pVar), Pattern)
 		return Scopes.scopeFor(patterns)
 	}
@@ -269,6 +269,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			// pattern and gen are xor non-null. Either we are in a pattern or a generator
 			var params = new ArrayList<EObject>()
 			var patternNodes = new ArrayList<Node>()
+			var patternObjects = new ArrayList<PatternObject>()
 
 			val vars = new ArrayList<Variable>()
 			var collections = new ArrayList<Collection>()
@@ -283,6 +284,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			} else {
 				collections.addAll(EcoreUtil2.getAllContentsOfType(gen, Collection))
 				vars.addAll(EcoreUtil2.getAllContentsOfType(gen, Variable))
+				patternObjects.addAll(EcoreUtil2.getAllContentsOfType(gen, PatternObject))
 			}
 
 			// get nodes of casts in above case-heads (remove names from pattern-nodes eventually)
@@ -372,6 +374,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					val refs = refClass.EAllReferences
 					return Scopes.scopeFor(attrs + refs)
 				}
+				PatternObject: {
+					val pattern = ref.type
+					val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+					return Scopes.scopeFor(nodes)
+				}
 				default:
 					return IScope.NULLSCOPE
 			}
@@ -404,8 +411,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return context instanceof RefOrCall && reference == MGLangPackage.Literals.REF_OR_CALL__REF
 	}
 
-	def isPatternVariableType(EObject context, EReference reference) {
-		return context instanceof PatternVariable && reference == MGLangPackage.Literals.PATTERN_VARIABLE__TYPE
+	def isPatternObjectType(EObject context, EReference reference) {
+		return context instanceof PatternObject && reference == MGLangPackage.Literals.PATTERN_OBJECT__TYPE
 	}
 
 	def isParameterNodeSrcModel(EObject context, EReference reference) {

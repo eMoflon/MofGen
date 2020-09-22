@@ -121,7 +121,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="when" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//ListDefinition #//MapDefinition #//ArithmeticExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//RefOrCall"
         containment="true"/>
@@ -151,7 +151,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternVariable" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternObject" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Pattern"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="patternCall" eType="#//PatternCall"
