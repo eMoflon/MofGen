@@ -338,7 +338,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				switchNodes.add(castContainer.node)
 			}
 
-			return Scopes.scopeFor(params + patternNodes + collections + vars + imports + enums + iteratorVars + switchNodes)
+			return Scopes.scopeFor(params + patternNodes + collections + vars + imports + enums + iteratorVars + switchNodes + patternObjects)
 
 		} else {
 			val trg = r.target
