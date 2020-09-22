@@ -79,11 +79,6 @@ public class TypeRegistry {
 					}
 				}
 				listTypes.put(list, listType);
-			} else {
-				// List by RefOrCall
-				// TODO: Can this even happen? Probably not! --> eventually remove from grammar
-				throw new UnsupportedOperationException(
-						"Lists created by references of other objects or calling their methods are not supported yet (cause they may not occur at all?)");
 			}
 		} else {
 			// ListDeclaration
@@ -125,11 +120,6 @@ public class TypeRegistry {
 					}
 				}
 				entryTypes.put(map, entryType);
-			} else {
-				// Map by RefOrCall
-				// TODO: Can this even happen? Probably not! --> eventually remove from grammar
-				throw new UnsupportedOperationException(
-						"Maps created by references of other objects or calling their methods are not supported yet (cause they may not occur at all?)");
 			}
 		} else {
 			// MapDeclaration

@@ -186,16 +186,12 @@
         eType="#//Case" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Case">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//CaseBody"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CaseWithCast" eSuperTypes="#//Case">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="caseSet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="#//Node" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="whenSet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="when" eType="#//ArithmeticExpression"
         containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CaseWithoutCast" eSuperTypes="#//Case">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//CaseBody"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CaseBody" eSuperTypes="#//Default">

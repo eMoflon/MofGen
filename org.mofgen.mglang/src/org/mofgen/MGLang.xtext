@@ -4,40 +4,33 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate mGLang "http://www.mofgen.org/MGLang"
 
 //TODO What to do with pattern objects?
-
 MofgenFile:
 	(imports+=Import)*
 	(config=Config)
-	(commands += FileCommand)*
-;
+	(commands+=FileCommand)*;
 
 FileCommand:
-	Pattern | Generator
-;
+	Pattern | Generator;
 
 Import:
 	'import' uri=STRING 'as' name=ID;
 
 Config:
 	{Config} 'config' '(' ')' '{'
-	(expressions += ConfigExpression)*
-	'}'
-	;
+	(expressions+=ConfigExpression)*
+	'}';
 
 ConfigExpression:
-	HomeExpression | UseProjectAsHomeExpression
-;
+	HomeExpression | UseProjectAsHomeExpression;
 
 HomeExpression:
-	'home' ASSIGNMENT_OP uri=STRING
-;
+	'home' ASSIGNMENT_OP uri=STRING;
 
 UseProjectAsHomeExpression:
-	'useProjectLocationAsHome' ASSIGNMENT_OP val = BooleanLiteral
-;
+	'useProjectLocationAsHome' ASSIGNMENT_OP val=BooleanLiteral;
 
 Pattern:
-	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands += PatternCommand )* '}'
+	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands+=PatternCommand)* '}'
 	(return=PatternReturn)?;
 
 PatternCommand:
@@ -48,20 +41,19 @@ PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
 
 ParamManipulation:
-	param=[ParameterNode] content=NodeContent;	// TODO wollten wir das nicht eigentlich verbieten?
-
+	param=[ParameterNode] content=NodeContent; // TODO wollten wir das nicht eigentlich verbieten?
 Node:
-	(srcModel=[Import]'.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP createdBy=PatternCall))?;
+	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
+	createdBy=PatternCall))?;
 
 NodeContent:
 	{NodeContent} '{' (refsAssigns+=NodeReferenceOrAssignmentOrControlFlow)* '}';
 
 PatternCall:
-	called=[Pattern] '(' params=PatternCallParameters')';
+	called=[Pattern] '(' params=PatternCallParameters ')';
 
 PatternCallParameters:
-	{PatternCallParameters} (params+= ArithmeticExpression (',' params+=ArithmeticExpression)*)? 
-;
+	{PatternCallParameters} (params+=ArithmeticExpression (',' params+=ArithmeticExpression)*)?;
 
 NodeReferenceOrAssignmentOrControlFlow:
 	(PatternNodeReference | Assignment | Switch);
@@ -70,9 +62,8 @@ PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
 
 Assignment:
-	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression
-;
-	
+	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression;
+
 Parameter:
 	PrimitiveParameter | ParameterNode;
 
@@ -80,35 +71,33 @@ PrimitiveParameter:
 	type=PrimitiveType name=ID;
 
 ParameterNode:
-	(srcModel=[Import]'.')? type=[ecore::EClassifier] name=ID;
+	(srcModel=[Import] '.')? type=[ecore::EClassifier] name=ID;
 
-//Using generic eobject references to make enums possible.
+	//Using generic eobject references to make enums possible.
 RefOrCall:
-	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params = RefParams)? bracesSet?=')')?)*;	//Expand ref scope to IteratorVariables
-
+	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params=RefParams)?
+	bracesSet?=')')?)*; //Expand ref scope to IteratorVariables
 RefParams:
-	params += ArithmeticExpression (',' params+=ArithmeticExpression)*;
+	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
 Generator:
 	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
-	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable | VariableManipulation | CollectionManipulation;
+	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable | VariableManipulation |
+	CollectionManipulation;
 
 CollectionManipulation:
-	trg=[Collection] '.' op=[ecore::EOperation] '(' (params = RefParams)? ')'
-;
+	trg=[Collection] '.' op=[ecore::EOperation] '(' (params=RefParams)? ')';
 
 VariableManipulation:
-	var=[Variable] ASSIGNMENT_OP val=ArithmeticExpression	
-;
+	var=[Variable] ASSIGNMENT_OP val=ArithmeticExpression;
 
 PatternVariable:
 	type=[Pattern] name=ID ASSIGNMENT_OP patternCall=PatternCall;
 
 Variable:
-	'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression
-;
+	'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression;
 
 ForStatement:
 	'for' head=ForHead '{' body=ForBody '}';
@@ -123,22 +112,19 @@ ForRange:
 	start=ArithmeticExpression ':' end=ArithmeticExpression;
 
 GeneralForEachHead:
-	src=RefOrCall '-' eref=[ecore::EReference] '->' iteratorVar=IteratorVariable;	
+	src=RefOrCall '-' eref=[ecore::EReference] '->' iteratorVar=IteratorVariable;
 
 ListForEachHead:
-	iteratorVar=IteratorVariable 'in' list=[List]
-;
+	iteratorVar=IteratorVariable 'in' list=[List];
 
 IteratorVariable:
-	name=ID
-;
+	name=ID;
 
 ForBody:
 	{ForBody} (commands+=GeneratorExpression)*;
 
 SwitchExpression:
-	ForStatement | Collection | PatternCall | PatternVariable | NodeReferenceOrAssignmentOrControlFlow
-;
+	ForStatement | Collection | PatternCall | PatternVariable | NodeReferenceOrAssignmentOrControlFlow;
 
 Switch:
 	IfElseSwitch | SwitchCase;
@@ -156,13 +142,7 @@ SwitchCase:
 	'switch' '(' attribute=RefOrCall ')' '{' (cases+=Case)+ (default=Default)? '}';
 
 Case:
-	CaseWithCast | CaseWithoutCast;
-
-CaseWithCast:
-	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=CaseBody;
-
-CaseWithoutCast:
-	'case' val=ArithmeticExpression ':' body=CaseBody;
+	(caseSet?='case' node=Node)? (whenSet?='when' when=ArithmeticExpression)? ':' body=CaseBody;
 
 CaseBody:
 	{CaseBody} '{' (expressions+=SwitchExpression)* '}' | expressions+=SwitchExpression;
@@ -174,40 +154,35 @@ List:
 	'List' name=ID (defOrDecl=ListDefOrDecl)?;
 
 ListDefOrDecl:
-	ListDefinition | ListDeclaration
-;
+	ListDefinition | ListDeclaration;
 
 ListDeclaration:
-	'of' type=[ecore::EClass]
-;
+	'of' type=[ecore::EClass];
 
 ListDefinition:
-	ASSIGNMENT_OP (ListAdHoc | RefOrCall);	//TODO Can lists even be returned by any calls or is this redundant?
+	ASSIGNMENT_OP (ListAdHoc | RefOrCall); //TODO Can lists even be returned by any calls or is this redundant?
 
 ListAdHoc:
-	{ListAdHoc} '[' (elements+=ArithmeticExpression (',' elements+=ArithmeticExpression)*)? ']'
-;
+	{ListAdHoc} '[' (elements+=ArithmeticExpression (',' elements+=ArithmeticExpression)*)? ']';
 
 Map:
 	'Map' name=ID (defOrDecl=MapDefOrDecl)?;
 
 MapDefOrDecl:
-	MapDefinition | MapDeclaration
-;
+	MapDefinition | MapDeclaration;
 
 MapDeclaration:
 	'of' keyType=[ecore::EClass] '->' entryType=[ecore::EClass] //TODO: How to signal key to entry relation?
 ;
 
 MapDefinition:
-	ASSIGNMENT_OP (MapAdHoc | RefOrCall);	
+	ASSIGNMENT_OP (MapAdHoc | RefOrCall);
 
 MapAdHoc:
 	{MapAdHoc} '[' (entries+=MapTupel (',' entries+=MapTupel)*)? ']';
 
 MapTupel:
 	'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')';
-
 
 	//======================================Arithmetics============================================
 ArithmeticExpression:
@@ -233,16 +208,15 @@ Literal:
 	BooleanLiteral | StringLiteral | NumberLiteral;
 
 BooleanLiteral:
-	val = (TRUE|FALSE)
-;
+	val=(TRUE | FALSE);
 
 StringLiteral:
-	val = STRING;
+	val=STRING;
 
 NumberLiteral:
-	val = DOUBLE;
-	
-enum MathFunc:	//TODO Replace by methods of java.math or similar
+	val=DOUBLE;
+
+enum MathFunc: //TODO Replace by methods of java.math or similar
 	SQRT='sqrt' | ABS='abs';
 
 enum PrimitiveType:
@@ -250,8 +224,7 @@ enum PrimitiveType:
 ;
 
 terminal DOUBLE returns ecore::EDouble:
-	INT ('.' INT)?
-;
+	INT ('.' INT)?;
 
 terminal TRUE returns ecore::EBoolean:
 	'true';
@@ -265,7 +238,7 @@ enum RelationalOp:
 	EQUAL='==' |
 	UNEQUAL='!=' |
 	LESS_OR_EQUAL='<=' |
-	LESS ='<';
+	LESS='<';
 
 enum TertiaryOp:
 	PLUS='+' |

@@ -185,14 +185,11 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//SwitchCase/cases"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Case">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Case/caseSet"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Case/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Case/whenSet"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Case/when"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Case/body"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//CaseWithCast">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//CaseWithCast/node"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//CaseWithCast/when"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//CaseWithoutCast">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//CaseWithoutCast/val"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//CaseBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//CaseBody/expressions"/>

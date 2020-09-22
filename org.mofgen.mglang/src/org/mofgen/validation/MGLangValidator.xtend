@@ -13,7 +13,6 @@ import org.mofgen.mGLang.Import
 import org.mofgen.mGLang.MGLangPackage
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.CaseWithCast
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Assignment
 import org.eclipse.emf.ecore.EAttribute
@@ -26,16 +25,12 @@ import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.typeModel.TypeModelPackage
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EClass
-import org.mofgen.mGLang.PatternCommand
-import org.mofgen.mGLang.Switch
-import org.mofgen.mGLang.IfElseSwitch
-import org.mofgen.mGLang.SwitchCase
 import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.List
-import org.mofgen.typeModel.util.TypeModelAdapterFactory
 import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.PatternNodeReference
+import org.mofgen.mGLang.Case
 
 /**
  * This class contains custom validation rules. 
@@ -47,7 +42,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Inject Calculator calc
 	@Inject TypeCalculator typeChecker
 
-// TODO Check if there are sufficient null checks so no strange errors occur in the editor
+	/**
+	 * Checks for a valid for range.
+	 */
 	@Check
 	def validForRange(RangeForHead head) {
 		val forRange = head.range
@@ -55,22 +52,31 @@ class MGLangValidator extends AbstractMGLangValidator {
 			if (forRange.start !== null && forRange.end !== null) {
 				val start = forRange.start
 				val end = forRange.end
-				checkForNumber(forRange.start, forRange, MGLangPackage.Literals.FOR_RANGE__START)
-				checkForNumber(forRange.end, forRange, MGLangPackage.Literals.FOR_RANGE__END)
-				val castStart = calc.evaluate(start) as Double
-				val castEnd = calc.evaluate(end) as Double
-				if (castStart > castEnd) {
-					error("Limiting bound is less than starting value", MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
+				val check1 = checkForNumber(forRange.start, forRange, MGLangPackage.Literals.FOR_RANGE__START)
+				val check2 = checkForNumber(forRange.end, forRange, MGLangPackage.Literals.FOR_RANGE__END)
+				if (check1 && check2) {
+					val castStart = calc.evaluate(start) as Double
+					val castEnd = calc.evaluate(end) as Double
+					if (castStart > castEnd) {
+						error("Limiting bound is less than starting value",
+							MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
+					}
 				}
 			}
 		}
 	}
 
+	/**
+	 * Error at errorLoc if the given obj does not evaluate to a numerical value.
+	 */
 	def private checkForNumber(ArithmeticExpression expr, EObject obj, EReference errorLoc) {
 		try {
 			val eval = typeChecker.evaluate(expr)
-			if (eval !== TypeModelPackage.Literals.NUMBER) {
+			if (eval !== TypeModelPackage.Literals.NUMBER && !(eval instanceof EObject)) {
 				error("For-Range needs numerical bounds but was given type " + eval.name, obj, errorLoc)
+				return false
+			}else{
+				return true
 			}
 		} catch (MismatchingTypesException e) {
 			error(e.message, obj, errorLoc)
@@ -78,27 +84,42 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
+	def checkCaseCompleteness(Case caze){
+		if(!caze.caseSet && !caze.whenSet){
+			error("at least one 'case'- or 'when'-expression expected.", caze, MGLangPackage.Literals.CASE__BODY)
+		}
+	}
+
+	/**
+	 * Warns for empty for-loops.
+	 */
+	@Check
 	def warnEmptyForLoop(ForBody body) {
 		if (body.commands.empty) {
 			warning("empty for-loop", body.eContainer, MGLangPackage.Literals.FOR_STATEMENT__HEAD)
 		}
 	}
 
+	/** 
+	 * Checks whether the value given in a when-expression is boolean.
+	 */
 	@Check
-	def checkBooleanWhen(CaseWithCast caze) {
+	def checkBooleanWhen(Case caze) {
 		if (caze.when !== null) {
 			try {
 				val res = typeChecker.evaluate(caze.when)
 				if (res !== TypeModelPackage.Literals.BOOLEAN) {
-					error("Needs boolean value for conditional expression", caze,
-						MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
+					error("Needs boolean value for conditional expression", caze, MGLangPackage.Literals.CASE__WHEN)
 				}
 			} catch (MismatchingTypesException e) {
-				error(e.message, caze, MGLangPackage.Literals.CASE_WITH_CAST__WHEN)
+				error(e.message, caze, MGLangPackage.Literals.CASE__WHEN)
 			}
 		}
 	}
 
+	/**
+	 * Warns for imported models with conflicting class names.
+	 */
 	@Check
 	def checkForImportConflicts(Import imp) {
 		var imports = EcoreUtil2.getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import)
@@ -131,15 +152,17 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def checkParamManipulation(ParamManipulation manip) {
 		val refsAssigns = manip.content.refsAssigns
-		for(refAssign : refsAssigns){
+		for (refAssign : refsAssigns) {
 			switch refAssign {
-				Assignment: error("No assignments to attributes of parameter node allowed.", refAssign, MGLangPackage.Literals.ASSIGNMENT__TARGET)
+				Assignment:
+					error("No assignments to attributes of parameter node allowed.", refAssign,
+						MGLangPackage.Literals.ASSIGNMENT__TARGET)
 				PatternNodeReference: {
-					if(refAssign.type.upperBound == 1){
-						error("No assignments to 1-edges/-references of parameter nodes allowed.", refAssign, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
+					if (refAssign.type.upperBound == 1) {
+						error("No assignments to 1-edges/-references of parameter nodes allowed.", refAssign,
+							MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
 					}
 				}
-				// TODO PatternSwitch ?
 			}
 		}
 	}
