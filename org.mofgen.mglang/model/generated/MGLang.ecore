@@ -55,7 +55,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="refsAssigns" upperBound="-1"
         eType="#//NodeReferenceOrAssignmentOrControlFlow" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternCall" eSuperTypes="#//GeneratorExpression #//SwitchExpression #//ArithmeticExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCall" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression #//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="called" eType="#//Pattern"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" eType="#//PatternCallParameters"
         containment="true"/>
@@ -65,7 +65,7 @@
         eType="#//ArithmeticExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeReferenceOrAssignmentOrControlFlow"
-      eSuperTypes="#//SwitchExpression"/>
+      eSuperTypes="#//GenSwitchExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="PatternNodeReference" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Node"/>
@@ -84,6 +84,42 @@
   <eClassifiers xsi:type="ecore:EClass" name="ParameterNode" eSuperTypes="#//Parameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="srcModel" eType="#//Import"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternSwitch" eSuperTypes="#//PatternCommand #//NodeReferenceOrAssignmentOrControlFlow">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//PatternDefault"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternIfElseSwitch" eSuperTypes="#//PatternSwitch">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
+        eType="#//PatternIfElseCase" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternIfElseCase">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//PatternCaseBody"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternDefault"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternSwitchCase" eSuperTypes="#//PatternSwitch">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//RefOrCall"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
+        eType="#//PatternCase" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCase" eSuperTypes="#//Case">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//PatternCaseBody"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCaseBody" eSuperTypes="#//PatternDefault">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
+        eType="#//PatternCommand" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Case">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="caseSet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="#//Node" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="whenSet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="when" eType="#//ArithmeticExpression"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//ListDefinition #//MapDefinition #//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
@@ -115,7 +151,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternVariable" eSuperTypes="#//GeneratorExpression #//SwitchExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternVariable" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Pattern"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="patternCall" eType="#//PatternCall"
@@ -126,7 +162,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ForStatement" eSuperTypes="#//GeneratorExpression #//SwitchExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="ForStatement" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="head" eType="#//ForHead"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//ForBody"
@@ -163,42 +199,37 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
         eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SwitchExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Switch" eSuperTypes="#//PatternCommand #//NodeReferenceOrAssignmentOrControlFlow #//GeneratorExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//Default"
+  <eClassifiers xsi:type="ecore:EClass" name="GenSwitchExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSwitch" eSuperTypes="#//GeneratorExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//GenDefault"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IfElseSwitch" eSuperTypes="#//Switch">
+  <eClassifiers xsi:type="ecore:EClass" name="GenIfElseSwitch" eSuperTypes="#//GenSwitch">
     <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
-        eType="#//IfElseCase" containment="true"/>
+        eType="#//GenIfElseCase" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IfElseCase">
+  <eClassifiers xsi:type="ecore:EClass" name="GenIfElseCase">
     <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//CaseBody"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//GenCaseBody"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Default"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SwitchCase" eSuperTypes="#//Switch">
+  <eClassifiers xsi:type="ecore:EClass" name="GenDefault"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSwitchCase" eSuperTypes="#//GenSwitch">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//RefOrCall"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
-        eType="#//Case" containment="true"/>
+        eType="#//GenCase" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Case">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="caseSet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="#//Node" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="whenSet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="when" eType="#//ArithmeticExpression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//CaseBody"
+  <eClassifiers xsi:type="ecore:EClass" name="GenCase" eSuperTypes="#//Case">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//GenCaseBody"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CaseBody" eSuperTypes="#//Default">
+  <eClassifiers xsi:type="ecore:EClass" name="GenCaseBody" eSuperTypes="#//GenDefault">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
-        eType="#//SwitchExpression" containment="true"/>
+        eType="#//GenSwitchExpression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//GeneratorExpression #//SwitchExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="List" eSuperTypes="#//Collection">

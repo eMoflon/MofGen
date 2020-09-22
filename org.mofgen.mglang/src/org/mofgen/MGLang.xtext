@@ -34,14 +34,14 @@ Pattern:
 	(return=PatternReturn)?;
 
 PatternCommand:
-	Node | ParamManipulation | Switch //TODO Need special PatternSwitch to reduce to allowed commands within switch!
+	Node | ParamManipulation | PatternSwitch
 ;
 
 PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
 
 ParamManipulation:
-	param=[ParameterNode] content=NodeContent; // TODO wollten wir das nicht eigentlich verbieten?
+	param=[ParameterNode] content=NodeContent;
 Node:
 	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
 	createdBy=PatternCall))?;
@@ -56,7 +56,7 @@ PatternCallParameters:
 	{PatternCallParameters} (params+=ArithmeticExpression (',' params+=ArithmeticExpression)*)?;
 
 NodeReferenceOrAssignmentOrControlFlow:
-	(PatternNodeReference | Assignment | Switch);
+	(PatternNodeReference | Assignment | PatternSwitch);
 
 PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
@@ -73,6 +73,31 @@ PrimitiveParameter:
 ParameterNode:
 	(srcModel=[Import] '.')? type=[ecore::EClassifier] name=ID;
 
+PatternSwitch:
+	PatternIfElseSwitch | PatternSwitchCase;
+
+PatternIfElseSwitch:
+	'switch' '{' (cases+=PatternIfElseCase)+ (default=PatternDefault)? '}';
+
+PatternIfElseCase:
+	'case' val=ArithmeticExpression ':' body=PatternCaseBody;
+
+PatternDefault:
+	'default' ':' PatternCaseBody;
+
+PatternSwitchCase:
+	'switch' '(' attribute=RefOrCall ')' '{' (cases+=PatternCase)+ (default=PatternDefault)? '}';
+
+PatternCase:
+	(caseSet?='case' node=Node)? (whenSet?='when' when=ArithmeticExpression)? ':' body=PatternCaseBody;
+
+PatternCaseBody:
+	{PatternCaseBody} '{' (expressions+=PatternCommand)* '}' | expressions+=PatternCommand;
+
+Case:
+	PatternCase | GenCase
+;
+
 	//Using generic eobject references to make enums possible.
 RefOrCall:
 	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params=RefParams)?
@@ -84,7 +109,7 @@ Generator:
 	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
-	ForStatement | Switch | Collection | PatternCall | PatternVariable | Variable | VariableManipulation |
+	ForStatement | GenSwitch | Collection | PatternCall | PatternVariable | Variable | VariableManipulation |
 	CollectionManipulation;
 
 CollectionManipulation:
@@ -123,29 +148,29 @@ IteratorVariable:
 ForBody:
 	{ForBody} (commands+=GeneratorExpression)*;
 
-SwitchExpression:
+GenSwitchExpression:
 	ForStatement | Collection | PatternCall | PatternVariable | NodeReferenceOrAssignmentOrControlFlow;
 
-Switch:
-	IfElseSwitch | SwitchCase;
+GenSwitch:
+	GenIfElseSwitch | GenSwitchCase;
 
-IfElseSwitch:
-	'switch' '{' (cases+=IfElseCase)+ (default=Default)? '}';
+GenIfElseSwitch:
+	'switch' '{' (cases+=GenIfElseCase)+ (default=GenDefault)? '}';
 
-IfElseCase:
-	'case' val=ArithmeticExpression ':' body=CaseBody;
+GenIfElseCase:
+	'case' val=ArithmeticExpression ':' body=GenCaseBody;
 
-Default:
-	'default' ':' CaseBody;
+GenDefault:
+	'default' ':' GenCaseBody;
 
-SwitchCase:
-	'switch' '(' attribute=RefOrCall ')' '{' (cases+=Case)+ (default=Default)? '}';
+GenSwitchCase:
+	'switch' '(' attribute=RefOrCall ')' '{' (cases+=GenCase)+ (default=GenDefault)? '}';
 
-Case:
-	(caseSet?='case' node=Node)? (whenSet?='when' when=ArithmeticExpression)? ':' body=CaseBody;
+GenCase:
+	(caseSet?='case' node=Node)? (whenSet?='when' when=ArithmeticExpression)? ':' body=GenCaseBody;
 
-CaseBody:
-	{CaseBody} '{' (expressions+=SwitchExpression)* '}' | expressions+=SwitchExpression;
+GenCaseBody:
+	{GenCaseBody} '{' (expressions+=GenSwitchExpression)* '}' | expressions+=GenSwitchExpression;
 
 Collection:
 	List | Map;
@@ -160,7 +185,7 @@ ListDeclaration:
 	'of' type=[ecore::EClass];
 
 ListDefinition:
-	ASSIGNMENT_OP (ListAdHoc | RefOrCall); //TODO Can lists even be returned by any calls or is this redundant?
+	ASSIGNMENT_OP ListAdHoc;
 
 ListAdHoc:
 	{ListAdHoc} '[' (elements+=ArithmeticExpression (',' elements+=ArithmeticExpression)*)? ']';
@@ -176,7 +201,7 @@ MapDeclaration:
 ;
 
 MapDefinition:
-	ASSIGNMENT_OP (MapAdHoc | RefOrCall);
+	ASSIGNMENT_OP MapAdHoc;
 
 MapAdHoc:
 	{MapAdHoc} '[' (entries+=MapTupel (',' entries+=MapTupel)*)? ']';

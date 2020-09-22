@@ -30,6 +30,8 @@ import org.mofgen.mGLang.List
 import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.PatternNodeReference
+import org.mofgen.mGLang.PatternCase
+import org.mofgen.mGLang.GenCase
 import org.mofgen.mGLang.Case
 
 /**
@@ -86,7 +88,12 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def checkCaseCompleteness(Case caze){
 		if(!caze.caseSet && !caze.whenSet){
-			error("at least one 'case'- or 'when'-expression expected.", caze, MGLangPackage.Literals.CASE__BODY)
+			if(caze instanceof PatternCase){
+				error("at least one 'case'- or 'when'-expression expected.", caze, MGLangPackage.Literals.PATTERN_CASE__BODY)
+			}
+			if(caze instanceof GenCase){
+				error("at least one 'case'- or 'when'-expression expected.", caze, MGLangPackage.Literals.GEN_CASE__BODY)
+			}
 		}
 	}
 
@@ -104,12 +111,12 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 * Checks whether the value given in a when-expression is boolean.
 	 */
 	@Check
-	def checkBooleanWhen(Case caze) {
+	def checkBooleanWhenPattern(Case caze) {
 		if (caze.when !== null) {
 			try {
 				val res = typeChecker.evaluate(caze.when)
 				if (res !== TypeModelPackage.Literals.BOOLEAN) {
-					error("Needs boolean value for conditional expression", caze, MGLangPackage.Literals.CASE__WHEN)
+						error("Needs boolean value for conditional expression", caze, MGLangPackage.Literals.CASE__WHEN)
 				}
 			} catch (MismatchingTypesException e) {
 				error(e.message, caze, MGLangPackage.Literals.CASE__WHEN)
