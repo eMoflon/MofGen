@@ -34,14 +34,14 @@ Pattern:
 	(return=PatternReturn)?;
 
 PatternCommand:
-	Node | ParamManipulation | PatternSwitch
-;
+	Node | ParamManipulation; //TODO Introduce one more switch type: outside of all nodes to specify whether the nodes should be created at all
 
 PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
 
 ParamManipulation:
 	param=[ParameterNode] content=NodeContent;
+
 Node:
 	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
 	createdBy=PatternCall))?;
@@ -56,7 +56,7 @@ PatternCallParameters:
 	{PatternCallParameters} (params+=ArithmeticExpression (',' params+=ArithmeticExpression)*)?;
 
 NodeReferenceOrAssignmentOrControlFlow:
-	(PatternNodeReference | NodeAttributeAssignment | PatternSwitch);
+	PatternNodeReference | NodeAttributeAssignment | PatternSwitch;
 
 PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
@@ -77,10 +77,7 @@ PatternSwitch:
 	PatternIfElseSwitch | PatternSwitchCase;
 
 PatternIfElseSwitch:
-	'switch' '{' (cases+=PatternIfElseCase)+ (default=PatternDefault)? '}';
-
-PatternIfElseCase:
-	'case' val=ArithmeticExpression ':' body=PatternCaseBody;
+	'switch' '{' (cases+=PatternWhenCase)+ (default=PatternDefault)? '}';
 
 PatternDefault:
 	'default' ':' PatternCaseBody;
@@ -88,21 +85,28 @@ PatternDefault:
 PatternSwitchCase:
 	'switch' '(' attribute=RefOrCall ')' '{' (cases+=PatternCase)+ (default=PatternDefault)? '}';
 
+PatternWhenCase:
+	'when' when=ArithmeticExpression ':' body=PatternCaseBody;
+
 PatternCase:
-	(caseSet?='case' node=Node)? (whenSet?='when' when=ArithmeticExpression)? ':' body=PatternCaseBody;
+	PatternCaseWithCast | PatternCaseWithoutCast;
+
+PatternCaseWithCast:
+	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=PatternCaseBody;
+
+PatternCaseWithoutCast:
+	'case' val=ArithmeticExpression':' body=PatternCaseBody;
 
 PatternCaseBody:
-	{PatternCaseBody} '{' (expressions+=PatternCommand)* '}' | expressions+=PatternCommand;
+	{PatternCaseBody} '{' (expressions+=NodeReferenceOrAssignmentOrControlFlow)* '}' | expressions+=NodeReferenceOrAssignmentOrControlFlow;
 
 Case:
-	PatternCase | GenCase
-;
+	PatternCase | GenCase;
 
 	//Using generic eobject references to make enums possible.
 RefOrCall:
 	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params=RefParams)?
-	bracesSet?=')')?)*; //Expand ref scope to IteratorVariables
-	
+	bracesSet?=')')?)*;
 RefParams:
 	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
@@ -156,10 +160,10 @@ GenSwitch:
 	GenIfElseSwitch | GenSwitchCase;
 
 GenIfElseSwitch:
-	'switch' '{' (cases+=GenIfElseCase)+ (default=GenDefault)? '}';
+	'switch' '{' (cases+=GenWhenCase)+ (default=GenDefault)? '}';
 
-GenIfElseCase:
-	'case' val=ArithmeticExpression ':' body=GenCaseBody;
+GenWhenCase:
+	'when' when=ArithmeticExpression ':' body=GenCaseBody;
 
 GenDefault:
 	'default' ':' GenCaseBody;
@@ -168,7 +172,13 @@ GenSwitchCase:
 	'switch' '(' attribute=RefOrCall ')' '{' (cases+=GenCase)+ (default=GenDefault)? '}';
 
 GenCase:
-	(caseSet?='case' node=Node)? (whenSet?='when' when=ArithmeticExpression)? ':' body=GenCaseBody;
+	GenCaseWithCast | GenCaseWithoutCast;
+
+GenCaseWithCast:
+	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=GenCaseBody;
+
+GenCaseWithoutCast:
+	'case' val=ArithmeticExpression ':' body=GenCaseBody;
 
 GenCaseBody:
 	{GenCaseBody} '{' (expressions+=GenSwitchExpression)* '}' | expressions+=GenSwitchExpression;

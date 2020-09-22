@@ -35,6 +35,8 @@ import org.mofgen.mGLang.ForStatement
 import org.mofgen.mGLang.ListForEachHead
 import org.mofgen.mGLang.GeneralForEachHead
 import org.mofgen.mGLang.Case
+import org.mofgen.mGLang.PatternCaseWithCast
+import org.mofgen.mGLang.GenCaseWithCast
 
 /**
  * This class contains custom scoping description.
@@ -257,8 +259,9 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 
 	def getEventuallyShadowingNodes(EObject obj) {
-		val parentCases = EcoreUtil2.getAllContainers(obj).filter(Case)
-		return parentCases.map[c|c.node]
+		val patternNodes = EcoreUtil2.getAllContainers(obj).filter(PatternCaseWithCast).map[c|c.node]
+		val genNodes= EcoreUtil2.getAllContainers(obj).filter(GenCaseWithCast).map[c|c.node]
+		return patternNodes + genNodes
 	}
 
 	def getScopeForRefOrCall(RefOrCall r) {
@@ -333,9 +336,13 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			
 			// add (eventually casted) nodes of switch if in switch
 			val switchNodes = newLinkedList()
-			val castContainer = EcoreUtil2.getContainerOfType(r, Case) as Case
-			if(castContainer !== null){
-				switchNodes.add(castContainer.node)
+			var patternCastContainer = EcoreUtil2.getContainerOfType(r, PatternCaseWithCast) as PatternCaseWithCast
+			if(patternCastContainer !== null){
+					switchNodes.add(patternCastContainer.node)
+			}
+			var genCastContainer = EcoreUtil2.getContainerOfType(r, GenCaseWithCast) as GenCaseWithCast
+			if(genCastContainer !== null){
+					switchNodes.add(genCastContainer.node)
 			}
 
 			return Scopes.scopeFor(params + patternNodes + collections + vars + imports + enums + iteratorVars + switchNodes + patternObjects)

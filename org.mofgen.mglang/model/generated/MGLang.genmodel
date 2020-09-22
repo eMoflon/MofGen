@@ -123,18 +123,24 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternSwitchCase/attribute"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternSwitchCase/cases"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//PatternWhenCase">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternWhenCase/when"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternWhenCase/body"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternCase">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCase/body"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//PatternCaseWithCast">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseWithCast/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseWithCast/when"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//PatternCaseWithoutCast">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseWithoutCast/val"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternCaseBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseBody/expressions"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//Case">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Case/caseSet"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Case/node"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Case/whenSet"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Case/when"/>
-    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//Case"/>
     <genClasses ecoreClass="MGLang.ecore#//RefOrCall">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/ref"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/target"/>
@@ -202,9 +208,9 @@
     <genClasses ecoreClass="MGLang.ecore#//GenIfElseSwitch">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenIfElseSwitch/cases"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//GenIfElseCase">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenIfElseCase/val"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenIfElseCase/body"/>
+    <genClasses ecoreClass="MGLang.ecore#//GenWhenCase">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenWhenCase/when"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenWhenCase/body"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//GenDefault"/>
     <genClasses ecoreClass="MGLang.ecore#//GenSwitchCase">
@@ -213,6 +219,13 @@
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//GenCase">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenCase/body"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//GenCaseWithCast">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenCaseWithCast/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenCaseWithCast/when"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//GenCaseWithoutCast">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenCaseWithoutCast/val"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//GenCaseBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenCaseBody/expressions"/>
