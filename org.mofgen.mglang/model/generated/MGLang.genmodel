@@ -94,9 +94,9 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReference/type"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReference/target"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//Assignment">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//Assignment/target"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Assignment/value"/>
+    <genClasses ecoreClass="MGLang.ecore#//NodeAttributeAssignment">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//NodeAttributeAssignment/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//NodeAttributeAssignment/value"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Parameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Parameter/name"/>

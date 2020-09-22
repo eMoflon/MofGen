@@ -24,7 +24,7 @@ import org.mofgen.mGLang.PatternObject
 import org.mofgen.mGLang.Import
 import org.mofgen.mGLang.ParameterNode
 import org.mofgen.mGLang.Variable
-import org.mofgen.mGLang.Assignment
+import org.mofgen.mGLang.NodeAttributeAssignment
 import org.eclipse.emf.ecore.EEnum
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.VariableManipulation
@@ -45,86 +45,86 @@ import org.mofgen.mGLang.Case
 class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	override getScope(EObject context, EReference reference) {
-		if (isNodeCreation(context, reference)) {
+		if (isNode_Type(context, reference)) {
 			return getScopeForNodeCreationType(context as Node)
 		}
-		if (isPatternNodeReferenceType(context, reference)) {
-			return getScopeForPatternNodeReferenceType(context as PatternNodeReference)
+		if (isPatternNodeReference_Type(context, reference)) {
+			return getScopeForPatternNodeReference_Type(context as PatternNodeReference)
 		}
-		if (isPatternNodeReferenceTarget(context, reference)) {
-			return getScopeForPatternNodeReferenceTarget(context as PatternNodeReference)
+		if (isPatternNodeReference_Target(context, reference)) {
+			return getScopeForPatternNodeReference_Target(context as PatternNodeReference)
 		}
-		if (isNodeAttributeAssignmentTarget(context, reference)) {
-			return getScopeForNodeAssignmentTarget(context as Assignment)
+		if (isNodeAttributeAssignment_Target(context, reference)) {
+			return getScopeForNodeAttributeAssignment_Target(context as NodeAttributeAssignment)
 		}
 		if (isRefOrCall(context)) {
 			return getScopeForRefOrCall(context as RefOrCall)
 		}
-		if (isPatternObjectType(context, reference)) {
-			return getScopeForPatternObjectType(context as PatternObject)
+		if (isPatternObject_Type(context, reference)) {
+			return getScopeForPatternObject_Type(context as PatternObject)
 		}
-		if (isParameterNodeSrcModel(context, reference)) {
-			return getScopeForParameterNodeSrcModel(context as ParameterNode)
+		if (isParameterNode_SrcModel(context, reference)) {
+			return getScopeForParameterNode_SrcModel(context as ParameterNode)
 		}
-		if (isParameterNodeType(context, reference)) {
-			return getScopeForParameterNodeType(context as ParameterNode)
+		if (isParameterNode_Type(context, reference)) {
+			return getScopeForParameterNode_Type(context as ParameterNode)
 		}
-		if (isNodeType(context, reference)) {
-			return getScopeForNodeType(context as Node)
+		if (isNode_Type(context, reference)) {
+			return getScopeForNode_Type(context as Node)
 		}
-		if (isNodeSrcModel(context, reference)) {
-			return getScopeForNodeSrcModel(context as Node)
+		if (isNode_SrcModel(context, reference)) {
+			return getScopeForNode_SrcModel(context as Node)
 		}
-		if (isListForEachHeadList(context, reference)) {
-			return getScopeForListForEachHeadList(context as ListForEachHead)
+		if (isListForEachHead_List(context, reference)) {
+			return getScopeForListForEachHead_List(context as ListForEachHead)
 		}
-		if (isGeneralForEachHeadERef(context, reference)) {
-			return getScopeForGeneralForEachHeadERef(context as GeneralForEachHead)
+		if (isGeneralForEachHead_ERef(context, reference)) {
+			return getScopeForGeneralForEachHead_ERef(context as GeneralForEachHead)
 		}
-		if(isCollectionManipulationTrg(context, reference)){
-			return getScopeForCollectionManipulationTrg(context as CollectionManipulation)
+		if(isCollectionManipulation_Trg(context, reference)){
+			return getScopeForCollectionManipulation_Trg(context as CollectionManipulation)
 		}
-		if(isCollectionManipulationOp(context, reference)){
-			return getScopeForCollectionManipulationOp(context as CollectionManipulation)
+		if(isCollectionManipulation_Op(context, reference)){
+			return getScopeForCollectionManipulation_Op(context as CollectionManipulation)
 		}
-		if(isVariableManipulationVar(context, reference)){
-			return getScopeForVariableManipulationVar(context as VariableManipulation)
+		if(isVariableManipulation_Var(context, reference)){
+			return getScopeForVariableManipulation_Var(context as VariableManipulation)
 		}
-		if(isListDeclarationType(context, reference)){
-			return getScopeForListDeclarationType(context as ListDeclaration)
+		if(isListDeclaration_Type(context, reference)){
+			return getScopeForListDeclaration_Type(context as ListDeclaration)
 		}
-		if(isMapDeclarationKeyType(context, reference)){
-			return getScopeForMapDeclarationKeyType(context as MapDeclaration)
+		if(isMapDeclaration_KeyType(context, reference)){
+			return getScopeForMapDeclaration_KeyType(context as MapDeclaration)
 		}
-		if(isMapDeclarationEntryType(context, reference)){
-			return getScopeForMapDeclarationEntryType(context as MapDeclaration)
+		if(isMapDeclaration_EntryType(context, reference)){
+			return getScopeForMapDeclaration_EntryType(context as MapDeclaration)
 		}
 
 		return super.getScope(context, reference)
 	}
 	
-	def getScopeForListDeclarationType(ListDeclaration decl){
+	def getScopeForListDeclaration_Type(ListDeclaration decl){
 		val file = getRootFile(decl)
 		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
 	}
 	
-	def getScopeForMapDeclarationKeyType(MapDeclaration decl){
+	def getScopeForMapDeclaration_KeyType(MapDeclaration decl){
 		val file = getRootFile(decl)
 		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
 	}
 	
-	def getScopeForMapDeclarationEntryType(MapDeclaration decl){
+	def getScopeForMapDeclaration_EntryType(MapDeclaration decl){
 		val file = getRootFile(decl)
 		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
 	}
 
-	def getScopeForCollectionManipulationTrg(CollectionManipulation cm){
+	def getScopeForCollectionManipulation_Trg(CollectionManipulation cm){
 		val container = EcoreUtil2.getContainerOfType(cm, Generator)
 		val colls = EcoreUtil2.getAllContentsOfType(container, Collection)
 		return Scopes.scopeFor(colls)
 	}
 	
-	def getScopeForCollectionManipulationOp(CollectionManipulation cm){
+	def getScopeForCollectionManipulation_Op(CollectionManipulation cm){
 		val trg = cm.trg
 		if(trg instanceof Map){
 			val ops = TypeModelPackage.Literals.MAP.EAllOperations
@@ -137,13 +137,13 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return IScope.NULLSCOPE
 	}
 	
-	def getScopeForVariableManipulationVar(VariableManipulation vm){
+	def getScopeForVariableManipulation_Var(VariableManipulation vm){
 		val container = EcoreUtil2.getContainerOfType(vm, Generator)
 		val vars = EcoreUtil2.getAllContentsOfType(container, Variable)
 		return Scopes.scopeFor(vars)
 	}
 
-	def getScopeForGeneralForEachHeadERef(GeneralForEachHead head) {
+	def getScopeForGeneralForEachHead_ERef(GeneralForEachHead head) {
 		val src = head.src
 		if (src !== null) {
 			val ref = src.ref
@@ -159,7 +159,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 	}
 
-	def getScopeForListForEachHeadList(ListForEachHead head) {
+	def getScopeForListForEachHead_List(ListForEachHead head) {
 		val gen = EcoreUtil2.getContainerOfType(head, Generator)
 		if (gen === null) {
 			throw new IllegalStateException("Every for-loop should be contained in a generator")
@@ -168,12 +168,12 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(lists)
 	}
 
-	def getScopeForNodeSrcModel(Node node) {
+	def getScopeForNode_SrcModel(Node node) {
 		val imports = EcoreUtil2.getAllContentsOfType(getRootFile(node), Import)
 		return Scopes.scopeFor(imports)
 	}
 
-	def getScopeForNodeType(Node node) {
+	def getScopeForNode_Type(Node node) {
 		val imp = node.srcModel
 		if (imp !== null) {
 			val classes = MofgenModelUtils.getClassesFromImport(imp)
@@ -183,7 +183,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 	}
 
-	def getScopeForParameterNodeType(ParameterNode paramNode) {
+	def getScopeForParameterNode_Type(ParameterNode paramNode) {
 		val imp = paramNode.srcModel
 		if (imp !== null) {
 			val classes = MofgenModelUtils.getClassesFromImport(imp)
@@ -199,12 +199,12 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(classes)
 	}
 
-	def getScopeForParameterNodeSrcModel(ParameterNode paramNode) {
+	def getScopeForParameterNode_SrcModel(ParameterNode paramNode) {
 		val imports = EcoreUtil2.getAllContentsOfType(getRootFile(paramNode), Import)
 		return Scopes.scopeFor(imports)
 	}
 
-	def getScopeForPatternObjectType(PatternObject pVar) {
+	def getScopeForPatternObject_Type(PatternObject pVar) {
 		val patterns = EcoreUtil2.getAllContentsOfType(getRootFile(pVar), Pattern)
 		return Scopes.scopeFor(patterns)
 	}
@@ -215,7 +215,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(classes)
 	}
 
-	def getScopeForPatternNodeReferenceType(PatternNodeReference ref) {
+	def getScopeForPatternNodeReference_Type(PatternNodeReference ref) {
 		val file = getRootFile(ref)
 		val src = EcoreUtil2.getContainerOfType(ref, Node)
 		val classes = MofgenModelUtils.getClasses(file)
@@ -233,11 +233,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(allNodes)
 	}
 
-	def getScopeForPatternNodeReferenceTarget(PatternNodeReference ref) {
+	def getScopeForPatternNodeReference_Target(PatternNodeReference ref) {
 		return getScopeForAllNodes(ref)
 	}
 
-	def getScopeForNodeAssignmentTarget(Assignment ass) {
+	def getScopeForNodeAttributeAssignment_Target(NodeAttributeAssignment ass) {
 		val srcNode = EcoreUtil2.getContainerOfType(ass, Node)
 		val file = getRootFile(ass)
 		val classes = MofgenModelUtils.getClasses(file)
@@ -385,81 +385,77 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 	}
 
-	def isPatternNodeReferenceType(EObject context, EReference reference) {
+	def isPatternNodeReference_Type(EObject context, EReference reference) {
 		return context instanceof PatternNodeReference &&
 			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE
 	}
 
-	def isPatternNodeReferenceTarget(EObject context, EReference reference) {
+	def isPatternNodeReference_Target(EObject context, EReference reference) {
 		return context instanceof PatternNodeReference &&
 			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TARGET
 	}
 
-	def isNodeCreation(EObject context, EReference reference) {
+	def isNode_Type(EObject context, EReference reference) {
 		return context instanceof Node && reference == MGLangPackage.Literals.NODE__TYPE
 	}
 
-	def isNodeAttributeAssignmentTarget(EObject context, EReference reference) {
-		return context instanceof Assignment && reference == MGLangPackage.Literals.ASSIGNMENT__TARGET
+	def isNodeAttributeAssignment_Target(EObject context, EReference reference) {
+		return context instanceof NodeAttributeAssignment && reference == MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__TARGET
 	}
 
 	def isRefOrCall(EObject context) {
 		return context instanceof RefOrCall
 	}
 
-	def isRefOrCallRef(EObject context, EReference reference) {
+	def isRefOrCall_Ref(EObject context, EReference reference) {
 		return context instanceof RefOrCall && reference == MGLangPackage.Literals.REF_OR_CALL__REF
 	}
 
-	def isPatternObjectType(EObject context, EReference reference) {
+	def isPatternObject_Type(EObject context, EReference reference) {
 		return context instanceof PatternObject && reference == MGLangPackage.Literals.PATTERN_OBJECT__TYPE
 	}
 
-	def isParameterNodeSrcModel(EObject context, EReference reference) {
+	def isParameterNode_SrcModel(EObject context, EReference reference) {
 		return context instanceof ParameterNode && reference == MGLangPackage.Literals.PARAMETER_NODE__SRC_MODEL
 	}
 
-	def isParameterNodeType(EObject context, EReference reference) {
+	def isParameterNode_Type(EObject context, EReference reference) {
 		return context instanceof ParameterNode && reference == MGLangPackage.Literals.PARAMETER_NODE__TYPE
 	}
 
-	def isNodeSrcModel(EObject context, EReference reference) {
+	def isNode_SrcModel(EObject context, EReference reference) {
 		return context instanceof Node && reference == MGLangPackage.Literals.NODE__SRC_MODEL
 	}
 
-	def isNodeType(EObject context, EReference reference) {
-		return context instanceof Node && reference == MGLangPackage.Literals.NODE__TYPE
-	}
-
-	def isListForEachHeadList(EObject context, EReference reference) {
+	def isListForEachHead_List(EObject context, EReference reference) {
 		return context instanceof ListForEachHead && reference == MGLangPackage.Literals.LIST_FOR_EACH_HEAD__LIST
 	}
 
-	def isGeneralForEachHeadERef(EObject context, EReference reference) {
+	def isGeneralForEachHead_ERef(EObject context, EReference reference) {
 		return context instanceof GeneralForEachHead && reference == MGLangPackage.Literals.GENERAL_FOR_EACH_HEAD__EREF
 	}
 	
-	def isCollectionManipulationTrg(EObject context, EReference reference){
+	def isCollectionManipulation_Trg(EObject context, EReference reference){
 		return context instanceof CollectionManipulation && reference == MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG
 	}
 	
-	def isCollectionManipulationOp(EObject context, EReference reference){
+	def isCollectionManipulation_Op(EObject context, EReference reference){
 		return context instanceof CollectionManipulation && reference == MGLangPackage.Literals.COLLECTION_MANIPULATION__OP
 	}
 	
-	def isVariableManipulationVar(EObject context, EReference reference){
+	def isVariableManipulation_Var(EObject context, EReference reference){
 		return context instanceof VariableManipulation && reference == MGLangPackage.Literals.VARIABLE_MANIPULATION__VAR
 	}
 	
-	def isListDeclarationType(EObject context, EReference reference){
+	def isListDeclaration_Type(EObject context, EReference reference){
 		return context instanceof ListDeclaration && reference == MGLangPackage.Literals.LIST_DECLARATION__TYPE
 	}
 	
-	def isMapDeclarationKeyType(EObject context, EReference reference){
+	def isMapDeclaration_KeyType(EObject context, EReference reference){
 		return context instanceof MapDeclaration && reference == MGLangPackage.Literals.MAP_DECLARATION__KEY_TYPE
 	}
 	
-	def isMapDeclarationEntryType(EObject context, EReference reference){
+	def isMapDeclaration_EntryType(EObject context, EReference reference){
 		return context instanceof MapDeclaration && reference == MGLangPackage.Literals.MAP_DECLARATION__ENTRY_TYPE
 	}
 

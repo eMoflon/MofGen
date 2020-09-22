@@ -56,12 +56,12 @@ PatternCallParameters:
 	{PatternCallParameters} (params+=ArithmeticExpression (',' params+=ArithmeticExpression)*)?;
 
 NodeReferenceOrAssignmentOrControlFlow:
-	(PatternNodeReference | Assignment | PatternSwitch);
+	(PatternNodeReference | NodeAttributeAssignment | PatternSwitch);
 
 PatternNodeReference:
 	type=[ecore::EReference] '->' target=[Node];
 
-Assignment:
+NodeAttributeAssignment:
 	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression;
 
 Parameter:

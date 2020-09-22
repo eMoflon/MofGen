@@ -14,7 +14,7 @@ import org.mofgen.mGLang.MGLangPackage
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.RefOrCall
-import org.mofgen.mGLang.Assignment
+import org.mofgen.mGLang.NodeAttributeAssignment
 import org.eclipse.emf.ecore.EAttribute
 import org.mofgen.interpreter.MismatchingTypesException
 import org.eclipse.emf.ecore.EObject
@@ -161,9 +161,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 		val refsAssigns = manip.content.refsAssigns
 		for (refAssign : refsAssigns) {
 			switch refAssign {
-				Assignment:
+				NodeAttributeAssignment:
 					error("No assignments to attributes of parameter node allowed.", refAssign,
-						MGLangPackage.Literals.ASSIGNMENT__TARGET)
+						MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__TARGET)
 				PatternNodeReference: {
 					if (refAssign.type.upperBound == 1) {
 						error("No assignments to 1-edges/-references of parameter nodes allowed.", refAssign,
@@ -175,7 +175,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
-	def checkAttributeType(Assignment ass) {
+	def checkAttributeType(NodeAttributeAssignment ass) {
 		val trg = ass.target
 		if (trg instanceof EAttribute) {
 			val attribute = trg as EAttribute
@@ -186,16 +186,16 @@ class MGLangValidator extends AbstractMGLangValidator {
 				if (assignedValue != TypeModelPackage.Literals.ENUM_LITERAL &&
 					attributeType == TypeModelPackage.Literals.ENUM) {
 					error("Can only assign enum values to enum attribute " + attribute.name,
-						MGLangPackage.Literals.ASSIGNMENT__VALUE)
+						MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
 				} else {
 					if (assignedValue == TypeModelPackage.Literals.ENUM_LITERAL &&
 						attributeType != TypeModelPackage.Literals.ENUM) {
 						error("Cannot assign enum value to non-enum attribute " + attribute.name,
-							MGLangPackage.Literals.ASSIGNMENT__VALUE)
+							MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
 					}
 				}
 			} catch (MismatchingTypesException e) {
-				error(e.message, ass, MGLangPackage.Literals.ASSIGNMENT__VALUE)
+				error(e.message, ass, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
 			}
 		}
 	}
