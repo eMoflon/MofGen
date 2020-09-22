@@ -14,7 +14,6 @@ import org.mofgen.mGLang.Node
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.RefOrCall
-import org.mofgen.mGLang.CaseWithCast
 import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.List
 import org.mofgen.typeModel.TypeModelPackage
@@ -33,9 +32,9 @@ import org.mofgen.mGLang.ListDeclaration
 import org.mofgen.mGLang.MapDeclaration
 import org.mofgen.mGLang.IteratorVariable
 import org.mofgen.mGLang.ForStatement
-import java.util.LinkedList
 import org.mofgen.mGLang.ListForEachHead
 import org.mofgen.mGLang.GeneralForEachHead
+import org.mofgen.mGLang.Case
 
 /**
  * This class contains custom scoping description.
@@ -258,7 +257,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 
 	def getEventuallyShadowingNodes(EObject obj) {
-		val parentCases = EcoreUtil2.getAllContainers(obj).filter(CaseWithCast)
+		val parentCases = EcoreUtil2.getAllContainers(obj).filter(Case)
 		return parentCases.map[c|c.node]
 	}
 
@@ -330,9 +329,9 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				}
 			}
 			
-			// add casted nodes of switch if in switch
+			// add (eventually casted) nodes of switch if in switch
 			val switchNodes = newLinkedList()
-			val castContainer = EcoreUtil2.getContainerOfType(r, CaseWithCast) as CaseWithCast
+			val castContainer = EcoreUtil2.getContainerOfType(r, Case) as Case
 			if(castContainer !== null){
 				switchNodes.add(castContainer.node)
 			}
