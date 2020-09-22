@@ -34,6 +34,8 @@ import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.List
 import org.mofgen.typeModel.util.TypeModelAdapterFactory
 import org.mofgen.mGLang.Map
+import org.mofgen.mGLang.ParamManipulation
+import org.mofgen.mGLang.PatternNodeReference
 
 /**
  * This class contains custom validation rules. 
@@ -121,6 +123,25 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 		return conflicts
+	}
+
+	/**
+	 * Forbid attributes and references with multiplicity 1. Still allowed are additions to *-references by adding them to the collection.
+	 */
+	@Check
+	def checkParamManipulation(ParamManipulation manip) {
+		val refsAssigns = manip.content.refsAssigns
+		for(refAssign : refsAssigns){
+			switch refAssign {
+				Assignment: error("No assignments to attributes of parameter node allowed.", refAssign, MGLangPackage.Literals.ASSIGNMENT__TARGET)
+				PatternNodeReference: {
+					if(refAssign.type.upperBound == 1){
+						error("No assignments to 1-edges/-references of parameter nodes allowed.", refAssign, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
+					}
+				}
+				// TODO PatternSwitch ?
+			}
+		}
 	}
 
 	@Check

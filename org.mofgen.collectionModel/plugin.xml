@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated collectionModel -->
+      <package
+            uri="http://www.mofgen.org/collectionModel"
+            class="org.mofgen.collectionModel.CollectionModelPackage"
+            genModel="model/collectionModel.genmodel"/>
+   </extension>
+
+</plugin>

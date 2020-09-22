@@ -49,14 +49,14 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isNodeCreation(context, reference)) {
 			return getScopeForNodeCreationType(context as Node)
 		}
-		if (isReferenceType(context, reference)) {
-			return getScopeForReferenceType(context as PatternNodeReference)
+		if (isPatternNodeReferenceType(context, reference)) {
+			return getScopeForPatternNodeReferenceType(context as PatternNodeReference)
 		}
-		if (isReferenceTarget(context, reference)) {
-			return getScopeForReferenceTarget(context as PatternNodeReference)
+		if (isPatternNodeReferenceTarget(context, reference)) {
+			return getScopeForPatternNodeReferenceTarget(context as PatternNodeReference)
 		}
-		if (isNodeAttributeAssignmentType(context, reference)) {
-			return getScopeForNodeAssignmentType(context as Assignment)
+		if (isNodeAttributeAssignmentTarget(context, reference)) {
+			return getScopeForNodeAssignmentTarget(context as Assignment)
 		}
 		if (isRefOrCall(context)) {
 			return getScopeForRefOrCall(context as RefOrCall)
@@ -216,7 +216,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(classes)
 	}
 
-	def getScopeForReferenceType(PatternNodeReference ref) {
+	def getScopeForPatternNodeReferenceType(PatternNodeReference ref) {
 		val file = getRootFile(ref)
 		val src = EcoreUtil2.getContainerOfType(ref, Node)
 		val classes = MofgenModelUtils.getClasses(file)
@@ -234,11 +234,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(allNodes)
 	}
 
-	def getScopeForReferenceTarget(PatternNodeReference ref) {
+	def getScopeForPatternNodeReferenceTarget(PatternNodeReference ref) {
 		return getScopeForAllNodes(ref)
 	}
 
-	def getScopeForNodeAssignmentType(Assignment ass) {
+	def getScopeForNodeAssignmentTarget(Assignment ass) {
 		val srcNode = EcoreUtil2.getContainerOfType(ass, Node)
 		val file = getRootFile(ass)
 		val classes = MofgenModelUtils.getClasses(file)
@@ -379,12 +379,12 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 	}
 
-	def isReferenceType(EObject context, EReference reference) {
+	def isPatternNodeReferenceType(EObject context, EReference reference) {
 		return context instanceof PatternNodeReference &&
 			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE
 	}
 
-	def isReferenceTarget(EObject context, EReference reference) {
+	def isPatternNodeReferenceTarget(EObject context, EReference reference) {
 		return context instanceof PatternNodeReference &&
 			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TARGET
 	}
@@ -393,7 +393,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return context instanceof Node && reference == MGLangPackage.Literals.NODE__TYPE
 	}
 
-	def isNodeAttributeAssignmentType(EObject context, EReference reference) {
+	def isNodeAttributeAssignmentTarget(EObject context, EReference reference) {
 		return context instanceof Assignment && reference == MGLangPackage.Literals.ASSIGNMENT__TARGET
 	}
 
