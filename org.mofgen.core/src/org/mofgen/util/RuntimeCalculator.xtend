@@ -1,4 +1,4 @@
-package org.mofgen.interpreter
+package org.mofgen.util
 
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Tertiary
@@ -19,12 +19,12 @@ import org.mofgen.mGLang.PrimitiveType
 import org.mofgen.mGLang.UnaryMinus
 import com.google.inject.Inject
 import org.mofgen.typeModel.TypeModelPackage
+import java.util.Map
+import org.mofgen.api.MofgenRegistry
 
-class Calculator {
+class RuntimeCalculator {
 
-	@Inject TypeCalculator typeChecker
-	
-	def Object evaluate(ArithmeticExpression expr) {
+	static def Object evaluate(ArithmeticExpression expr) {
 		//Actual calculation
 		val result = internalEvaluate(expr)
 		switch (result.class) {
@@ -37,7 +37,7 @@ class Calculator {
 		return result
 	}
 
-	def dispatch private internalEvaluate(Tertiary tertiary) {
+	static def dispatch private internalEvaluate(Tertiary tertiary) {
 		val evalLeft = evaluate(tertiary.left)
 		val evalRight = evaluate(tertiary.right)
 
@@ -48,8 +48,8 @@ class Calculator {
 
 			switch (tertiary.op) {
 				case PLUS: return castLeft + castRight
-				case MINUS: throw new MismatchingTypesException("Cannot subtract Strings")
-				case OR: throw new MismatchingTypesException("Cannot use logical OR on Strings")
+				case MINUS: throw new RuntimeException("Cannot subtract Strings")
+				case OR: throw new RuntimeException("Cannot use logical OR on Strings")
 			}
 		} else if (evalLeft instanceof String && evalRight instanceof Number) {
 			// -------------------- Strings -----------------------	
@@ -58,8 +58,8 @@ class Calculator {
 
 			switch (tertiary.op) {
 				case PLUS: return castLeft + castRight.toString
-				case MINUS: throw new MismatchingTypesException("Cannot subtract from Strings")
-				case OR: throw new MismatchingTypesException("Cannot use logical OR on Strings")
+				case MINUS: throw new RuntimeException("Cannot subtract from Strings")
+				case OR: throw new RuntimeException("Cannot use logical OR on Strings")
 			}
 		} else if (evalLeft instanceof Number && evalRight instanceof String) {
 			// -------------------- Strings -----------------------	
@@ -68,49 +68,49 @@ class Calculator {
 
 			switch (tertiary.op) {
 				case PLUS: return castLeft.toString + castRight
-				case MINUS: throw new MismatchingTypesException("Cannot subtract Strings")
-				case OR: throw new MismatchingTypesException("Cannot use logical OR on Strings")
+				case MINUS: throw new RuntimeException("Cannot subtract Strings")
+				case OR: throw new RuntimeException("Cannot use logical OR on Strings")
 			}
 		} else if (evalLeft instanceof Boolean && evalRight instanceof Boolean) {
 			// -------------------- Boolean Values -----------------------	
 			val castLeft = evalLeft as Boolean
 			val castRight = evalRight as Boolean
 			switch (tertiary.op) {
-				case PLUS: throw new MismatchingTypesException("Cannot add boolean values")
-				case MINUS: throw new MismatchingTypesException("Cannot subtract boolean values")
+				case PLUS: throw new RuntimeException("Cannot add boolean values")
+				case MINUS: throw new RuntimeException("Cannot subtract boolean values")
 				case OR: return castLeft || castRight
 			}
 
-		} else if(typeChecker.evaluate(tertiary.left) === TypeModelPackage.Literals.NUMBER && typeChecker.evaluate(tertiary.right) === TypeModelPackage.Literals.NUMBER) {
+		} else if(evalLeft instanceof Number && evalRight instanceof Number) {
 			// -------------------- Numerical Values -----------------------	
 			val castLeft = evalLeft as Double
 			val castRight = evalRight as Double
 			switch (tertiary.op) {
 				case PLUS: castLeft + castRight
 				case MINUS: castLeft - castRight
-				case OR: throw new MismatchingTypesException("Cannot use logical OR on numerical values")
+				case OR: throw new RuntimeException("Cannot use logical OR on numerical values")
 			}
 		} else {
-			throw new MismatchingTypesException("Invalid Expression.")
+			throw new RuntimeException("Invalid Expression.")
 		}
 	}
 
-	def dispatch private internalEvaluate(Secondary secondary) {
+	static def dispatch private internalEvaluate(Secondary secondary) {
 		val evalLeft = evaluate(secondary.left)
 		val evalRight = evaluate(secondary.right)
 
 		if (evalLeft instanceof String && evalRight instanceof String) {
 			// -------------------- Strings -----------------------	
 			switch (secondary.op) {
-				case MOD: throw new MismatchingTypesException("Cannot use modulo on Strings")
-				case XOR: throw new MismatchingTypesException("Cannot use logical XOR on Strings")
+				case MOD: throw new RuntimeException("Cannot use modulo on Strings")
+				case XOR: throw new RuntimeException("Cannot use logical XOR on Strings")
 			}
 		} else if (evalLeft instanceof Boolean && evalRight instanceof Boolean) {
 			// -------------------- Boolean Values -----------------------	
 			val castLeft = evalLeft as Boolean
 			val castRight = evalRight as Boolean
 			switch (secondary.op) {
-				case MOD: throw new MismatchingTypesException("Cannot use modulo on boolean values")
+				case MOD: throw new RuntimeException("Cannot use modulo on boolean values")
 				case XOR: return !(castLeft == castRight)
 			}
 		} else if (evalLeft instanceof Double && evalRight instanceof Double) {
@@ -119,31 +119,31 @@ class Calculator {
 			val castRight = evalRight as Integer
 			switch (secondary.op) {
 				case MOD: return castLeft % castRight
-				case XOR: throw new MismatchingTypesException("Cannot use modulo on numerical values")
+				case XOR: throw new RuntimeException("Cannot use modulo on numerical values")
 			}
 		} else {
-			throw new MismatchingTypesException("Invalid Expression.")
+			throw new RuntimeException("Invalid Expression.")
 		}
 	}
 
-	def dispatch private internalEvaluate(Primary primary) {
+	static def dispatch private internalEvaluate(Primary primary) {
 		val evalLeft = evaluate(primary.left)
 		val evalRight = evaluate(primary.right)
 
 		if (evalLeft instanceof String && evalRight instanceof String) {
 			// -------------------- Strings -----------------------	
 			switch (primary.op) {
-				case MUL: throw new MismatchingTypesException("Cannot multiply Strings")
-				case DIV: throw new MismatchingTypesException("Cannot divide Strings")
-				case AND: throw new MismatchingTypesException("Cannot use logical AND on Strings")
+				case MUL: throw new RuntimeException("Cannot multiply Strings")
+				case DIV: throw new RuntimeException("Cannot divide Strings")
+				case AND: throw new RuntimeException("Cannot use logical AND on Strings")
 			}
 		} else if (evalLeft instanceof Boolean && evalRight instanceof Boolean) {
 			// -------------------- Boolean Values -----------------------	
 			val castLeft = evalLeft as Boolean
 			val castRight = evalRight as Boolean
 			switch (primary.op) {
-				case MUL: throw new MismatchingTypesException("Cannot multiply boolean values")
-				case DIV: throw new MismatchingTypesException("Cannot divide boolean values")
+				case MUL: throw new RuntimeException("Cannot multiply boolean values")
+				case DIV: throw new RuntimeException("Cannot divide boolean values")
 				case AND: return castLeft && castRight
 			}
 		} else if (evalLeft instanceof Double && evalRight instanceof Double) {
@@ -153,19 +153,19 @@ class Calculator {
 			switch (primary.op) {
 				case MUL: return (castLeft * castRight) as Double
 				case DIV: return (castLeft / castRight) as Double
-				case AND: throw new MismatchingTypesException("Cannot use logical AND on numerical values")
+				case AND: throw new RuntimeException("Cannot use logical AND on numerical values")
 			}
 		} else {
-			throw new MismatchingTypesException("Invalid Expression.")
+			throw new RuntimeException("Invalid Expression.")
 		}
 	}
 
-	def dispatch private internalEvaluate(Rel rel) {
+	static def dispatch private internalEvaluate(Rel rel) {
 		val evalLeft = evaluate(rel.left)
 		val evalRight = evaluate(rel.right)
 
 		if (evalLeft.class !== evalRight.class) {
-			throw new MismatchingTypesException("Cannot compare objects of different types for equality")
+			throw new RuntimeException("Cannot compare objects of different types for equality")
 		}
 
 		if (evalLeft instanceof String && evalRight instanceof String) {
@@ -174,12 +174,12 @@ class Calculator {
 			val castRight = evalRight as String
 
 			switch (rel.relation) {
-				case GREATER: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
-				case GREATER_OR_EQUAL: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
+				case GREATER: throw new RuntimeException("Can only compare Strings for (un)equality.")
+				case GREATER_OR_EQUAL: throw new RuntimeException("Can only compare Strings for (un)equality.")
 				case EQUAL: return castLeft.equals(castRight)
 				case UNEQUAL: return !castLeft.equals(castRight)
-				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
-				case LESS: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
+				case LESS_OR_EQUAL: throw new RuntimeException("Can only compare Strings for (un)equality.")
+				case LESS: throw new RuntimeException("Can only compare Strings for (un)equality.")
 			}
 		} else if (evalLeft instanceof Boolean && evalRight instanceof Boolean) {
 			// -------------------- Boolean Values -----------------------	
@@ -187,17 +187,17 @@ class Calculator {
 			val castRight = evalRight as Boolean
 			switch (rel.relation) {
 				case GREATER:
-					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
+					throw new RuntimeException("Can only compare boolean values for (un)equality.")
 				case GREATER_OR_EQUAL:
-					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
+					throw new RuntimeException("Can only compare boolean values for (un)equality.")
 				case EQUAL:
 					return castLeft == castRight
 				case UNEQUAL:
 					return castLeft != castRight
 				case LESS_OR_EQUAL:
-					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
+					throw new RuntimeException("Can only compare boolean values for (un)equality.")
 				case LESS:
-					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
+					throw new RuntimeException("Can only compare boolean values for (un)equality.")
 			}
 		} else if (evalLeft instanceof Double && evalRight instanceof Double) {
 			// -------------------- Numerical Values -----------------------	
@@ -212,46 +212,46 @@ class Calculator {
 				case LESS: return castLeft < castRight
 			}
 		} else {
-			throw new MismatchingTypesException("Invalid Expression.")
+			throw new RuntimeException("Invalid Expression.")
 		}
 	}
 
-	def dispatch private internalEvaluate(BooleanLiteral lit) {
+	static def dispatch private internalEvaluate(BooleanLiteral lit) {
 		return lit.^val
 	}
 
-	def dispatch private internalEvaluate(NumberLiteral lit) {
+	static def dispatch private internalEvaluate(NumberLiteral lit) {
 		return lit.^val
 	}
 
-	def dispatch private internalEvaluate(StringLiteral lit) {
+	static def dispatch private internalEvaluate(StringLiteral lit) {
 		return lit.^val
 	}
 
-	def dispatch private internalEvaluate(NegationExpression negExpr) {
+	static def dispatch private internalEvaluate(NegationExpression negExpr) {
 		val toNeg = negExpr.expr
 		val eval = evaluate(toNeg)
 		if (eval instanceof String) {
-			throw new MismatchingTypesException("Cannot negate String")
+			throw new RuntimeException("Cannot negate String")
 		}
 		if (eval instanceof Number) {
-			throw new MismatchingTypesException("Cannot negate numerical value")
+			throw new RuntimeException("Cannot negate numerical value")
 		}
 		if (eval instanceof Boolean) {
 			return !eval
 		}
 
-		throw new CalculatorException("Unhandled type in negating expression")
+		throw new RuntimeException("Unhandled type in negating expression")
 	}
 
-	def dispatch private internalEvaluate(FunctionCall fc) {
+	static def dispatch private internalEvaluate(FunctionCall fc) {
 		val func = fc.func
 		val eval = evaluate(fc.expr)
 
 		switch (func) {
 			case SQRT: {
 				if (eval instanceof String) {
-					throw new MismatchingTypesException("Cannot take root of String")
+					throw new RuntimeException("Cannot take root of String")
 				}
 				if (eval instanceof Double) {
 					return Math.sqrt(eval);
@@ -260,12 +260,12 @@ class Calculator {
 					return Math.floor(Math.sqrt(eval)) as int;
 				}
 				if (eval instanceof Boolean) {
-					throw new MismatchingTypesException("Cannot take root of boolean value")
+					throw new RuntimeException("Cannot take root of boolean value")
 				}
 			}
 			case ABS: {
 				if (eval instanceof String) {
-					throw new MismatchingTypesException("Cannot take absolute value of String")
+					throw new RuntimeException("Cannot take absolute value of String")
 				}
 				if (eval instanceof Double) {
 					return Math.abs(eval) as double;
@@ -274,13 +274,13 @@ class Calculator {
 					return Math.abs(eval);
 				}
 				if (eval instanceof Boolean) {
-					throw new MismatchingTypesException("Cannot take absolute value of boolean value")
+					throw new RuntimeException("Cannot take absolute value of boolean value")
 				}
 			}
 		}
 	}
 
-	def dispatch private internalEvaluate(RefOrCall roc) {
+	static def dispatch private internalEvaluate(RefOrCall roc) {
 		if (roc.ref instanceof Variable) {
 			return internalEvaluate((roc.ref as Variable).value)
 		}
@@ -304,19 +304,18 @@ class Calculator {
 		return roc.ref
 	}
 	
-	def dispatch private internalEvaluate(UnaryMinus uMinus){
+	static def dispatch private internalEvaluate(UnaryMinus uMinus){
 		val eval = evaluate(uMinus.expr)
 		if(eval instanceof String){
-			throw new MismatchingTypesException("Cannot negate string.")
+			throw new RuntimeException("Cannot negate string.")
 		}
 		if(eval instanceof Boolean){
-			throw new MismatchingTypesException("Cannot use minus-operator on boolean value. For negation use '!' instead.")
+			throw new RuntimeException("Cannot use minus-operator on boolean value. For negation use '!' instead.")
 		}
 		return -(eval as Double).doubleValue;
 	}
 
-	def dispatch private internalEvaluate(PatternCall pc) {
+	static def dispatch private internalEvaluate(PatternCall pc) {
 		return pc
 	}
-
 }

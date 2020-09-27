@@ -34,6 +34,12 @@ public class TypeRegistry {
 	public static HashMap<Map, EClass> keyTypes;
 	public static HashMap<Map, EClass> entryTypes;
 
+	/**
+	 * Determines whether all entries should be updated before retrieving values.
+	 * MUST be true if used during scoping. Can be false if used for API generation.
+	 */
+	private static boolean update = true;
+
 	public static void update(MofgenFile file) {
 		if (listTypes == null) {
 			listTypes = new HashMap<>();
@@ -130,18 +136,28 @@ public class TypeRegistry {
 	}
 
 	public static EClass getListType(List list) {
-		update((MofgenFile) EcoreUtil2.getRootContainer(list));
+		if (update) {
+			update((MofgenFile) EcoreUtil2.getRootContainer(list));
+		}
 		return listTypes.get(list);
 	}
 
 	public static EClass getMapKeyType(Map map) {
-		update((MofgenFile) EcoreUtil2.getRootContainer(map));
+		if (update) {
+			update((MofgenFile) EcoreUtil2.getRootContainer(map));
+		}
 		return keyTypes.get(map);
 	}
 
 	public static EClass getMapEntryType(Map map) {
-		update((MofgenFile) EcoreUtil2.getRootContainer(map));
+		if (update) {
+			update((MofgenFile) EcoreUtil2.getRootContainer(map));
+		}
 		return entryTypes.get(map);
+	}
+
+	public static void setUpdate(boolean val) {
+		update = val;
 	}
 
 }

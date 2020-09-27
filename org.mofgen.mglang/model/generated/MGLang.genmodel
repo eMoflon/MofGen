@@ -44,7 +44,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/config"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//MofgenFile/commands"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//FileCommand"/>
+    <genClasses ecoreClass="MGLang.ecore#//FileCommand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//FileCommand/name"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Import">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Import/uri"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Import/name"/>
@@ -60,7 +62,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//UseProjectAsHomeExpression/val"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Pattern">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Pattern/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/parameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/commands"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/return"/>
@@ -113,10 +114,6 @@
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternIfElseSwitch">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternIfElseSwitch/cases"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//PatternIfElseCase">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternIfElseCase/val"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternIfElseCase/body"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternDefault"/>
     <genClasses ecoreClass="MGLang.ecore#//PatternSwitchCase">

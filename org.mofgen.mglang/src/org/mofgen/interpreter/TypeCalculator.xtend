@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.MofgenFile
 
 class TypeCalculator {
 
@@ -306,5 +307,4 @@ class TypeCalculator {
 	def dispatch private internalEvaluate(PatternCall pc) {
 		return pc
 	}
-
 }

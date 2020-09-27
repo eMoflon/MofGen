@@ -3,7 +3,6 @@ grammar org.mofgen.MGLang with org.eclipse.xtext.common.Terminals
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate mGLang "http://www.mofgen.org/MGLang"
 
-//TODO What to do with pattern objects?
 MofgenFile:
 	(imports+=Import)*
 	(config=Config)
@@ -97,7 +96,7 @@ PatternCaseWithCast:
 PatternCaseWithoutCast:
 	'case' val=ArithmeticExpression':' body=PatternCaseBody;
 
-PatternCaseBody:
+PatternCaseBody:	//TODO: one more pattern switch object for switches outside of node definitions
 	{PatternCaseBody} '{' (expressions+=NodeReferenceOrAssignmentOrControlFlow)* '}' | expressions+=NodeReferenceOrAssignmentOrControlFlow;
 
 Case:
@@ -111,11 +110,12 @@ RefParams:
 	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
 Generator:
-	{Generator} 'gen' '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
+	'gen' name=ID '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
-	ForStatement | GenSwitch | Collection | PatternCall | PatternObject | Variable | VariableManipulation |
-	CollectionManipulation;
+	ForStatement | GenSwitch | Collection  | PatternObject | Variable | VariableManipulation |
+	CollectionManipulation | PatternCall
+	;
 
 CollectionManipulation:
 	trg=[Collection] '.' op=[ecore::EOperation] '(' (params=RefParams)? ')';
@@ -154,7 +154,7 @@ ForBody:
 	{ForBody} (commands+=GeneratorExpression)*;
 
 GenSwitchExpression:
-	ForStatement | Collection | PatternCall | PatternObject | NodeReferenceOrAssignmentOrControlFlow;
+	ForStatement | Collection | PatternCall | PatternObject;
 
 GenSwitch:
 	GenIfElseSwitch | GenSwitchCase;
@@ -255,7 +255,7 @@ NumberLiteral:
 enum MathFunc: //TODO Replace by methods of java.math or similar
 	SQRT='sqrt' | ABS='abs';
 
-enum PrimitiveType:
+enum PrimitiveType:	//TODO: Replace by standard eDataTypes?
 	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' | BOOLEAN='boolean' //String as Primitive? (and therefore also better lowercase?)
 ;
 

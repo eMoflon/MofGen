@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/org.mofgen.typeModel/src-gen" creationIcons="false"
+    editDirectory="/org.mofgen.typeModel.edit/src-gen" editorDirectory="/org.mofgen.typeModel.editor/src-gen"
+    modelPluginID="org.mofgen.typeModel" modelName="TypeModel" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>typeModel.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="TypeModel" basePackage="org.mofgen" disposableProviderFactory="true"
+      ecorePackage="typeModel.ecore#/">
+    <genClasses ecoreClass="typeModel.ecore#//Number"/>
+    <genClasses ecoreClass="typeModel.ecore#//Boolean"/>
+    <genClasses ecoreClass="typeModel.ecore#//String"/>
+    <genClasses ecoreClass="typeModel.ecore#//Primitive"/>
+    <genClasses ecoreClass="typeModel.ecore#//Enum"/>
+    <genClasses ecoreClass="typeModel.ecore#//Map">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference typeModel.ecore#//Map/keys"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference typeModel.ecore#//Map/entries"/>
+      <genOperations ecoreOperation="typeModel.ecore#//Map/get">
+        <genParameters ecoreParameter="typeModel.ecore#//Map/get/key"/>
+      </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//Map/put">
+        <genParameters ecoreParameter="typeModel.ecore#//Map/put/key"/>
+        <genParameters ecoreParameter="typeModel.ecore#//Map/put/value"/>
+      </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//Map/containsKey">
+        <genParameters ecoreParameter="typeModel.ecore#//Map/containsKey/key"/>
+      </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//Map/containsValue">
+        <genParameters ecoreParameter="typeModel.ecore#//Map/containsValue/value"/>
+      </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//Map/isEmpty"/>
+      <genOperations ecoreOperation="typeModel.ecore#//Map/size"/>
+      <genOperations ecoreOperation="typeModel.ecore#//Map/getKeyToEntry">
+        <genParameters ecoreParameter="typeModel.ecore#//Map/getKeyToEntry/entry"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="typeModel.ecore#//List">
+      <genOperations ecoreOperation="typeModel.ecore#//List/get">
+        <genParameters ecoreParameter="typeModel.ecore#//List/get/index"/>
+      </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//List/add">
+        <genParameters ecoreParameter="typeModel.ecore#//List/add/obj"/>
+      </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//List/contains">
+        <genParameters ecoreParameter="typeModel.ecore#//List/contains/obj"/>
+      </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//List/indexOf">
+        <genParameters ecoreParameter="typeModel.ecore#//List/indexOf/obj"/>
+      </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//List/isEmpty"/>
+      <genOperations ecoreOperation="typeModel.ecore#//List/removeAt">
+        <genParameters ecoreParameter="typeModel.ecore#//List/removeAt/index"/>
+      </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//List/size"/>
+      <genOperations ecoreOperation="typeModel.ecore#//List/remove">
+        <genParameters ecoreParameter="typeModel.ecore#//List/remove/obj"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="typeModel.ecore#//Collection"/>
+    <genClasses ecoreClass="typeModel.ecore#//EnumLiteral"/>
+  </genPackages>
+</genmodel:GenModel>
