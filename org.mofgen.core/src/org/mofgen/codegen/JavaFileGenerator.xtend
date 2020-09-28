@@ -1,33 +1,41 @@
-package org.mofgen.core.codegen
+package org.mofgen.codegen
 
 import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 import java.util.Set
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IFolder
+import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.api.EClassifiersManager
 import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.MofgenFile
 import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.NodeContent
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.ParameterNode
+import org.mofgen.mGLang.Pattern
+import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PrimitiveParameter
+import org.mofgen.util.NameProvider
 
 import static org.mofgen.interpreter.TypeRegistry.*
-import org.mofgen.mGLang.Pattern
-import org.mofgen.util.NameProvider
-import org.eclipse.xtext.EcoreUtil2
+import java.io.File
+import java.io.IOException
+import java.io.FileWriter
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
+import org.mofgen.codegen.PatternTranslator
 import org.mofgen.mGLang.MGLangPackage
-import org.mofgen.mGLang.MGLangFactory
-import org.mofgen.mGLang.Collection
-import org.mofgen.mGLang.NodeContent
-import org.mofgen.mGLang.PatternCall
+import org.apache.log4j.Logger
 
 /**
  * This class contains the templates for the API Java classes.
  */
 class JavaFileGenerator {
+	
+	static Logger logger = MofgenBuilder.logger
+	
 	/**
 	 * The name of the package.
 	 */
@@ -86,70 +94,72 @@ class JavaFileGenerator {
 	}
 
 	/**
-	 * Generates the Java Generator class for the given rule.
+	 * Generates the Java Generator class for the given generator.
 	 */
-	def generateGenClass(IFolder genPackage, Generator gen) {
+	def generateGenClass(/*IFolder genPackage, TODO */ Generator gen) {
 		// TODO
 		val imports = newHashSet('java.util.ArrayList',
-			'java.util.List',
-			'org.mofgen.core.api.MofgenGenerator')
+		'java.util.List',
+		'java.util.Map',
+		'java.util.HashMap',
+		'java.util.LinkedList',
+		'org.mofgen.api.MofgenGenerator')
+		
+		imports.add('mofgenTest.api.patterns.*') //TODO determine programmatically
 		
 		val genSourceCode = '''
-			«printHeader(getSubPackageName('api.generators'), imports)»
+			«printHeader('mofgenTest.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
 			
 			/**
-			 * The generator «gen.name».
+			 * The generator «NameProvider.getGeneratorClassName(gen)».
 			 */
 			public class «NameProvider.getGeneratorClassName(gen)» extends «GENERATOR_SUPER_CLASS» {
 			
 			«««TODO Documentation?
-
-				@Override
+			@Override
 				/**
-				* Runs the specified generator with the Oiven pOrameters.
+				* Runs the specified generator with the given parameters
 				*/
 				public void start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
-					«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaType(parameter)» «parameter.name»Value«ENDFOR»
-				«FOR expression : gen.commands»
-					«GeneratorTranslator.translate(expression)»;
-				«ENDFOR»
+				«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaType(parameter)» «parameter.name»Value«ENDFOR»
+			«FOR expression : gen.commands»
+				«GeneratorTranslator.translate(expression)»;
+			«ENDFOR»
 			}
 			
-				@Override
-				protected List<String> getParameterNames() {
-					List<String> names = new ArrayList<String>();
-					«FOR param : gen.params»
-						names.add("«param.name»");
-					«ENDFOR»
-					return names;
-				}
 			}
+
 		'''
 		// TODO provide overriding toString implementation
-		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), genSourceCode)
+		
+		val path ="D:\\Workspaces\\runtime-EclipseApplication\\mofgenTest\\src-gen\\mofgenTest\\api\\generators\\" 
+		writeFile(path+NameProvider.getGeneratorClassName(gen) + ".java", genSourceCode)
+//		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), genSourceCode) TODO replace
 	}
-	
+
 	/**
-	 * Generates the Java Generator class for the given rule.
+	 * Generates the Java Generator class for the given pattern.
 	 */
-	def generatePatternClass(IFolder patternPackage, Pattern pattern) {
+	def generatePatternClass(/*IFolder patternPackage, TODO */  Pattern pattern) {
 		// TODO
 		val imports = eClassifiersManager.getImportsForNodeTypes(pattern.commands.filter(Node).toList)
-		imports.addAll(eClassifiersManager.getImportsForParameterNodeTypes(pattern.parameters.filter(ParameterNode).toList))
-//		imports.addAll(
-//			'java.util.List',
-//		)
-
+		imports.addAll(
+			eClassifiersManager.getImportsForParameterNodeTypes(pattern.parameters.filter(ParameterNode).toList))
+		imports.addAll(
+			'org.mofgen.api.MofgenPattern',
+			'org.mofgen.mGLang.MGLangFactory'
+		)
+		
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
 		val patternSourceCode = '''
-			«printHeader(getSubPackageName('api.patterns'), imports)»
+			«printHeader('mofgenTest.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
 			
 			/**
-			* The pattern «pattern.name».
+			* The pattern «NameProvider.getPatternClassName(pattern)».
 			*/
-			public class «NameProvider.getPatternClassName(pattern)» {
+			public class «NameProvider.getPatternClassName(pattern)» extends MofgenPattern{
 				
-				«FOR node : nodes SEPARATOR ';'»
+				«FOR node : nodes SEPARATOR ';' AFTER ';'»
 					«node.type.instanceTypeName» «node.name»
 				«ENDFOR»
 				
@@ -164,17 +174,27 @@ class JavaFileGenerator {
 						«ENDIF»
 						
 						«IF node.createdBy instanceof PatternCall»
-						
+							«««TODO
+							throw new UnsupportedOperationException("Nodes created by PatternCalls are not yet supported!")
 						«ENDIF»
 					«ENDFOR»
 					
 				}
+				
+				@Override
+				/**
+				* TODO in Template Generation
+				*/
+				public void create(){
+				
+				}
 			}
 		'''
-		
 		// TODO provide overriding toString implementation
 		
-		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode)
+		val path ="D:\\Workspaces\\runtime-EclipseApplication\\mofgenTest\\src-gen\\mofgenTest\\api\\patterns\\" 
+		writeFile(path+NameProvider.getPatternClassName(pattern) + ".java", patternSourceCode)
+		//writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode) TODO replace
 	}
 
 	/**
@@ -201,8 +221,11 @@ class JavaFileGenerator {
 	 * Returns the name of the package.
 	 */
 	private def getSubPackageName(String subPackage) {
-		val dot = if(packageName.equals("")) "" else "."
-		return '''«packageName»«dot»«subPackage»'''
+//		val dot = if(packageName.equals("")) "" else "."
+//		return '''«packageName»«dot»«subPackage»'''
+// TODO replace
+	
+	return "mofgen"
 	}
 
 	/**
@@ -214,7 +237,7 @@ class JavaFileGenerator {
 			return type.literal
 		}
 		if (parameter instanceof ParameterNode) {
-			return parameter.type.instanceTypeName // TODO correct attribute of type used?
+			return parameter.type.instanceTypeName
 		}
 	}
 
@@ -227,6 +250,29 @@ class JavaFileGenerator {
 			file.setContents(contentStream, true, true, null)
 		} else {
 			file.create(contentStream, true, null)
+		}
+	}
+
+	private static def writeFile(String path, String content) {
+		try {
+			val myObj = new File(path);
+			if (myObj.createNewFile()) {
+				logger.info("File created: " + myObj.getName());
+			} else {
+				logger.info("File at "+ path + " already exists.");
+			}
+			try (val writer =
+             new OutputStreamWriter(new FileOutputStream(path), StandardCharsets.UTF_8)){
+		      writer.write(content);
+		      writer.close();
+		      logger.info("Successfully wrote to file at "+path);
+		    } catch (IOException e) {
+		      logger.error("Error writing to "+ path);
+		      e.printStackTrace();
+		    }
+		} catch (IOException e) {
+			logger.error("Error creating file "+ path);
+			e.printStackTrace();
 		}
 	}
 

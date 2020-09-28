@@ -30,6 +30,8 @@ import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.MofgenFile
+import org.mofgen.mGLang.MGLangPackage
+import org.mofgen.mGLang.impl.MGLangPackageImpl
 
 class TypeCalculator {
 
