@@ -103,6 +103,7 @@ class JavaFileGenerator {
 		'java.util.Map',
 		'java.util.HashMap',
 		'java.util.LinkedList',
+		'org.eclipse.emf.ecore.EObject',
 		'org.mofgen.api.MofgenGenerator')
 		
 		imports.add('mofgenTest.api.patterns.*') //TODO determine programmatically
@@ -162,8 +163,13 @@ class JavaFileGenerator {
 				«FOR node : nodes SEPARATOR ';' AFTER ';'»
 					«node.type.instanceTypeName» «node.name»
 				«ENDFOR»
-				
-				public «NameProvider.getPatternClassName(pattern)»(«IF pattern.parameters.empty»
+								
+				@Override
+				/**
+				* TODO in Template Generation
+				*/
+				«««TODO Return type
+				public static void create(«IF pattern.parameters.empty»
 				«ELSE»«FOR param : pattern.parameters SEPARATOR ','»final«getJavaType(param)»«param.name»Value«ENDFOR»«ENDIF»){
 					«FOR node : nodes SEPARATOR ';'»
 						«node.name» = («node.type.instanceTypeName») MGLangFactory.eINSTANCE.create(«node.type»)
@@ -178,15 +184,6 @@ class JavaFileGenerator {
 							throw new UnsupportedOperationException("Nodes created by PatternCalls are not yet supported!")
 						«ENDIF»
 					«ENDFOR»
-					
-				}
-				
-				@Override
-				/**
-				* TODO in Template Generation
-				*/
-				public void create(){
-				
 				}
 			}
 		'''
