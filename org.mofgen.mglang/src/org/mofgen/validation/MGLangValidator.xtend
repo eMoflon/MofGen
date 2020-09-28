@@ -37,6 +37,9 @@ import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternWhenCase
 import org.mofgen.mGLang.GenWhenCase
 import org.mofgen.mGLang.GenCaseWithCast
+import org.mofgen.mGLang.Variable
+import org.mofgen.mGLang.PatternObject
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 
 /**
  * This class contains custom validation rules. 
@@ -281,6 +284,29 @@ class MGLangValidator extends AbstractMGLangValidator {
 					if (givenParameterType !== neededParameterType) {
 						error("Given type " + givenParameterType.name + " does not match needed type " +
 							neededParameterType.name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+					}
+				}
+			}
+		}
+	}
+
+	@Check
+	def noVariableAccessBeforeDefinition(RefOrCall roc){
+		if(roc.target === null){
+			val ref = roc.ref
+			switch ref{
+				Variable: {
+					var rocNode = NodeModelUtils.getNode(roc)
+					val varNode = NodeModelUtils.getNode(ref)
+					if(rocNode.startLine < varNode.startLine){
+						error("Variable "+ref.name+" is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
+					}
+				}
+				PatternObject: {
+					var rocNode = NodeModelUtils.getNode(roc)
+					val patternNode = NodeModelUtils.getNode(ref)
+					if(rocNode.startLine < patternNode.startLine){
+						error("Pattern object "+ref.name+" is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
 					}
 				}
 			}
