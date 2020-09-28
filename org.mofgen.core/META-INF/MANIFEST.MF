@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: org.mofgen.core
 Bundle-ManifestVersion: 2
-Bundle-Name: org.mofgen.core
+Bundle-Name: org.mofgen.api
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: org.mofgen.codegen;singleton:=true
+Bundle-SymbolicName: org.mofgen.api;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,

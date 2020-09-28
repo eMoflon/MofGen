@@ -1,14 +1,14 @@
 package org.mofgen.api;
 
-/**
- * This abstract class provides a superclass for all patterns specified in mofgen-files.
- * @author Tobias Niehues
- *
- */
+import org.eclipse.emf.ecore.EObject;
+
 public abstract class MofgenPattern {
 
 	/**
-	 * Creates an instance of the given pattern.
+	 * Creates an instance of the given Pattern.
 	 */
-	public abstract void create();
+	public static EObject create() {
+		return null;
+	}
+	
 }

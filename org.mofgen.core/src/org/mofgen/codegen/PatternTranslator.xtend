@@ -19,7 +19,7 @@ class PatternTranslator {
 	}
 	
 	private static dispatch def String internalTranslate(Node node, PatternNodeReference ref){
-		//TODO *-reference / collection --> Add instead of set
+		//TODO *-reference / collection --> Add to collection instead of setting attribute
 		return '''
 		«node.name».«NameProvider.getSetterName(ref.type)»(«ref.target.name»)
 		'''

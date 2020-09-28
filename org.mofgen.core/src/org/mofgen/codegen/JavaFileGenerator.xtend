@@ -1,8 +1,13 @@
 package org.mofgen.codegen
 
 import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 import java.util.Set
+import org.apache.log4j.Logger
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IFolder
 import org.eclipse.xtext.EcoreUtil2
@@ -20,14 +25,7 @@ import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.NameProvider
 
 import static org.mofgen.interpreter.TypeRegistry.*
-import java.io.File
-import java.io.IOException
-import java.io.FileWriter
-import java.io.FileOutputStream
-import java.io.OutputStreamWriter
-import org.mofgen.codegen.PatternTranslator
-import org.mofgen.mGLang.MGLangPackage
-import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.EcorePackage
 
 /**
  * This class contains the templates for the API Java classes.
@@ -97,7 +95,7 @@ class JavaFileGenerator {
 	 * Generates the Java Generator class for the given generator.
 	 */
 	def generateGenClass(/*IFolder genPackage, TODO */ Generator gen) {
-		// TODO
+		// TODO automatically call all needed packages/classes from metamodels (possibly see eClassifierManager for that, maybe even in original form as in eMoflon-GT)
 		val imports = newHashSet('java.util.ArrayList',
 		'java.util.List',
 		'java.util.Map',
@@ -148,10 +146,22 @@ class JavaFileGenerator {
 			eClassifiersManager.getImportsForParameterNodeTypes(pattern.parameters.filter(ParameterNode).toList))
 		imports.addAll(
 			'org.mofgen.api.MofgenPattern',
-			'org.mofgen.mGLang.MGLangFactory'
+			'org.mofgen.mGLang.MGLangFactory',
+			'org.eclipse.emf.ecore.EObject'
 		)
 		
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+		
+		// TODO returnType when calling/creating instance of pattern?
+		var returnTypeString = "void"
+		if(pattern.^return !== null){
+			if(pattern.^return.returnValue !== null){
+				returnTypeString = pattern.^return.returnValue.type.name	
+			}else{
+				returnTypeString = EcorePackage.Literals.EOBJECT.name;
+			}
+		}
+		
 		val patternSourceCode = '''
 			«printHeader('mofgenTest.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
 			
@@ -168,9 +178,7 @@ class JavaFileGenerator {
 				/**
 				* TODO in Template Generation
 				*/
-				«««TODO Return type
-				public static void create(«IF pattern.parameters.empty»
-				«ELSE»«FOR param : pattern.parameters SEPARATOR ','»final«getJavaType(param)»«param.name»Value«ENDFOR»«ENDIF»){
+public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE»«FOR param : pattern.parameters SEPARATOR ','»final «getJavaType(param)» «param.name»Value«ENDFOR»«ENDIF»){
 					«FOR node : nodes SEPARATOR ';'»
 						«node.name» = («node.type.instanceTypeName») MGLangFactory.eINSTANCE.create(«node.type»)
 						«IF node.createdBy instanceof NodeContent»
@@ -274,7 +282,7 @@ class JavaFileGenerator {
 	}
 
 	/**
-	 * Triggers type registry once to collect all needed generic types for collection management.
+	 * Triggers type registry once to collect all needed types for collection management.
 	 */
 	private static def triggerTypeRegistry(MofgenFile file) {
 		TypeRegistry.update = false;

@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,12 +14,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
@@ -33,12 +28,10 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.xtext.EcoreUtil2;
 import org.mofgen.MGLangStandaloneSetup;
 import org.mofgen.api.EClassifiersManager;
-import org.mofgen.codegen.JavaFileGenerator;
 import org.mofgen.mGLang.Generator;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Pattern;
-import org.mofgen.util.NameProvider;
 import org.moflon.core.utilities.LogUtils;
 
 import glossarDocumentation.GlossarDocumentationPackage;;
@@ -250,7 +243,7 @@ public class MofgenBuilder {
 //		Map<String, String> map = MoflonPropertiesContainerHelper.loadIfExists(project) //
 //				.map(m -> m.getImportMappings()) //
 //				.map(i -> MoflonPropertiesContainerHelper.mappingsToMap(i)) //
-//				.orElse(new HashMap<String, String>()); TODO?
+//				.orElse(new HashMap<String, String>()); TODO what's happening here?
 
 		Map<String, String> map = new HashMap<>(); 
 		EClassifiersManager eClassifiersManager = new EClassifiersManager(map);
@@ -263,7 +256,7 @@ public class MofgenBuilder {
 			try {
 				Resource ecoreFile = resourceSet.getResource(URI.createPlatformResourceURI(uri, true), true);
 				ecoreFile.load(null);
-				eClassifiersManager.loadMetaModelClasses(ecoreFile);
+				eClassifiersManager.loadMetaModelClasses(ecoreFile);	//TODO Why does loading of metamodel not resolve proxies?
 			} catch (Exception e) {
 				logger.error("Could not load meta-model " + uri + ".");
 			}
