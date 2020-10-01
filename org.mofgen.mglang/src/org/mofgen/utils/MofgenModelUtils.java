@@ -3,14 +3,9 @@ package org.mofgen.utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-
-import javax.activation.UnsupportedDataTypeException;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -23,12 +18,18 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.util.SimpleAttributeResolver;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MofgenFile;
+import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.Parameter;
-import org.mofgen.mGLang.ParameterNode;
+import org.mofgen.mGLang.ParameterNodeOrPattern;
+import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.typeModel.TypeModelPackage;
+
+import com.google.common.base.Function;
 
 public class MofgenModelUtils {
 	/**
@@ -310,8 +311,10 @@ public class MofgenModelUtils {
 						"Unexpected type " + primPram.getType() + " for parameter " + param.getName());
 			}
 		}
-		if (param instanceof ParameterNode) {
-			return getEClassForInternalModel(((ParameterNode) param).getType());
+		if (param instanceof ParameterNodeOrPattern) {
+			if(((ParameterNodeOrPattern) param).getType() instanceof Node) {
+			return getEClassForInternalModel(((Node)((ParameterNodeOrPattern) param)).getType());
+			}
 		}
 		throw new IllegalArgumentException("Unknown parameter type for parameter " + param.getName());
 	}
@@ -357,5 +360,28 @@ public class MofgenModelUtils {
 				return TypeModelPackage.Literals.STRING;
 		}
 		throw new IllegalStateException("Could not convert eClassifier " + classifier.getName());
+	}
+	
+	public static Function<EObject, QualifiedName>getFunctionForUpperCasePatternScopes() {
+		return new Function<EObject, QualifiedName>(){
+			@Override
+			public QualifiedName apply(EObject o) {
+				if(o instanceof Node) {
+					return QualifiedName.create(((Node) o).getName());
+				}else if(o instanceof Pattern){
+					return QualifiedName.create(firstToUpperCase(((Pattern) o).getName()));
+				}else {
+					return QualifiedName.create(SimpleAttributeResolver.NAME_RESOLVER.apply(o));
+				}
+			}
+		};
+	}
+	
+	public static String firstToUpperCase(String str) {
+		if(str == null || str.equals("")) {
+			return "";
+		}else {
+			return str.substring(0, 1).toUpperCase() + str.substring(1);
+		}
 	}
 }

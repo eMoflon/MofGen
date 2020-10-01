@@ -39,7 +39,7 @@ PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
 
 ParamManipulation:
-	param=[ParameterNode] content=NodeContent;
+	param=[ParameterNodeOrPattern] content=NodeContent;	// TODO Only allow for 'real' nodes in scoping
 
 Node:
 	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
@@ -64,13 +64,13 @@ NodeAttributeAssignment:
 	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression;
 
 Parameter:
-	PrimitiveParameter | ParameterNode;
+	PrimitiveParameter | ParameterNodeOrPattern;
 
 PrimitiveParameter:
 	type=PrimitiveType name=ID;
 
-ParameterNode:
-	(srcModel=[Import] '.')? type=[ecore::EClassifier] name=ID;
+ParameterNodeOrPattern:
+	(srcModel=[Import] '.')? type=[ecore::EObject] name=ID;	//EObject to allow for eClasses from metamodels or for patterns as a whole
 
 PatternSwitch:
 	PatternIfElseSwitch | PatternSwitchCase;

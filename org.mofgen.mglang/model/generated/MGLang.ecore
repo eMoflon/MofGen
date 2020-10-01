@@ -41,7 +41,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="#//Node"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParamManipulation" eSuperTypes="#//PatternCommand">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="param" eType="#//ParameterNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="param" eType="#//ParameterNodeOrPattern"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//NodeContent"
         containment="true"/>
   </eClassifiers>
@@ -81,9 +81,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="PrimitiveParameter" eSuperTypes="#//Parameter">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//PrimitiveType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ParameterNode" eSuperTypes="#//Parameter">
+  <eClassifiers xsi:type="ecore:EClass" name="ParameterNodeOrPattern" eSuperTypes="#//Parameter">
     <eStructuralFeatures xsi:type="ecore:EReference" name="srcModel" eType="#//Import"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternSwitch" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//PatternDefault"

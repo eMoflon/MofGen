@@ -3,40 +3,39 @@
  */
 package org.mofgen.scoping
 
+import java.util.ArrayList
+import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.mofgen.mGLang.MGLangPackage
-import org.mofgen.utils.MofgenModelUtils
-import org.eclipse.xtext.scoping.Scopes
-import org.mofgen.mGLang.PatternNodeReference
-import org.eclipse.xtext.scoping.IScope
-import org.mofgen.mGLang.Node
 import org.eclipse.xtext.EcoreUtil2
-import org.mofgen.mGLang.Pattern
-import org.mofgen.mGLang.RefOrCall
-import org.mofgen.mGLang.Map
-import org.mofgen.mGLang.List
-import org.mofgen.typeModel.TypeModelPackage
-import java.util.ArrayList
+import org.eclipse.xtext.scoping.IScope
+import org.eclipse.xtext.scoping.Scopes
 import org.mofgen.mGLang.Collection
-import org.mofgen.mGLang.Generator
-import org.mofgen.mGLang.PatternObject
-import org.mofgen.mGLang.Import
-import org.mofgen.mGLang.ParameterNode
-import org.mofgen.mGLang.Variable
-import org.mofgen.mGLang.NodeAttributeAssignment
-import org.eclipse.emf.ecore.EEnum
 import org.mofgen.mGLang.CollectionManipulation
-import org.mofgen.mGLang.VariableManipulation
-import org.mofgen.mGLang.ListDeclaration
-import org.mofgen.mGLang.MapDeclaration
-import org.mofgen.mGLang.IteratorVariable
 import org.mofgen.mGLang.ForStatement
-import org.mofgen.mGLang.ListForEachHead
-import org.mofgen.mGLang.GeneralForEachHead
-import org.mofgen.mGLang.Case
-import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.GenCaseWithCast
+import org.mofgen.mGLang.GeneralForEachHead
+import org.mofgen.mGLang.Generator
+import org.mofgen.mGLang.Import
+import org.mofgen.mGLang.IteratorVariable
+import org.mofgen.mGLang.List
+import org.mofgen.mGLang.ListDeclaration
+import org.mofgen.mGLang.ListForEachHead
+import org.mofgen.mGLang.MGLangPackage
+import org.mofgen.mGLang.Map
+import org.mofgen.mGLang.MapDeclaration
+import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.NodeAttributeAssignment
+import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.Pattern
+import org.mofgen.mGLang.PatternCaseWithCast
+import org.mofgen.mGLang.PatternNodeReference
+import org.mofgen.mGLang.PatternObject
+import org.mofgen.mGLang.RefOrCall
+import org.mofgen.mGLang.Variable
+import org.mofgen.mGLang.VariableManipulation
+import org.mofgen.typeModel.TypeModelPackage
+import org.mofgen.utils.MofgenModelUtils
 
 /**
  * This class contains custom scoping description.
@@ -65,11 +64,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isPatternObject_Type(context, reference)) {
 			return getScopeForPatternObject_Type(context as PatternObject)
 		}
-		if (isParameterNode_SrcModel(context, reference)) {
-			return getScopeForParameterNode_SrcModel(context as ParameterNode)
+		if (isParameterNodeOrPattern_SrcModel(context, reference)) {
+			return getScopeForParameterNodeOrPattern_SrcModel(context as ParameterNodeOrPattern)
 		}
-		if (isParameterNode_Type(context, reference)) {
-			return getScopeForParameterNode_Type(context as ParameterNode)
+		if (isParameterNodeOrPattern_Type(context, reference)) {
+			return getScopeForParameterNodeOrPattern_Type(context as ParameterNodeOrPattern)
 		}
 		if (isNode_Type(context, reference)) {
 			return getScopeForNode_Type(context as Node)
@@ -83,63 +82,63 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isGeneralForEachHead_ERef(context, reference)) {
 			return getScopeForGeneralForEachHead_ERef(context as GeneralForEachHead)
 		}
-		if(isCollectionManipulation_Trg(context, reference)){
+		if (isCollectionManipulation_Trg(context, reference)) {
 			return getScopeForCollectionManipulation_Trg(context as CollectionManipulation)
 		}
-		if(isCollectionManipulation_Op(context, reference)){
+		if (isCollectionManipulation_Op(context, reference)) {
 			return getScopeForCollectionManipulation_Op(context as CollectionManipulation)
 		}
-		if(isVariableManipulation_Var(context, reference)){
+		if (isVariableManipulation_Var(context, reference)) {
 			return getScopeForVariableManipulation_Var(context as VariableManipulation)
 		}
-		if(isListDeclaration_Type(context, reference)){
+		if (isListDeclaration_Type(context, reference)) {
 			return getScopeForListDeclaration_Type(context as ListDeclaration)
 		}
-		if(isMapDeclaration_KeyType(context, reference)){
+		if (isMapDeclaration_KeyType(context, reference)) {
 			return getScopeForMapDeclaration_KeyType(context as MapDeclaration)
 		}
-		if(isMapDeclaration_EntryType(context, reference)){
+		if (isMapDeclaration_EntryType(context, reference)) {
 			return getScopeForMapDeclaration_EntryType(context as MapDeclaration)
 		}
 
 		return super.getScope(context, reference)
 	}
-	
-	def getScopeForListDeclaration_Type(ListDeclaration decl){
-		val file = getRootFile(decl)
-		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
-	}
-	
-	def getScopeForMapDeclaration_KeyType(MapDeclaration decl){
-		val file = getRootFile(decl)
-		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
-	}
-	
-	def getScopeForMapDeclaration_EntryType(MapDeclaration decl){
+
+	def getScopeForListDeclaration_Type(ListDeclaration decl) {
 		val file = getRootFile(decl)
 		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
 	}
 
-	def getScopeForCollectionManipulation_Trg(CollectionManipulation cm){
+	def getScopeForMapDeclaration_KeyType(MapDeclaration decl) {
+		val file = getRootFile(decl)
+		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
+	}
+
+	def getScopeForMapDeclaration_EntryType(MapDeclaration decl) {
+		val file = getRootFile(decl)
+		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
+	}
+
+	def getScopeForCollectionManipulation_Trg(CollectionManipulation cm) {
 		val container = EcoreUtil2.getContainerOfType(cm, Generator)
 		val colls = EcoreUtil2.getAllContentsOfType(container, Collection)
 		return Scopes.scopeFor(colls)
 	}
-	
-	def getScopeForCollectionManipulation_Op(CollectionManipulation cm){
+
+	def getScopeForCollectionManipulation_Op(CollectionManipulation cm) {
 		val trg = cm.trg
-		if(trg instanceof Map){
+		if (trg instanceof Map) {
 			val ops = TypeModelPackage.Literals.MAP.EAllOperations
 			return Scopes.scopeFor(ops)
 		}
-		if(trg instanceof List){
+		if (trg instanceof List) {
 			val ops = TypeModelPackage.Literals.LIST.EAllOperations
 			return Scopes.scopeFor(ops)
 		}
 		return IScope.NULLSCOPE
 	}
-	
-	def getScopeForVariableManipulation_Var(VariableManipulation vm){
+
+	def getScopeForVariableManipulation_Var(VariableManipulation vm) {
 		val container = EcoreUtil2.getContainerOfType(vm, Generator)
 		val vars = EcoreUtil2.getAllContentsOfType(container, Variable)
 		return Scopes.scopeFor(vars)
@@ -185,13 +184,17 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 	}
 
-	def getScopeForParameterNode_Type(ParameterNode paramNode) {
+	def getScopeForParameterNodeOrPattern_Type(ParameterNodeOrPattern paramNode) {
 		val imp = paramNode.srcModel
 		if (imp !== null) {
 			val classes = MofgenModelUtils.getClassesFromImport(imp)
 			return Scopes.scopeFor(classes)
 		} else {
-			return getScopeForAllImportedClasses(paramNode)
+			val root = MofgenModelUtils.getRootFile(paramNode)
+			val classes = MofgenModelUtils.getUniqueClasses(root)
+			val patterns = EcoreUtil2.getAllContentsOfType(root, Pattern)
+			return Scopes.scopeFor(classes + patterns, MofgenModelUtils.getFunctionForUpperCasePatternScopes(),
+				IScope.NULLSCOPE)
 		}
 	}
 
@@ -201,7 +204,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(classes)
 	}
 
-	def getScopeForParameterNode_SrcModel(ParameterNode paramNode) {
+	def getScopeForParameterNodeOrPattern_SrcModel(ParameterNodeOrPattern paramNode) {
 		val imports = EcoreUtil2.getAllContentsOfType(getRootFile(paramNode), Import)
 		return Scopes.scopeFor(imports)
 	}
@@ -260,7 +263,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	def getEventuallyShadowingNodes(EObject obj) {
 		val patternNodes = EcoreUtil2.getAllContainers(obj).filter(PatternCaseWithCast).map[c|c.node]
-		val genNodes= EcoreUtil2.getAllContainers(obj).filter(GenCaseWithCast).map[c|c.node]
+		val genNodes = EcoreUtil2.getAllContainers(obj).filter(GenCaseWithCast).map[c|c.node]
 		return patternNodes + genNodes
 	}
 
@@ -309,7 +312,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			// collect enums
 			val root = MofgenModelUtils.getRootFile(r)
 			val enums = MofgenModelUtils.getEnums(root)
-			
+
 			// collect imports
 			val imports = EcoreUtil2.getAllContentsOfType(root, Import)
 
@@ -317,35 +320,37 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			val containers = EcoreUtil2.getAllContainers(r);
 			var forStatements = newLinkedList()
 			var iteratorVars = newLinkedList()
-			for(cont : containers){
-				if(cont instanceof ForStatement){
+			for (cont : containers) {
+				if (cont instanceof ForStatement) {
 					forStatements.add(cont as ForStatement)
 				}
 			}
-			for(statement : forStatements){
+			for (statement : forStatements) {
 				val head = statement.head
-				if(head instanceof GeneralForEachHead){
+				if (head instanceof GeneralForEachHead) {
 					val forEachHead = head as GeneralForEachHead
 					iteratorVars.add(forEachHead.iteratorVar)
 				}
-				if(head instanceof ListForEachHead){
+				if (head instanceof ListForEachHead) {
 					val forEachHead = head as ListForEachHead
 					iteratorVars.add(forEachHead.iteratorVar)
 				}
 			}
-			
+
 			// add (eventually casted) nodes of switch if in switch
 			val switchNodes = newLinkedList()
 			var patternCastContainer = EcoreUtil2.getContainerOfType(r, PatternCaseWithCast) as PatternCaseWithCast
-			if(patternCastContainer !== null){
-					switchNodes.add(patternCastContainer.node)
+			if (patternCastContainer !== null) {
+				switchNodes.add(patternCastContainer.node)
 			}
 			var genCastContainer = EcoreUtil2.getContainerOfType(r, GenCaseWithCast) as GenCaseWithCast
-			if(genCastContainer !== null){
-					switchNodes.add(genCastContainer.node)
+			if (genCastContainer !== null) {
+				switchNodes.add(genCastContainer.node)
 			}
 
-			return Scopes.scopeFor(params + patternNodes + collections + vars + imports + enums + iteratorVars + switchNodes + patternObjects)
+			return Scopes.scopeFor(
+				params + patternNodes + collections + vars + imports + enums + iteratorVars + switchNodes +
+					patternObjects)
 
 		} else {
 			val trg = r.target
@@ -372,14 +377,25 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				Variable: {
 					return IScope.NULLSCOPE
 				}
-				IteratorVariable:{
+				IteratorVariable: {
 					return IScope.NULLSCOPE
 				}
-				Node,
-				ParameterNode: {
+				Node: {
 					val attrs = refClass.EAllAttributes
 					val refs = refClass.EAllReferences
 					return Scopes.scopeFor(attrs + refs)
+				}
+				ParameterNodeOrPattern: {
+					val type = ref.type
+					if (type instanceof Node) {
+						val clazz = type.type
+						val attrs = clazz.EAllAttributes
+						val refs = refClass.EAllReferences
+						return Scopes.scopeFor(attrs + refs)
+					}
+					if (type instanceof Pattern) {
+						return Scopes.scopeFor(type.commands.filter(Node))
+					}
 				}
 				PatternObject: {
 					val pattern = ref.type
@@ -392,7 +408,10 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 	}
 
-	def isPatternNodeReference_Type(EObject context, EReference reference) {
+	def isPatternNodeReference_Type(
+		EObject context,
+		EReference reference
+	) {
 		return context instanceof PatternNodeReference &&
 			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE
 	}
@@ -407,7 +426,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 
 	def isNodeAttributeAssignment_Target(EObject context, EReference reference) {
-		return context instanceof NodeAttributeAssignment && reference == MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__TARGET
+		return context instanceof NodeAttributeAssignment &&
+			reference == MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__TARGET
 	}
 
 	def isRefOrCall(EObject context) {
@@ -422,12 +442,14 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return context instanceof PatternObject && reference == MGLangPackage.Literals.PATTERN_OBJECT__TYPE
 	}
 
-	def isParameterNode_SrcModel(EObject context, EReference reference) {
-		return context instanceof ParameterNode && reference == MGLangPackage.Literals.PARAMETER_NODE__SRC_MODEL
+	def isParameterNodeOrPattern_SrcModel(EObject context, EReference reference) {
+		return context instanceof ParameterNodeOrPattern &&
+			reference == MGLangPackage.Literals.PARAMETER_NODE_OR_PATTERN__SRC_MODEL
 	}
 
-	def isParameterNode_Type(EObject context, EReference reference) {
-		return context instanceof ParameterNode && reference == MGLangPackage.Literals.PARAMETER_NODE__TYPE
+	def isParameterNodeOrPattern_Type(EObject context, EReference reference) {
+		return context instanceof ParameterNodeOrPattern &&
+			reference == MGLangPackage.Literals.PARAMETER_NODE_OR_PATTERN__TYPE
 	}
 
 	def isNode_SrcModel(EObject context, EReference reference) {
@@ -441,28 +463,30 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	def isGeneralForEachHead_ERef(EObject context, EReference reference) {
 		return context instanceof GeneralForEachHead && reference == MGLangPackage.Literals.GENERAL_FOR_EACH_HEAD__EREF
 	}
-	
-	def isCollectionManipulation_Trg(EObject context, EReference reference){
-		return context instanceof CollectionManipulation && reference == MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG
+
+	def isCollectionManipulation_Trg(EObject context, EReference reference) {
+		return context instanceof CollectionManipulation &&
+			reference == MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG
 	}
-	
-	def isCollectionManipulation_Op(EObject context, EReference reference){
-		return context instanceof CollectionManipulation && reference == MGLangPackage.Literals.COLLECTION_MANIPULATION__OP
+
+	def isCollectionManipulation_Op(EObject context, EReference reference) {
+		return context instanceof CollectionManipulation &&
+			reference == MGLangPackage.Literals.COLLECTION_MANIPULATION__OP
 	}
-	
-	def isVariableManipulation_Var(EObject context, EReference reference){
+
+	def isVariableManipulation_Var(EObject context, EReference reference) {
 		return context instanceof VariableManipulation && reference == MGLangPackage.Literals.VARIABLE_MANIPULATION__VAR
 	}
-	
-	def isListDeclaration_Type(EObject context, EReference reference){
+
+	def isListDeclaration_Type(EObject context, EReference reference) {
 		return context instanceof ListDeclaration && reference == MGLangPackage.Literals.LIST_DECLARATION__TYPE
 	}
-	
-	def isMapDeclaration_KeyType(EObject context, EReference reference){
+
+	def isMapDeclaration_KeyType(EObject context, EReference reference) {
 		return context instanceof MapDeclaration && reference == MGLangPackage.Literals.MAP_DECLARATION__KEY_TYPE
 	}
-	
-	def isMapDeclaration_EntryType(EObject context, EReference reference){
+
+	def isMapDeclaration_EntryType(EObject context, EReference reference) {
 		return context instanceof MapDeclaration && reference == MGLangPackage.Literals.MAP_DECLARATION__ENTRY_TYPE
 	}
 

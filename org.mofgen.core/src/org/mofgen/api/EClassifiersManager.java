@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.mofgen.mGLang.Node;
-import org.mofgen.mGLang.ParameterNode;
+import org.mofgen.mGLang.ParameterNodeOrPattern;
 import org.moflon.core.utilities.EcoreUtils;
 
 /**
@@ -162,8 +162,9 @@ public class EClassifiersManager {
 	 * @param nodes the nodes
 	 * @return the types for Java import statements
 	 */
-	public Set<String> getImportsForParameterNodeTypes(final List<ParameterNode> nodes) {
-		return getImportsForTypes(nodes.stream().map(n -> n.getType()).collect(Collectors.toSet()));
+	public Set<String> getImportsForParameterNodeTypes(final List<ParameterNodeOrPattern> nodes) {
+		return new HashSet<String>(); // TODO
+		//return getImportsForTypes(nodes.stream().map(n -> n.getType()).collect(Collectors.toSet()));
 	}
 	
 	/**

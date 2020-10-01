@@ -1,37 +1,34 @@
 package org.mofgen.interpreter
 
-import org.mofgen.mGLang.ArithmeticExpression
-import org.mofgen.mGLang.Tertiary
-import org.mofgen.mGLang.Secondary
-import org.mofgen.mGLang.Primary
-import org.mofgen.mGLang.Rel
-import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.NegationExpression
-import org.mofgen.mGLang.FunctionCall
-import org.mofgen.mGLang.RefOrCall
-import org.mofgen.mGLang.BooleanLiteral
-import org.mofgen.mGLang.NumberLiteral
-import org.mofgen.mGLang.StringLiteral
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EOperation
-import org.mofgen.mGLang.Variable
+import org.eclipse.emf.ecore.EReference
+import org.mofgen.mGLang.ArithmeticExpression
+import org.mofgen.mGLang.BooleanLiteral
+import org.mofgen.mGLang.FunctionCall
+import org.mofgen.mGLang.List
+import org.mofgen.mGLang.Map
+import org.mofgen.mGLang.NegationExpression
+import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.NumberLiteral
+import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.PatternCall
+import org.mofgen.mGLang.Primary
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.mGLang.PrimitiveType
+import org.mofgen.mGLang.RefOrCall
+import org.mofgen.mGLang.Rel
+import org.mofgen.mGLang.Secondary
+import org.mofgen.mGLang.StringLiteral
+import org.mofgen.mGLang.Tertiary
 import org.mofgen.mGLang.UnaryMinus
-import org.eclipse.emf.ecore.EClass
-import org.mofgen.mGLang.ParameterNode
-import org.eclipse.emf.ecore.EEnum
+import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
-import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.Map
-import org.mofgen.mGLang.List
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.EEnumLiteral
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.MofgenFile
-import org.mofgen.mGLang.MGLangPackage
-import org.mofgen.mGLang.impl.MGLangPackageImpl
 
 class TypeCalculator {
 
@@ -225,10 +222,10 @@ class TypeCalculator {
 	}
 
 	def dispatch private internalEvaluate(RefOrCall roc) {
-		
+
 		var ref = roc.ref
 		switch ref {
-			 Variable :
+			Variable:
 				return internalEvaluate(ref.value)
 			PrimitiveParameter: {
 				switch ref.type {
@@ -245,9 +242,12 @@ class TypeCalculator {
 					}
 				}
 			}
-			ParameterNode: {
-				val type = ref.type
-				return MofgenModelUtils.getEClassForInternalModel(type)
+			ParameterNodeOrPattern: {
+				if (ref.type instanceof EClassifier) {
+					return MofgenModelUtils.getEClassForInternalModel(ref.type as EClassifier)
+				}else{
+					return ref.type
+				}
 			}
 			EEnum: {
 				return TypeModelPackage.Literals.ENUM

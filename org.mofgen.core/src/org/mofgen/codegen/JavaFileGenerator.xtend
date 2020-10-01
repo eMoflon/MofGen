@@ -18,7 +18,7 @@ import org.mofgen.mGLang.MofgenFile
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeContent
 import org.mofgen.mGLang.Parameter
-import org.mofgen.mGLang.ParameterNode
+import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PrimitiveParameter
@@ -31,9 +31,9 @@ import org.eclipse.emf.ecore.EcorePackage
  * This class contains the templates for the API Java classes.
  */
 class JavaFileGenerator {
-	
+
 	static Logger logger = MofgenBuilder.logger
-	
+
 	/**
 	 * The name of the package.
 	 */
@@ -94,18 +94,12 @@ class JavaFileGenerator {
 	/**
 	 * Generates the Java Generator class for the given generator.
 	 */
-	def generateGenClass(/*IFolder genPackage, TODO */ Generator gen) {
+	def generateGenClass( /*IFolder genPackage, TODO */ Generator gen) {
 		// TODO automatically call all needed packages/classes from metamodels (possibly see eClassifierManager for that, maybe even in original form as in eMoflon-GT)
-		val imports = newHashSet('java.util.ArrayList',
-		'java.util.List',
-		'java.util.Map',
-		'java.util.HashMap',
-		'java.util.LinkedList',
-		'org.eclipse.emf.ecore.EObject',
-		'org.mofgen.api.MofgenGenerator')
-		
-		imports.add('mofgenTest.api.patterns.*') //TODO determine programmatically
-		
+		val imports = newHashSet('java.util.ArrayList', 'java.util.List', 'java.util.Map', 'java.util.HashMap',
+			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.MofgenGenerator')
+
+		imports.add('mofgenTest.api.patterns.*') // TODO determine programmatically
 		val genSourceCode = '''
 			«printHeader('mofgenTest.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
 			
@@ -115,53 +109,52 @@ class JavaFileGenerator {
 			public class «NameProvider.getGeneratorClassName(gen)» extends «GENERATOR_SUPER_CLASS» {
 			
 			«««TODO Documentation?
-			@Override
+			@Ov?rride
 				/**
-				* Runs the specified generator with the given parameters
+				* Runs the specified generator with the gi?en par?meters
 				*/
 				public void start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
-				«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaType(parameter)» «parameter.name»Value«ENDFOR»
+			?«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaTypeAsString(parameter)» «parameter.name»Value«ENDFOR»
 			«FOR expression : gen.commands»
 				«GeneratorTranslator.translate(expression)»;
 			«ENDFOR»
 			}
 			
 			}
-
+			
 		'''
 		// TODO provide overriding toString implementation
-		
-		val path ="D:\\Workspaces\\runtime-EclipseApplication\\mofgenTest\\src-gen\\mofgenTest\\api\\generators\\" 
-		writeFile(path+NameProvider.getGeneratorClassName(gen) + ".java", genSourceCode)
+		val path = "D:\\Workspaces\\runtime-EclipseApplication\\mofgenTest\\src-gen\\mofgenTest\\api\\generators\\"
+		writeFile(path + NameProvider.getGeneratorClassName(gen) + ".java", genSourceCode)
 //		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), genSourceCode) TODO replace
 	}
 
 	/**
 	 * Generates the Java Generator class for the given pattern.
 	 */
-	def generatePatternClass(/*IFolder patternPackage, TODO */  Pattern pattern) {
+	def generatePatternClass( /*IFolder patternPackage, TODO */ Pattern pattern) {
 		// TODO
 		val imports = eClassifiersManager.getImportsForNodeTypes(pattern.commands.filter(Node).toList)
-		imports.addAll(
-			eClassifiersManager.getImportsForParameterNodeTypes(pattern.parameters.filter(ParameterNode).toList))
+//		imports.addAll(
+//			eClassifiersManager.getImportsForParameterNodeTypes(pattern.parameters.filter(ParameterNode).toList))
 		imports.addAll(
 			'org.mofgen.api.MofgenPattern',
 			'org.mofgen.mGLang.MGLangFactory',
 			'org.eclipse.emf.ecore.EObject'
 		)
-		
+
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
-		
+
 		// TODO returnType when calling/creating instance of pattern?
 		var returnTypeString = "void"
-		if(pattern.^return !== null){
-			if(pattern.^return.returnValue !== null){
-				returnTypeString = pattern.^return.returnValue.type.name	
-			}else{
+		if (pattern.^return !== null) {
+			if (pattern.^return.returnValue !== null) {
+				returnTypeString = pattern.^return.returnValue.type.name
+			} else {
 				returnTypeString = EcorePackage.Literals.EOBJECT.name;
 			}
 		}
-		
+
 		val patternSourceCode = '''
 			«printHeader('mofgenTest.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
 			
@@ -178,7 +171,7 @@ class JavaFileGenerator {
 				/**
 				* TODO in Template Generation
 				*/
-public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE»«FOR param : pattern.parameters SEPARATOR ','»final «getJavaType(param)» «param.name»Value«ENDFOR»«ENDIF»){
+public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE»«FOR param : pattern.parameters SEPARATOR ','»final «getJavaTypeAsString(param)» «param.name»Value«ENDFOR»«ENDIF»){
 					«FOR node : nodes SEPARATOR ';'»
 						«node.name» = («node.type.instanceTypeName») MGLangFactory.eINSTANCE.create(«node.type»)
 						«IF node.createdBy instanceof NodeContent»
@@ -196,10 +189,9 @@ public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE
 			}
 		'''
 		// TODO provide overriding toString implementation
-		
-		val path ="D:\\Workspaces\\runtime-EclipseApplication\\mofgenTest\\src-gen\\mofgenTest\\api\\patterns\\" 
-		writeFile(path+NameProvider.getPatternClassName(pattern) + ".java", patternSourceCode)
-		//writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode) TODO replace
+		val path = "D:\\Workspaces\\runtime-EclipseApplication\\mofgenTest\\src-gen\\mofgenTest\\api\\patterns\\"
+		writeFile(path + NameProvider.getPatternClassName(pattern) + ".java", patternSourceCode)
+	// writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode) TODO replace
 	}
 
 	/**
@@ -229,20 +221,27 @@ public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE
 //		val dot = if(packageName.equals("")) "" else "."
 //		return '''«packageName»«dot»«subPackage»'''
 // TODO replace
-	
-	return "mofgen"
+		return "mofgen"
 	}
 
 	/**
-	 * Returns the equivalent Java type for the EDataType.
+	 * Returns the equivalent Java type as String for the given Parameter object.
 	 */
-	static def getJavaType(Parameter parameter) {
+	static def getJavaTypeAsString(Parameter parameter) {
 		if (parameter instanceof PrimitiveParameter) {
 			val type = parameter.type
 			return type.literal
 		}
-		if (parameter instanceof ParameterNode) {
-			return parameter.type.instanceTypeName
+		if (parameter instanceof ParameterNodeOrPattern) {
+			val type = parameter.type
+			if (type instanceof Node) {
+				return type.type.instanceTypeName
+			} else if (type instanceof Pattern) {
+				return type.eClass.instanceTypeName
+			} else {
+				return new IllegalArgumentException(
+					"Parameter that is not primitive must reference a node or a pattern");
+			}
 		}
 	}
 
@@ -264,19 +263,19 @@ public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE
 			if (myObj.createNewFile()) {
 				logger.info("File created: " + myObj.getName());
 			} else {
-				logger.info("File at "+ path + " already exists.");
+				logger.info("File at " + path + " already exists.");
 			}
 			try (val writer =
-             new OutputStreamWriter(new FileOutputStream(path), StandardCharsets.UTF_8)){
-		      writer.write(content);
-		      writer.close();
-		      logger.info("Successfully wrote to file at "+path);
-		    } catch (IOException e) {
-		      logger.error("Error writing to "+ path);
-		      e.printStackTrace();
-		    }
+             new OutputStreamWriter(new FileOutputStream(path), StandardCharsets.UTF_8)) {
+				writer.write(content);
+				writer.close();
+				logger.info("Successfully wrote to file at " + path);
+			} catch (IOException e) {
+				logger.error("Error writing to " + path);
+				e.printStackTrace();
+			}
 		} catch (IOException e) {
-			logger.error("Error creating file "+ path);
+			logger.error("Error creating file " + path);
 			e.printStackTrace();
 		}
 	}

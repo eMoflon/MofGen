@@ -105,9 +105,9 @@
     <genClasses ecoreClass="MGLang.ecore#//PrimitiveParameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//PrimitiveParameter/type"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//ParameterNode">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ParameterNode/srcModel"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ParameterNode/type"/>
+    <genClasses ecoreClass="MGLang.ecore#//ParameterNodeOrPattern">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ParameterNodeOrPattern/srcModel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ParameterNodeOrPattern/type"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternSwitch">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternSwitch/default"/>
