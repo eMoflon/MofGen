@@ -18,13 +18,10 @@ import org.mofgen.mGLang.List
 import org.mofgen.mGLang.ListForEachHead
 import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.PatternObject
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.util.NameProvider
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import org.eclipse.emf.ecore.EObject
 import org.mofgen.util.MofgenUtil
 
 /**
@@ -101,10 +98,6 @@ class GeneratorTranslator {
 		return translatePatternCall(pc)
 	}
 
-	def static dispatch private String translateGen(PatternObject obj) {
-		return translatePatternObject(obj)
-	}
-
 	def static dispatch private String translateGen(Variable variable) {
 		if (variable.value instanceof PatternCall) {
 			val calledPattern = (variable.value as PatternCall).called
@@ -149,10 +142,6 @@ class GeneratorTranslator {
 		return translatePatternCall(pc)
 	}
 
-	def static dispatch private String translateGenSwitch(PatternObject po) {
-		return translatePatternObject(po)
-	}
-
 	// ------------------------------------------ single translations ------------------------------------------
 	def static private String translateForStatement(ForStatement forStatement) {
 		val head = forStatement.head
@@ -181,12 +170,6 @@ class GeneratorTranslator {
 	def static private String translatePatternCall(PatternCall pc) {
 		return '''«NameProvider.getPatternCreate(pc.called)»(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»
 			«ENDIF»
-		'''
-	}
-
-	def static private String translatePatternObject(PatternObject obj) {
-		return '''
-			«NameProvider.getPatternClassName(obj.patternCall.called.name)» «obj.name» = «translateGen(obj.patternCall)»
 		'''
 	}
 

@@ -307,6 +307,17 @@ class TypeCalculator {
 	}
 
 	def dispatch private internalEvaluate(PatternCall pc) {
-		return pc
+		val ret = pc.called.^return
+		val calledPattern = pc.called
+		if(ret !== null){
+			val retValue = ret.returnValue
+			if(retValue !== null){
+				return retValue.type
+			}else{
+				return calledPattern.eClass
+			}
+		}else{
+			return null
+		}
 	}
 }

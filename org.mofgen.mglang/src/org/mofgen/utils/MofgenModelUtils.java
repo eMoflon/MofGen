@@ -292,6 +292,9 @@ public class MofgenModelUtils {
 		metaModelResources.put(uri, resource);
 	}
 
+	/**
+	 * @return the type of the given parameter in terms of the internal type system (see TypeModel)
+	 */
 	public static EClass getInternalParameterType(Parameter param) {
 		if (param instanceof PrimitiveParameter) {
 			PrimitiveParameter primPram = (PrimitiveParameter) param;
@@ -310,20 +313,25 @@ public class MofgenModelUtils {
 				throw new IllegalArgumentException(
 						"Unexpected type " + primPram.getType() + " for parameter " + param.getName());
 			}
-		}
-		if (param instanceof ParameterNodeOrPattern) {
-			if(((ParameterNodeOrPattern) param).getType() instanceof Node) {
-			return getEClassForInternalModel(((Node)((ParameterNodeOrPattern) param)).getType());
+		}else if (param instanceof ParameterNodeOrPattern) {
+			ParameterNodeOrPattern nodeOrPattern = (ParameterNodeOrPattern) param;
+			EObject parameterType = nodeOrPattern.getType();
+			if (parameterType instanceof Node) {
+				Node node = (Node) parameterType;
+				return getEClassForInternalModel(node.getType());
+			}else {
+				return (EClass) parameterType;
 			}
+		}else {
+			throw new IllegalArgumentException("Unknown parameter type for parameter " + param.getName());
 		}
-		throw new IllegalArgumentException("Unknown parameter type for parameter " + param.getName());
 	}
 
 	public static EClass getEClassForInternalModel(EClassifier classifier) {
 		if (classifier != null && classifier instanceof EClass) {
 			return (EClass) classifier;
 		}
-		if(classifier != null && classifier instanceof EEnum) {
+		if (classifier != null && classifier instanceof EEnum) {
 			return TypeModelPackage.Literals.ENUM;
 		}
 		if (classifier != null && classifier instanceof EDataType) {
@@ -361,26 +369,26 @@ public class MofgenModelUtils {
 		}
 		throw new IllegalStateException("Could not convert eClassifier " + classifier.getName());
 	}
-	
-	public static Function<EObject, QualifiedName>getFunctionForUpperCasePatternScopes() {
-		return new Function<EObject, QualifiedName>(){
+
+	public static Function<EObject, QualifiedName> getFunctionForUpperCasePatternScopes() {
+		return new Function<EObject, QualifiedName>() {
 			@Override
 			public QualifiedName apply(EObject o) {
-				if(o instanceof Node) {
+				if (o instanceof Node) {
 					return QualifiedName.create(((Node) o).getName());
-				}else if(o instanceof Pattern){
+				} else if (o instanceof Pattern) {
 					return QualifiedName.create(firstToUpperCase(((Pattern) o).getName()));
-				}else {
+				} else {
 					return QualifiedName.create(SimpleAttributeResolver.NAME_RESOLVER.apply(o));
 				}
 			}
 		};
 	}
-	
+
 	public static String firstToUpperCase(String str) {
-		if(str == null || str.equals("")) {
+		if (str == null || str.equals("")) {
 			return "";
-		}else {
+		} else {
 			return str.substring(0, 1).toUpperCase() + str.substring(1);
 		}
 	}

@@ -154,12 +154,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternObject" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Pattern"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="patternCall" eType="#//PatternCall"
-        containment="true"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//GeneratorExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ArithmeticExpression"

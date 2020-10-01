@@ -30,7 +30,6 @@ import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternNodeReference
-import org.mofgen.mGLang.PatternObject
 import org.mofgen.mGLang.PatternWhenCase
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
@@ -38,6 +37,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.Pattern
 
 /**
  * This class contains custom validation rules. 
@@ -322,21 +322,24 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def noVariableAccessBeforeDefinition(RefOrCall roc) {
 		if (roc.target === null) {
 			val ref = roc.ref
-			switch ref {
-				Variable: {
-					var rocNode = NodeModelUtils.getNode(roc)
-					val varNode = NodeModelUtils.getNode(ref)
-					if (rocNode.startLine < varNode.startLine) {
-						error("Variable " + ref.name + " is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
-					}
+			if (ref instanceof Variable) {
+				var rocNode = NodeModelUtils.getNode(roc)
+				val varNode = NodeModelUtils.getNode(ref)
+				if (rocNode.startLine < varNode.startLine) {
+					error("Variable " + ref.name + " is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
 				}
-				PatternObject: {
-					var rocNode = NodeModelUtils.getNode(roc)
-					val patternNode = NodeModelUtils.getNode(ref)
-					if (rocNode.startLine < patternNode.startLine) {
-						error("Pattern object " + ref.name + " is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
-					}
-				}
+			}
+		}
+	}
+
+	@Check
+	def noVariableWithNullReturningPattern(Variable variable) {
+		val value = variable.value
+		if (value instanceof PatternCall) {
+			val ret = value.called.^return
+			if (ret === null) {
+				error("Cannot define variable by calling a pattern of type void",
+					MGLangPackage.Literals.VARIABLE__VALUE);
 			}
 		}
 	}
@@ -383,6 +386,15 @@ class MGLangValidator extends AbstractMGLangValidator {
 						val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
 							typeChecker.evaluate(givenParams.get(i)))
 						val neededParameterType = MofgenModelUtils.getEClassForInternalModel(neededParams.get(i))
+
+//						if(givenParameterType instanceof Pattern && neededParameterType instanceof Pattern){
+//							if(!givenParameterType.name.equals(neededParameterType)){
+//								error(
+//										"Given parameter type " + givenParameterType.name +
+//											" does not match needed parameter type " + neededParameterType.name,
+//										MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+//							}
+//						}
 
 						if (!(givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
 							neededParameterType.isSuperTypeOf(givenParameterType))) {
