@@ -36,6 +36,9 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.util.MGLangAdapterFactory
+import org.mofgen.mGLang.ParamManipulation
+import org.eclipse.emf.ecore.EClass
 
 /**
  * This class contains custom scoping description.
@@ -99,6 +102,9 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 		if (isMapDeclaration_EntryType(context, reference)) {
 			return getScopeForMapDeclaration_EntryType(context as MapDeclaration)
+		}
+		if (isParamManipulation_Param(context, reference)) {
+			return getScopeForParamManipulation_Param(context as ParamManipulation)
 		}
 
 		return super.getScope(context, reference)
@@ -244,11 +250,20 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	def getScopeForNodeAttributeAssignment_Target(NodeAttributeAssignment ass) {
 		val srcNode = EcoreUtil2.getContainerOfType(ass, Node)
+		val srcParamManipulation = EcoreUtil2.getContainerOfType(ass, ParamManipulation)
 		val file = getRootFile(ass)
 		val classes = MofgenModelUtils.getClasses(file)
 		try {
-			val filteredClasses = classes.filter[c|c == srcNode.type]
-			val attrs = newArrayList()
+			val filteredClasses = newLinkedList()
+			if (srcNode !== null) {
+				filteredClasses.addAll(classes.filter[c|c == srcNode.type])
+			} else {
+				val parameterType = srcParamManipulation.param.type
+				if (parameterType instanceof Node) {
+					filteredClasses.addAll(classes.filter[c|c == (parameterType as Node).type])
+				}
+			}
+			val attrs = newLinkedList()
 			if (filteredClasses.isEmpty) {
 				return IScope.NULLSCOPE
 			} else {
@@ -258,7 +273,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		} catch (NullPointerException e) {
 			return IScope.NULLSCOPE
 		}
-
 	}
 
 	def getEventuallyShadowingNodes(EObject obj) {
@@ -295,7 +309,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 			// get nodes of casts in above case-heads (remove names from pattern-nodes eventually)
 			val shadowingNodes = getEventuallyShadowingNodes(r)
-			val indicesToRemove = newArrayList()
+			val indicesToRemove = newLinkedList()
 
 			// find shadowed Pattern nodes
 			for (pNode : patternNodes) {
@@ -387,14 +401,15 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				}
 				ParameterNodeOrPattern: {
 					val type = ref.type
-					if (type instanceof Node) {
-						val clazz = type.type
-						val attrs = clazz.EAllAttributes
-						val refs = refClass.EAllReferences
+					if (type instanceof EClass) {
+						val attrs = type.EAllAttributes
+						val refs = type.EAllReferences
 						return Scopes.scopeFor(attrs + refs)
-					}
+					}else
 					if (type instanceof Pattern) {
 						return Scopes.scopeFor(type.commands.filter(Node))
+					}else{
+						throw new IllegalArgumentException("Only possible types should be eClass or pattern")
 					}
 				}
 				PatternObject: {
@@ -406,6 +421,18 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					return IScope.NULLSCOPE
 			}
 		}
+	}
+
+	def getScopeForParamManipulation_Param(ParamManipulation pm) {
+		val pattern = EcoreUtil2.getContainerOfType(pm, Pattern)
+		val paramNodeOrPattern = pattern.parameters.filter(ParameterNodeOrPattern)
+		val parameterNodes = newLinkedList()
+		for (nodeOrPattern : paramNodeOrPattern) {
+			if (!(nodeOrPattern.type instanceof Pattern)) {
+				parameterNodes.add(nodeOrPattern)
+			}
+		}
+		return Scopes.scopeFor(parameterNodes)
 	}
 
 	def isPatternNodeReference_Type(
@@ -488,6 +515,10 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	def isMapDeclaration_EntryType(EObject context, EReference reference) {
 		return context instanceof MapDeclaration && reference == MGLangPackage.Literals.MAP_DECLARATION__ENTRY_TYPE
+	}
+
+	def isParamManipulation_Param(EObject context, EReference reference) {
+		return context instanceof ParamManipulation && reference == MGLangPackage.Literals.PARAM_MANIPULATION__PARAM
 	}
 
 	def getRootFile(EObject context) {

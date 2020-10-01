@@ -37,6 +37,7 @@ import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.Node
 
 /**
  * This class contains custom validation rules. 
@@ -288,22 +289,52 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
-	def noVariableAccessBeforeDefinition(RefOrCall roc){
-		if(roc.target === null){
+	def checkTypeForNodeCreationByPatternCall(Node node) {
+		// TODO Is it right that anything fits into eobject?
+		if (node.type !== EcorePackage.Literals.EOBJECT) {
+			if (node.createdBy instanceof PatternCall) {
+				val pc = node.createdBy as PatternCall
+				val ret = pc.called.^return
+				if (ret === null) {
+					error("Pattern " + pc.called.name + " returns null but " + node.name + " expects " + node.type.name,
+						MGLangPackage.Literals.NODE__CREATED_BY)
+				} else {
+					val retVal = ret.returnValue
+					if (retVal === null) {
+						error(
+							"Pattern " + pc.called.name + " returns " + pc.called.name + " but " + node.name +
+								" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
+					} else {
+						if (retVal.type !== node.type) {
+							error(
+								"Pattern " + pc.called.name + " returns " + pc.called.^return.returnValue.type.name +
+									" but " + node.name + " expects " + node.type.name,
+								MGLangPackage.Literals.NODE__CREATED_BY)
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	@Check
+	def noVariableAccessBeforeDefinition(RefOrCall roc) {
+		if (roc.target === null) {
 			val ref = roc.ref
-			switch ref{
+			switch ref {
 				Variable: {
 					var rocNode = NodeModelUtils.getNode(roc)
 					val varNode = NodeModelUtils.getNode(ref)
-					if(rocNode.startLine < varNode.startLine){
-						error("Variable "+ref.name+" is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
+					if (rocNode.startLine < varNode.startLine) {
+						error("Variable " + ref.name + " is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
 					}
 				}
 				PatternObject: {
 					var rocNode = NodeModelUtils.getNode(roc)
 					val patternNode = NodeModelUtils.getNode(ref)
-					if(rocNode.startLine < patternNode.startLine){
-						error("Pattern object "+ref.name+" is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
+					if (rocNode.startLine < patternNode.startLine) {
+						error("Pattern object " + ref.name + " is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
 					}
 				}
 			}

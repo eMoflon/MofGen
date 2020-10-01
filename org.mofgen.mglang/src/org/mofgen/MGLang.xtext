@@ -39,7 +39,7 @@ PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
 
 ParamManipulation:
-	param=[ParameterNodeOrPattern] content=NodeContent;	// TODO Only allow for 'real' nodes in scoping
+	param=[ParameterNodeOrPattern] content=NodeContent;
 
 Node:
 	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
@@ -221,6 +221,9 @@ MapTupel:
 	'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')';
 
 	//======================================Arithmetics============================================
+	
+	// TODO allow null checks
+	
 ArithmeticExpression:
 	TertiaryExpression;
 
