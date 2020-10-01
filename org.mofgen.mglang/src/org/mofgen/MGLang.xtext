@@ -208,7 +208,7 @@ MapDefOrDecl:
 	MapDefinition | MapDeclaration;
 
 MapDeclaration:
-	'of' keyType=[ecore::EClass] '->' entryType=[ecore::EClass] //TODO: How to signal key to entry relation?
+	'of' '(' keyType=[ecore::EClass] ',' entryType=[ecore::EClass] ')'
 ;
 
 MapDefinition:
