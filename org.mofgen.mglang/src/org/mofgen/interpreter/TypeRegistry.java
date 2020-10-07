@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.EcoreUtil2;
 import org.mofgen.mGLang.List;
@@ -74,12 +75,27 @@ public class TypeRegistry {
 					return;
 				}
 
-				EClass listType = typeCalc.evaluate(elements.get(0));
+				Object listTypeEval = typeCalc.evaluate(elements.get(0));
+				EClass listType = null;
+				if (listTypeEval instanceof EClass) {
+					listType = (EClass) listTypeEval;
+				} else {
+					throw new UnsupportedOperationException("list of type Pattern should not occur");
+				}
 				for (int i = 1; i < elements.size(); i++) {
-					EClass clazz = typeCalc.evaluate(elements.get(i));
-					if (clazz != listType) {
-						listType = EcorePackage.Literals.EOBJECT;
-						break;
+					Object elementEval = typeCalc.evaluate(elements.get(i));
+					if (elementEval instanceof EClass) {
+						EClass clazz = (EClass) elementEval;
+						if (clazz != listType) {
+							if (clazz.isSuperTypeOf(listType)) {
+								listType = clazz;
+							} else {
+								listType = EcorePackage.Literals.EOBJECT;
+								break;
+							}
+						}
+					} else {
+						throw new UnsupportedOperationException("list of type Pattern should not occur");
 					}
 				}
 				listTypes.put(list, listType);
@@ -104,26 +120,59 @@ public class TypeRegistry {
 				}
 
 				// find keyType
-				EClass keyType = typeCalc.evaluate(elements.get(0).getKey());
+				Object keyTypeEval = typeCalc.evaluate(elements.get(0).getKey());
+				EClass keyType = null;
+				if (keyTypeEval instanceof EClass) {
+					keyType = (EClass) keyTypeEval;
+				} else {
+					throw new UnsupportedOperationException("keys of type Pattern should not occur");
+				}
 				for (int i = 1; i < elements.size(); i++) {
-					EClass clazz = typeCalc.evaluate(elements.get(i).getKey());
-					if (clazz != keyType) {
-						keyType = EcorePackage.Literals.EOBJECT;
-						break;
+					Object elementEval = typeCalc.evaluate(elements.get(i).getKey());
+					if (elementEval instanceof EClass) {
+						EClass clazz = (EClass) elementEval;
+						if (clazz != keyType) {
+							if (clazz.isSuperTypeOf(keyType)) {
+								keyType = clazz;
+							} else {
+								keyType = EcorePackage.Literals.EOBJECT;
+								break;
+							}
+						}
+					} else {
+						throw new UnsupportedOperationException("keys of type Pattern should not occur");
 					}
+
 				}
 				keyTypes.put(map, keyType);
 
 				// find entryType
-				EClass entryType = typeCalc.evaluate(elements.get(0).getValue());
+				Object entryTypeEval = typeCalc.evaluate(elements.get(0).getValue());
+				EClass entryType = null;
+				if (entryTypeEval instanceof EClass) {
+					entryType = (EClass) entryTypeEval;
+				} else {
+					throw new UnsupportedOperationException("entries of type Pattern should not occur");
+				}
 				for (int i = 1; i < elements.size(); i++) {
-					EClass clazz = typeCalc.evaluate(elements.get(i).getValue());
-					if (clazz != entryType) {
-						entryType = EcorePackage.Literals.EOBJECT;
-						break;
+					Object elementEval = typeCalc.evaluate(elements.get(i).getValue());
+					if (elementEval instanceof EClass) {
+						EClass clazz = (EClass) elementEval;
+						if (clazz != entryType) {
+							if (clazz.isSuperTypeOf(entryType)) {
+								entryType = clazz;
+							} else {
+								entryType = EcorePackage.Literals.EOBJECT;
+								break;
+							}
+						}
+					} else {
+						throw new UnsupportedOperationException("entries of type Pattern should not occur");
 					}
+
 				}
 				entryTypes.put(map, entryType);
+
 			}
 		} else {
 			// MapDeclaration

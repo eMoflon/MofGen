@@ -29,11 +29,12 @@ import org.mofgen.mGLang.UnaryMinus
 import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.Pattern
 
 class TypeCalculator {
 
-	def EClass evaluate(ArithmeticExpression expr) {
-		return internalEvaluate(expr) as EClass
+	def evaluate(ArithmeticExpression expr) {
+		return internalEvaluate(expr)
 	}
 
 	def dispatch private internalEvaluate(Tertiary tertiary) {
@@ -243,10 +244,10 @@ class TypeCalculator {
 				}
 			}
 			ParameterNodeOrPattern: {
-				if (ref.type instanceof EClassifier) {
-					return MofgenModelUtils.getEClassForInternalModel(ref.type as EClassifier)
-				}else{
+				if (ref.type instanceof Pattern) {
 					return ref.type
+				}else{
+					return MofgenModelUtils.getEClassForInternalModel(ref.type as EClassifier)
 				}
 			}
 			EEnum: {
@@ -314,7 +315,7 @@ class TypeCalculator {
 			if(retValue !== null){
 				return retValue.type
 			}else{
-				return calledPattern.eClass
+				return calledPattern
 			}
 		}else{
 			return null

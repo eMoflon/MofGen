@@ -23,6 +23,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.util.NameProvider
 import org.mofgen.util.MofgenUtil
+import org.eclipse.emf.ecore.EClassifier
 
 /**
  * Translates given expressions to source code that will be used as part of the API.
@@ -114,7 +115,7 @@ class GeneratorTranslator {
 			'''
 		} else {
 			return '''
-				«typeChecker.evaluate(variable.value).name» «variable.name» = «MofgenUtil.getTextFromEditorFile(variable.value)»
+				«(typeChecker.evaluate(variable.value) as EClassifier).name» «variable.name» = «MofgenUtil.getTextFromEditorFile(variable.value)»
 			'''
 		}
 	}

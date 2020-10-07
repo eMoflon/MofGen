@@ -37,6 +37,7 @@ import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.ParamManipulation
 import org.eclipse.emf.ecore.EClass
+import org.mofgen.mGLang.PatternCall
 
 /**
  * This class contains custom scoping description.
@@ -100,6 +101,9 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 		if (isParamManipulation_Param(context, reference)) {
 			return getScopeForParamManipulation_Param(context as ParamManipulation)
+		}
+		if(isPatternCall_called(context, reference)){
+			return getScopeForPatternCall_called(context as PatternCall)
 		}
 
 		return super.getScope(context, reference)
@@ -266,10 +270,15 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 	}
 
-	def getEventuallyShadowingNodes(EObject obj) {
+	def private getEventuallyShadowingNodes(EObject obj) {
 		val patternNodes = EcoreUtil2.getAllContainers(obj).filter(PatternCaseWithCast).map[c|c.node]
 		val genNodes = EcoreUtil2.getAllContainers(obj).filter(GenCaseWithCast).map[c|c.node]
 		return patternNodes + genNodes
+	}
+	
+	def getScopeForPatternCall_called(PatternCall pc){
+		val root = EcoreUtil2.getRootContainer(pc)
+		return Scopes.scopeFor(EcoreUtil2.getAllContentsOfType(root, Pattern))
 	}
 
 	def getScopeForRefOrCall(RefOrCall r) {
@@ -340,7 +349,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				}
 			}
 
-			// add (eventually casted) nodes of switch if in switch
+			// add (eventually cast) nodes of switch if in switch
 			val switchNodes = newLinkedList()
 			var patternCastContainer = EcoreUtil2.getContainerOfType(r, PatternCaseWithCast) as PatternCaseWithCast
 			if (patternCastContainer !== null) {
@@ -497,6 +506,10 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	def isParamManipulation_Param(EObject context, EReference reference) {
 		return context instanceof ParamManipulation && reference == MGLangPackage.Literals.PARAM_MANIPULATION__PARAM
+	}
+	
+	def isPatternCall_called(EObject context, EReference reference){
+		return context instanceof PatternCall && reference == MGLangPackage.Literals.PATTERN_CALL__CALLED
 	}
 
 	def getRootFile(EObject context) {

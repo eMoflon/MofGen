@@ -38,6 +38,9 @@ import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Pattern
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.mofgen.scoping.MGLangScopeProvider
 
 /**
  * This class contains custom validation rules. 
@@ -79,8 +82,11 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def private checkForNumber(ArithmeticExpression expr, EObject obj, EReference errorLoc) {
 		try {
 			val eval = typeChecker.evaluate(expr)
-			if (eval !== TypeModelPackage.Literals.NUMBER && !(eval instanceof EObject)) {
+			if (eval instanceof Pattern) {
 				error("For-Range needs numerical bounds but was given type " + eval.name, obj, errorLoc)
+				return false
+			} else if (eval !== TypeModelPackage.Literals.NUMBER) {
+				error("For-Range needs numerical bounds but was given type " + (eval as EClass).name, obj, errorLoc)
 				return false
 			} else {
 				return true
@@ -230,17 +236,22 @@ class MGLangValidator extends AbstractMGLangValidator {
 			val attributeType = MofgenModelUtils.getEClassForInternalModel(attribute.EAttributeType)
 
 			try {
-				val assignedValue = MofgenModelUtils.getEClassForInternalModel(typeChecker.evaluate(ass.value))
-				if (assignedValue != TypeModelPackage.Literals.ENUM_LITERAL &&
-					attributeType == TypeModelPackage.Literals.ENUM) {
-					error("Can only assign enum values to enum attribute " + attribute.name,
-						MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
-				} else {
-					if (assignedValue == TypeModelPackage.Literals.ENUM_LITERAL &&
-						attributeType != TypeModelPackage.Literals.ENUM) {
-						error("Cannot assign enum value to non-enum attribute " + attribute.name,
+				val assignedValueEval = typeChecker.evaluate(ass.value)
+				if (assignedValueEval instanceof EClass) {
+					val assignedValue = MofgenModelUtils.getEClassForInternalModel(assignedValueEval)
+					if (assignedValue != TypeModelPackage.Literals.ENUM_LITERAL &&
+						attributeType == TypeModelPackage.Literals.ENUM) {
+						error("Can only assign enum values to enum attribute " + attribute.name,
 							MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
+					} else {
+						if (assignedValue == TypeModelPackage.Literals.ENUM_LITERAL &&
+							attributeType != TypeModelPackage.Literals.ENUM) {
+							error("Cannot assign enum value to non-enum attribute " + attribute.name,
+								MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
+						}
 					}
+				} else {
+					throw new UnsupportedOperationException("Assigned value is a pattern") // Patterns can only return nodes and no primitive values, therefore this case should not occur...
 				}
 			} catch (MismatchingTypesException e) {
 				error(e.message, ass, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
@@ -275,14 +286,32 @@ class MGLangValidator extends AbstractMGLangValidator {
 			val givenParameterType = typeChecker.evaluate(givenParameterExpression)
 			val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
 
-			if (givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
-				!(neededParameterType.isSuperTypeOf(givenParameterType))) {
-				// TODO Is it right that any object fits into an eobject parameter?
-				if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
-					if (givenParameterType !== neededParameterType) {
-						error("Given type " + givenParameterType.name + " does not match needed type " +
-							neededParameterType.name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+			if (givenParameterType instanceof EClass && neededParameterType instanceof EClass) {
+				if (!((neededParameterType as EClass).isSuperTypeOf(givenParameterType as EClass))) {
+					val givenParameterTypeEClass = givenParameterType as EClass
+					// TODO Is it right that any object fits into an eobject parameter?
+					if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
+						if (givenParameterType !== neededParameterType) {
+							error("Given type " + givenParameterTypeEClass.name + " does not match needed type " +
+								(neededParameterType as EClass).name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+						}
 					}
+				}
+			} else if (givenParameterType instanceof Pattern && neededParameterType instanceof Pattern) {
+				val givenParameterPattern = givenParameterType as Pattern
+				val neededParameterPattern = neededParameterType as Pattern
+				if (!givenParameterPattern.name.equals(neededParameterPattern.name)) {
+					error("Given Pattern " + givenParameterPattern.name + " does not match needed Pattern " +
+						neededParameterPattern.name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+				}
+			} else {
+				if (givenParameterType instanceof Pattern) {
+					error("Given Pattern " + givenParameterType.name + " does not match needed type " +
+						(neededParameterType as EClass).name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+				} else {
+					val givenParameterTypeEClass = givenParameterType as EClass
+					error("Given type " + givenParameterTypeEClass.name + " does not match needed Pattern " +
+						(neededParameterType as Pattern).name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 				}
 			}
 		}
@@ -333,12 +362,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
-	def noVariableWithNullReturningPattern(Variable variable) {
-		val value = variable.value
-		if (value instanceof PatternCall) {
-			val ret = value.called.^return
-			if (ret === null) {
-				error("Cannot define variable by calling a pattern of type void",
+	def noVariableWithNullReturningPattern(PatternCall pc) {
+		if(pc.eContainer instanceof Variable){
+			if(pc.called.^return === null){
+				error("Cannot define variable by calling a pattern with no return", pc.eContainer as Variable,
 					MGLangPackage.Literals.VARIABLE__VALUE);
 			}
 		}
@@ -370,7 +397,13 @@ class MGLangValidator extends AbstractMGLangValidator {
 					neededParams.add(TypeRegistry.getMapKeyType(roc.target.ref as Map))
 					neededParams.add(TypeRegistry.getMapEntryType(roc.target.ref as Map))
 				} else {
-					neededParams.addAll(op.EParameters.map[x|x.EType])
+					neededParams.addAll(op.EParameters.map [ x |
+						if (x instanceof Pattern) {
+							x as Pattern
+						} else {
+							x.EType
+						}
+					])
 				}
 
 				// Check parameter count
@@ -383,31 +416,50 @@ class MGLangValidator extends AbstractMGLangValidator {
 				// Check parameter types
 				for (var i = 0; i < givenParams.size; i++) {
 					try {
-						val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
-							typeChecker.evaluate(givenParams.get(i)))
-						val neededParameterType = MofgenModelUtils.getEClassForInternalModel(neededParams.get(i))
+						val givenParameterEval = typeChecker.evaluate(givenParams.get(i))
+						val neededParameterEval = neededParams.get(i)
 
-//						if(givenParameterType instanceof Pattern && neededParameterType instanceof Pattern){
-//							if(!givenParameterType.name.equals(neededParameterType)){
-//								error(
-//										"Given parameter type " + givenParameterType.name +
-//											" does not match needed parameter type " + neededParameterType.name,
-//										MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-//							}
-//						}
+						if (givenParameterEval instanceof EClassifier && neededParameterEval instanceof EClassifier) {
 
-						if (!(givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
-							neededParameterType.isSuperTypeOf(givenParameterType))) {
-							// TODO Is it right that any object fits into an eobject parameter?
-							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
-								if (givenParameterType !== neededParameterType) {
-									error(
-										"Given parameter type " + givenParameterType.name +
-											" does not match needed parameter type " + neededParameterType.name,
-										MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+							val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
+								givenParameterEval as EClassifier)
+							val neededParameterType = MofgenModelUtils.getEClassForInternalModel(
+								neededParameterEval as EClassifier)
+
+							if (!(givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
+								neededParameterType.isSuperTypeOf(givenParameterType))) {
+								// TODO Is it right that any object fits into an eobject parameter?
+								if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
+									if (givenParameterType !== neededParameterType) {
+										error(
+											"Given parameter type " + givenParameterType.name +
+												" does not match needed parameter type " + neededParameterType.name,
+											MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+									}
 								}
 							}
+
+						} else if (givenParameterEval instanceof Pattern && neededParameterEval instanceof Pattern) {
+							val givenParameterPattern = givenParameterEval as Pattern
+							val neededParameterPattern = neededParameterEval as Pattern
+							if (!givenParameterPattern.name.equals(neededParameterPattern.name)) {
+								error("Needed Pattern " + neededParameterPattern.name + " but was given Pattern " +
+									givenParameterPattern.name, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+							}
+						} else {
+							if (givenParameterEval instanceof Pattern) {
+								error("Was given Pattern " + givenParameterEval.name + " but needed EClass " +
+									MofgenModelUtils.getEClassForInternalModel(neededParameterEval as EClassifier).name,
+									MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+							} else {
+								error(
+									"Was given EClass " +
+										MofgenModelUtils.getEClassForInternalModel(givenParameterEval as EClassifier).
+											name + " but needed Pattern " + (neededParameterEval as Pattern).name,
+									MGLangPackage.Literals.REF_OR_CALL__PARAMS)
+							}
 						}
+
 					} catch (MismatchingTypesException e) {
 						error(e.message, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
 					}

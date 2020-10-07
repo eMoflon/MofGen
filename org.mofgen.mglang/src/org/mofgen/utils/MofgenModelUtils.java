@@ -293,9 +293,9 @@ public class MofgenModelUtils {
 	}
 
 	/**
-	 * @return the type of the given parameter in terms of the internal type system (see TypeModel)
+	 * @return the type of the given parameter in terms of the internal type system (see TypeModel) as Class or the needed Pattern
 	 */
-	public static EClass getInternalParameterType(Parameter param) {
+	public static EObject getInternalParameterType(Parameter param) {
 		if (param instanceof PrimitiveParameter) {
 			PrimitiveParameter primPram = (PrimitiveParameter) param;
 			switch (primPram.getType()) {
@@ -316,11 +316,12 @@ public class MofgenModelUtils {
 		}else if (param instanceof ParameterNodeOrPattern) {
 			ParameterNodeOrPattern nodeOrPattern = (ParameterNodeOrPattern) param;
 			EObject parameterType = nodeOrPattern.getType();
-			if (parameterType instanceof Node) {
-				Node node = (Node) parameterType;
-				return getEClassForInternalModel(node.getType());
+			if (parameterType instanceof Pattern) {
+				return (Pattern) parameterType;
+			}else if(parameterType instanceof EClassifier){
+				return getEClassForInternalModel((EClassifier) parameterType);
 			}else {
-				return (EClass) parameterType;
+				throw new UnsupportedOperationException("Could not find applicable case for "+ nodeOrPattern);
 			}
 		}else {
 			throw new IllegalArgumentException("Unknown parameter type for parameter " + param.getName());
