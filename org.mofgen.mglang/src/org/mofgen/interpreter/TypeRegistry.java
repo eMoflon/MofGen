@@ -19,6 +19,8 @@ import org.mofgen.mGLang.MapDefOrDecl;
 import org.mofgen.mGLang.MapDefinition;
 import org.mofgen.mGLang.MapTupel;
 import org.mofgen.mGLang.MofgenFile;
+import org.mofgen.mGLang.Pattern;
+import org.mofgen.mGLang.Variable;
 import org.mofgen.mGLang.ArithmeticExpression;
 
 /**
@@ -34,7 +36,10 @@ public class TypeRegistry {
 	public static HashMap<List, EClass> listTypes;
 	public static HashMap<Map, EClass> keyTypes;
 	public static HashMap<Map, EClass> entryTypes;
-
+	/**
+	 * Of type object since it can hold patterns or EClasses
+	 */
+	public static HashMap<Variable, Object> varTypes;
 	/**
 	 * Determines whether all entries should be updated before retrieving values.
 	 * MUST be true if used during scoping. Can be false if used for API generation.
@@ -42,16 +47,25 @@ public class TypeRegistry {
 	private static boolean update = true;
 
 	public static void update(MofgenFile file) {
-		if (listTypes == null) {
-			listTypes = new HashMap<>();
-			keyTypes = new HashMap<>();
-			entryTypes = new HashMap<>();
-		}
+		updateVarRegistry(file);
 		updateListRegistry(file);
 		updateMapRegistry(file);
 	}
+	
+	private static void updateVarRegistry(MofgenFile file) {
+		if (varTypes == null) {
+			varTypes = new HashMap<>();
+		}
+		java.util.List<Variable> vars = EcoreUtil2.getAllContentsOfType(file, Variable.class);
+		for (Variable var : vars) {
+			putVar(var);
+		}
+	}
 
 	private static void updateListRegistry(MofgenFile file) {
+		if (listTypes == null) {
+			listTypes = new HashMap<>();
+		}
 		java.util.List<List> lists = EcoreUtil2.getAllContentsOfType(file, List.class);
 		for (List list : lists) {
 			putList(list);
@@ -59,12 +73,28 @@ public class TypeRegistry {
 	}
 
 	private static void updateMapRegistry(MofgenFile file) {
+		if (keyTypes == null) {
+			keyTypes = new HashMap<>();
+			entryTypes = new HashMap<>();
+		}
 		java.util.List<Map> maps = EcoreUtil2.getAllContentsOfType(file, Map.class);
 		for (Map map : maps) {
 			putMap(map);
 		}
 	}
 
+	private static void putVar(Variable var) {
+		ArithmeticExpression value = var.getValue();
+		Object valueEval = typeCalc.evaluate(value);
+		if(valueEval instanceof Pattern) {
+			varTypes.put(var, (Pattern) valueEval);
+		}else if(valueEval instanceof EClass) {
+			varTypes.put(var, (EClass) valueEval);
+		}else {
+			throw new IllegalStateException("Type evaluation of variable expression should not result in a type different than Pattern or an EClass");
+		}
+	}
+	
 	private static void putList(List list) {
 		ListDefOrDecl defOrDecl = list.getDefOrDecl();
 		if (defOrDecl instanceof ListDefinition) {
@@ -186,23 +216,30 @@ public class TypeRegistry {
 
 	public static EClass getListType(List list) {
 		if (update) {
-			update((MofgenFile) EcoreUtil2.getRootContainer(list));
+			updateListRegistry((MofgenFile) EcoreUtil2.getRootContainer(list));
 		}
 		return listTypes.get(list);
 	}
 
 	public static EClass getMapKeyType(Map map) {
 		if (update) {
-			update((MofgenFile) EcoreUtil2.getRootContainer(map));
+			updateMapRegistry((MofgenFile) EcoreUtil2.getRootContainer(map));
 		}
 		return keyTypes.get(map);
 	}
 
 	public static EClass getMapEntryType(Map map) {
 		if (update) {
-			update((MofgenFile) EcoreUtil2.getRootContainer(map));
+			updateMapRegistry((MofgenFile) EcoreUtil2.getRootContainer(map));
 		}
 		return entryTypes.get(map);
+	}
+	
+	public static Object getVarType(Variable var) {
+		if (update) {
+			updateVarRegistry((MofgenFile) EcoreUtil2.getRootContainer(var));
+		}
+		return varTypes.get(var);
 	}
 
 	public static void setUpdate(boolean val) {

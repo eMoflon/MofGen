@@ -30,10 +30,11 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.Pattern
+import org.eclipse.emf.ecore.EObject
 
 class TypeCalculator {
 
-	def evaluate(ArithmeticExpression expr) {
+	def EObject evaluate(ArithmeticExpression expr) {
 		return internalEvaluate(expr)
 	}
 
@@ -78,7 +79,23 @@ class TypeCalculator {
 				case OR: throw new MismatchingTypesException("Cannot use logical OR on numerical values")
 			}
 		} else {
-			throw new MismatchingTypesException("Invalid Expression.")
+			var evalLeftString = "NULL"
+			var evalRightString = "NULL"
+			
+			if(evalLeft instanceof EClass){
+				evalLeftString = evalLeft.name
+			}
+			if(evalLeft instanceof Pattern){
+				evalLeftString = evalLeft.name
+			}
+			if(evalRight instanceof EClass){
+				evalRightString = evalRight.name
+			}
+			if(evalRight instanceof Pattern){
+				evalRightString = evalRight.name
+			}
+			
+			throw new MismatchingTypesException("Cannot use operator " + tertiary.op.toString + " with given values "+ evalLeftString + " and " + evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
 		}
 	}
 
@@ -105,7 +122,23 @@ class TypeCalculator {
 				case XOR: throw new MismatchingTypesException("Cannot use modulo on numerical values")
 			}
 		} else {
-			throw new MismatchingTypesException("Invalid Expression.")
+			var evalLeftString = "NULL"
+			var evalRightString = "NULL"
+			
+			if(evalLeft instanceof EClass){
+				evalLeftString = evalLeft.name
+			}
+			if(evalLeft instanceof Pattern){
+				evalLeftString = evalLeft.name
+			}
+			if(evalRight instanceof EClass){
+				evalRightString = evalRight.name
+			}
+			if(evalRight instanceof Pattern){
+				evalRightString = evalRight.name
+			}
+			
+			throw new MismatchingTypesException("Cannot use operator " + secondary.op.toString + " with given values "+ evalLeftString + " and " + evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
 		}
 	}
 
@@ -135,7 +168,23 @@ class TypeCalculator {
 				case AND: throw new MismatchingTypesException("Cannot use logical AND on numerical values")
 			}
 		} else {
-			throw new MismatchingTypesException("Invalid Expression.")
+			var evalLeftString = "NULL"
+			var evalRightString = "NULL"
+			
+			if(evalLeft instanceof EClass){
+				evalLeftString = evalLeft.name
+			}
+			if(evalLeft instanceof Pattern){
+				evalLeftString = evalLeft.name
+			}
+			if(evalRight instanceof EClass){
+				evalRightString = evalRight.name
+			}
+			if(evalRight instanceof Pattern){
+				evalRightString = evalRight.name
+			}
+			
+			throw new MismatchingTypesException("Cannot use operator " + primary.op.toString + " with given values "+ evalLeftString + " and " + evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
 		}
 	}
 
@@ -144,40 +193,56 @@ class TypeCalculator {
 		val evalRight = evaluate(rel.right)
 
 		if (evalLeft !== evalRight) {
-			throw new MismatchingTypesException("Cannot compare objects of different types for equality")
+			throw new MismatchingTypesException("Cannot compare objects of different types for (in)equality")
 		}
 
 		if (evalLeft === TypeModelPackage.Literals.STRING && evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
 			switch (rel.relation) {
-				case GREATER: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
-				case GREATER_OR_EQUAL: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
+				case GREATER: throw new MismatchingTypesException("Can only compare Strings for (in)equality.")
+				case GREATER_OR_EQUAL: throw new MismatchingTypesException("Can only compare Strings for (in)equality.")
 				case EQUAL: return TypeModelPackage.Literals.BOOLEAN
 				case UNEQUAL: return TypeModelPackage.Literals.BOOLEAN
-				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
-				case LESS: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
+				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can only compare Strings for (in)equality.")
+				case LESS: throw new MismatchingTypesException("Can only compare Strings for (in)equality.")
 			}
 		} else if (evalLeft === TypeModelPackage.Literals.BOOLEAN && evalRight === TypeModelPackage.Literals.BOOLEAN) {
 			// -------------------- Boolean Values -----------------------	
 			switch (rel.relation) {
 				case GREATER:
-					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
+					throw new MismatchingTypesException("Can only compare boolean values for (in)equality.")
 				case GREATER_OR_EQUAL:
-					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
+					throw new MismatchingTypesException("Can only compare boolean values for (in)equality.")
 				case EQUAL:
 					return TypeModelPackage.Literals.BOOLEAN
 				case UNEQUAL:
 					return TypeModelPackage.Literals.BOOLEAN
 				case LESS_OR_EQUAL:
-					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
+					throw new MismatchingTypesException("Can only compare boolean values for (in)equality.")
 				case LESS:
-					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
+					throw new MismatchingTypesException("Can only compare boolean values for (in)equality.")
 			}
 		} else if (evalLeft === TypeModelPackage.Literals.NUMBER && evalRight === TypeModelPackage.Literals.NUMBER) {
 			// -------------------- Numerical Values -----------------------	
 			return TypeModelPackage.Literals.BOOLEAN
 		} else {
-			throw new MismatchingTypesException("Invalid Expression.")
+			var evalLeftString = "NULL"
+			var evalRightString = "NULL"
+			
+			if(evalLeft instanceof EClass){
+				evalLeftString = evalLeft.name
+			}
+			if(evalLeft instanceof Pattern){
+				evalLeftString = evalLeft.name
+			}
+			if(evalRight instanceof EClass){
+				evalRightString = evalRight.name
+			}
+			if(evalRight instanceof Pattern){
+				evalRightString = evalRight.name
+			}
+			
+			throw new MismatchingTypesException("Cannot use operator " + rel.relation.toString + " with given values "+ evalLeftString + " and " + evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
 		}
 	}
 
@@ -222,7 +287,7 @@ class TypeCalculator {
 		return TypeModelPackage.Literals.NUMBER
 	}
 
-	def dispatch private internalEvaluate(RefOrCall roc) {
+	def dispatch private EObject internalEvaluate(RefOrCall roc) {
 
 		var ref = roc.ref
 		switch ref {

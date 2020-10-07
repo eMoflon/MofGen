@@ -41,6 +41,7 @@ import org.mofgen.mGLang.Pattern
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.mofgen.scoping.MGLangScopeProvider
+import org.mofgen.mGLang.VariableManipulation
 
 /**
  * This class contains custom validation rules. 
@@ -363,12 +364,58 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 	@Check
 	def noVariableWithNullReturningPattern(PatternCall pc) {
-		if(pc.eContainer instanceof Variable){
-			if(pc.called.^return === null){
+		if (pc.eContainer instanceof Variable) {
+			if (pc.called.^return === null) {
 				error("Cannot define variable by calling a pattern with no return", pc.eContainer as Variable,
 					MGLangPackage.Literals.VARIABLE__VALUE);
 			}
 		}
+	}
+	
+	@Check
+	def illegalArithmeticExpressionVar(Variable variable){ //TODO Also for other places where this can occur
+		try{
+			val expr = variable.value
+			if(expr !== null){
+				typeChecker.evaluate(expr)
+			}
+		}catch(MismatchingTypesException e){
+			error(e.message, MGLangPackage.Literals.VARIABLE__VALUE)
+		}
+	}
+
+	@Check
+	def noTypeChangeByVariableManipulation(VariableManipulation vm) {
+		val variable = vm.^var
+		val varType = TypeRegistry.getVarType(variable) as EObject
+		try {
+			val givenType = typeChecker.evaluate(vm.^val) as EObject
+
+			var varTypeString = ""
+			var givenTypeString = ""
+
+			if (varType !== givenType) {
+				if (varType instanceof Pattern) {
+					varTypeString = varType.name
+				}
+				if (varType instanceof EClass) {
+					varTypeString = varType.name
+				}
+				if (givenType instanceof Pattern) {
+					givenTypeString = givenType.name
+				}
+				if (givenType instanceof EClass) {
+					givenTypeString = givenType.name
+				}
+
+				error("Variable " + variable.name + " is of type " + varTypeString + ", not " + givenTypeString,
+					MGLangPackage.Literals.VARIABLE_MANIPULATION__VAL)
+
+			}
+		} catch (MismatchingTypesException e) {
+			error(e.message, MGLangPackage.Literals.VARIABLE_MANIPULATION__VAL)
+		}
+
 	}
 
 	@Check
