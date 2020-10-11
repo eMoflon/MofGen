@@ -6,6 +6,7 @@ package org.mofgen.validation
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EOperation
 import org.eclipse.emf.ecore.EReference
@@ -25,8 +26,10 @@ import org.mofgen.mGLang.Import
 import org.mofgen.mGLang.List
 import org.mofgen.mGLang.MGLangPackage
 import org.mofgen.mGLang.Map
+import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment
 import org.mofgen.mGLang.ParamManipulation
+import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternNodeReference
@@ -34,14 +37,9 @@ import org.mofgen.mGLang.PatternWhenCase
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Variable
+import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.Pattern
-import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.mofgen.scoping.MGLangScopeProvider
-import org.mofgen.mGLang.VariableManipulation
 
 /**
  * This class contains custom validation rules. 
