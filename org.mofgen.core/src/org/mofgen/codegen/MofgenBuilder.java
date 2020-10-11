@@ -34,8 +34,6 @@ import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Pattern;
 import org.moflon.core.utilities.LogUtils;
 
-import glossarDocumentation.GlossarDocumentationPackage;;
-
 public class MofgenBuilder {
 
 	public static final Logger logger = Logger.getLogger(MofgenBuilder.class);
@@ -247,10 +245,6 @@ public class MofgenBuilder {
 
 		Map<String, String> map = new HashMap<>(); 
 		EClassifiersManager eClassifiersManager = new EClassifiersManager(map);
-		
-		//TODO Cannot load ?
-		GlossarDocumentationPackage.eINSTANCE.eClass();
-		MGLangPackage.eINSTANCE.eClass();
 		
 		metaModels.forEach(uri -> {
 			try {

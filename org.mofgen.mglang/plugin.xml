@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   <extension-point id="MofgenBuilderExtension" name="MofgenBuilderExtension" schema="schema/MofgenBuilderExtension.exsd"/>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package 
 			uri = "http://www.mofgen.org/MGLang"

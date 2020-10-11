@@ -6,10 +6,10 @@ Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.mofgen.mglang.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.mofgen.mglang,
- org.eclipse.xtext.ide,
+Require-Bundle: org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
- org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
+ mofgen;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.mofgen.ide.contentassist.antlr,
  org.mofgen.ide.contentassist.antlr.internal
