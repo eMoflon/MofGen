@@ -40,6 +40,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.Collection
 
 /**
  * This class contains custom validation rules. 
@@ -283,6 +284,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 			val neededParameter = pc.called.parameters.get(i)
 
 			val givenParameterType = typeChecker.evaluate(givenParameterExpression)
+			if (givenParameterType === null) {
+				return; // TODO ?
+			}
+
 			val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
 
 			if (givenParameterType instanceof EClass && neededParameterType instanceof EClass) {
@@ -357,6 +362,13 @@ class MGLangValidator extends AbstractMGLangValidator {
 					error("Variable " + ref.name + " is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
 				}
 			}
+			if (ref instanceof Collection) {
+				var rocNode = NodeModelUtils.getNode(roc)
+				val varNode = NodeModelUtils.getNode(ref)
+				if (rocNode.startLine < varNode.startLine) {
+					error("Collection " + ref.name + " is not defined", MGLangPackage.Literals.REF_OR_CALL__REF)
+				}
+			}
 		}
 	}
 
@@ -369,15 +381,15 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 	}
-	
+
 	@Check
-	def illegalArithmeticExpressionVar(Variable variable){ //TODO Also for other places where this can occur
-		try{
+	def illegalArithmeticExpressionVar(Variable variable) { // TODO Also for other places where this can occur
+		try {
 			val expr = variable.value
-			if(expr !== null){
+			if (expr !== null) {
 				typeChecker.evaluate(expr)
 			}
-		}catch(MismatchingTypesException e){
+		} catch (MismatchingTypesException e) {
 			error(e.message, MGLangPackage.Literals.VARIABLE__VALUE)
 		}
 	}

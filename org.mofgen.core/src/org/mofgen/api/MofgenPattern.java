@@ -7,7 +7,7 @@ public abstract class MofgenPattern {
 	/**
 	 * Creates an instance of the given Pattern.
 	 */
-	public static EObject create() {
+	public static EObject create(EObject... params) {
 		return null;
 	}
 	

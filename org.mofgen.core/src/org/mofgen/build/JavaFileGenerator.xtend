@@ -1,4 +1,4 @@
-package org.mofgen.codegen
+package org.mofgen.build
 
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -23,6 +23,7 @@ import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.NameProvider
+import org.mofgen.build.MofgenBuilder
 
 import static org.mofgen.interpreter.TypeRegistry.*
 import org.eclipse.emf.ecore.EcorePackage
@@ -44,7 +45,15 @@ class JavaFileGenerator {
 	 */
 	String classNamePrefix
 
+	/**
+	 * The Name of the inherited generator super class
+	 */
 	final String GENERATOR_SUPER_CLASS = "MofgenGenerator"
+
+	/**
+	 * The Name of the inherited pattern super class
+	 */
+	final String PATTERN_SUPER_CLASS = "MofgenPattern"
 
 	/**
 	 * Utility to handle the mapping between EClassifier names to meta-model names.
@@ -94,14 +103,14 @@ class JavaFileGenerator {
 	/**
 	 * Generates the Java Generator class for the given generator.
 	 */
-	def generateGenClass( /*IFolder genPackage, TODO */ Generator gen) {
+	def generateGenClass(IFolder genPackage, Generator gen) {
 		// TODO automatically call all needed packages/classes from metamodels (possibly see eClassifierManager for that, maybe even in original form as in eMoflon-GT)
 		val imports = newHashSet('java.util.ArrayList', 'java.util.List', 'java.util.Map', 'java.util.HashMap',
 			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.MofgenGenerator')
 
 		imports.add('mofgenTest.api.patterns.*') // TODO determine programmatically
 		val genSourceCode = '''
-			«printHeader('mofgenTest.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
+			«printHeader(genPackage.project.name+'.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
 			
 			/**
 			 * The generator «NameProvider.getGeneratorClassName(gen)».
@@ -124,15 +133,13 @@ class JavaFileGenerator {
 			
 		'''
 		// TODO provide overriding toString implementation
-		val path = "D:\\Workspaces\\runtime-EclipseApplication\\mofgenTest\\src-gen\\mofgenTest\\api\\generators\\"
-		writeFile(path + NameProvider.getGeneratorClassName(gen) + ".java", genSourceCode)
-//		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), genSourceCode) TODO replace
+		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), genSourceCode)
 	}
 
 	/**
 	 * Generates the Java Generator class for the given pattern.
 	 */
-	def generatePatternClass( /*IFolder patternPackage, TODO */ Pattern pattern) {
+	def generatePatternClass(IFolder patternPackage, Pattern pattern) {
 		// TODO
 		val imports = eClassifiersManager.getImportsForNodeTypes(pattern.commands.filter(Node).toList)
 //		imports.addAll(
@@ -156,12 +163,12 @@ class JavaFileGenerator {
 		}
 
 		val patternSourceCode = '''
-			«printHeader('mofgenTest.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
+			«printHeader(patternPackage.project.name+'.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
 			
 			/**
 			* The pattern «NameProvider.getPatternClassName(pattern)».
 			*/
-			public class «NameProvider.getPatternClassName(pattern)» extends MofgenPattern{
+			public class «NameProvider.getPatternClassName(pattern)» extends «PATTERN_SUPER_CLASS»{
 				
 				«FOR node : nodes SEPARATOR ';' AFTER ';'»
 					«node.type.instanceTypeName» «node.name»
@@ -189,9 +196,7 @@ public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE
 			}
 		'''
 		// TODO provide overriding toString implementation
-		val path = "D:\\Workspaces\\runtime-EclipseApplication\\mofgenTest\\src-gen\\mofgenTest\\api\\patterns\\"
-		writeFile(path + NameProvider.getPatternClassName(pattern) + ".java", patternSourceCode)
-	// writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode) TODO replace
+		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode)
 	}
 
 	/**
@@ -218,10 +223,8 @@ public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE
 	 * Returns the name of the package.
 	 */
 	private def getSubPackageName(String subPackage) {
-//		val dot = if(packageName.equals("")) "" else "."
-//		return '''«packageName»«dot»«subPackage»'''
-// TODO replace
-		return "mofgen"
+		val dot = if(packageName.equals("")) "" else "."
+		return '''«packageName»«dot»«subPackage»'''
 	}
 
 	/**
@@ -254,29 +257,6 @@ public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE
 			file.setContents(contentStream, true, true, null)
 		} else {
 			file.create(contentStream, true, null)
-		}
-	}
-
-	private static def writeFile(String path, String content) {
-		try {
-			val myObj = new File(path);
-			if (myObj.createNewFile()) {
-				logger.info("File created: " + myObj.getName());
-			} else {
-				logger.info("File at " + path + " already exists.");
-			}
-			try (val writer =
-             new OutputStreamWriter(new FileOutputStream(path), StandardCharsets.UTF_8)) {
-				writer.write(content);
-				writer.close();
-				logger.info("Successfully wrote to file at " + path);
-			} catch (IOException e) {
-				logger.error("Error writing to " + path);
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			logger.error("Error creating file " + path);
-			e.printStackTrace();
 		}
 	}
 

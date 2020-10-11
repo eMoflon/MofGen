@@ -1,4 +1,4 @@
-package org.mofgen.codegen
+package org.mofgen.build
 
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment

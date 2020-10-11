@@ -27,7 +27,7 @@ import org.mofgen.mGLang.ArithmeticExpression;
  * Keeps track of the types of different Maps and Lists. Updated on every
  * requesting method call.
  * 
- * @author tobnie
+ * @author Tobias Niehues
  *
  */
 public class TypeRegistry {
@@ -91,7 +91,7 @@ public class TypeRegistry {
 		}else if(valueEval instanceof EClass) {
 			varTypes.put(var, (EClass) valueEval);
 		}else {
-			throw new IllegalStateException("Type evaluation of variable expression should not result in a type different than Pattern or an EClass");
+			throw new IllegalStateException("Type evaluation of variable expression resulted in "+ valueEval +" but should not result in a type different than Pattern or an EClass");
 		}
 	}
 	

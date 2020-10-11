@@ -1,4 +1,4 @@
-package org.mofgen.codegen
+package org.mofgen.build
 
 import com.google.inject.Inject
 import org.mofgen.interpreter.TypeCalculator

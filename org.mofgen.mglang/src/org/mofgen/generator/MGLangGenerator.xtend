@@ -24,6 +24,7 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.mofgen.mGLang.MofgenFile
+import org.eclipse.emf.ecore.xmi.XMIResource
 
 /**
  * Generates code from your model files on save.
