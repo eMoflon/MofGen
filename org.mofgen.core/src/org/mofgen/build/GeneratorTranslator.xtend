@@ -169,7 +169,7 @@ class GeneratorTranslator {
 	}
 
 	def static private String translatePatternCall(PatternCall pc) {
-		return '''«NameProvider.getPatternCreate(pc.called)»(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»
+		return '''(new «NameProvider.getPatternClassName(pc.called)»()).create(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»
 			«ENDIF»
 		'''
 	}

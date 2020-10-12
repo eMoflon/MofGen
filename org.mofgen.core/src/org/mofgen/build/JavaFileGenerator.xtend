@@ -1,15 +1,12 @@
 package org.mofgen.build
 
 import java.io.ByteArrayInputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IFolder
+import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.api.EClassifiersManager
 import org.mofgen.interpreter.TypeRegistry
@@ -23,10 +20,6 @@ import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.NameProvider
-import org.mofgen.build.MofgenBuilder
-
-import static org.mofgen.interpreter.TypeRegistry.*
-import org.eclipse.emf.ecore.EcorePackage
 
 /**
  * This class contains the templates for the API Java classes.
@@ -59,6 +52,8 @@ class JavaFileGenerator {
 	 * Utility to handle the mapping between EClassifier names to meta-model names.
 	 */
 	EClassifiersManager eClassifiersManager
+	
+	MofgenFile editorModel;
 
 	/**
 	 * Creates a new JavaFileGenerator.
@@ -67,6 +62,7 @@ class JavaFileGenerator {
 		this.classNamePrefix = classNamePrefix
 		this.packageName = packageName
 		this.eClassifiersManager = eClassifiersManager
+		this.editorModel = editorModel
 		triggerTypeRegistry(editorModel)
 	}
 
@@ -104,11 +100,11 @@ class JavaFileGenerator {
 	 * Generates the Java Generator class for the given generator.
 	 */
 	def generateGenClass(IFolder genPackage, Generator gen) {
-		// TODO automatically call all needed packages/classes from metamodels (possibly see eClassifierManager for that, maybe even in original form as in eMoflon-GT)
 		val imports = newHashSet('java.util.ArrayList', 'java.util.List', 'java.util.Map', 'java.util.HashMap',
 			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.MofgenGenerator')
-
-		imports.add('mofgenTest.api.patterns.*') // TODO determine programmatically
+		imports.add(genPackage.project.name+'.api.patterns.*')
+		imports.addAll(eClassifiersManager.getAllImports(editorModel))
+		
 		val genSourceCode = '''
 			«printHeader(genPackage.project.name+'.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
 			
@@ -118,12 +114,12 @@ class JavaFileGenerator {
 			public class «NameProvider.getGeneratorClassName(gen)» extends «GENERATOR_SUPER_CLASS» {
 			
 			«««TODO Documentation?
-			@Ov?rride
+			@Override
 				/**
-				* Runs the specified generator with the gi?en par?meters
+				* Runs the specified generator with the given parameters
 				*/
 				public void start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
-			?«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaTypeAsString(parameter)» «parameter.name»Value«ENDFOR»
+			«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaTypeAsString(parameter)» «parameter.name»Value«ENDFOR»
 			«FOR expression : gen.commands»
 				«GeneratorTranslator.translate(expression)»;
 			«ENDFOR»
@@ -133,7 +129,7 @@ class JavaFileGenerator {
 			
 		'''
 		// TODO provide overriding toString implementation
-		val test = genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java")
+		
 		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), genSourceCode)
 	}
 
@@ -141,10 +137,7 @@ class JavaFileGenerator {
 	 * Generates the Java Generator class for the given pattern.
 	 */
 	def generatePatternClass(IFolder patternPackage, Pattern pattern) {
-		// TODO
-		val imports = eClassifiersManager.getImportsForNodeTypes(pattern.commands.filter(Node).toList)
-//		imports.addAll(
-//			eClassifiersManager.getImportsForParameterNodeTypes(pattern.parameters.filter(ParameterNode).toList))
+		val imports = eClassifiersManager.getAllImports(editorModel)
 		imports.addAll(
 			'org.mofgen.api.MofgenPattern',
 			'org.mofgen.mGLang.MGLangFactory',
@@ -179,7 +172,7 @@ class JavaFileGenerator {
 				/**
 				* TODO in Template Generation
 				*/
-public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE»«FOR param : pattern.parameters SEPARATOR ','»final «getJavaTypeAsString(param)» «param.name»Value«ENDFOR»«ENDIF»){
+public «returnTypeString» createInstance(EObject... params){
 					«FOR node : nodes SEPARATOR ';'»
 						«node.name» = («node.type.instanceTypeName») MGLangFactory.eINSTANCE.create(«node.type»)
 						«IF node.createdBy instanceof NodeContent»
@@ -199,6 +192,38 @@ public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE
 		// TODO provide overriding toString implementation
 		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode)
 	}
+	
+//	def generatePatternFactoryRegistryClass(IFolder apiPackage){
+//		val imports = eClassifiersManager.getAllImports(editorModel)
+//		imports.addAll(
+//			apiPackage.project.name+'.api.patterns.*',
+//			"java.util.HashMap",
+//			"java.util.Map"
+//		)
+//		
+//		val patterns = EcoreUtil2.getAllContentsOfType(editorModel, Pattern);
+//		
+//		val registrySrcCode = '''
+//			«printHeader(apiPackage.project.name+'.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_API_LOCATION), imports)»
+//			
+//			public static class PatternFactoryRegistry {
+//				
+//				Map<String, MofgenPatternFactory> reg;
+//				
+//				public PatternFactoryRegistry(){
+//					reg = new HashMap<>();
+//					fillReg();
+//				}
+//				
+//				private void fillReg(){
+//					«FOR pattern : patterns»
+//					reg.put(«pattern.name», new «NameProvider.getPatternClassName(pattern)»);
+// 					«ENDFOR»
+//				}
+//		'''
+//		
+//		writeFile(apiPackage.getFile("PatternFactoryRegistry.java"), registrySrcCode)
+//	}
 
 	/**
 	 * Sub template for the package declaration and import statements.

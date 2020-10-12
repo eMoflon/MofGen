@@ -53,6 +53,12 @@ class NameProvider {
 	 * @return the Name of the getter method for the given ENamedElement
 	 */
 	def static String getGetterName(ENamedElement namedElement){
+		if(namedElement.name == "keys"){
+			return 'keySet'
+		}
+		if(namedElement.name == "values"){
+			return 'values'
+		}
 		return 'get'+namedElement.name.toFirstUpper
 	}
 	

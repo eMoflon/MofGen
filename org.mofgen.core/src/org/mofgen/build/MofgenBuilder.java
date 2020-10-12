@@ -1,10 +1,13 @@
 package org.mofgen.build;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
@@ -37,6 +40,7 @@ import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.util.NameProvider;
+import org.moflon.core.plugins.manifest.ManifestFileUpdater;
 
 public class MofgenBuilder implements MofgenBuilderExtension {
 
@@ -44,8 +48,9 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 
 	protected static final String DEFAULT_SRC_LOCATION = "src";
 	public static final String MOFGEN_FILE_EXTENSION = "mofgen";
-	protected static final String DEFAULT_GENERATOR_LOCATION = "api/generators";
-	protected static final String DEFAULT_PATTERN_LOCATION = "api/patterns";
+	protected static final String DEFAULT_API_LOCATION = "api";
+	protected static final String DEFAULT_GENERATOR_LOCATION = DEFAULT_API_LOCATION+"/generators";
+	protected static final String DEFAULT_PATTERN_LOCATION = DEFAULT_API_LOCATION+"/patterns";
 
 	/**
 	 * The name of the source folder containing the generated API.
@@ -62,10 +67,13 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	 */
 	private String packageName;
 	
+	private Registry packageRegistry;
+	
 	@Override
 	public void run(IProject project, Resource resource) {
 		logger.info("Running MofGenBuilder:");
 		logger.info("Given project: " + project.getName());
+		packageRegistry = new EPackageRegistryImpl();
 		this.project = project;
 		double tic = System.currentTimeMillis();
 //		System.out.println("Running extension: " + this.getClass().getSimpleName());
@@ -84,7 +92,6 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 
 		IFolder apiPackage = ensureFolderExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/")));
 
-		final Registry packageRegistry = new EPackageRegistryImpl();
 		MofgenFile editorModel = null;
 		if (!resource.getContents().isEmpty()) {
 			editorModel = (MofgenFile) resource.getContents().get(0);
@@ -98,6 +105,11 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			logger.error("Retrieving mofgen file failed with: "+e.getMessage()+"\n"+e.getStackTrace());
 		}
 		if(mofgenFile != null) {
+			try {
+				updateManifest(project, this::processManifestForPackage);
+			} catch (CoreException e) {
+				logger.error("Updating Manifest failed with " + e.getMessage()+"\n"+e.getStackTrace());
+			}
 			generateAPI(apiPackage, mofgenFile, editorModel, createEClassifierManager(packageRegistry));
 		}
 
@@ -159,20 +171,18 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 
 	private void updateManifest(final IProject project, final BiFunction<IProject, Manifest, Boolean> updateFunction)
 			throws CoreException {
-		// TODO
-		// new ManifestFileUpdater().processManifest(project, manifest ->
-		// updateFunction.apply(project, manifest));
+		 new ManifestFileUpdater().processManifest(project, manifest ->
+		 updateFunction.apply(project, manifest));
 	}
 
 	private boolean processManifestForPackage(IProject project, Manifest manifest) {
-		// TODO
-		return false;
-//		List<String> dependencies = new ArrayList<String>();
-//		dependencies.addAll(Arrays.asList("org.emoflon.ibex.common", "org.emoflon.ibex.gt", "grapelmodel"));
-//		collectEngineExtensions().forEach(engine -> dependencies.addAll(engine.getDependencies()));
-//		boolean changedBasics = ManifestFileUpdater.setBasicProperties(manifest, project.getName());
-//		boolean updatedDependencies = ManifestFileUpdater.updateDependencies(manifest, dependencies);
-//		return changedBasics || updatedDependencies;
+		List<String> dependencies = new ArrayList<String>();
+		dependencies.addAll(Arrays.asList("org.eclipse.emf.ecore", "mofgen.api", "mofgen"));
+		Set<String> ePackageDependencies = packageRegistry.values().stream().map(p -> ((EPackage)p).getNsPrefix()).collect(Collectors.toSet());
+		dependencies.addAll(ePackageDependencies);
+		boolean changedBasics = ManifestFileUpdater.setBasicProperties(manifest, project.getName());
+		boolean updatedDependencies = ManifestFileUpdater.updateDependencies(manifest, dependencies);
+		return changedBasics || updatedDependencies;
 	}
 
 	public static void findAllEPackages(final MofgenFile mofgenFile, final Registry packageRegistry) {
