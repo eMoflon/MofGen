@@ -264,7 +264,7 @@ public «returnTypeString» createInstance(«IF pattern.parameters.empty»«ELSE
 	 * Triggers type registry once to collect all needed types for collection management.
 	 */
 	private static def triggerTypeRegistry(MofgenFile file) {
-		TypeRegistry.update = false;
+//		TypeRegistry.update = false; // strange errors when doing this, yet turning it off in turn of potential performance loss
 		TypeRegistry.update(file)
 	}
 }

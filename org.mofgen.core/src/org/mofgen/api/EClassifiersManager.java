@@ -14,8 +14,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.EcoreUtil2;
+import org.mofgen.interpreter.TypeRegistry;
+import org.mofgen.mGLang.Collection;
+import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.ParameterNodeOrPattern;
+import org.mofgen.mGLang.Pattern;
 import org.moflon.core.utilities.EcoreUtils;
 
 /**
@@ -148,6 +153,19 @@ public class EClassifiersManager {
 	}
 
 	/**
+	 * Determines the set of necessary imports for the given editor model.
+	 * @param editorModel the editor model to search
+	 * @return the types for Java import statements
+	 */
+	public Set<String> getAllImports(MofgenFile editorModel){
+		Set<String> imports = new TreeSet<String>();
+		imports.addAll(getImportsForNodeTypes(EcoreUtil2.getAllContentsOfType(editorModel, Node.class)));
+		imports.addAll(getImportsForParameterNodeTypes(EcoreUtil2.getAllContentsOfType(editorModel, ParameterNodeOrPattern.class)));
+		imports.addAll(getImportsForCollectionTypes(EcoreUtil2.getAllContentsOfType(editorModel, Collection.class)));
+		return imports;
+	}
+	
+	/**
 	 * Determines the set of necessary type imports for a set of nodes.
 	 * 
 	 * @param nodes the nodes
@@ -160,12 +178,32 @@ public class EClassifiersManager {
 	/**
 	 * Determines the set of necessary type imports for a set of parameter nodes.
 	 * 
-	 * @param nodes the nodes
+	 * @param parameters the parameters
 	 * @return the types for Java import statements
 	 */
-	public Set<String> getImportsForParameterNodeTypes(final List<ParameterNodeOrPattern> nodes) {
-		return new HashSet<String>(); // TODO
-		//return getImportsForTypes(nodes.stream().map(n -> n.getType()).collect(Collectors.toSet()));
+	public Set<String> getImportsForParameterNodeTypes(final List<ParameterNodeOrPattern> parameters) {
+		return getImportsForTypes(parameters.stream().filter(n -> n.getType() instanceof EClass).map(n -> (EClass) n.getType()).collect(Collectors.toSet()));
+	}
+	
+	/**
+	 * Determines the set of necessary type imports for a set of collections.
+	 * 
+	 * @param parameters the parameters
+	 * @return the types for Java import statements
+	 */
+	public Set<String> getImportsForCollectionTypes(final List<Collection> colls) {
+		Set<EClassifier> typeSet = new HashSet<>();
+		for(Collection c : colls) {
+			if(c instanceof org.mofgen.mGLang.List) {
+				typeSet.add(TypeRegistry.getListType((org.mofgen.mGLang.List)c));
+			}else if(c instanceof org.mofgen.mGLang.Map) {
+				typeSet.add(TypeRegistry.getMapKeyType((org.mofgen.mGLang.Map)c));
+				typeSet.add(TypeRegistry.getMapEntryType((org.mofgen.mGLang.Map)c));
+			}else {
+				throw new IllegalStateException("There should be no collection of type other than List or Map");
+			}
+		}
+		return getImportsForTypes(typeSet);
 	}
 	
 	/**
