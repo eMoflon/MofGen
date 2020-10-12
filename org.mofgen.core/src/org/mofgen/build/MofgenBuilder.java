@@ -2,12 +2,9 @@ package org.mofgen.build;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
@@ -23,7 +20,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
@@ -31,21 +27,16 @@ import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
-import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.xtext.EcoreUtil2;
 import org.mofgen.api.EClassifiersManager;
-import org.mofgen.build.JavaFileGenerator;
 import org.mofgen.generator.MofgenBuilderExtension;
 import org.mofgen.mGLang.Generator;
-import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MofgenFile;
-import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.Node;
+import org.mofgen.mGLang.Pattern;
 import org.mofgen.util.NameProvider;
-import org.moflon.core.propertycontainer.MoflonPropertiesContainerHelper;
 
 public class MofgenBuilder implements MofgenBuilderExtension {
 
@@ -70,12 +61,12 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	 * The name of the package.
 	 */
 	private String packageName;
-
+	
 	@Override
 	public void run(IProject project, Resource resource) {
-		this.project = project;
 		logger.info("Running MofGenBuilder:");
 		logger.info("Given project: " + project.getName());
+		this.project = project;
 		double tic = System.currentTimeMillis();
 //		System.out.println("Running extension: " + this.getClass().getSimpleName());
 //		System.out.println("Given resource: " + resource.getURI());
@@ -85,14 +76,13 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			// removeGeneratedCode(project, "src-gen/**"); // TODO ?
 			createFolders(project);
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Creating project folders failed with: "+e.getMessage()+"\n"+e.getStackTrace());
 			return;
 		}
 
 		logger.info("Creating API..");
 
-		IFolder apiPackage = ensureFolderExists(project.getFolder(SOURCE_GEN_FOLDER));
+		IFolder apiPackage = ensureFolderExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/")));
 
 		final Registry packageRegistry = new EPackageRegistryImpl();
 		MofgenFile editorModel = null;
@@ -105,8 +95,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		try {
 			mofgenFile = getMofgenFile(project);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Retrieving mofgen file failed with: "+e.getMessage()+"\n"+e.getStackTrace());
 		}
 		if(mofgenFile != null) {
 			generateAPI(apiPackage, mofgenFile, editorModel, createEClassifierManager(packageRegistry));
@@ -235,8 +224,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		try {
 			((XMIResource) output).save(saveOptions);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn("Saving resource failed with message: "+e.getMessage()+"\n"+e.getStackTrace());
 		}
 		System.out.println("GrapeLModel model saved to: " + output.getURI().path());
 	}
@@ -246,6 +234,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	 * 
 	 * @return the file
 	 */
+	// TODO extend to multiple files
 	private IFile getMofgenFile(final IProject project) throws Exception {
 		List<IFile> files = new LinkedList<>();
 		crawlSubfolders(project.getFolder(DEFAULT_SRC_LOCATION), files);

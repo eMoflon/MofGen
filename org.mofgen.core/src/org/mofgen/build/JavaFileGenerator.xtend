@@ -133,6 +133,7 @@ class JavaFileGenerator {
 			
 		'''
 		// TODO provide overriding toString implementation
+		val test = genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java")
 		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), genSourceCode)
 	}
 

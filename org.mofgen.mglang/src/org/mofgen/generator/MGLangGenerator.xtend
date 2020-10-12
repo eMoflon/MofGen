@@ -41,7 +41,7 @@ override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorCo
 		val output = rs.createResource(URI.createURI(resource.URI.trimFileExtension+".xmi"))
 		output.contents.add(model)
 		EcoreUtil.resolveAll(output)
-		println(resource.URI)
+//		println(resource.URI)
 
 //		val saveOptions = (output as XMIResource).getDefaultSaveOptions()
 //		saveOptions.put(XMIResource.OPTION_ENCODING,"UTF-8");
@@ -51,7 +51,7 @@ override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorCo
 //		(output as XMIResource).save(saveOptions)
 //		System.out.println("Xtext model saved to: "+output.URI.path)
 		
-		println("Running Builder extensions...")
+		println("Running Mofgen-Builder extensions...")
 		val workspace = getWorkspace()
 		val project = getProjectOfResource(workspace, output)
 		if(project === null)
