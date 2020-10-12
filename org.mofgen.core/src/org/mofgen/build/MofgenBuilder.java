@@ -67,7 +67,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	 */
 	private String packageName;
 	
-	private Registry packageRegistry;
+	public static Registry packageRegistry;
 	
 	@Override
 	public void run(IProject project, Resource resource) {

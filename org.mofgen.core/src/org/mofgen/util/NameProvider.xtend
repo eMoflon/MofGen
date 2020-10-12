@@ -5,6 +5,9 @@ import org.mofgen.mGLang.Pattern
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.core.resources.IFile
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EEnumLiteral
+import org.eclipse.emf.ecore.EEnum
 
 class NameProvider {
 	/**
@@ -53,6 +56,12 @@ class NameProvider {
 	 * @return the Name of the getter method for the given ENamedElement
 	 */
 	def static String getGetterName(ENamedElement namedElement){
+		if(namedElement instanceof EEnum){
+			return namedElement.name
+		}
+		if(namedElement instanceof EEnumLiteral){
+			return namedElement.name.toUpperCase
+		}
 		if(namedElement.name == "keys"){
 			return 'keySet'
 		}
@@ -71,6 +80,14 @@ class NameProvider {
 	 */
 	def static String getClassNamePrefix(IFile file){
 		return file.name.toFirstUpper
+	}
+	
+	def static String getFactoryClassName(EPackage ePackage){
+		return ePackage.name.toFirstUpper+"Factory"
+	}
+	
+	def static String getPackageClassName(EPackage ePackage){
+		return ePackage.name.toFirstUpper+"Package"
 	}
 	
 	def static String locationToPackageName(String location){

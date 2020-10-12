@@ -19,15 +19,20 @@ class PatternTranslator {
 	}
 	
 	private static dispatch def String internalTranslate(Node node, PatternNodeReference ref){
-		//TODO *-reference / collection --> Add to collection instead of setting attribute
-		return '''
+		if(ref.type.upperBound < 1){
+			return '''
+			«node.name».«NameProvider.getGetterName(ref.type)»().add(«ref.target.name»)
+			'''	
+		}else{
+			return '''
 		«node.name».«NameProvider.getSetterName(ref.type)»(«ref.target.name»)
-		'''
+		'''	
+		}
 	}
 	
 	private static dispatch def String internalTranslate(Node node, NodeAttributeAssignment ass){
 		return '''
-		«node.name».«NameProvider.getSetterName(ass.target)»(«MofgenUtil.getTextFromEditorFile(ass.value)»)
+		«node.name».«NameProvider.getSetterName(ass.target)»(«MofgenUtil.resolveArithmeticExpression(ass.value)»);
 		'''
 	}
 	

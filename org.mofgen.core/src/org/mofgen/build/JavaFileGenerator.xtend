@@ -20,6 +20,8 @@ import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.NameProvider
+import org.eclipse.emf.ecore.EClass
+import org.mofgen.util.MofgenUtil
 
 /**
  * This class contains the templates for the API Java classes.
@@ -140,7 +142,6 @@ class JavaFileGenerator {
 		val imports = eClassifiersManager.getAllImports(editorModel)
 		imports.addAll(
 			'org.mofgen.api.MofgenPattern',
-			'org.mofgen.mGLang.MGLangFactory',
 			'org.eclipse.emf.ecore.EObject'
 		)
 
@@ -155,9 +156,30 @@ class JavaFileGenerator {
 				returnTypeString = EcorePackage.Literals.EOBJECT.name;
 			}
 		}
+		
+		val patternParameterTypes = newHashMap();
+		if(!pattern.parameters.empty){
+			for(parameter : pattern.parameters){
+				if(parameter instanceof PrimitiveParameter){
+					patternParameterTypes.put(parameter, parameter.type.literal)	
+				}else if (parameter instanceof ParameterNodeOrPattern){
+					val type = parameter.type
+					if(type instanceof EClass){
+						patternParameterTypes.put(parameter, type.name)
+					}else if(type instanceof Pattern){
+						patternParameterTypes.put(parameter, NameProvider.getPatternClassName(type))
+					}else{
+						throw new IllegalStateException();
+					}
+				}else{
+					throw new IllegalStateException();
+				}
+				
+			}
+		}
 
 		val patternSourceCode = '''
-			«printHeader(patternPackage.project.name+'.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
+			«printHeader(patternPackage.project.name+'.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
 			
 			/**
 			* The pattern «NameProvider.getPatternClassName(pattern)».
@@ -165,16 +187,16 @@ class JavaFileGenerator {
 			public class «NameProvider.getPatternClassName(pattern)» extends «PATTERN_SUPER_CLASS»{
 				
 				«FOR node : nodes SEPARATOR ';' AFTER ';'»
-					«node.type.instanceTypeName» «node.name»
+					«node.type.name» «node.name»
 				«ENDFOR»
 								
-				@Override
 				/**
 				* TODO in Template Generation
 				*/
-public «returnTypeString» createInstance(EObject... params){
+				public «returnTypeString» createInstance(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»
+				«ENDFOR»«ENDIF»){
 					«FOR node : nodes SEPARATOR ';'»
-						«node.name» = («node.type.instanceTypeName») MGLangFactory.eINSTANCE.create(«node.type»)
+						«node.name» = «MofgenUtil.getCreationOfEObject(node.type)»;
 						«IF node.createdBy instanceof NodeContent»
 							«FOR refAssign : (node.createdBy as NodeContent).refsAssigns SEPARATOR ';'»
 								«PatternTranslator.translate(node, refAssign)»
@@ -183,9 +205,11 @@ public «returnTypeString» createInstance(EObject... params){
 						
 						«IF node.createdBy instanceof PatternCall»
 							«««TODO
-							throw new UnsupportedOperationException("Nodes created by PatternCalls are not yet supported!")
+							throw new UnsupportedOperationException("Nodes created by PatternCalls are not yet supported!");
 						«ENDIF»
 					«ENDFOR»
+					
+					«IF returnTypeString != "void"»return null;«ENDIF»
 				}
 			}
 		'''
