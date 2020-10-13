@@ -24,6 +24,8 @@ import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.util.NameProvider
 import org.mofgen.util.MofgenUtil
 import org.eclipse.emf.ecore.EClassifier
+import org.mofgen.mGLang.GenReturn
+import org.eclipse.emf.ecore.xmi.XMIResource
 
 /**
  * Translates given expressions to source code that will be used as part of the API.
@@ -125,6 +127,14 @@ class GeneratorTranslator {
 	}
 
 	def static dispatch private String translateGen(CollectionManipulation cm) { return '''«cm»''' }
+	
+		
+	def static dispatch private String translateGen(GenReturn ret){
+	
+		return '''
+		
+		'''
+	}
 
 	// ------------------------------------------ GenSwitchExpression dispatcher ------------------------------------------
 	def static String translate(GenSwitchExpression expr) {

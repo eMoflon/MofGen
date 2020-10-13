@@ -181,9 +181,13 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
-	def onlyOneReturn(Generator gen){
-		if(gen.commands.filter(GenReturn).length > 1){
+	def exactlyOneReturn(Generator gen){
+		val retCount = gen.commands.filter(GenReturn).length
+		if(retCount > 1){
 			error("Only one return per generator allowed", MGLangPackage.Literals.GENERATOR__COMMANDS)
+		}
+		if(retCount < 1){
+			error("Generator block needs return with containment root", MGLangPackage.Literals.GENERATOR__COMMANDS)
 		}
 	}
 
