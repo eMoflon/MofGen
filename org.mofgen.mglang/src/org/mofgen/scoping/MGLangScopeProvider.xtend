@@ -302,7 +302,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				vars.addAll(EcoreUtil2.getAllContentsOfType(pattern, Variable))
 			} else {
 				collections.addAll(EcoreUtil2.getAllContentsOfType(gen, Collection))
-				vars.addAll(EcoreUtil2.getAllContentsOfType(gen, Variable))
+				vars.addAll(EcoreUtil2.getAllContentsOfType(gen, Variable)) //TODO Collect variables correctly (i.e. consider inner/outer scopes)
 			}
 
 			// get nodes of casts in above case-heads (remove names from pattern-nodes eventually)

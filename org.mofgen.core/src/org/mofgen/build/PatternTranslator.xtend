@@ -11,6 +11,7 @@ import org.mofgen.mGLang.PatternNodeReference
 import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.util.NameProvider
 import org.mofgen.util.MofgenUtil
+import org.mofgen.mGLang.PatternCall
 
 class PatternTranslator {
 
@@ -33,6 +34,12 @@ class PatternTranslator {
 	private static dispatch def String internalTranslate(Node node, NodeAttributeAssignment ass){
 		return '''
 		«node.name».«NameProvider.getSetterName(ass.target)»(«MofgenUtil.resolveArithmeticExpression(ass.value)»);
+		'''
+	}
+	
+	static def String translate(PatternCall pc){
+		return '''
+		(new «NameProvider.getPatternClassName(pc.called)»().createInstance(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»«ENDIF»)
 		'''
 	}
 	

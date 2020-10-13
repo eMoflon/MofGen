@@ -114,8 +114,12 @@ Generator:
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
 	ForStatement | GenSwitch | Collection | Variable | VariableManipulation |
-	CollectionManipulation | PatternCall
+	CollectionManipulation | PatternCall | GenReturn
 	;
+	
+GenReturn:
+	'return' returnValue = [Variable] //TODO: validate 1. no code after return 2. Only valid: VariableRef, PatternCall,
+;
 
 CollectionManipulation:
 	trg=[Collection] '.' op=[ecore::EOperation] '(' (params=RefParams)? ')';

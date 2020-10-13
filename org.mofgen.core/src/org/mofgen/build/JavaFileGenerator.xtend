@@ -115,12 +115,12 @@ class JavaFileGenerator {
 			 */
 			public class «NameProvider.getGeneratorClassName(gen)» extends «GENERATOR_SUPER_CLASS» {
 			
-			«««TODO Documentation?
 			@Override
-				/**
-				* Runs the specified generator with the given parameters
-				*/
-				public void start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
+			/**
+			* Runs the specified generator with the given parameters.
+			* @return the EObject to be saved aka the containing root object of the generated structure (Must be specified by the user!)
+			*/
+			public EObject start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
 			«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaTypeAsString(parameter)» «parameter.name»Value«ENDFOR»
 			«FOR expression : gen.commands»
 				«GeneratorTranslator.translate(expression)»;
@@ -191,7 +191,7 @@ class JavaFileGenerator {
 				«ENDFOR»
 								
 				/**
-				* TODO in Template Generation
+				* Creates an instance of this pattern and returns the corresponding return value or void.
 				*/
 				public «returnTypeString» createInstance(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»
 				«ENDFOR»«ENDIF»){
@@ -204,8 +204,7 @@ class JavaFileGenerator {
 						«ENDIF»
 						
 						«IF node.createdBy instanceof PatternCall»
-							«««TODO
-							throw new UnsupportedOperationException("Nodes created by PatternCalls are not yet supported!");
+							«PatternTranslator.translate(node.createdBy as PatternCall)»
 						«ENDIF»
 					«ENDFOR»
 					
@@ -216,38 +215,6 @@ class JavaFileGenerator {
 		// TODO provide overriding toString implementation
 		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode)
 	}
-	
-//	def generatePatternFactoryRegistryClass(IFolder apiPackage){
-//		val imports = eClassifiersManager.getAllImports(editorModel)
-//		imports.addAll(
-//			apiPackage.project.name+'.api.patterns.*',
-//			"java.util.HashMap",
-//			"java.util.Map"
-//		)
-//		
-//		val patterns = EcoreUtil2.getAllContentsOfType(editorModel, Pattern);
-//		
-//		val registrySrcCode = '''
-//			«printHeader(apiPackage.project.name+'.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_API_LOCATION), imports)»
-//			
-//			public static class PatternFactoryRegistry {
-//				
-//				Map<String, MofgenPatternFactory> reg;
-//				
-//				public PatternFactoryRegistry(){
-//					reg = new HashMap<>();
-//					fillReg();
-//				}
-//				
-//				private void fillReg(){
-//					«FOR pattern : patterns»
-//					reg.put(«pattern.name», new «NameProvider.getPatternClassName(pattern)»);
-// 					«ENDFOR»
-//				}
-//		'''
-//		
-//		writeFile(apiPackage.getFile("PatternFactoryRegistry.java"), registrySrcCode)
-//	}
 
 	/**
 	 * Sub template for the package declaration and import statements.
