@@ -38,6 +38,7 @@ import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.ParamManipulation
 import org.eclipse.emf.ecore.EClass
 import org.mofgen.mGLang.PatternCall
+import org.mofgen.mGLang.GenReturn
 
 /**
  * This class contains custom scoping description.
@@ -104,6 +105,9 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 		if(isPatternCall_called(context, reference)){
 			return getScopeForPatternCall_called(context as PatternCall)
+		}
+		if(isGenReturn_returnValue(context, reference)){
+			return getScopeForGenReturn_ReturnValue(context as GenReturn)
 		}
 
 		return super.getScope(context, reference)
@@ -426,6 +430,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 		return Scopes.scopeFor(parameterNodes)
 	}
+	
+	def getScopeForGenReturn_ReturnValue(GenReturn ret){
+		val gen = EcoreUtil2.getContainerOfType(ret, Generator)
+		return Scopes.scopeFor(EcoreUtil2.getAllContentsOfType(gen, Variable)) //TODO more precise scoping
+	}
 
 	def isPatternNodeReference_Type(
 		EObject context,
@@ -510,6 +519,10 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	
 	def isPatternCall_called(EObject context, EReference reference){
 		return context instanceof PatternCall && reference == MGLangPackage.Literals.PATTERN_CALL__CALLED
+	}
+	
+	def isGenReturn_returnValue(EObject context, EReference reference){
+		return context instanceof GenReturn && reference == MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE
 	}
 
 	def getRootFile(EObject context) {

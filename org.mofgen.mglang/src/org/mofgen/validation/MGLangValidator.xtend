@@ -41,6 +41,8 @@ import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.Collection
+import org.mofgen.mGLang.GenReturn
+import org.mofgen.mGLang.Generator
 
 /**
  * This class contains custom validation rules. 
@@ -175,6 +177,22 @@ class MGLangValidator extends AbstractMGLangValidator {
 			} catch (MismatchingTypesException e) {
 				error(e.message, caze, MGLangPackage.Literals.GEN_CASE_WITH_CAST__WHEN)
 			}
+		}
+	}
+
+	@Check
+	def onlyOneReturn(Generator gen){
+		if(gen.commands.filter(GenReturn).length > 1){
+			error("Only one return per generator allowed", MGLangPackage.Literals.GENERATOR__COMMANDS)
+		}
+	}
+
+	@Check
+	def checkNoLinesAfterReturn(GenReturn ret) {
+		val gen = EcoreUtil2.getContainerOfType(ret, Generator)
+		val genCommands = gen.commands
+		if(genCommands.indexOf(ret) !== genCommands.length - 1){
+			warning("This return suppresses lines of code following afterwards", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
 		}
 	}
 

@@ -143,6 +143,9 @@
         eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GeneratorExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenReturn" eSuperTypes="#//GeneratorExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="#//Variable"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CollectionManipulation" eSuperTypes="#//GeneratorExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="trg" eType="#//Collection"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="op" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EOperation"/>

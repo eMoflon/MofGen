@@ -12,6 +12,7 @@ import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.util.NameProvider
 import org.mofgen.util.MofgenUtil
 import org.mofgen.mGLang.PatternCall
+import org.mofgen.mGLang.PatternReturn
 
 class PatternTranslator {
 
@@ -41,6 +42,14 @@ class PatternTranslator {
 		return '''
 		(new «NameProvider.getPatternClassName(pc.called)»().createInstance(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»«ENDIF»)
 		'''
+	}
+	
+	static def String translate(PatternReturn pReturn){
+		if(pReturn.returnValue !== null){
+			return '''return «pReturn.returnValue.name»;'''
+		}else{
+			//TODO return Pattern as a whole?
+		}
 	}
 	
 	private static dispatch def String internalTranslate(Node node, PatternIfElseSwitch pSwitch){
