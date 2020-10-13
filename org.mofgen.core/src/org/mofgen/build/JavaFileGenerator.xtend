@@ -190,10 +190,7 @@ class JavaFileGenerator {
 					«node.type.name» «node.name»
 				«ENDFOR»
 								
-				/**
-				* Creates an instance of this pattern and returns the corresponding return value or void.
-				*/
-				public «returnTypeString» createInstance(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»
+				public «NameProvider.getPatternClassName(pattern)»(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»
 				«ENDFOR»«ENDIF»){
 					«FOR node : nodes SEPARATOR ';'»
 						«node.name» = «MofgenUtil.getCreationOfEObject(node.type)»;
@@ -207,9 +204,9 @@ class JavaFileGenerator {
 							«PatternTranslator.translate(node.createdBy as PatternCall)»
 						«ENDIF»
 					«ENDFOR»
-					
-					«IF returnTypeString != "void"»return null;«ENDIF»
 				}
+				
+				«PatternTranslator.createGetters(pattern)»
 			}
 		'''
 		// TODO provide overriding toString implementation

@@ -13,6 +13,8 @@ import org.mofgen.util.NameProvider
 import org.mofgen.util.MofgenUtil
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternReturn
+import org.mofgen.mGLang.Pattern
+import org.eclipse.xtext.EcoreUtil2
 
 class PatternTranslator {
 
@@ -50,6 +52,22 @@ class PatternTranslator {
 		}else{
 			//TODO return Pattern as a whole?
 		}
+	}
+	
+	static def createGetters(Pattern pattern){
+		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+		return '''
+		
+		«FOR node : nodes»
+		/**
+		* @return the «node.name» attribute of type «node.type.name»
+		*/
+		public «node.type.name» «MofgenUtil.getGetterMethod(node)»{
+			return «node.name»;
+		}
+		
+		«ENDFOR»
+		'''
 	}
 	
 	private static dispatch def String internalTranslate(Node node, PatternIfElseSwitch pSwitch){

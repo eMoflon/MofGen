@@ -237,5 +237,9 @@ class MofgenUtil {
 			metaModelResources.remove(uri);
 		}
 	}
+	
+	def static getGetterMethod(Node node){
+		return '''get«node.name.toFirstUpper»()'''
+	}
 
 }

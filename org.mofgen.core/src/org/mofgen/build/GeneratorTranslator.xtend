@@ -104,12 +104,12 @@ class GeneratorTranslator {
 			val calledPattern = (variable.value as PatternCall).called
 			val patternReturn = calledPattern.^return
 			var patternType = ""
-			if(patternReturn.returnValue !== null){
+			if (patternReturn.returnValue !== null) {
 				patternType = patternReturn.returnValue.type.instanceClassName
-			}else{
+			} else {
 				patternType = NameProvider.getPatternClassName(calledPattern)
 			}
-			
+
 			return '''
 				«patternType» «variable.name» = «translatePatternCall(variable.value as PatternCall)»
 			'''
@@ -169,9 +169,17 @@ class GeneratorTranslator {
 	}
 
 	def static private String translatePatternCall(PatternCall pc) {
-		return '''(new «NameProvider.getPatternClassName(pc.called)»()).create(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»
-			«ENDIF»
-		'''
+		val pReturn = pc.called.^return
+		if (pReturn !== null && pReturn.returnValue !== null) {
+			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ','» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»).«MofgenUtil.getGetterMethod(pReturn.returnValue)»();
+				«ENDIF»
+			'''
+		} else {
+			return '''new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»
+				«ENDIF»
+			'''
+		}
+
 	}
 
 	// ------------------------------------------ helper methods ------------------------------------------
@@ -186,6 +194,5 @@ class GeneratorTranslator {
 	def static private getMapEntryType(Map map) {
 		TypeRegistry.getMapEntryType(map)
 	}
-
 
 }
