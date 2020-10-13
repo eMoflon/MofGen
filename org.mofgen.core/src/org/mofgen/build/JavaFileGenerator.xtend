@@ -22,6 +22,7 @@ import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.NameProvider
 import org.eclipse.emf.ecore.EClass
 import org.mofgen.util.MofgenUtil
+import java.util.List
 
 /**
  * This class contains the templates for the API Java classes.
@@ -43,6 +44,11 @@ class JavaFileGenerator {
 	/**
 	 * The Name of the inherited generator super class
 	 */
+	final String APP_SUPER_CLASS = "MofgenApp"
+
+	/**
+	 * The Name of the inherited generator super class
+	 */
 	final String GENERATOR_SUPER_CLASS = "MofgenGenerator"
 
 	/**
@@ -54,7 +60,7 @@ class JavaFileGenerator {
 	 * Utility to handle the mapping between EClassifier names to meta-model names.
 	 */
 	EClassifiersManager eClassifiersManager
-	
+
 	MofgenFile editorModel;
 
 	/**
@@ -73,29 +79,53 @@ class JavaFileGenerator {
 	 */
 	def generateAppClass(IFolder appPackage) {
 		val imports = eClassifiersManager.importsForPackages
-		imports.addAll()
+		imports.addAll('java.util.LinkedList', 'java.util.List', 'org.mofgen.api.MofgenApp', 'org.mofgen.api.MofgenGenerator',
+		'SimpleMofgen.api.generators.TestGenerator', 'org.eclipse.emf.ecore.EObject')
+
+		val generators = EcoreUtil2.getAllContentsOfType(editorModel, Generator)
+
 		val appSourceCode = '''
-			«printHeader(getSubPackageName('api'), imports)»
+			«printHeader(appPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_API_LOCATION), imports)»
 			
 			/**
 			 * A mofgen application.
 			 */
-			public class «appClassName» extends GraphTransformationApp<«appClassName»> {
+			public class «NameProvider.getAppClassName(appPackage.project.name)» extends «APP_SUPER_CLASS»{
+				
+				/**
+				* A list containing all defined generators
+				*/
+				List<MofgenGenerator> generators;
 				
 				/**
 				 * Creates a mofgen application
 				 * 
-				 * @param engine
-				 *            the pattern matching engine
-				 * @param workspacePath
-				 *            the workspace path
+				 * @param workspacePath «««TODO maybe utilize workspace path here»»
+					       	     the workspace path
 				 */
-				public «appClassName»(final String workspacePath) {
-					super(workspacePath);
+				public «NameProvider.getAppClassName(appPackage.project.name)»(final String workspacePath) {
+					«««super(workspacePath);
+					generators = new LinkedList<>();
+					«FOR gen : generators»
+						generators.add(new «NameProvider.getGeneratorClassName(gen)»("«gen.name»"));
+					«ENDFOR»
+				}
+				
+				@Override
+				public void startGeneration(){
+					System.out.println("Starting generation...");
+					for(MofgenGenerator gen : generators){
+						System.out.println("Starting generator "+gen.getName()+"...");
+						EObject result = gen.start();
+						
+						String path = "D:\\Workspaces\\runtime-EclipseApplication\\SimpleMofgen\\generatedModels"; «««TODO 
+						saveResource(result, path, gen.getName());
+					}
+					System.out.println("Done!");
 				}
 			}
 		'''
-		writeFile(appPackage.getFile(appClassName + '.java'), appSourceCode)
+		writeFile(appPackage.getFile(NameProvider.getAppClassName(appPackage.project.name) + '.java'), appSourceCode)
 	}
 
 	/**
@@ -104,34 +134,36 @@ class JavaFileGenerator {
 	def generateGenClass(IFolder genPackage, Generator gen) {
 		val imports = newHashSet('java.util.ArrayList', 'java.util.List', 'java.util.Map', 'java.util.HashMap',
 			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.MofgenGenerator')
-		imports.add(genPackage.project.name+'.api.patterns.*')
+		imports.add(genPackage.project.name + '.api.patterns.*')
 		imports.addAll(eClassifiersManager.getAllImports(editorModel))
-		
+
 		val genSourceCode = '''
-			«printHeader(genPackage.project.name+'.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
+			«printHeader(genPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
 			
 			/**
 			 * The generator «NameProvider.getGeneratorClassName(gen)».
 			 */
 			public class «NameProvider.getGeneratorClassName(gen)» extends «GENERATOR_SUPER_CLASS» {
 			
-			@Override
-			/**
-			* Runs the specified generator with the given parameters.
-			* @return the EObject to be saved aka the containing root object of the generated structure (Must be specified by the user!)
-			*/
-			public EObject start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
-			«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaTypeAsString(parameter)» «parameter.name»Value«ENDFOR»
-			«FOR expression : gen.commands»
-				«GeneratorTranslator.translate(expression)»;
-			«ENDFOR»
-			}
+				public «NameProvider.getGeneratorClassName(gen)» (String name){
+					this.name = name;
+				}
 			
+				@Override
+				/**
+				* Runs the specified generator with the given parameters.
+				* @return the EObject to be saved aka the containing root object of the generated structure (Must be specified by the user!)
+				*/
+				public EObject start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
+				«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaTypeAsString(parameter)» «parameter.name»Value«ENDFOR»
+				«FOR expression : gen.commands»
+					«GeneratorTranslator.translate(expression)»;
+				«ENDFOR»
+				}				
 			}
 			
 		'''
 		// TODO provide overriding toString implementation
-		
 		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), genSourceCode)
 	}
 
@@ -147,39 +179,29 @@ class JavaFileGenerator {
 
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
 
-		// TODO returnType when calling/creating instance of pattern?
-		var returnTypeString = "void"
-		if (pattern.^return !== null) {
-			if (pattern.^return.returnValue !== null) {
-				returnTypeString = pattern.^return.returnValue.type.name
-			} else {
-				returnTypeString = EcorePackage.Literals.EOBJECT.name;
-			}
-		}
-		
 		val patternParameterTypes = newHashMap();
-		if(!pattern.parameters.empty){
-			for(parameter : pattern.parameters){
-				if(parameter instanceof PrimitiveParameter){
-					patternParameterTypes.put(parameter, parameter.type.literal)	
-				}else if (parameter instanceof ParameterNodeOrPattern){
+		if (!pattern.parameters.empty) {
+			for (parameter : pattern.parameters) {
+				if (parameter instanceof PrimitiveParameter) {
+					patternParameterTypes.put(parameter, parameter.type.literal)
+				} else if (parameter instanceof ParameterNodeOrPattern) {
 					val type = parameter.type
-					if(type instanceof EClass){
+					if (type instanceof EClass) {
 						patternParameterTypes.put(parameter, type.name)
-					}else if(type instanceof Pattern){
+					} else if (type instanceof Pattern) {
 						patternParameterTypes.put(parameter, NameProvider.getPatternClassName(type))
-					}else{
+					} else {
 						throw new IllegalStateException();
 					}
-				}else{
+				} else {
 					throw new IllegalStateException();
 				}
-				
+
 			}
 		}
 
 		val patternSourceCode = '''
-			«printHeader(patternPackage.project.name+'.'+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
+			«printHeader(patternPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
 			
 			/**
 			* The pattern «NameProvider.getPatternClassName(pattern)».
@@ -189,7 +211,7 @@ class JavaFileGenerator {
 				«FOR node : nodes SEPARATOR ';' AFTER ';'»
 					«node.type.name» «node.name»
 				«ENDFOR»
-								
+				
 				public «NameProvider.getPatternClassName(pattern)»(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»
 				«ENDFOR»«ENDIF»){
 					«FOR node : nodes SEPARATOR ';'»
@@ -224,13 +246,6 @@ class JavaFileGenerator {
 				import «importClass»;
 			«ENDFOR»
 		'''
-	}
-
-	/**
-	 * Returns the name of the API class.
-	 */
-	private def getAppClassName() {
-		return classNamePrefix + "App"
 	}
 
 	/**

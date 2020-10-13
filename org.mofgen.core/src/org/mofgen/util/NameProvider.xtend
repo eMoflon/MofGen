@@ -38,59 +38,65 @@ class NameProvider {
 		return gen.name.toFirstUpper + "Generator";
 	}
 
+	def static String getAppClassName(String projectName) {
+		return projectName.toFirstUpper + "App"
+	}
+
 	/**
 	 * @return the Name of the setter method for the given EReference
 	 */
-	def static String getSetterName(EReference ref){
-		return 'set'+ref.name.toFirstUpper
-	} //TODO Not needed since EReference also is a subclass of ENamedElement?
-	
+	def static String getSetterName(EReference ref) {
+		return 'set' + ref.name.toFirstUpper
+	} // TODO Not needed since EReference also is a subclass of ENamedElement?
+
 	/**
 	 * @return the Name of the setter method for the given ENamedElement
 	 */
-	def static String getSetterName(ENamedElement namedElement){
-		return 'set'+namedElement.name.toFirstUpper
+	def static String getSetterName(ENamedElement namedElement) {
+		return 'set' + namedElement.name.toFirstUpper
 	}
-	
+
 	/**
 	 * @return the Name of the getter method for the given ENamedElement
 	 */
-	def static String getGetterName(ENamedElement namedElement){
-		if(namedElement instanceof EEnum){
+	def static String getGetterName(ENamedElement namedElement) {
+		if (namedElement instanceof EEnum) {
 			return namedElement.name
 		}
-		if(namedElement instanceof EEnumLiteral){
+		if (namedElement instanceof EEnumLiteral) {
 			return namedElement.name.toUpperCase
 		}
-		if(namedElement.name == "keys"){
+		if (namedElement.name == "keys") {
 			return 'keySet'
 		}
-		if(namedElement.name == "values"){
+		if (namedElement.name == "values") {
 			return 'values'
 		}
-		return 'get'+namedElement.name.toFirstUpper
+		return 'get' + namedElement.name.toFirstUpper
 	}
-	
-	def static String getPatternCreate(Pattern pattern){
+
+	def static String getPatternCreate(Pattern pattern) {
 		return '''«getPatternClassName(pattern)».create'''
 	}
-	
+
 	/**
 	 * @return the class name as prefix for automatically generated API files
 	 */
-	def static String getClassNamePrefix(IFile file){
-		return file.name.toFirstUpper
+	def static String getClassNamePrefix(IFile file) {
+		val name = file.name
+		val splitted = file.name.split('\\.')
+		return splitted.get(0).toFirstUpper
 	}
-	
-	def static String getFactoryClassName(EPackage ePackage){
-		return ePackage.name.toFirstUpper+"Factory"
+
+	def static String getFactoryClassName(EPackage ePackage) {
+		return ePackage.name.toFirstUpper + "Factory"
 	}
-	
-	def static String getPackageClassName(EPackage ePackage){
-		return ePackage.name.toFirstUpper+"Package"
+
+	def static String getPackageClassName(EPackage ePackage) {
+		return ePackage.name.toFirstUpper + "Package"
 	}
-	
-	def static String locationToPackageName(String location){
+
+	def static String locationToPackageName(String location) {
 		return location.replace('/', '.').replace('\\', '.');
 	}
 }

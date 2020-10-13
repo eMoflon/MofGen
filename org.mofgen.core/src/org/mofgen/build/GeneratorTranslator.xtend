@@ -132,7 +132,7 @@ class GeneratorTranslator {
 	def static dispatch private String translateGen(GenReturn ret){
 	
 		return '''
-		
+		return «ret.returnValue.name»
 		'''
 	}
 
@@ -181,7 +181,7 @@ class GeneratorTranslator {
 	def static private String translatePatternCall(PatternCall pc) {
 		val pReturn = pc.called.^return
 		if (pReturn !== null && pReturn.returnValue !== null) {
-			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ','» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»).«MofgenUtil.getGetterMethod(pReturn.returnValue)»();
+			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»)«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»).«MofgenUtil.getGetterMethod(pReturn.returnValue)»;
 				«ENDIF»
 			'''
 		} else {

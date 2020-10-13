@@ -48,7 +48,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 
 	protected static final String DEFAULT_SRC_LOCATION = "src";
 	public static final String MOFGEN_FILE_EXTENSION = "mofgen";
-	protected static final String DEFAULT_API_LOCATION = "api";
+	protected static final String DEFAULT_API_LOCATION = "/api";
 	protected static final String DEFAULT_GENERATOR_LOCATION = DEFAULT_API_LOCATION+"/generators";
 	protected static final String DEFAULT_PATTERN_LOCATION = DEFAULT_API_LOCATION+"/patterns";
 
@@ -129,9 +129,13 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			final EClassifiersManager eClassifiersManager) {
 		JavaFileGenerator fileGenerator = new JavaFileGenerator(NameProvider.getClassNamePrefix(mofgenFile),
 				packageName, editorModel, eClassifiersManager);
+		
+		IFolder appPackage = ensureFolderExists(apiPackage.getFolder(DEFAULT_API_LOCATION));
 		IFolder generatorPackage = ensureFolderExists(apiPackage.getFolder(DEFAULT_GENERATOR_LOCATION));
 		IFolder patternPackage = ensureFolderExists(apiPackage.getFolder(DEFAULT_PATTERN_LOCATION));
-
+		
+		fileGenerator.generateAppClass(appPackage);
+		
 		List<Generator> generators = EcoreUtil2.getAllContentsOfType(editorModel, Generator.class);
 		generators.forEach(g -> fileGenerator.generateGenClass(generatorPackage, g));
 
@@ -166,6 +170,8 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		createFolderIfNotExists(project.getFolder("src-gen/" + project.getName().replace(".", "/") + "/api/patterns"),
 				new NullProgressMonitor());
 		createFolderIfNotExists(project.getFolder("src-gen/" + project.getName().replace(".", "/") + "/api/generators"),
+				new NullProgressMonitor());
+		createFolderIfNotExists(project.getFolder("generatedModels/"),
 				new NullProgressMonitor());
 	}
 
