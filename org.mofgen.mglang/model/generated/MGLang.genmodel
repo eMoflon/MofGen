@@ -115,7 +115,9 @@
     <genClasses ecoreClass="MGLang.ecore#//PatternIfElseSwitch">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternIfElseSwitch/cases"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//PatternDefault"/>
+    <genClasses ecoreClass="MGLang.ecore#//PatternCaseBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseBody/expressions"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternSwitchCase">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternSwitchCase/attribute"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternSwitchCase/cases"/>
@@ -133,9 +135,6 @@
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternCaseWithoutCast">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseWithoutCast/val"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//PatternCaseBody">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseBody/expressions"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Case"/>
     <genClasses ecoreClass="MGLang.ecore#//RefOrCall">

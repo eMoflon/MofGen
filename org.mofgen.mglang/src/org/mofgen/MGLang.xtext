@@ -80,7 +80,7 @@ PatternSwitch:
 PatternIfElseSwitch:
 	'switch' '{' (cases+=PatternWhenCase)+ (default=PatternDefault)? '}';
 
-PatternDefault:
+PatternDefault returns PatternCaseBody:
 	'default' ':' PatternCaseBody;
 
 PatternSwitchCase:
