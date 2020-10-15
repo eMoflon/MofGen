@@ -106,13 +106,6 @@ class MofgenUtil {
 		return res.contents.get(0) as EPackage
 	}
 
-	/**
-	 * @return a source code string for the creation of a given eClass.
-	 */
-	def static String getCreationOfEObject(EClass eClass) {
-		val ePackage = getEPackage(eClass)
-		return '''(«eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«eClass.name.toUpperCase»)'''
-	}
 
 	/**
 	 * Translates References or calls to source code for the auto-generated classes.

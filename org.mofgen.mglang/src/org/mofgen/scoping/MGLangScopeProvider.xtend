@@ -302,8 +302,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				// get nodes of pattern
 				patternNodes.addAll(pattern.commands.filter(Node))
 
-				collections.addAll(EcoreUtil2.getAllContentsOfType(pattern, Collection))
-				vars.addAll(EcoreUtil2.getAllContentsOfType(pattern, Variable))
+				//collections.addAll(EcoreUtil2.getAllContentsOfType(pattern, Collection)) //commented out since no collection should appear in patterns
+				//vars.addAll(EcoreUtil2.getAllContentsOfType(pattern, Variable))
 			} else {
 				collections.addAll(EcoreUtil2.getAllContentsOfType(gen, Collection))
 				vars.addAll(EcoreUtil2.getAllContentsOfType(gen, Variable)) //TODO Collect variables correctly (i.e. consider inner/outer scopes)

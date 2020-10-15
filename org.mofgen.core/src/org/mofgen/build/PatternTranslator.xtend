@@ -1,28 +1,26 @@
 package org.mofgen.build
 
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment
-import org.mofgen.mGLang.NodeReferenceOrAssignmentOrControlFlow
+import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.Pattern
+import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCaseBody
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternCaseWithoutCast
 import org.mofgen.mGLang.PatternIfElseSwitch
 import org.mofgen.mGLang.PatternNodeReference
-import org.mofgen.mGLang.PatternSwitchCase
-import org.mofgen.util.NameProvider
-import org.mofgen.util.MofgenUtil
-import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternReturn
-import org.mofgen.mGLang.Pattern
-import org.eclipse.xtext.EcoreUtil2
+import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.PrimitiveParameter
-import org.eclipse.emf.ecore.EClass
-import org.mofgen.mGLang.ParameterNodeOrPattern
-import org.mofgen.mGLang.NodeContent
+import org.mofgen.util.MofgenUtil
+import org.mofgen.util.NameProvider
 
 class PatternTranslator {
 
-	static def String translate(Pattern pattern){
+	static def dispatch String translate(Pattern pattern){
 		
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
 
@@ -43,9 +41,11 @@ class PatternTranslator {
 				} else {
 					throw new IllegalStateException();
 				}
-
 			}
 		}
+		
+		val sequencer = new PatternBuildSequencer(nodes)
+		
 		return
 		'''
 		«getPatternDoc(pattern)»
@@ -57,17 +57,7 @@ class PatternTranslator {
 			
 			public «NameProvider.getPatternClassName(pattern)»(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»
 			«ENDFOR»«ENDIF»){
-				«FOR node : nodes SEPARATOR ';'»
-					«node.name» = «MofgenUtil.getCreationOfEObject(node.type)»;
-					«IF node.createdBy instanceof NodeContent»
-						«FOR refAssign : (node.createdBy as NodeContent).refsAssigns SEPARATOR ';'»
-							«PatternTranslator.translate(node, refAssign)»
-							«ENDFOR»
-					«ENDIF»
-					«IF node.createdBy instanceof PatternCall»
-						«PatternTranslator.translate(node.createdBy as PatternCall)»
-					«ENDIF»
-				«ENDFOR»
+				«sequencer.getOrderedTranslation()»
 			}
 				
 			«PatternTranslator.createGetters(pattern)»
@@ -87,36 +77,34 @@ class PatternTranslator {
 		public class «NameProvider.getPatternClassName(pattern)» extends «JavaFileGenerator.PATTERN_SUPER_CLASS»{
 		'''
 	}
-
-	static def String translate(Node node, NodeReferenceOrAssignmentOrControlFlow refAssign){
-		return internalTranslate(node, refAssign);
-	}
 	
-	private static dispatch def String internalTranslate(Node node, PatternNodeReference ref){
+	static def dispatch String translate(PatternNodeReference ref){
+		val node = EcoreUtil2.getContainerOfType(ref, Node)
 		if(ref.type.upperBound < 1){
 			return '''
-			«node.name».«NameProvider.getGetterName(ref.type)»().add(«ref.target.name»)
+			«node.name».«NameProvider.getGetterName(ref.type)»().add(«ref.target.name»);
 			'''	
 		}else{
 			return '''
-		«node.name».«NameProvider.getSetterName(ref.type)»(«ref.target.name»)
+		«node.name».«NameProvider.getSetterName(ref.type)»(«ref.target.name»);
 		'''	
 		}
 	}
 	
-	private static dispatch def String internalTranslate(Node node, NodeAttributeAssignment ass){
+	static def dispatch String translate(NodeAttributeAssignment ass){
+		val node = EcoreUtil2.getContainerOfType(ass, Node)
 		return '''
 		«node.name».«NameProvider.getSetterName(ass.target)»(«MofgenUtil.resolveArithmeticExpression(ass.value)»);
 		'''
 	}
 	
-	static def String translate(PatternCall pc){
+	static def dispatch String translate(PatternCall pc){
 		return '''
 		(new «NameProvider.getPatternClassName(pc.called)»().createInstance(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»«ENDIF»)
 		'''
 	}
 	
-	static def String translate(PatternReturn pReturn){
+	static def dispatch String translate(PatternReturn pReturn){
 		if(pReturn.returnValue !== null){
 			return '''return «pReturn.returnValue.name»;'''
 		}else{
@@ -124,7 +112,7 @@ class PatternTranslator {
 		}
 	}
 	
-	static def createGetters(Pattern pattern){
+	private static def createGetters(Pattern pattern){
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
 		return '''
 		
@@ -140,26 +128,26 @@ class PatternTranslator {
 		'''
 	}
 	
-	private static dispatch def String internalTranslate(Node node, PatternIfElseSwitch pSwitch){
+	static def dispatch String translate(PatternIfElseSwitch pSwitch){
 		return '''
 			«FOR caze : pSwitch.cases SEPARATOR 'else'»
 				if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
 					«FOR refAssign : caze.body.expressions SEPARATOR ';'AFTER';'»
-						«translate(node, refAssign)»
+						«translate(refAssign)»
 					«ENDFOR»
 				}
 			«ENDFOR»
 			«IF pSwitch.^default !== null»
 				else{
 					«FOR refAssign : (pSwitch.^default as PatternCaseBody).expressions SEPARATOR';'AFTER';'»
-						«translate(node, refAssign)»
+						«translate(refAssign)»
 					«ENDFOR»
 				}
 			«ENDIF»
 		'''
 	}
 		
-	private static dispatch def String internalTranslate(Node node, PatternSwitchCase zwitch){
+	static def dispatch String translate(PatternSwitchCase zwitch){
 		return
 		'''
 		«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
@@ -170,7 +158,7 @@ class PatternTranslator {
 						if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
 					«ENDIF»
 					«FOR bodyExpr : caze.body.expressions SEPARATOR';'AFTER';'»
-						«internalTranslate(node, bodyExpr)»
+						«translate(bodyExpr)»
 					«ENDFOR»
 					«IF caze.when !== null»
 						}
@@ -180,7 +168,7 @@ class PatternTranslator {
 			«IF caze instanceof PatternCaseWithoutCast»
 				if(«MofgenUtil.resolveRefOrCall(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
 					«FOR bodyExpr : caze.body.expressions SEPARATOR';'AFTER';'»
-						«internalTranslate(node, bodyExpr)»
+						«translate(bodyExpr)»
 					«ENDFOR»
 				}
 			«ENDIF»
@@ -188,7 +176,7 @@ class PatternTranslator {
 		«IF zwitch.^default !== null»
 			else {
 				«FOR expression : (zwitch.^default as PatternCaseBody).expressions SEPARATOR';'AFTER';'»
-					«internalTranslate(node, expression)»
+					«translate(expression)»
 				«ENDFOR»
 			}
 		«ENDIF»
