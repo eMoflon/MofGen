@@ -34,7 +34,7 @@ class JavaFileGenerator {
 	/**
 	 * The name of the package.
 	 */
-	String packageName
+	String packageName 
 
 	/**
 	 * The prefix for the API class name.
@@ -44,17 +44,17 @@ class JavaFileGenerator {
 	/**
 	 * The Name of the inherited generator super class
 	 */
-	final String APP_SUPER_CLASS = "MofgenApp"
+	public final static String APP_SUPER_CLASS = "MofgenApp"
 
 	/**
 	 * The Name of the inherited generator super class
 	 */
-	final String GENERATOR_SUPER_CLASS = "MofgenGenerator"
+	public final static String GENERATOR_SUPER_CLASS = "MofgenGenerator"
 
 	/**
 	 * The Name of the inherited pattern super class
 	 */
-	final String PATTERN_SUPER_CLASS = "MofgenPattern"
+	public final static String PATTERN_SUPER_CLASS = "MofgenPattern"
 
 	/**
 	 * Utility to handle the mapping between EClassifier names to meta-model names.
@@ -79,7 +79,7 @@ class JavaFileGenerator {
 	 */
 	def generateAppClass(IFolder appPackage) {
 		val imports = eClassifiersManager.importsForPackages
-		imports.addAll('java.util.LinkedList', 'java.util.List', 'org.mofgen.api.MofgenApp', 'org.mofgen.api.MofgenGenerator',
+		imports.addAll('java.util.LinkedList', 'java.util.List', 'org.mofgen.api.MofgenApp', 'org.mofgen.api.'+GENERATOR_SUPER_CLASS,
 		'SimpleMofgen.api.generators.TestGenerator', 'org.eclipse.emf.ecore.EObject')
 
 		val generators = EcoreUtil2.getAllContentsOfType(editorModel, Generator)
@@ -133,7 +133,7 @@ class JavaFileGenerator {
 	 */
 	def generateGenClass(IFolder genPackage, Generator gen) {
 		val imports = newHashSet('java.util.ArrayList', 'java.util.List', 'java.util.Map', 'java.util.HashMap',
-			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.MofgenGenerator')
+			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.'+GENERATOR_SUPER_CLASS)
 		imports.add(genPackage.project.name + '.api.patterns.*')
 		imports.addAll(eClassifiersManager.getAllImports(editorModel))
 
@@ -173,63 +173,13 @@ class JavaFileGenerator {
 	def generatePatternClass(IFolder patternPackage, Pattern pattern) {
 		val imports = eClassifiersManager.getAllImports(editorModel)
 		imports.addAll(
-			'org.mofgen.api.MofgenPattern',
+			'org.mofgen.api.'+PATTERN_SUPER_CLASS,
 			'org.eclipse.emf.ecore.EObject'
 		)
 
-		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
-
-		val patternParameterTypes = newHashMap();
-		if (!pattern.parameters.empty) {
-			for (parameter : pattern.parameters) {
-				if (parameter instanceof PrimitiveParameter) {
-					patternParameterTypes.put(parameter, parameter.type.literal)
-				} else if (parameter instanceof ParameterNodeOrPattern) {
-					val type = parameter.type
-					if (type instanceof EClass) {
-						patternParameterTypes.put(parameter, type.name)
-					} else if (type instanceof Pattern) {
-						patternParameterTypes.put(parameter, NameProvider.getPatternClassName(type))
-					} else {
-						throw new IllegalStateException();
-					}
-				} else {
-					throw new IllegalStateException();
-				}
-
-			}
-		}
-
 		val patternSourceCode = '''
 			«printHeader(patternPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
-			
-			/**
-			* The pattern «NameProvider.getPatternClassName(pattern)».
-			*/
-			public class «NameProvider.getPatternClassName(pattern)» extends «PATTERN_SUPER_CLASS»{
-				
-				«FOR node : nodes SEPARATOR ';' AFTER ';'»
-					«node.type.name» «node.name»
-				«ENDFOR»
-				
-				public «NameProvider.getPatternClassName(pattern)»(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»
-				«ENDFOR»«ENDIF»){
-					«FOR node : nodes SEPARATOR ';'»
-						«node.name» = «MofgenUtil.getCreationOfEObject(node.type)»;
-						«IF node.createdBy instanceof NodeContent»
-							«FOR refAssign : (node.createdBy as NodeContent).refsAssigns SEPARATOR ';'»
-								«PatternTranslator.translate(node, refAssign)»
-							«ENDFOR»
-						«ENDIF»
-						
-						«IF node.createdBy instanceof PatternCall»
-							«PatternTranslator.translate(node.createdBy as PatternCall)»
-						«ENDIF»
-					«ENDFOR»
-				}
-				
-				«PatternTranslator.createGetters(pattern)»
-			}
+			«PatternTranslator.translate(pattern)»
 		'''
 		// TODO provide overriding toString implementation
 		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode)

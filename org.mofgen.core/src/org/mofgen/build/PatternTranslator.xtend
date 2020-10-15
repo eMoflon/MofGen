@@ -15,8 +15,78 @@ import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternReturn
 import org.mofgen.mGLang.Pattern
 import org.eclipse.xtext.EcoreUtil2
+import org.mofgen.mGLang.PrimitiveParameter
+import org.eclipse.emf.ecore.EClass
+import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.NodeContent
 
 class PatternTranslator {
+
+	static def String translate(Pattern pattern){
+		
+		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+
+		val patternParameterTypes = newHashMap();
+		if (!pattern.parameters.empty) {
+			for (parameter : pattern.parameters) {
+				if (parameter instanceof PrimitiveParameter) {
+					patternParameterTypes.put(parameter, parameter.type.literal)
+				} else if (parameter instanceof ParameterNodeOrPattern) {
+					val type = parameter.type
+					if (type instanceof EClass) {
+						patternParameterTypes.put(parameter, type.name)
+					} else if (type instanceof Pattern) {
+						patternParameterTypes.put(parameter, NameProvider.getPatternClassName(type))
+					} else {
+						throw new IllegalStateException();
+					}
+				} else {
+					throw new IllegalStateException();
+				}
+
+			}
+		}
+		return
+		'''
+		«getPatternDoc(pattern)»
+		«getPatternSignature(pattern)»
+			
+			«FOR node : nodes SEPARATOR ';' AFTER ';'»
+				«node.type.name» «node.name»
+			«ENDFOR»
+			
+			public «NameProvider.getPatternClassName(pattern)»(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»
+			«ENDFOR»«ENDIF»){
+				«FOR node : nodes SEPARATOR ';'»
+					«node.name» = «MofgenUtil.getCreationOfEObject(node.type)»;
+					«IF node.createdBy instanceof NodeContent»
+						«FOR refAssign : (node.createdBy as NodeContent).refsAssigns SEPARATOR ';'»
+							«PatternTranslator.translate(node, refAssign)»
+							«ENDFOR»
+					«ENDIF»
+					«IF node.createdBy instanceof PatternCall»
+						«PatternTranslator.translate(node.createdBy as PatternCall)»
+					«ENDIF»
+				«ENDFOR»
+			}
+				
+			«PatternTranslator.createGetters(pattern)»
+		}'''
+	}
+	
+	private static def getPatternDoc(Pattern pattern){
+		return
+		'''/**
+			* The pattern «NameProvider.getPatternClassName(pattern)».
+			*/
+		'''
+	}
+	
+	private static def getPatternSignature(Pattern pattern){
+		return '''
+		public class «NameProvider.getPatternClassName(pattern)» extends «JavaFileGenerator.PATTERN_SUPER_CLASS»{
+		'''
+	}
 
 	static def String translate(Node node, NodeReferenceOrAssignmentOrControlFlow refAssign){
 		return internalTranslate(node, refAssign);

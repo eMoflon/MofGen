@@ -107,7 +107,7 @@ class GeneratorTranslator {
 			val patternReturn = calledPattern.^return
 			var patternType = ""
 			if (patternReturn.returnValue !== null) {
-				patternType = patternReturn.returnValue.type.instanceClassName
+				patternType = patternReturn.returnValue.type.name
 			} else {
 				patternType = NameProvider.getPatternClassName(calledPattern)
 			}
@@ -116,8 +116,9 @@ class GeneratorTranslator {
 				«patternType» «variable.name» = «translatePatternCall(variable.value as PatternCall)»
 			'''
 		} else {
+			val evalResult = (typeChecker.evaluate(variable.value) as EClassifier)
 			return '''
-				«(typeChecker.evaluate(variable.value) as EClassifier).name» «variable.name» = «MofgenUtil.getTextFromEditorFile(variable.value)»
+				«evalResult.name» «variable.name» = «MofgenUtil.getTextFromEditorFile(variable.value)»
 			'''
 		}
 	}
