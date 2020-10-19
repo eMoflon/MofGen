@@ -533,6 +533,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		}
 	}
 
+	// TODO cyclic dependencies when using switch expressions?
 	/**
 	 * Checks whether there emerges a cyclic dependency from that assignment
 	 */
@@ -540,7 +541,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def checkCyclicDependencyInAssignment(NodeAttributeAssignment ass) {
 		// the element which should receive the value
 		val targetElement = ass.target
-		val targetNode = ass.eContainer.eContainer as Node
+		val targetNode = EcoreUtil2.getContainerOfType(ass, Node)
 
 		// the value to be assigned
 		val value = ass.value

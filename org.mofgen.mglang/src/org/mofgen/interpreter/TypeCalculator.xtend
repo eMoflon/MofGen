@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EOperation
 import org.eclipse.emf.ecore.EReference
 import org.mofgen.mGLang.ArithmeticExpression
@@ -16,6 +17,7 @@ import org.mofgen.mGLang.NegationExpression
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NumberLiteral
 import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.Primary
 import org.mofgen.mGLang.PrimitiveParameter
@@ -29,8 +31,6 @@ import org.mofgen.mGLang.UnaryMinus
 import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.Pattern
-import org.eclipse.emf.ecore.EObject
 
 class TypeCalculator {
 
@@ -289,10 +289,13 @@ class TypeCalculator {
 
 	def dispatch private EObject internalEvaluate(RefOrCall roc) {
 
-		var ref = roc.ref
-		if(ref.eIsProxy){
+		if(roc.ref.eIsProxy){
 			return null;
 		}
+
+		var highestRoc = getSuperRoc(roc)
+		var ref = highestRoc.ref
+
 		switch ref {
 			Variable:
 				return internalEvaluate(ref.value)
@@ -361,6 +364,17 @@ class TypeCalculator {
 				throw new IllegalStateException("Could not handle type of " + roc.ref)
 			}
 		}
+	}
+	
+	/**
+	 * @return the top-roc element, containing all sub-roc-objects if existent
+	 */
+	def private getSuperRoc(RefOrCall roc){
+		var iterator = roc
+		while(iterator.eContainer instanceof RefOrCall){
+			iterator = iterator.eContainer as RefOrCall
+		}
+		return iterator
 	}
 
 	def dispatch private internalEvaluate(UnaryMinus uMinus) {

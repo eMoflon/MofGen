@@ -1,6 +1,7 @@
 package org.mofgen.build
 
 import com.google.inject.Inject
+import org.eclipse.emf.ecore.EClassifier
 import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.Collection
@@ -10,6 +11,7 @@ import org.mofgen.mGLang.GenCaseBody
 import org.mofgen.mGLang.GenCaseWithCast
 import org.mofgen.mGLang.GenCaseWithoutCast
 import org.mofgen.mGLang.GenIfElseSwitch
+import org.mofgen.mGLang.GenReturn
 import org.mofgen.mGLang.GenSwitchCase
 import org.mofgen.mGLang.GenSwitchExpression
 import org.mofgen.mGLang.GeneralForEachHead
@@ -21,11 +23,8 @@ import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
-import org.mofgen.util.NameProvider
 import org.mofgen.util.MofgenUtil
-import org.eclipse.emf.ecore.EClassifier
-import org.mofgen.mGLang.GenReturn
-import org.eclipse.emf.ecore.xmi.XMIResource
+import org.mofgen.util.NameProvider
 
 /**
  * Translates given expressions to source code that will be used as part of the API.
