@@ -71,7 +71,7 @@ class PatternBuildSequencer {
 		switch elem {
 			NodeAttributeAssignment,
 			Node,
-			PatternNodeReference: validElements.add(getValidName(elem)) // dont get confused with target and type here. take a look at the MGLang.xtext to clear things up. (good candidate for some pretty refactoring)
+			PatternNodeReference: validElements.add(getValidName(elem))
 		}
 	}
 
@@ -115,7 +115,7 @@ class PatternBuildSequencer {
 	private def dispatch boolean internalCoherencyCheck(RefOrCall roc) {
 		if (roc.target === null) {
 			if (roc.ref instanceof Node) {
-				return true; // TODO always true since node creation at the beginning is quaranteed? maybe not, think about nodes as parameters!
+				return true;
 			} else if (roc.ref instanceof Parameter) {
 				return true;
 			} else {

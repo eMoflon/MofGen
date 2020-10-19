@@ -84,7 +84,7 @@ PatternDefault returns PatternCaseBody:
 	'default' ':' PatternCaseBody;
 
 PatternSwitchCase:
-	'switch' '(' attribute=RefOrCall ')' '{' (cases+=PatternCase)+ (default=PatternDefault)? '}';
+	'switch' '(' attribute=RefOrCall ')' '{' (cases+=PatternCase)+ (default=PatternDefault)? '}'; // TODO restrictions in refOrCall-scoping for attribute?
 
 PatternWhenCase:
 	'when' when=ArithmeticExpression ':' body=PatternCaseBody;
@@ -120,7 +120,7 @@ GeneratorExpression: //Only serves as super class for all possible commands with
 	;
 	
 GenReturn:
-	'return' returnValue = [Variable] //TODO: validate 1. no code after return 2. Only valid: VariableRef, PatternCall,
+	'return' returnValue = [Variable] //TODO: validate 1. no code after return 2. Only valid: VariableRef, PatternCall = extend to other than just variable
 ;
 
 CollectionManipulation:
@@ -172,7 +172,7 @@ GenDefault:
 	'default' ':' GenCaseBody;
 
 GenSwitchCase:
-	'switch' '(' attribute=RefOrCall ')' '{' (cases+=GenCase)+ (default=GenDefault)? '}';
+	'switch' '(' attribute=RefOrCall ')' '{' (cases+=GenCase)+ (default=GenDefault)? '}'; // TODO restrictions in refOrCall-scoping for attribute?
 
 GenCase:
 	GenCaseWithCast | GenCaseWithoutCast;

@@ -43,6 +43,13 @@ import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.GenReturn
 import org.mofgen.mGLang.Generator
+import org.mofgen.mGLang.PatternCallParameters
+import org.mofgen.mGLang.PatternCaseWithoutCast
+import org.mofgen.mGLang.RefParams
+import org.mofgen.mGLang.ForRange
+import org.mofgen.mGLang.GenCaseWithoutCast
+import org.mofgen.mGLang.ListAdHoc
+import org.mofgen.mGLang.MapTupel
 
 /**
  * This class contains custom validation rules. 
@@ -403,16 +410,41 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 	}
-
+	
 	@Check
-	def illegalArithmeticExpressionVar(Variable variable) { // TODO Also for other places where this can occur
+	def illegalArithmeticExpressionVar(ArithmeticExpression ae) {
 		try {
-			val expr = variable.value
-			if (expr !== null) {
-				typeChecker.evaluate(expr)
-			}
+			typeChecker.evaluate(ae)
 		} catch (MismatchingTypesException e) {
-			error(e.message, MGLangPackage.Literals.VARIABLE__VALUE)
+			val container = ae.eContainer
+			switch container {
+				Variable: error(e.message, container, MGLangPackage.Literals.VARIABLE__VALUE)
+				PatternCallParameters: error(e.message, container, MGLangPackage.Literals.PATTERN_CALL_PARAMETERS__PARAMS)
+				NodeAttributeAssignment: error(e.message, container, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
+				PatternWhenCase: error(e.message, container, MGLangPackage.Literals.PATTERN_WHEN_CASE__WHEN)
+				PatternCaseWithCast: error(e.message, container, MGLangPackage.Literals.PATTERN_CASE_WITH_CAST__WHEN)
+				PatternCaseWithoutCast: error(e.message, container, MGLangPackage.Literals.PATTERN_CASE_WITHOUT_CAST__VAL)
+				RefParams: error(e.message, container, MGLangPackage.Literals.REF_PARAMS__PARAMS)
+				VariableManipulation: error(e.message, container, MGLangPackage.Literals.VARIABLE_MANIPULATION__VAL)
+				ForRange: {
+					if(ae === container.start){
+						error(e.message, container, MGLangPackage.Literals.FOR_RANGE__START)
+					}else{
+						error(e.message, container, MGLangPackage.Literals.FOR_RANGE__END)
+					}
+				}
+				GenWhenCase: error(e.message, container, MGLangPackage.Literals.GEN_WHEN_CASE__WHEN)
+				GenCaseWithCast: error(e.message, container, MGLangPackage.Literals.GEN_CASE_WITH_CAST__WHEN)
+				GenCaseWithoutCast: error(e.message, container, MGLangPackage.Literals.GEN_CASE_WITHOUT_CAST__VAL)
+				ListAdHoc: error(e.message, container, MGLangPackage.Literals.LIST_AD_HOC__ELEMENTS)
+				MapTupel: {
+					if(ae === container.key){
+						error(e.message, container, MGLangPackage.Literals.MAP_TUPEL__KEY)
+					}else{
+						error(e.message, container, MGLangPackage.Literals.MAP_TUPEL__VALUE)
+					}
+				}
+			}
 		}
 	}
 
