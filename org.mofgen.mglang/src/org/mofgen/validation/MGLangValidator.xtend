@@ -50,6 +50,8 @@ import org.mofgen.mGLang.ForRange
 import org.mofgen.mGLang.GenCaseWithoutCast
 import org.mofgen.mGLang.ListAdHoc
 import org.mofgen.mGLang.MapTupel
+import org.mofgen.mGLang.NodeContent
+import org.eclipse.emf.ecore.ENamedElement
 
 /**
  * This class contains custom validation rules. 
@@ -188,12 +190,12 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
-	def exactlyOneReturn(Generator gen){
+	def exactlyOneReturn(Generator gen) {
 		val retCount = gen.commands.filter(GenReturn).length
-		if(retCount > 1){
+		if (retCount > 1) {
 			error("Only one return per generator allowed", MGLangPackage.Literals.GENERATOR__COMMANDS)
 		}
-		if(retCount < 1){
+		if (retCount < 1) {
 			error("Generator block needs return with containment root", MGLangPackage.Literals.GENERATOR__COMMANDS)
 		}
 	}
@@ -202,8 +204,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def checkNoLinesAfterReturn(GenReturn ret) {
 		val gen = EcoreUtil2.getContainerOfType(ret, Generator)
 		val genCommands = gen.commands
-		if(genCommands.indexOf(ret) !== genCommands.length - 1){
-			warning("This return suppresses lines of code following afterwards", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+		if (genCommands.indexOf(ret) !== genCommands.length - 1) {
+			warning("This return suppresses lines of code following afterwards",
+				MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
 		}
 	}
 
@@ -410,7 +413,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 	}
-	
+
 	@Check
 	def illegalArithmeticExpressionVar(ArithmeticExpression ae) {
 		try {
@@ -418,29 +421,41 @@ class MGLangValidator extends AbstractMGLangValidator {
 		} catch (MismatchingTypesException e) {
 			val container = ae.eContainer
 			switch container {
-				Variable: error(e.message, container, MGLangPackage.Literals.VARIABLE__VALUE)
-				PatternCallParameters: error(e.message, container, MGLangPackage.Literals.PATTERN_CALL_PARAMETERS__PARAMS)
-				NodeAttributeAssignment: error(e.message, container, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
-				PatternWhenCase: error(e.message, container, MGLangPackage.Literals.PATTERN_WHEN_CASE__WHEN)
-				PatternCaseWithCast: error(e.message, container, MGLangPackage.Literals.PATTERN_CASE_WITH_CAST__WHEN)
-				PatternCaseWithoutCast: error(e.message, container, MGLangPackage.Literals.PATTERN_CASE_WITHOUT_CAST__VAL)
-				RefParams: error(e.message, container, MGLangPackage.Literals.REF_PARAMS__PARAMS)
-				VariableManipulation: error(e.message, container, MGLangPackage.Literals.VARIABLE_MANIPULATION__VAL)
+				Variable:
+					error(e.message, container, MGLangPackage.Literals.VARIABLE__VALUE)
+				PatternCallParameters:
+					error(e.message, container, MGLangPackage.Literals.PATTERN_CALL_PARAMETERS__PARAMS)
+				NodeAttributeAssignment:
+					error(e.message, container, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
+				PatternWhenCase:
+					error(e.message, container, MGLangPackage.Literals.PATTERN_WHEN_CASE__WHEN)
+				PatternCaseWithCast:
+					error(e.message, container, MGLangPackage.Literals.PATTERN_CASE_WITH_CAST__WHEN)
+				PatternCaseWithoutCast:
+					error(e.message, container, MGLangPackage.Literals.PATTERN_CASE_WITHOUT_CAST__VAL)
+				RefParams:
+					error(e.message, container, MGLangPackage.Literals.REF_PARAMS__PARAMS)
+				VariableManipulation:
+					error(e.message, container, MGLangPackage.Literals.VARIABLE_MANIPULATION__VAL)
 				ForRange: {
-					if(ae === container.start){
+					if (ae === container.start) {
 						error(e.message, container, MGLangPackage.Literals.FOR_RANGE__START)
-					}else{
+					} else {
 						error(e.message, container, MGLangPackage.Literals.FOR_RANGE__END)
 					}
 				}
-				GenWhenCase: error(e.message, container, MGLangPackage.Literals.GEN_WHEN_CASE__WHEN)
-				GenCaseWithCast: error(e.message, container, MGLangPackage.Literals.GEN_CASE_WITH_CAST__WHEN)
-				GenCaseWithoutCast: error(e.message, container, MGLangPackage.Literals.GEN_CASE_WITHOUT_CAST__VAL)
-				ListAdHoc: error(e.message, container, MGLangPackage.Literals.LIST_AD_HOC__ELEMENTS)
+				GenWhenCase:
+					error(e.message, container, MGLangPackage.Literals.GEN_WHEN_CASE__WHEN)
+				GenCaseWithCast:
+					error(e.message, container, MGLangPackage.Literals.GEN_CASE_WITH_CAST__WHEN)
+				GenCaseWithoutCast:
+					error(e.message, container, MGLangPackage.Literals.GEN_CASE_WITHOUT_CAST__VAL)
+				ListAdHoc:
+					error(e.message, container, MGLangPackage.Literals.LIST_AD_HOC__ELEMENTS)
 				MapTupel: {
-					if(ae === container.key){
+					if (ae === container.key) {
 						error(e.message, container, MGLangPackage.Literals.MAP_TUPEL__KEY)
-					}else{
+					} else {
 						error(e.message, container, MGLangPackage.Literals.MAP_TUPEL__VALUE)
 					}
 				}
@@ -479,7 +494,80 @@ class MGLangValidator extends AbstractMGLangValidator {
 		} catch (MismatchingTypesException e) {
 			error(e.message, MGLangPackage.Literals.VARIABLE_MANIPULATION__VAL)
 		}
+	}
 
+	/**
+	 * Checks whether there emerges a cyclic dependency from that assignment
+	 */
+	@Check
+	def checkCyclicDependencyInAssignment(NodeAttributeAssignment ass) {
+		// the element which should receive the value
+		val targetElement = ass.target
+		val targetNode = ass.eContainer.eContainer as Node
+
+		// the value to be assigned
+		val value = ass.value
+
+		// retrieve all RefOrCalls and follow them
+		val rocs = EcoreUtil2.getAllContentsOfType(value, RefOrCall)
+		for (roc : rocs) {
+			if (followingRocIsCyclic(targetNode, targetElement, roc)) {
+				error("Cyclic dependency in assignment", ass, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
+			}
+		}
+	}
+
+	def private boolean followingRocIsCyclic(Node targetNode, ENamedElement targetElement, RefOrCall rocToFollow) {
+		val nextAssignment = findAssignmentToRoc(rocToFollow)
+		if(nextAssignment === null){
+			return false;
+		}
+		val nextNode = nextAssignment.eContainer.eContainer as Node
+		val nextTarget = nextAssignment.target
+		if (nextNode === targetNode && nextTarget === targetElement) {
+			return true
+		} else {
+			val nextValue = nextAssignment.value
+			val rocs = EcoreUtil2.getAllContentsOfType(nextValue, RefOrCall)
+			for(roc : rocs){
+				if(followingRocIsCyclic(targetNode, targetElement, roc)){
+					return true
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @returns the NodeAttributeAssignment to the attribute accessed within the given RefOrCall. Null, if there is no attribute access.
+	 */
+	def private findAssignmentToRoc(RefOrCall roc) {
+		var rocIt = roc
+		while (rocIt.target !== null && !(rocIt.ref instanceof ENamedElement)) {
+			rocIt = rocIt.target
+		}
+
+		if (rocIt.target !== null) {
+			val eNamedElement = rocIt.ref as ENamedElement
+			val node = rocIt.target.ref
+			if (node instanceof Node) {
+				val nodeContent = node.createdBy
+				if (nodeContent instanceof NodeContent) {
+					// find namedElement
+					val assignments = nodeContent.refsAssigns.filter(NodeAttributeAssignment)
+					for (ass : assignments) {
+//						if(equalENamedElements(ass.target, eNamedElement)){
+						if (ass.target.name == eNamedElement.name) { // TODO == or === ?
+							return ass;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	def private equalENamedElements(ENamedElement e1, ENamedElement e2) {
+		return e1.name.equals(e2.name) && e1.eContainer == e2.eContainer
 	}
 
 	@Check
