@@ -3,6 +3,7 @@ package org.mofgen.utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,8 +64,8 @@ public class MofgenModelUtils {
 	 * 
 	 * @param file the Mofgen file
 	 */
-	public static ArrayList<EClass> getUniqueClasses(final MofgenFile file) {
-		final ArrayList<EClass> classes = new ArrayList<>();
+	public static LinkedList<EClass> getUniqueClasses(final MofgenFile file) {
+		final LinkedList<EClass> classes = new LinkedList<>();
 		file.getImports().forEach(i -> {
 			loadEcoreModel(i.getUri()).ifPresent(m -> addIfClassNamesNotContained(m, classes));
 		});
@@ -79,7 +80,7 @@ public class MofgenModelUtils {
 	 * @param classes - the list to add the classes to
 	 * @return true if all operations succeeded, false otherwise
 	 */
-	private static boolean addIfClassNamesNotContained(Resource m, ArrayList<EClass> classes) {
+	private static boolean addIfClassNamesNotContained(Resource m, LinkedList<EClass> classes) {
 		for (EClass clazz : getElements(m, EClass.class)) {
 			if (!containsClass(classes, clazz)) {
 				if (!classes.add(clazz)) {
@@ -94,7 +95,7 @@ public class MofgenModelUtils {
 	 * @return true if a class with the same name as the given class is contained in
 	 *         the given list, false otherwise
 	 */
-	private static boolean containsClass(ArrayList<EClass> classes, EClass insertedClass) {
+	private static boolean containsClass(LinkedList<EClass> classes, EClass insertedClass) {
 		for (EClass clazz : classes) {
 			if (clazz.getName().equals(insertedClass.getName())) {
 				return true;
@@ -369,21 +370,6 @@ public class MofgenModelUtils {
 				return TypeModelPackage.Literals.STRING;
 		}
 		throw new IllegalStateException("Could not convert eClassifier " + classifier.getName());
-	}
-
-	public static Function<EObject, QualifiedName> getFunctionForUpperCasePatternScopes() {
-		return new Function<EObject, QualifiedName>() {
-			@Override
-			public QualifiedName apply(EObject o) {
-				if (o instanceof Node) {
-					return QualifiedName.create(((Node) o).getName());
-				} else if (o instanceof Pattern) {
-					return QualifiedName.create(firstToUpperCase(((Pattern) o).getName()));
-				} else {
-					return QualifiedName.create(SimpleAttributeResolver.NAME_RESOLVER.apply(o));
-				}
-			}
-		};
 	}
 
 	public static String firstToUpperCase(String str) {

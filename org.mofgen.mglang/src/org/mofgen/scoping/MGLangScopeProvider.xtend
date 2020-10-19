@@ -202,8 +202,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			val root = MofgenModelUtils.getRootFile(paramNode)
 			val classes = MofgenModelUtils.getUniqueClasses(root)
 			val patterns = EcoreUtil2.getAllContentsOfType(root, Pattern)
-			return Scopes.scopeFor(classes + patterns, MofgenModelUtils.getFunctionForUpperCasePatternScopes(),
-				IScope.NULLSCOPE)
+			return Scopes.scopeFor(classes + patterns)
 		}
 	}
 
@@ -410,7 +409,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					if (type instanceof Pattern) {
 						return Scopes.scopeFor(type.commands.filter(Node))
 					}else{
-						throw new IllegalArgumentException("Only possible types should be eClass or pattern")
+						return IScope.NULLSCOPE
+//						throw new IllegalArgumentException("Only possible types should be eClass or pattern")
 					}
 				}
 				default:
