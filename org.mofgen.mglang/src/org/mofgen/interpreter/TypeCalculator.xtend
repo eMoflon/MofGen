@@ -290,6 +290,9 @@ class TypeCalculator {
 	def dispatch private EObject internalEvaluate(RefOrCall roc) {
 
 		var ref = roc.ref
+		if(ref.eIsProxy){
+			return null;
+		}
 		switch ref {
 			Variable:
 				return internalEvaluate(ref.value)
