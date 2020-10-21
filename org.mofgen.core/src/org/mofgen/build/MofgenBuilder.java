@@ -33,7 +33,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.formatting2.regionaccess.internal.StringSemanticRegion;
 import org.mofgen.api.EClassifiersManager;
 import org.mofgen.generator.MofgenBuilderExtension;
 import org.mofgen.mGLang.Generator;
@@ -42,6 +41,7 @@ import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.util.NameProvider;
 import org.moflon.core.plugins.manifest.ManifestFileUpdater;
+import org.moflon.core.utilities.ClasspathUtil;
 
 public class MofgenBuilder implements MofgenBuilderExtension {
 
@@ -166,7 +166,11 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	public void createFolders(IProject project) throws CoreException {
 		createFolderIfNotExists(project.getFolder(DEFAULT_SRC_LOCATION), new NullProgressMonitor());
 		createFolderIfNotExists(project.getFolder("bin"), new NullProgressMonitor());
-		createFolderIfNotExists(project.getFolder(SOURCE_GEN_FOLDER), new NullProgressMonitor());
+		
+		IFolder srcGenFolder = project.getFolder(SOURCE_GEN_FOLDER);
+		createFolderIfNotExists(srcGenFolder, new NullProgressMonitor());
+		ClasspathUtil.makeSourceFolderIfNecessary(srcGenFolder);
+		
 		createFolderIfNotExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + DEFAULT_API_LOCATION),
 				new NullProgressMonitor());
 		createFolderIfNotExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + DEFAULT_PATTERN_LOCATION),

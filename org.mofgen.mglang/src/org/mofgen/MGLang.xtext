@@ -120,7 +120,7 @@ GeneratorExpression: //Only serves as super class for all possible commands with
 	;
 	
 GenReturn:
-	'return' returnValue = [Variable] //TODO: validate 1. no code after return 2. Only valid: VariableRef, PatternCall = extend to other than just variable
+	'return' returnValue = [Variable] //TODO: extend to simple PatternCall as well
 ;
 
 CollectionManipulation:
