@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.formatting2.regionaccess.internal.StringSemanticRegion;
 import org.mofgen.api.EClassifiersManager;
 import org.mofgen.generator.MofgenBuilderExtension;
 import org.mofgen.mGLang.Generator;
@@ -51,6 +52,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	protected static final String DEFAULT_API_LOCATION = "/api";
 	protected static final String DEFAULT_GENERATOR_LOCATION = DEFAULT_API_LOCATION+"/generators";
 	protected static final String DEFAULT_PATTERN_LOCATION = DEFAULT_API_LOCATION+"/patterns";
+	protected static final String DEFAULT_MODEL_LOCATION = "generatedModels";
 
 	/**
 	 * The name of the source folder containing the generated API.
@@ -162,16 +164,16 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	}
 
 	public void createFolders(IProject project) throws CoreException {
-		createFolderIfNotExists(project.getFolder("src"), new NullProgressMonitor());
+		createFolderIfNotExists(project.getFolder(DEFAULT_SRC_LOCATION), new NullProgressMonitor());
 		createFolderIfNotExists(project.getFolder("bin"), new NullProgressMonitor());
-		createFolderIfNotExists(project.getFolder("src-gen"), new NullProgressMonitor());
-		createFolderIfNotExists(project.getFolder("src-gen/" + project.getName().replace(".", "/") + "/api"),
+		createFolderIfNotExists(project.getFolder(SOURCE_GEN_FOLDER), new NullProgressMonitor());
+		createFolderIfNotExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + DEFAULT_API_LOCATION),
 				new NullProgressMonitor());
-		createFolderIfNotExists(project.getFolder("src-gen/" + project.getName().replace(".", "/") + "/api/patterns"),
+		createFolderIfNotExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + DEFAULT_PATTERN_LOCATION),
 				new NullProgressMonitor());
-		createFolderIfNotExists(project.getFolder("src-gen/" + project.getName().replace(".", "/") + "/api/generators"),
+		createFolderIfNotExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/") + "/" + DEFAULT_GENERATOR_LOCATION),
 				new NullProgressMonitor());
-		createFolderIfNotExists(project.getFolder("generatedModels/"),
+		createFolderIfNotExists(project.getFolder(DEFAULT_MODEL_LOCATION),
 				new NullProgressMonitor());
 	}
 

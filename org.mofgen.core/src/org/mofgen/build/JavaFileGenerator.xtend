@@ -6,23 +6,17 @@ import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IFolder
-import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.api.EClassifiersManager
 import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.MofgenFile
 import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.NodeContent
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
-import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.NameProvider
-import org.eclipse.emf.ecore.EClass
-import org.mofgen.util.MofgenUtil
-import java.util.List
 
 /**
  * This class contains the templates for the API Java classes.
@@ -83,6 +77,8 @@ class JavaFileGenerator {
 		'SimpleMofgen.api.generators.TestGenerator', 'org.eclipse.emf.ecore.EObject')
 
 		val generators = EcoreUtil2.getAllContentsOfType(editorModel, Generator)
+		
+		val modelPath = appPackage.project.getFolder(MofgenBuilder.DEFAULT_MODEL_LOCATION).location.toString
 
 		val appSourceCode = '''
 			«printHeader(appPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_API_LOCATION), imports)»
@@ -118,7 +114,7 @@ class JavaFileGenerator {
 						System.out.println("Starting generator "+gen.getName()+"...");
 						EObject result = gen.start();
 						
-						String path = "D:\\Workspaces\\runtime-EclipseApplication\\SimpleMofgen\\generatedModels"; «««TODO 
+						String path = "«modelPath»";
 						saveResource(result, path, gen.getName());
 					}
 					System.out.println("Done!");
