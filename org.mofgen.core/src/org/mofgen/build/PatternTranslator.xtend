@@ -18,6 +18,11 @@ import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
 import org.mofgen.mGLang.ParamManipulation
+import org.mofgen.mGLang.PatternNodeReferenceToNode
+import org.mofgen.mGLang.PatternNodeReferenceToPatternCall
+import org.mofgen.mGLang.PatternForStatement
+import org.mofgen.mGLang.RangeForHead
+import org.mofgen.mGLang.NodeContent
 
 class PatternTranslator {
 
@@ -78,25 +83,62 @@ class PatternTranslator {
 		'''
 	}
 
-	static def dispatch String translate(PatternNodeReference ref) {
+	static def dispatch String translate(PatternNodeReferenceToNode ref) {
 		val node = EcoreUtil2.getContainerOfType(ref, Node)
-		var trgName = ""
+		var nodeName = ""
 		if (node !== null) {
-			trgName = node.name
+			nodeName = node.name
 		} else {
 			val manip = EcoreUtil2.getContainerOfType(ref, ParamManipulation)
-			trgName = manip.param.name
+			nodeName = manip.param.name
 		}
+
 		if (ref.type.upperBound < 1) {
 			return '''
-				«trgName».«NameProvider.getGetterName(ref.type)»().add(«ref.target.name»);
+				«nodeName».«NameProvider.getGetterName(ref.type)»().add(«ref.node.name»);
 			'''
 		} else {
 			return '''
-				«trgName».«NameProvider.getSetterName(ref.type)»(«ref.target.name»);
+				«nodeName».«NameProvider.getSetterName(ref.type)»(«ref.node.name»);
 			'''
 		}
+	}
 
+	static def dispatch String translate(Node node) {
+		val eClass = node.type
+		val ePackage = MofgenUtil.getEPackage(eClass)
+		val createdBy = node.createdBy
+		if(createdBy === null){
+			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»);'''
+		}
+		if (createdBy instanceof NodeContent) {
+			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»);'''
+		} else if (createdBy instanceof PatternCall) {
+			return '''«node.name» = «GeneralTranslator.translatePatternCall(createdBy)»'''
+		} else {
+			throw new IllegalStateException("Nodes should only be created by NodeContent or a pattern call")
+		}
+	}
+
+	static def dispatch String translate(PatternNodeReferenceToPatternCall ref) {
+		val node = EcoreUtil2.getContainerOfType(ref, Node)
+		var nodeName = ""
+		if (node !== null) {
+			nodeName = node.name
+		} else {
+			val manip = EcoreUtil2.getContainerOfType(ref, ParamManipulation)
+			nodeName = manip.param.name
+		}
+
+		if (ref.type.upperBound < 1) {
+			return '''
+				«nodeName».«NameProvider.getGetterName(ref.type)»().add(«translate(ref.pc)»);
+			'''
+		} else {
+			return '''
+				«nodeName».«NameProvider.getSetterName(ref.type)»(«translate(ref.pc)»);
+			'''
+		}
 	}
 
 	static def dispatch String translate(NodeAttributeAssignment ass) {
@@ -107,9 +149,7 @@ class PatternTranslator {
 	}
 
 	static def dispatch String translate(PatternCall pc) {
-		return '''
-			(new «NameProvider.getPatternClassName(pc.called)»().createInstance(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»«ENDIF»)
-		'''
+		return GeneralTranslator.translatePatternCall(pc)
 	}
 
 	static def dispatch String translate(PatternReturn pReturn) {
@@ -118,6 +158,17 @@ class PatternTranslator {
 		} else {
 			// TODO return Pattern as a whole?
 		}
+	}
+
+	static def dispatch String translate(PatternForStatement patternFor) {
+		val head = patternFor.head
+		val headSrc = GeneralTranslator.translateForHead(head)
+
+		return '''for(«headSrc»){
+		«FOR bodyExpr : patternFor.body.commands» 
+			«translate(bodyExpr)»
+		«ENDFOR»
+		}'''
 	}
 
 	private static def createGetters(Pattern pattern) {

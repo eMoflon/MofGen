@@ -74,7 +74,7 @@ class JavaFileGenerator {
 	def generateAppClass(IFolder appPackage) {
 		val imports = eClassifiersManager.importsForPackages
 		imports.addAll('java.util.LinkedList', 'java.util.List', 'org.mofgen.api.MofgenApp', 'org.mofgen.api.'+GENERATOR_SUPER_CLASS,
-		appPackage.project.name+'.api.generators.TestGenerator', 'org.eclipse.emf.ecore.EObject')
+		appPackage.project.name+'.api.generators.*', 'org.eclipse.emf.ecore.EObject')
 
 		val generators = EcoreUtil2.getAllContentsOfType(editorModel, Generator)
 		

@@ -21,10 +21,10 @@ import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Collection
-import org.mofgen.mGLang.ForBody
 import org.mofgen.mGLang.ForRange
 import org.mofgen.mGLang.GenCaseWithCast
 import org.mofgen.mGLang.GenCaseWithoutCast
+import org.mofgen.mGLang.GenForBody
 import org.mofgen.mGLang.GenReturn
 import org.mofgen.mGLang.GenWhenCase
 import org.mofgen.mGLang.Generator
@@ -43,6 +43,7 @@ import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCallParameters
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternCaseWithoutCast
+import org.mofgen.mGLang.PatternForBody
 import org.mofgen.mGLang.PatternNodeReference
 import org.mofgen.mGLang.PatternWhenCase
 import org.mofgen.mGLang.RangeForHead
@@ -111,7 +112,17 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 * Warns for empty for-loops.
 	 */
 	@Check
-	def warnEmptyForLoop(ForBody body) {
+	def warnEmptyForLoop(GenForBody body) {
+		if (body.commands !== null && body.commands.empty) {
+			warning("empty for-loop", body.eContainer, MGLangPackage.Literals.FOR_STATEMENT__HEAD)
+		}
+	}
+	
+		/**
+	 * Warns for empty for-loops.
+	 */
+	@Check
+	def warnEmptyForLoop(PatternForBody body) {
 		if (body.commands !== null && body.commands.empty) {
 			warning("empty for-loop", body.eContainer, MGLangPackage.Literals.FOR_STATEMENT__HEAD)
 		}
@@ -272,6 +283,18 @@ class MGLangValidator extends AbstractMGLangValidator {
 								MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
 						}
 					}
+				}
+			}
+		}
+	}
+	
+	@Check
+	def checkPatternForOnlyRefsToMultiFeatures(PatternForBody body){
+		for(expr : body.commands){
+			if(expr instanceof PatternNodeReference){
+				if(expr.type.upperBound == 1){
+					error("Only assignments to *-edges/-references allowed in for-loops.", expr,
+								MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
 				}
 			}
 		}

@@ -1,37 +1,39 @@
 package org.mofgen.util
 
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import org.eclipse.emf.ecore.EObject
-import org.mofgen.mGLang.RefOrCall
-import org.eclipse.emf.ecore.ENamedElement
-import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.Variable
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EClass
-import org.mofgen.build.MofgenBuilder
-import org.mofgen.mGLang.Import
-import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.resource.Resource
-import java.util.Optional
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import java.util.HashMap
-import java.util.Map
-import org.eclipse.emf.ecore.util.EcoreUtil
 import java.io.IOException
-import org.mofgen.mGLang.ArithmeticExpression
-import org.mofgen.mGLang.Literal
-import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.UnaryMinus
-import org.mofgen.mGLang.FunctionCall
-import org.mofgen.mGLang.NegationExpression
-import org.mofgen.mGLang.Rel
-import org.mofgen.mGLang.Tertiary
-import org.mofgen.mGLang.Secondary
-import org.mofgen.mGLang.Primary
-import org.eclipse.emf.ecore.EEnumLiteral
+import java.util.Map
+import java.util.Optional
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.EEnumLiteral
+import org.eclipse.emf.ecore.ENamedElement
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils
+import org.mofgen.build.MofgenBuilder
+import org.mofgen.interpreter.TypeRegistry
+import org.mofgen.mGLang.ArithmeticExpression
+import org.mofgen.mGLang.FunctionCall
+import org.mofgen.mGLang.Import
+import org.mofgen.mGLang.List
+import org.mofgen.mGLang.Literal
+import org.mofgen.mGLang.NegationExpression
+import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.PatternCall
+import org.mofgen.mGLang.Primary
 import org.mofgen.mGLang.PrimitiveParameter
+import org.mofgen.mGLang.RefOrCall
+import org.mofgen.mGLang.Rel
+import org.mofgen.mGLang.Secondary
+import org.mofgen.mGLang.Tertiary
+import org.mofgen.mGLang.UnaryMinus
+import org.mofgen.mGLang.Variable
+import org.mofgen.build.GeneralTranslator
 
 class MofgenUtil {
 
@@ -46,7 +48,7 @@ class MofgenUtil {
 			Literal:
 				return getTextFromEditorFile(ae)
 			PatternCall:
-				return '''«NameProvider.getPatternClassName(ae.called)».createInstance(«/*TODO call parameters*/»)'''
+				return GeneralTranslator.translatePatternCall(ae)
 			UnaryMinus:
 				return '''-«resolveArithmeticExpression(ae.expr)»'''
 			FunctionCall: {
@@ -106,6 +108,17 @@ class MofgenUtil {
 		return res.contents.get(0) as EPackage
 	}
 
+	def static getListType(List list) {
+		TypeRegistry.getListType(list)
+	}
+
+	def static getMapKeyType(org.mofgen.mGLang.Map map) {
+		TypeRegistry.getMapKeyType(map)
+	}
+
+	def static getMapEntryType(org.mofgen.mGLang.Map map) {
+		TypeRegistry.getMapEntryType(map)
+	}
 
 	/**
 	 * Translates References or calls to source code for the auto-generated classes.

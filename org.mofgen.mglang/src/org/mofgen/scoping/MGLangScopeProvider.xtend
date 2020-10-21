@@ -4,6 +4,7 @@
 package org.mofgen.scoping
 
 import java.util.ArrayList
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -14,6 +15,7 @@ import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.ForStatement
 import org.mofgen.mGLang.GenCaseWithCast
+import org.mofgen.mGLang.GenReturn
 import org.mofgen.mGLang.GeneralForEachHead
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.Import
@@ -26,20 +28,19 @@ import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.MapDeclaration
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment
+import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
+import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternNodeReference
+import org.mofgen.mGLang.PatternNodeReferenceToNode
+import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.ParamManipulation
-import org.eclipse.emf.ecore.EClass
-import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.GenReturn
-import org.mofgen.mGLang.RangeForHead
 
 /**
  * This class contains custom scoping description.
@@ -56,8 +57,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isPatternNodeReference_Type(context, reference)) {
 			return getScopeForPatternNodeReference_Type(context as PatternNodeReference)
 		}
-		if (isPatternNodeReference_Target(context, reference)) {
-			return getScopeForPatternNodeReference_Target(context as PatternNodeReference)
+		if (isPatternNodeReferenceToNode_Node(context, reference)) {
+			return getScopeForPatternNodeReferenceToNode_Node(context as PatternNodeReferenceToNode)
 		}
 		if (isNodeAttributeAssignment_Target(context, reference)) {
 			return getScopeForNodeAttributeAssignment_Target(context as NodeAttributeAssignment)
@@ -248,17 +249,13 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	}
 
-	def getScopeForAllPatternNodes(EObject context) {
-		val root = EcoreUtil2.getContainerOfType(context, Pattern)
+	def getScopeForPatternNodeReferenceToNode_Node(PatternNodeReferenceToNode ref) {
+		val root = EcoreUtil2.getContainerOfType(ref, Pattern)
 		if (root === null) {
 			return IScope.NULLSCOPE
 		}
-		val allNodes = EcoreUtil2.getAllContentsOfType(root, Node)
-		return Scopes.scopeFor(allNodes)
-	}
-
-	def getScopeForPatternNodeReference_Target(PatternNodeReference ref) {
-		return getScopeForAllPatternNodes(ref)
+		val nodes = EcoreUtil2.getAllContentsOfType(root, Node)
+		return Scopes.scopeFor(nodes)
 	}
 
 	def getScopeForNodeAttributeAssignment_Target(NodeAttributeAssignment ass) {
@@ -459,9 +456,9 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE
 	}
 
-	def isPatternNodeReference_Target(EObject context, EReference reference) {
-		return context instanceof PatternNodeReference &&
-			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TARGET
+	def isPatternNodeReferenceToNode_Node(EObject context, EReference reference) {
+		return context instanceof PatternNodeReferenceToNode &&
+			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE_TO_NODE__NODE
 	}
 
 	def isNode_Type(EObject context, EReference reference) {

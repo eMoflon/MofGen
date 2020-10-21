@@ -57,10 +57,27 @@ PatternCallParameters:
 	{PatternCallParameters} (params+=ArithmeticExpression (',' params+=ArithmeticExpression)*)?;
 
 NodeReferenceOrAssignmentOrControlFlow:
-	PatternNodeReference | NodeAttributeAssignment | PatternSwitch;
+	PatternNodeReference | NodeAttributeAssignment | PatternSwitch | PatternForStatement;
+
+PatternForStatement:
+	'for' head=ForHead '{' body=PatternForBody '}';
+
+PatternForBody:
+	{PatternForBody} (commands+=NodeReferenceOrControlFlow)*;
+
+NodeReferenceOrControlFlow:
+	PatternNodeReference | PatternSwitch | PatternForStatement
+;
 
 PatternNodeReference:
-	type=[ecore::EReference] '->' target=[Node];
+	PatternNodeReferenceToNode | PatternNodeReferenceToPatternCall
+;
+PatternNodeReferenceToNode:
+	type=[ecore::EReference] '->' node=[Node];
+
+PatternNodeReferenceToPatternCall:
+	type=[ecore::EReference] '->' pc=PatternCall
+;
 
 NodeAttributeAssignment:
 	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression;
@@ -115,7 +132,7 @@ Generator:
 	'gen' name=ID '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
-	ForStatement | GenSwitch | Collection | Variable | VariableManipulation |
+	GenForStatement | GenSwitch | Collection | Variable | VariableManipulation |
 	CollectionManipulation | PatternCall | GenReturn
 	;
 	
@@ -133,7 +150,15 @@ Variable:
 	'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression;
 
 ForStatement:
-	'for' head=ForHead '{' body=ForBody '}';
+	GenForStatement | PatternForStatement
+;
+
+ForBody:
+	GenForBody | PatternForBody
+;
+
+GenForStatement:
+	'for' head=ForHead '{' body=GenForBody '}';
 
 ForHead:
 	RangeForHead | GeneralForEachHead | ListForEachHead;
@@ -153,11 +178,11 @@ ListForEachHead:
 IteratorVariable:
 	name=ID;
 
-ForBody:
-	{ForBody} (commands+=GeneratorExpression)*;
+GenForBody:
+	{GenForBody} (commands+=GeneratorExpression)*;
 
 GenSwitchExpression:
-	ForStatement | Collection | PatternCall;
+	GenForStatement | Collection | PatternCall;
 
 GenSwitch:
 	GenIfElseSwitch | GenSwitchCase;

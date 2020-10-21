@@ -27,9 +27,9 @@ class Calculator {
 	def Object evaluate(ArithmeticExpression expr) {
 		//Actual calculation
 		val result = internalEvaluate(expr)
-		switch (result.class) {
+		switch (result) {
 			case Double: return result as Double
-			case Integer: return result as Double
+			case Integer: return (result as Integer).doubleValue
 			case String: return result as String
 			case Boolean: return result as Boolean
 			case EOperation: return result as EOperation
@@ -290,7 +290,7 @@ class Calculator {
 			switch primPram.type {
 				case PrimitiveType.DOUBLE,
 				case PrimitiveType.INT: {
-					return 0
+					return 0.0
 				}
 				case PrimitiveType.STRING,
 				case PrimitiveType.CHAR: {

@@ -3,24 +3,20 @@ package org.mofgen.build
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EClassifier
 import org.mofgen.interpreter.TypeCalculator
-import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
-import org.mofgen.mGLang.ForStatement
 import org.mofgen.mGLang.GenCaseBody
 import org.mofgen.mGLang.GenCaseWithCast
 import org.mofgen.mGLang.GenCaseWithoutCast
+import org.mofgen.mGLang.GenForStatement
 import org.mofgen.mGLang.GenIfElseSwitch
 import org.mofgen.mGLang.GenReturn
 import org.mofgen.mGLang.GenSwitchCase
 import org.mofgen.mGLang.GenSwitchExpression
-import org.mofgen.mGLang.GeneralForEachHead
 import org.mofgen.mGLang.GeneratorExpression
 import org.mofgen.mGLang.List
-import org.mofgen.mGLang.ListForEachHead
 import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.util.MofgenUtil
@@ -38,7 +34,7 @@ class GeneratorTranslator {
 		return translateGen(expr)
 	}
 
-	def static dispatch private String translateGen(ForStatement forStatement) {
+	def static dispatch private String translateGen(GenForStatement forStatement) {
 		return translateForStatement(forStatement)
 	}
 
@@ -141,7 +137,7 @@ class GeneratorTranslator {
 		return translateGenSwitch(expr)
 	}
 
-	def static dispatch private String translateGenSwitch(ForStatement forStatement) {
+	def static dispatch private String translateGenSwitch(GenForStatement forStatement) {
 		return translateForStatement(forStatement)
 	}
 
@@ -154,54 +150,30 @@ class GeneratorTranslator {
 	}
 
 	// ------------------------------------------ single translations ------------------------------------------
-	def static private String translateForStatement(ForStatement forStatement) {
+	def static private String translateForStatement(GenForStatement forStatement) {
 		val head = forStatement.head
-		val headSrc = switch head {
-			RangeForHead: '''int «head.iteratorVar.name» = «MofgenUtil.getTextFromEditorFile(head.range.start)»; «head.iteratorVar.name» <= «MofgenUtil.getTextFromEditorFile(head.range.end)»; «head.iteratorVar.name»++'''
-			GeneralForEachHead: '''«head.eref.EReferenceType.name» «head.iteratorVar.name» : «MofgenUtil.getTextFromEditorFile(head.src)».«NameProvider.getGetterName(head.eref)»() '''
-			ListForEachHead: '''«getListType(head.list).name» «head.iteratorVar.name» : «head.list.name»'''
-		}
+		val headSrc = GeneralTranslator.translateForHead(head)
 
 		return '''for(«headSrc»){
-		«FOR bodyExpr : forStatement.body.commands»
-			«translateGen(bodyExpr)»
+		«FOR bodyExpr : forStatement.body.commands» 
+			«translateGen(bodyExpr)»;
 		«ENDFOR»
 		}'''
 	}
 
 	def static private String translateCollection(Collection coll) {
 		if (coll instanceof List) {
-			return '''List<«getListType(coll).name»> «coll.name» = new LinkedList<>()'''
+			return '''List<«MofgenUtil.getListType(coll).name»> «coll.name» = new LinkedList<>()'''
 		}
 		if (coll instanceof Map) {
-			return '''Map<«getMapKeyType(coll).name», «getMapEntryType(coll).name»> «coll.name» = new HashMap<>()'''
+			return '''Map<«MofgenUtil.getMapKeyType(coll).name», «MofgenUtil.getMapEntryType(coll).name»> «coll.name» = new HashMap<>()'''
 		}
 	}
 
 	def static private String translatePatternCall(PatternCall pc) {
-		val pReturn = pc.called.^return
-		if (pReturn !== null && pReturn.returnValue !== null) {
-			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»))«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn.returnValue)»;
-			'''
-		} else {
-			return '''new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»
-				«ENDIF»
-			'''
-		}
-
+		return GeneralTranslator.translatePatternCall(pc)
 	}
 
-	// ------------------------------------------ helper methods ------------------------------------------
-	def static private getListType(List list) {
-		TypeRegistry.getListType(list)
-	}
 
-	def static private getMapKeyType(Map map) {
-		TypeRegistry.getMapKeyType(map)
-	}
-
-	def static private getMapEntryType(Map map) {
-		TypeRegistry.getMapEntryType(map)
-	}
 
 }

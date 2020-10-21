@@ -66,9 +66,24 @@
         eType="#//ArithmeticExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeReferenceOrAssignmentOrControlFlow"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternNodeReference" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternForStatement" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow #//NodeReferenceOrControlFlow #//ForStatement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//PatternForBody"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternForBody" eSuperTypes="#//ForBody">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
+        eType="#//NodeReferenceOrControlFlow" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeReferenceOrControlFlow"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternNodeReference" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow #//NodeReferenceOrControlFlow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Node"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternNodeReferenceToNode" eSuperTypes="#//PatternNodeReference">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="#//Node"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternNodeReferenceToPatternCall" eSuperTypes="#//PatternNodeReference">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pc" eType="#//PatternCall"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeAttributeAssignment" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//ENamedElement"/>
@@ -85,7 +100,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="srcModel" eType="#//Import"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternSwitch" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternSwitch" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow #//NodeReferenceOrControlFlow">
     <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//PatternCaseBody"
         containment="true"/>
   </eClassifiers>
@@ -161,10 +176,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ForStatement" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="ForStatement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="head" eType="#//ForHead"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//ForBody"
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ForBody"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenForStatement" eSuperTypes="#//GeneratorExpression #//ForStatement #//GenSwitchExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//GenForBody"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ForHead">
@@ -192,7 +210,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="IteratorVariable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ForBody">
+  <eClassifiers xsi:type="ecore:EClass" name="GenForBody" eSuperTypes="#//ForBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
         eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>

@@ -19,6 +19,8 @@ import org.mofgen.mGLang.RefOrCall
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
 import org.mofgen.mGLang.ParamManipulation
+import org.mofgen.mGLang.PatternNodeReferenceToNode
+import org.mofgen.mGLang.PatternForStatement
 
 class PatternBuildSequencer {
 
@@ -41,7 +43,7 @@ class PatternBuildSequencer {
 		validElements = newHashSet()
 		remainingElements = newLinkedList()
 		srcCodeElements = newLinkedList()
-		for(paramManipulation : paramManipulations){
+		for (paramManipulation : paramManipulations) {
 			remainingElements.addAll(paramManipulation.content.refsAssigns)
 		}
 		createNodes(nodes)
@@ -86,6 +88,16 @@ class PatternBuildSequencer {
 		return internalCoherencyCheck(obj)
 	}
 
+	private def dispatch boolean internalCoherencyCheck(Node node){
+		val createdBy = node.createdBy
+		if(createdBy instanceof NodeContent){
+			throw new IllegalStateException("All nodes created by plain NodeContent should have been instantiated initially and should therefore be valid")
+		}else{
+			val pc = createdBy as PatternCall
+			return internalCoherencyCheck(pc)
+		}
+	}
+
 	private def dispatch boolean internalCoherencyCheck(PatternCall pc) {
 		for (param : pc.params.params) {
 			if (!internalCoherencyCheck(param)) {
@@ -97,6 +109,10 @@ class PatternBuildSequencer {
 
 	private def dispatch boolean internalCoherencyCheck(NodeAttributeAssignment ass) {
 		return internalCoherencyCheck(ass.value)
+	}
+
+	private def dispatch internalCoherencyCheck(PatternForStatement patternFor) {
+		return true;
 	}
 
 	private def dispatch boolean internalCoherencyCheck(ArithmeticExpression ae) {
@@ -131,8 +147,8 @@ class PatternBuildSequencer {
 		}
 	}
 
-	private def dispatch boolean internalCoherencyCheck(PatternNodeReference pNodeRef) {
-		return validElements.contains(getValidName(pNodeRef.target))
+	private def dispatch boolean internalCoherencyCheck(PatternNodeReferenceToNode pNodeRef) {
+		return validElements.contains(getValidName(pNodeRef.node))
 	}
 
 	private def dispatch boolean internalCoherencyCheck(PatternIfElseSwitch zwitch) {
@@ -175,12 +191,12 @@ class PatternBuildSequencer {
 			}
 			PatternNodeReference: {
 				val node = EcoreUtil2.getContainerOfType(elem, Node)
-				if(node !== null){
+				if (node !== null) {
 					return node.name + '_' + elem.type.name
-				}else{
+				} else {
 					val manip = EcoreUtil2.getContainerOfType(elem, ParamManipulation)
 					return manip.param.name + "_" + elem.type.name
-				}		
+				}
 			}
 			Node:
 				return elem.name
@@ -212,30 +228,20 @@ class PatternBuildSequencer {
 	 */
 	private def createNodes(List<Node> nodes) {
 		for (node : nodes) {
-			srcCodeElements.add(getCreationOfNode(node))
+			// TODO Ordering for no double creation of nodes (w.r.t. nodes created by pattern calls)
+			srcCodeElements.add(PatternTranslator.translate(node))
 			validElements.add(getValidName(node))
 			val createdBy = node.createdBy
 			if (createdBy !== null) {
 				if (createdBy instanceof NodeContent) {
 					remainingElements.addAll(createdBy.refsAssigns)
 				} else if (createdBy instanceof PatternCall) {
-					remainingElements.add(createdBy)
+					remainingElements.add(node)
 				} else {
 					throw new IllegalArgumentException(
 						"Given node " + node.name + " is neither created by plain assignments, nor by a pattern call.")
 				}
 			}
 		}
-	}
-
-	/**
-	 * @return a source code string for the creation of the given node
-	 */
-	def static String getCreationOfNode(Node node) {
-		val eClass = node.type
-		val ePackage = MofgenUtil.getEPackage(eClass)
-		return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»);
-		
-		'''
 	}
 }
