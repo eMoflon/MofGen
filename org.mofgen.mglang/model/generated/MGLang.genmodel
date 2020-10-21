@@ -171,9 +171,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ForStatement/head"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ForStatement/body"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//ForHead"/>
+    <genClasses ecoreClass="MGLang.ecore#//ForHead">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ForHead/iteratorVar"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//RangeForHead">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//RangeForHead/iteratorVar"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RangeForHead/range"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//ForRange">
@@ -183,10 +184,8 @@
     <genClasses ecoreClass="MGLang.ecore#//GeneralForEachHead">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GeneralForEachHead/src"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//GeneralForEachHead/eref"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GeneralForEachHead/iteratorVar"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//ListForEachHead">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ListForEachHead/iteratorVar"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ListForEachHead/list"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//IteratorVariable">

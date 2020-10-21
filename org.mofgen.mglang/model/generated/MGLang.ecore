@@ -167,9 +167,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//ForBody"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ForHead"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ForHead">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="iteratorVar" eType="#//IteratorVariable"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RangeForHead" eSuperTypes="#//ForHead">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iteratorVar" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="range" eType="#//ForRange"
         containment="true"/>
   </eClassifiers>
@@ -183,12 +185,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="src" eType="#//RefOrCall"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="iteratorVar" eType="#//IteratorVariable"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ListForEachHead" eSuperTypes="#//ForHead">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="iteratorVar" eType="#//IteratorVariable"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="list" eType="#//List"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IteratorVariable">

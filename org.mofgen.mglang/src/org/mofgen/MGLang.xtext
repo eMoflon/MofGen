@@ -139,7 +139,7 @@ ForHead:
 	RangeForHead | GeneralForEachHead | ListForEachHead;
 
 RangeForHead:
-	iteratorVar=ID 'in' range=ForRange;
+	iteratorVar=IteratorVariable 'in' range=ForRange;
 
 ForRange:
 	start=ArithmeticExpression ':' end=ArithmeticExpression;
