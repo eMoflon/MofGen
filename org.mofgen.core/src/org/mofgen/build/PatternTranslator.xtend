@@ -17,14 +17,16 @@ import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import org.mofgen.mGLang.ParamManipulation
 
 class PatternTranslator {
 
-	static def dispatch String translate(Pattern pattern){
-		
-		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+	static def dispatch String translate(Pattern pattern) {
 
-		val patternParameterTypes = newHashMap();
+		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+		val paramManipulations = EcoreUtil2.getAllContentsOfType(pattern, ParamManipulation)
+
+		val patternParameterTypes = newLinkedHashMap();
 		if (!pattern.parameters.empty) {
 			for (parameter : pattern.parameters) {
 				if (parameter instanceof PrimitiveParameter) {
@@ -43,11 +45,10 @@ class PatternTranslator {
 				}
 			}
 		}
-		
-		val sequencer = new PatternBuildSequencer(nodes)
-		
-		return
-		'''
+
+		val sequencer = new PatternBuildSequencer(nodes, paramManipulations)
+
+		return '''
 		«getPatternDoc(pattern)»
 		«getPatternSignature(pattern)»
 			
@@ -63,72 +64,79 @@ class PatternTranslator {
 			«PatternTranslator.createGetters(pattern)»
 		}'''
 	}
-	
-	private static def getPatternDoc(Pattern pattern){
-		return
-		'''/**
+
+	private static def getPatternDoc(Pattern pattern) {
+		return '''/**
 			* The pattern «NameProvider.getPatternClassName(pattern)».
 			*/
 		'''
 	}
-	
-	private static def getPatternSignature(Pattern pattern){
+
+	private static def getPatternSignature(Pattern pattern) {
 		return '''
-		public class «NameProvider.getPatternClassName(pattern)» extends «JavaFileGenerator.PATTERN_SUPER_CLASS»{
+			public class «NameProvider.getPatternClassName(pattern)» extends «JavaFileGenerator.PATTERN_SUPER_CLASS»{
 		'''
 	}
-	
-	static def dispatch String translate(PatternNodeReference ref){
+
+	static def dispatch String translate(PatternNodeReference ref) {
 		val node = EcoreUtil2.getContainerOfType(ref, Node)
-		if(ref.type.upperBound < 1){
-			return '''
-			«node.name».«NameProvider.getGetterName(ref.type)»().add(«ref.target.name»);
-			'''	
-		}else{
-			return '''
-		«node.name».«NameProvider.getSetterName(ref.type)»(«ref.target.name»);
-		'''	
+		var trgName = ""
+		if (node !== null) {
+			trgName = node.name
+		} else {
+			val manip = EcoreUtil2.getContainerOfType(ref, ParamManipulation)
+			trgName = manip.param.name
 		}
+		if (ref.type.upperBound < 1) {
+			return '''
+				«trgName».«NameProvider.getGetterName(ref.type)»().add(«ref.target.name»);
+			'''
+		} else {
+			return '''
+				«trgName».«NameProvider.getSetterName(ref.type)»(«ref.target.name»);
+			'''
+		}
+
 	}
-	
-	static def dispatch String translate(NodeAttributeAssignment ass){
+
+	static def dispatch String translate(NodeAttributeAssignment ass) {
 		val node = EcoreUtil2.getContainerOfType(ass, Node)
 		return '''
-		«node.name».«NameProvider.getSetterName(ass.target)»(«MofgenUtil.resolveArithmeticExpression(ass.value)»);
+			«node.name».«NameProvider.getSetterName(ass.target)»(«MofgenUtil.resolveArithmeticExpression(ass.value)»);
 		'''
 	}
-	
-	static def dispatch String translate(PatternCall pc){
+
+	static def dispatch String translate(PatternCall pc) {
 		return '''
-		(new «NameProvider.getPatternClassName(pc.called)»().createInstance(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»«ENDIF»)
+			(new «NameProvider.getPatternClassName(pc.called)»().createInstance(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»«ENDIF»)
 		'''
 	}
-	
-	static def dispatch String translate(PatternReturn pReturn){
-		if(pReturn.returnValue !== null){
+
+	static def dispatch String translate(PatternReturn pReturn) {
+		if (pReturn.returnValue !== null) {
 			return '''return «pReturn.returnValue.name»;'''
-		}else{
-			//TODO return Pattern as a whole?
+		} else {
+			// TODO return Pattern as a whole?
 		}
 	}
-	
-	private static def createGetters(Pattern pattern){
+
+	private static def createGetters(Pattern pattern) {
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
 		return '''
-		
-		«FOR node : nodes»
-		/**
-		* @return the «node.name» attribute of type «node.type.name»
-		*/
-		public «node.type.name» «MofgenUtil.getGetterMethod(node)»{
-			return «node.name»;
-		}
-		
-		«ENDFOR»
+			
+			«FOR node : nodes»
+				/**
+				* @return the «node.name» attribute of type «node.type.name»
+				*/
+				public «node.type.name» «MofgenUtil.getGetterMethod(node)»{
+					return «node.name»;
+				}
+				
+			«ENDFOR»
 		'''
 	}
-	
-	static def dispatch String translate(PatternIfElseSwitch pSwitch){
+
+	static def dispatch String translate(PatternIfElseSwitch pSwitch) {
 		return '''
 			«FOR caze : pSwitch.cases SEPARATOR 'else'»
 				if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
@@ -146,41 +154,40 @@ class PatternTranslator {
 			«ENDIF»
 		'''
 	}
-		
-	static def dispatch String translate(PatternSwitchCase zwitch){
-		return
-		'''
-		«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
-			«IF caze instanceof PatternCaseWithCast»
-				if(«zwitch.attribute» instanceof «caze.node.type.instanceTypeName»){
-					«caze.node.type.instanceTypeName»«caze.node.name» = («caze.node.type.instanceTypeName»)«zwitch.attribute»
-					«IF caze.when !== null»
-						if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
-					«ENDIF»
-					«FOR bodyExpr : caze.body.expressions SEPARATOR';'AFTER';'»
-						«translate(bodyExpr)»
+
+	static def dispatch String translate(PatternSwitchCase zwitch) {
+		return '''
+			«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
+				«IF caze instanceof PatternCaseWithCast»
+					if(«zwitch.attribute» instanceof «caze.node.type.instanceTypeName»){
+						«caze.node.type.instanceTypeName»«caze.node.name» = («caze.node.type.instanceTypeName»)«zwitch.attribute»
+						«IF caze.when !== null»
+							if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
+						«ENDIF»
+						«FOR bodyExpr : caze.body.expressions SEPARATOR';'AFTER';'»
+							«translate(bodyExpr)»
+						«ENDFOR»
+						«IF caze.when !== null»
+							}
+						«ENDIF»
+					}
+				«ENDIF»
+				«IF caze instanceof PatternCaseWithoutCast»
+					if(«MofgenUtil.resolveRefOrCall(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
+						«FOR bodyExpr : caze.body.expressions SEPARATOR';'AFTER';'»
+							«translate(bodyExpr)»
+						«ENDFOR»
+					}
+				«ENDIF»
+			«ENDFOR»
+			«IF zwitch.^default !== null»
+				else {
+					«FOR expression : (zwitch.^default as PatternCaseBody).expressions SEPARATOR';'AFTER';'»
+						«translate(expression)»
 					«ENDFOR»
-					«IF caze.when !== null»
-						}
-					«ENDIF»
 				}
 			«ENDIF»
-			«IF caze instanceof PatternCaseWithoutCast»
-				if(«MofgenUtil.resolveRefOrCall(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
-					«FOR bodyExpr : caze.body.expressions SEPARATOR';'AFTER';'»
-						«translate(bodyExpr)»
-					«ENDFOR»
-				}
-			«ENDIF»
-		«ENDFOR»
-		«IF zwitch.^default !== null»
-			else {
-				«FOR expression : (zwitch.^default as PatternCaseBody).expressions SEPARATOR';'AFTER';'»
-					«translate(expression)»
-				«ENDFOR»
-			}
-		«ENDIF»
 		'''
 	}
-		
+
 }

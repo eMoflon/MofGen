@@ -31,6 +31,10 @@ import org.mofgen.mGLang.UnaryMinus
 import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.IteratorVariable
+import org.mofgen.mGLang.RangeForHead
+import org.mofgen.mGLang.GeneralForEachHead
+import org.mofgen.mGLang.ListForEachHead
 
 class TypeCalculator {
 
@@ -360,8 +364,22 @@ class TypeCalculator {
 				}
 				return MofgenModelUtils.getEClassForInternalModel(op.EType)
 			}
+			IteratorVariable: {
+				val container = ref.eContainer
+				switch container {
+					RangeForHead: {
+						return TypeModelPackage.Literals.NUMBER
+					}
+					GeneralForEachHead: {
+						return container.eref.EType
+					}
+					ListForEachHead: {
+						return TypeRegistry.getListType(container.list)
+					}
+				}
+			}
 			default: {
-				throw new IllegalStateException("Could not handle type of " + roc.ref)
+				throw new IllegalStateException("Could not handle type of " + highestRoc.ref)
 			}
 		}
 	}

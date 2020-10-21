@@ -18,6 +18,7 @@ import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import org.mofgen.mGLang.ParamManipulation
 
 class PatternBuildSequencer {
 
@@ -36,15 +37,17 @@ class PatternBuildSequencer {
 	 */
 	Queue<EObject> remainingElements
 
-	new(List<Node> nodes) {
+	new(List<Node> nodes, List<ParamManipulation> paramManipulations) {
 		validElements = newHashSet()
 		remainingElements = newLinkedList()
 		srcCodeElements = newLinkedList()
+		for(paramManipulation : paramManipulations){
+			remainingElements.addAll(paramManipulation.content.refsAssigns)
+		}
 		createNodes(nodes)
 	}
 
 	def getOrderedTranslation() {
-
 		var cnt = 0
 		while (!remainingElements.empty) {
 			val elem = remainingElements.remove()
@@ -55,7 +58,7 @@ class PatternBuildSequencer {
 			} else {
 				remainingElements.add(elem)
 				cnt++
-				if(cnt > 100){
+				if (cnt > 100) {
 					throw new UnsupportedOperationException("Some uncaught case probably resulted in an endless loop.")
 				}
 			}
@@ -172,7 +175,12 @@ class PatternBuildSequencer {
 			}
 			PatternNodeReference: {
 				val node = EcoreUtil2.getContainerOfType(elem, Node)
-				return node.name + '_' + elem.type.name
+				if(node !== null){
+					return node.name + '_' + elem.type.name
+				}else{
+					val manip = EcoreUtil2.getContainerOfType(elem, ParamManipulation)
+					return manip.param.name + "_" + elem.type.name
+				}		
 			}
 			Node:
 				return elem.name
@@ -181,7 +189,7 @@ class PatternBuildSequencer {
 				if (elem.target !== null) {
 					return getValidName(elem.target) + '_' + getNameForRocRef(elem.ref)
 				} else {
-					val ref = elem.ref 
+					val ref = elem.ref
 					switch ref {
 						ENamedElement: return ref.name
 						Node: return ref.name
@@ -207,15 +215,16 @@ class PatternBuildSequencer {
 			srcCodeElements.add(getCreationOfNode(node))
 			validElements.add(getValidName(node))
 			val createdBy = node.createdBy
-			if (createdBy instanceof NodeContent) {
-				remainingElements.addAll(createdBy.refsAssigns)
-			} else if (createdBy instanceof PatternCall) {
-				remainingElements.add(createdBy)
-			} else {
-				throw new IllegalArgumentException(
-					"Given node " + node.name + " is neither created by plain assignments, nor by a pattern call.")
+			if (createdBy !== null) {
+				if (createdBy instanceof NodeContent) {
+					remainingElements.addAll(createdBy.refsAssigns)
+				} else if (createdBy instanceof PatternCall) {
+					remainingElements.add(createdBy)
+				} else {
+					throw new IllegalArgumentException(
+						"Given node " + node.name + " is neither created by plain assignments, nor by a pattern call.")
+				}
 			}
-
 		}
 	}
 
@@ -225,7 +234,7 @@ class PatternBuildSequencer {
 	def static String getCreationOfNode(Node node) {
 		val eClass = node.type
 		val ePackage = MofgenUtil.getEPackage(eClass)
-		return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«eClass.name.toUpperCase»);
+		return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»);
 		
 		'''
 	}

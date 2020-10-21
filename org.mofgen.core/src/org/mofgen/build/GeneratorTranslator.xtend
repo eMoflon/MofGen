@@ -157,7 +157,7 @@ class GeneratorTranslator {
 	def static private String translateForStatement(ForStatement forStatement) {
 		val head = forStatement.head
 		val headSrc = switch head {
-			RangeForHead: '''int «head.iteratorVar» = «MofgenUtil.getTextFromEditorFile(head.range.start)»; «head.iteratorVar» <= «MofgenUtil.getTextFromEditorFile(head.range.end)»; «head.iteratorVar»++'''
+			RangeForHead: '''int «head.iteratorVar.name» = «MofgenUtil.getTextFromEditorFile(head.range.start)»; «head.iteratorVar.name» <= «MofgenUtil.getTextFromEditorFile(head.range.end)»; «head.iteratorVar.name»++'''
 			GeneralForEachHead: '''«head.eref.EReferenceType.name» «head.iteratorVar.name» : «MofgenUtil.getTextFromEditorFile(head.src)».«NameProvider.getGetterName(head.eref)»() '''
 			ListForEachHead: '''«getListType(head.list).name» «head.iteratorVar.name» : «head.list.name»'''
 		}
@@ -181,8 +181,7 @@ class GeneratorTranslator {
 	def static private String translatePatternCall(PatternCall pc) {
 		val pReturn = pc.called.^return
 		if (pReturn !== null && pReturn.returnValue !== null) {
-			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»)«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»).«MofgenUtil.getGetterMethod(pReturn.returnValue)»;
-				«ENDIF»
+			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»))«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn.returnValue)»;
 			'''
 		} else {
 			return '''new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»);«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»

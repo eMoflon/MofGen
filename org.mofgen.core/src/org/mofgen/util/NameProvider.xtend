@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IFile
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.EClass
 
 class NameProvider {
 	/**
@@ -40,6 +41,17 @@ class NameProvider {
 
 	def static String getAppClassName(String projectName) {
 		return projectName.toFirstUpper + "App"
+	}
+	
+	/**
+	 * @return the literal expression to access the given eClass in its Package
+	 */
+	def static String getLiteralName(EClass clazz){
+		// split camelCase
+		val splitName = clazz.name.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")
+		return '''
+		«FOR nameSegment : splitName SEPARATOR '_'»«nameSegment.toUpperCase»«ENDFOR»
+		'''
 	}
 
 	/**
