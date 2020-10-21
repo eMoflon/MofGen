@@ -95,15 +95,12 @@ class JavaFileGenerator {
 				
 				/**
 				 * Creates a mofgen application
-				 * 
-				 * @param workspacePath «««TODO maybe utilize workspace path here»»
-					       	     the workspace path
 				 */
-				public «NameProvider.getAppClassName(appPackage.project.name)»(final String workspacePath) {
+				public «NameProvider.getAppClassName(appPackage.project.name)»() {
 					«««super(workspacePath);
 					generators = new LinkedList<>();
 					«FOR gen : generators»
-						generators.add(new «NameProvider.getGeneratorClassName(gen)»("«gen.name»"));
+						generators.add(new «NameProvider.getGeneratorClassName(gen)»());
 					«ENDFOR»
 				}
 				
@@ -141,8 +138,8 @@ class JavaFileGenerator {
 			 */
 			public class «NameProvider.getGeneratorClassName(gen)» extends «GENERATOR_SUPER_CLASS» {
 			
-				public «NameProvider.getGeneratorClassName(gen)» (String name){
-					this.name = name;
+				public «NameProvider.getGeneratorClassName(gen)» (){
+					this.name = "«gen.name»";
 				}
 			
 				@Override
