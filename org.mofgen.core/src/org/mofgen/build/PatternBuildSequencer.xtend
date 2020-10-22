@@ -21,6 +21,7 @@ import org.mofgen.util.NameProvider
 import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.PatternNodeReferenceToNode
 import org.mofgen.mGLang.PatternForStatement
+import org.eclipse.emf.ecore.EEnumLiteral
 
 class PatternBuildSequencer {
 
@@ -60,6 +61,7 @@ class PatternBuildSequencer {
 				val translation = PatternTranslator.translate(elem)
 				srcCodeElements.add(translation)
 				makeTranslatedElementValid(elem)
+				cnt = 0
 			} else {
 				remainingElements.add(elem)
 				cnt++
@@ -147,6 +149,9 @@ class PatternBuildSequencer {
 						roc.ref)
 			}
 		} else {
+			if(roc.ref instanceof EEnumLiteral){
+				return true;
+			}
 			return validElements.contains(getValidName(roc)) // TODO only when ref is from a newly created node. not necessarily at objects passed as parameters!
 		}
 	}
