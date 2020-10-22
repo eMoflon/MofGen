@@ -387,7 +387,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			switch ref {
 				Map: {
 					val ops = TypeModelPackage.Literals.MAP.EAllOperations
-					return Scopes.scopeFor(ops)
+					val attrs = TypeModelPackage.Literals.MAP.EAllReferences
+					return Scopes.scopeFor(ops + attrs)
 				}
 				List: {
 					val ops = TypeModelPackage.Literals.LIST.EAllOperations

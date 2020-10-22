@@ -85,21 +85,23 @@ class TypeCalculator {
 		} else {
 			var evalLeftString = "NULL"
 			var evalRightString = "NULL"
-			
-			if(evalLeft instanceof EClass){
+
+			if (evalLeft instanceof EClass) {
 				evalLeftString = evalLeft.name
 			}
-			if(evalLeft instanceof Pattern){
+			if (evalLeft instanceof Pattern) {
 				evalLeftString = evalLeft.name
 			}
-			if(evalRight instanceof EClass){
+			if (evalRight instanceof EClass) {
 				evalRightString = evalRight.name
 			}
-			if(evalRight instanceof Pattern){
+			if (evalRight instanceof Pattern) {
 				evalRightString = evalRight.name
 			}
-			
-			throw new MismatchingTypesException("Cannot use operator " + tertiary.op.toString + " with given values "+ evalLeftString + " and " + evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
+
+			throw new MismatchingTypesException(
+				"Cannot use operator " + tertiary.op.toString + " with given values " + evalLeftString + " and " +
+					evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
 		}
 	}
 
@@ -128,21 +130,23 @@ class TypeCalculator {
 		} else {
 			var evalLeftString = "NULL"
 			var evalRightString = "NULL"
-			
-			if(evalLeft instanceof EClass){
+
+			if (evalLeft instanceof EClass) {
 				evalLeftString = evalLeft.name
 			}
-			if(evalLeft instanceof Pattern){
+			if (evalLeft instanceof Pattern) {
 				evalLeftString = evalLeft.name
 			}
-			if(evalRight instanceof EClass){
+			if (evalRight instanceof EClass) {
 				evalRightString = evalRight.name
 			}
-			if(evalRight instanceof Pattern){
+			if (evalRight instanceof Pattern) {
 				evalRightString = evalRight.name
 			}
-			
-			throw new MismatchingTypesException("Cannot use operator " + secondary.op.toString + " with given values "+ evalLeftString + " and " + evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
+
+			throw new MismatchingTypesException(
+				"Cannot use operator " + secondary.op.toString + " with given values " + evalLeftString + " and " +
+					evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
 		}
 	}
 
@@ -174,21 +178,23 @@ class TypeCalculator {
 		} else {
 			var evalLeftString = "NULL"
 			var evalRightString = "NULL"
-			
-			if(evalLeft instanceof EClass){
+
+			if (evalLeft instanceof EClass) {
 				evalLeftString = evalLeft.name
 			}
-			if(evalLeft instanceof Pattern){
+			if (evalLeft instanceof Pattern) {
 				evalLeftString = evalLeft.name
 			}
-			if(evalRight instanceof EClass){
+			if (evalRight instanceof EClass) {
 				evalRightString = evalRight.name
 			}
-			if(evalRight instanceof Pattern){
+			if (evalRight instanceof Pattern) {
 				evalRightString = evalRight.name
 			}
-			
-			throw new MismatchingTypesException("Cannot use operator " + primary.op.toString + " with given values "+ evalLeftString + " and " + evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
+
+			throw new MismatchingTypesException(
+				"Cannot use operator " + primary.op.toString + " with given values " + evalLeftString + " and " +
+					evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
 		}
 	}
 
@@ -232,21 +238,23 @@ class TypeCalculator {
 		} else {
 			var evalLeftString = "NULL"
 			var evalRightString = "NULL"
-			
-			if(evalLeft instanceof EClass){
+
+			if (evalLeft instanceof EClass) {
 				evalLeftString = evalLeft.name
 			}
-			if(evalLeft instanceof Pattern){
+			if (evalLeft instanceof Pattern) {
 				evalLeftString = evalLeft.name
 			}
-			if(evalRight instanceof EClass){
+			if (evalRight instanceof EClass) {
 				evalRightString = evalRight.name
 			}
-			if(evalRight instanceof Pattern){
+			if (evalRight instanceof Pattern) {
 				evalRightString = evalRight.name
 			}
-			
-			throw new MismatchingTypesException("Cannot use operator " + rel.relation.toString + " with given values "+ evalLeftString + " and " + evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
+
+			throw new MismatchingTypesException(
+				"Cannot use operator " + rel.relation.toString + " with given values " + evalLeftString + " and " +
+					evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
 		}
 	}
 
@@ -293,7 +301,7 @@ class TypeCalculator {
 
 	def dispatch private EObject internalEvaluate(RefOrCall roc) {
 
-		if(roc.ref.eIsProxy){
+		if (roc.ref.eIsProxy) {
 			return null;
 		}
 
@@ -321,7 +329,7 @@ class TypeCalculator {
 			ParameterNodeOrPattern: {
 				if (ref.type instanceof Pattern) {
 					return ref.type
-				}else{
+				} else {
 					return MofgenModelUtils.getEClassForInternalModel(ref.type as EClassifier)
 				}
 			}
@@ -371,7 +379,13 @@ class TypeCalculator {
 						return TypeModelPackage.Literals.NUMBER
 					}
 					GeneralForEachHead: {
-						return container.eref.EType
+						if (container.eref == TypeModelPackage.Literals.MAP__ENTRIES) {
+							return TypeRegistry.getMapEntryType(container.src.ref as Map)
+						} else if (container.eref == TypeModelPackage.Literals.MAP__KEYS) {
+							return TypeRegistry.getMapKeyType(container.src.ref as Map)
+						} else {
+							return container.eref.EType
+						}
 					}
 					ListForEachHead: {
 						return TypeRegistry.getListType(container.list)
@@ -383,13 +397,13 @@ class TypeCalculator {
 			}
 		}
 	}
-	
+
 	/**
 	 * @return the top-roc element, containing all sub-roc-objects if existent
 	 */
-	def private getSuperRoc(RefOrCall roc){
+	def private getSuperRoc(RefOrCall roc) {
 		var iterator = roc
-		while(iterator.eContainer instanceof RefOrCall){
+		while (iterator.eContainer instanceof RefOrCall) {
 			iterator = iterator.eContainer as RefOrCall
 		}
 		return iterator
@@ -410,14 +424,14 @@ class TypeCalculator {
 	def dispatch private internalEvaluate(PatternCall pc) {
 		val ret = pc.called.^return
 		val calledPattern = pc.called
-		if(ret !== null){
+		if (ret !== null) {
 			val retValue = ret.returnValue
-			if(retValue !== null){
+			if (retValue !== null) {
 				return retValue.type
-			}else{
+			} else {
 				return calledPattern
 			}
-		}else{
+		} else {
 			return null
 		}
 	}

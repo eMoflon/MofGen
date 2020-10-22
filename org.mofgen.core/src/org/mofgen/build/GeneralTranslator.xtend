@@ -25,6 +25,9 @@ import org.mofgen.mGLang.Rel
 import org.mofgen.mGLang.Secondary
 import org.mofgen.mGLang.Primary
 import org.mofgen.mGLang.Tertiary
+import org.mofgen.interpreter.TypeRegistry
+import org.mofgen.typeModel.TypeModelPackage
+import org.mofgen.mGLang.Map
 
 class GeneralTranslator {
 
@@ -43,7 +46,22 @@ class GeneralTranslator {
 	def static String translateForHead(ForHead head) {
 		val headSrc = switch head {
 			RangeForHead: '''int «head.iteratorVar.name» = «MofgenUtil.getTextFromEditorFile(head.range.start)»; «head.iteratorVar.name» <= «MofgenUtil.getTextFromEditorFile(head.range.end)»; «head.iteratorVar.name»++'''
-			GeneralForEachHead: '''«head.eref.EReferenceType.name» «head.iteratorVar.name» : «MofgenUtil.getTextFromEditorFile(head.src)».«NameProvider.getGetterName(head.eref)»() '''
+			GeneralForEachHead: {
+				var typeString = ""
+				var collectionString = ""
+				if(head.eref == TypeModelPackage.Literals.MAP__ENTRIES){
+					typeString = TypeRegistry.getMapEntryType(head.src.ref as Map).name
+					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».values()'''
+				}else if(head.eref == TypeModelPackage.Literals.MAP__KEYS){
+					typeString = TypeRegistry.getMapEntryType(head.src.ref as Map).name
+					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».keySet()'''
+				}else{
+					typeString = head.eref.name
+					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».«NameProvider.getGetterName(head.eref)»()'''
+				}
+				
+				'''«typeString» «head.iteratorVar.name» : «collectionString» '''
+			}
 			ListForEachHead: '''«MofgenUtil.getListType(head.list).name» «head.iteratorVar.name» : «head.list.name»'''
 		}
 		return headSrc
@@ -82,8 +100,7 @@ class GeneralTranslator {
 				return MofgenUtil.getTextFromEditorFile(ae)
 		}
 	}
-	
-	
+
 	/**
 	 * Translates References or calls to source code for the auto-generated classes.
 	 * @param roc the RefOrCall object
