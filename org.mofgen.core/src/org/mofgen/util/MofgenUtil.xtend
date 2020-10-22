@@ -5,9 +5,6 @@ import java.util.Map
 import java.util.Optional
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EEnum
-import org.eclipse.emf.ecore.EEnumLiteral
-import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.Resource
@@ -16,24 +13,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.mofgen.build.MofgenBuilder
 import org.mofgen.interpreter.TypeRegistry
-import org.mofgen.mGLang.ArithmeticExpression
-import org.mofgen.mGLang.FunctionCall
-import org.mofgen.mGLang.Import
 import org.mofgen.mGLang.List
-import org.mofgen.mGLang.Literal
-import org.mofgen.mGLang.NegationExpression
 import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.ParameterNodeOrPattern
-import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.Primary
-import org.mofgen.mGLang.PrimitiveParameter
-import org.mofgen.mGLang.RefOrCall
-import org.mofgen.mGLang.Rel
-import org.mofgen.mGLang.Secondary
-import org.mofgen.mGLang.Tertiary
-import org.mofgen.mGLang.UnaryMinus
-import org.mofgen.mGLang.Variable
-import org.mofgen.build.GeneralTranslator
 
 class MofgenUtil {
 
@@ -41,36 +22,7 @@ class MofgenUtil {
 		return NodeModelUtils.getTokenText(NodeModelUtils.getNode(obj))
 	}
 
-	def static String resolveArithmeticExpression(ArithmeticExpression ae) {
-		switch ae {
-			RefOrCall:
-				return resolveRefOrCall(ae)
-			Literal:
-				return getTextFromEditorFile(ae)
-			PatternCall:
-				return GeneralTranslator.translatePatternCall(ae)
-			UnaryMinus:
-				return '''-«resolveArithmeticExpression(ae.expr)»'''
-			FunctionCall: {
-				switch ae.func {
-					case SQRT: return '''Math.sqrt(«resolveArithmeticExpression(ae.expr)»'''
-					case ABS: return '''Math.abs(«resolveArithmeticExpression(ae.expr)»'''
-				}
-			}
-			NegationExpression:
-				return '''!«resolveArithmeticExpression(ae.expr)»'''
-			Rel:
-				return '''«resolveArithmeticExpression(ae.left)»«ae.relation.literal»«resolveArithmeticExpression(ae.right)»'''
-			Primary:
-				return '''«resolveArithmeticExpression(ae.left)»«ae.op.literal»«resolveArithmeticExpression(ae.right)»'''
-			Secondary:
-				return '''«resolveArithmeticExpression(ae.left)»«ae.op.literal»«resolveArithmeticExpression(ae.right)»'''
-			Tertiary:
-				return '''«resolveArithmeticExpression(ae.left)»«ae.op.literal»«resolveArithmeticExpression(ae.right)»'''
-			default:
-				return getTextFromEditorFile(ae)
-		}
-	}
+	
 
 	/**
 	 * Scans all EPackages known by the build process for the given class
@@ -120,57 +72,6 @@ class MofgenUtil {
 		TypeRegistry.getMapEntryType(map)
 	}
 
-	/**
-	 * Translates References or calls to source code for the auto-generated classes.
-	 * @param roc the RefOrCall object
-	 * @return the source code as string
-	 */
-	def static String resolveRefOrCall(RefOrCall roc) {
-		val ref = roc.ref
-		switch ref {
-			ENamedElement: {
-				var prefix = ""
-				var suffix = "()"
-				if (roc.target !== null) {
-					prefix = '''«resolveRefOrCall(roc.target)».'''
-				}
-				if (roc.ref instanceof EEnum || roc.ref instanceof EEnumLiteral) {
-					suffix = ""
-				}
-				return '''«prefix»«NameProvider.getGetterName(ref)»«suffix»'''
-			}
-			Node: {
-				if (roc.target !== null) {
-					return '''«resolveRefOrCall(roc.target)».«ref.name»'''
-				} else {
-					return ref.name
-				}
-			}
-			Variable: {
-				if (roc.target !== null) {
-					return '''«resolveRefOrCall(roc.target)».«ref.name»'''
-				} else {
-					return ref.name
-				}
-			}
-			Import: {
-				return getEPackage(ref.uri).name
-			}
-			ParameterNodeOrPattern: {
-				return ref.name
-			}
-			PrimitiveParameter: {
-				return ref.name
-			}
-			default: {
-				if (roc.target !== null) {
-					return '''«resolveRefOrCall(roc.target)».«getTextFromEditorFile(ref)»'''
-				} else {
-					return getTextFromEditorFile(ref)
-				}
-			}
-		}
-	}
 
 	/**
 	 * The set of meta-model resources loaded.
