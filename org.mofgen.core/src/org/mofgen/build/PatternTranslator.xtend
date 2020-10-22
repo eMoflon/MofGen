@@ -144,7 +144,7 @@ class PatternTranslator {
 	static def dispatch String translate(NodeAttributeAssignment ass) {
 		val node = EcoreUtil2.getContainerOfType(ass, Node)
 		return '''
-			«node.name».«NameProvider.getSetterName(ass.target)»(«MofgenUtil.resolveArithmeticExpression(ass.value)»);
+			«node.name».«NameProvider.getSetterName(ass.target)»(«GeneralTranslator.translateArithmeticExpression(ass.value)»);
 		'''
 	}
 
@@ -224,7 +224,7 @@ class PatternTranslator {
 					}
 				«ENDIF»
 				«IF caze instanceof PatternCaseWithoutCast»
-					if(«MofgenUtil.resolveRefOrCall(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
+					if(«GeneralTranslator.translateRefOrCall(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
 						«FOR bodyExpr : caze.body.expressions»
 							«translate(bodyExpr)»
 						«ENDFOR»

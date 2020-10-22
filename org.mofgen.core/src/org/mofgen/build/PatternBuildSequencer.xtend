@@ -3,6 +3,7 @@ package org.mofgen.build
 import java.util.List
 import java.util.Queue
 import java.util.Set
+import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
@@ -10,18 +11,15 @@ import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment
 import org.mofgen.mGLang.NodeContent
+import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.PatternCall
+import org.mofgen.mGLang.PatternForStatement
 import org.mofgen.mGLang.PatternIfElseSwitch
 import org.mofgen.mGLang.PatternNodeReference
+import org.mofgen.mGLang.PatternNodeReferenceToNode
 import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.RefOrCall
-import org.mofgen.util.MofgenUtil
-import org.mofgen.util.NameProvider
-import org.mofgen.mGLang.ParamManipulation
-import org.mofgen.mGLang.PatternNodeReferenceToNode
-import org.mofgen.mGLang.PatternForStatement
-import org.eclipse.emf.ecore.EEnumLiteral
 
 class PatternBuildSequencer {
 

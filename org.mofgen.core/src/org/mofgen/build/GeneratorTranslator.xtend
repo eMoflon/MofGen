@@ -21,6 +21,8 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import org.mofgen.mGLang.ListAdHoc
+import org.mofgen.mGLang.MapAdHoc
 
 /**
  * Translates given expressions to source code that will be used as part of the API.
@@ -59,8 +61,8 @@ class GeneratorTranslator {
 		return '''
 			«FOR caze : zwitch.cases SEPARATOR 'else'»
 				«IF caze instanceof GenCaseWithCast»
-					if(«MofgenUtil.resolveRefOrCall(zwitch.attribute)» instanceof «caze.node.type.instanceTypeName»){
-						«caze.node.type.instanceTypeName»«caze.node.name» = («caze.node.type.instanceTypeName»)«MofgenUtil.resolveRefOrCall(zwitch.attribute)»;
+					if(«GeneralTranslator.translateRefOrCall(zwitch.attribute)» instanceof «caze.node.type.instanceTypeName»){
+						«caze.node.type.instanceTypeName»«caze.node.name» = («caze.node.type.instanceTypeName»)«GeneralTranslator.translateRefOrCall(zwitch.attribute)»;
 						«IF caze.when !== null»
 							if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
 						«ENDIF»
@@ -163,10 +165,18 @@ class GeneratorTranslator {
 
 	def static private String translateCollection(Collection coll) {
 		if (coll instanceof List) {
-			return '''List<«MofgenUtil.getListType(coll).name»> «coll.name» = new LinkedList<>();'''
+			return
+			'''
+			List<«MofgenUtil.getListType(coll).name»> «coll.name» = new LinkedList<>();
+			«fillCollection(coll)»
+			'''
 		}
 		if (coll instanceof Map) {
-			return '''Map<«MofgenUtil.getMapKeyType(coll).name», «MofgenUtil.getMapEntryType(coll).name»> «coll.name» = new HashMap<>();'''
+			return
+			'''
+			Map<«MofgenUtil.getMapKeyType(coll).name», «MofgenUtil.getMapEntryType(coll).name»> «coll.name» = new HashMap<>();
+			«fillCollection(coll)»
+			'''
 		}
 	}
 
@@ -174,6 +184,30 @@ class GeneratorTranslator {
 		return GeneralTranslator.translatePatternCall(pc)
 	}
 
-
+	def static private String fillCollection(List list){
+		val defOrDecl = list.defOrDecl
+		if(defOrDecl instanceof ListAdHoc){
+			return
+			'''
+			// filling list «list.name»
+			«FOR elem : defOrDecl.elements»
+				«list.name».add(«GeneralTranslator.translateArithmeticExpression(elem)»);
+			«ENDFOR»
+			'''
+		}
+	}
+	
+	def static private String fillCollection(Map map){
+		val defOrDecl = map.defOrDecl
+		if(defOrDecl instanceof MapAdHoc){
+			return
+			'''
+			// filling map «map.name»
+			«FOR entry : defOrDecl.entries»
+				«map.name».put(«GeneralTranslator.translateArithmeticExpression(entry.key)», «GeneralTranslator.translateArithmeticExpression(entry.value)»);
+			«ENDFOR»
+			'''
+		}
+	}
 
 }
