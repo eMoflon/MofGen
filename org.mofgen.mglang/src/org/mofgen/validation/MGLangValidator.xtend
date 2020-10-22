@@ -96,10 +96,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 		try {
 			val eval = typeChecker.evaluate(expr)
 			if (eval instanceof Pattern) {
-				error("For-Range needs numerical bounds but was given type " + eval.name, obj, errorLoc)
+				error("Expected number but was given type " + eval.name, obj, errorLoc)
 				return false
 			} else if (eval !== TypeModelPackage.Literals.NUMBER) {
-				error("For-Range needs numerical bounds but was given type " + (eval as EClass).name, obj, errorLoc)
+				error("Expected number but was given type " + (eval as EClass).name, obj, errorLoc)
 				return false
 			} else {
 				return true
