@@ -53,6 +53,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.Parameter
 
 /**
  * This class contains custom validation rules. 
@@ -117,8 +118,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 			warning("empty for-loop", body.eContainer, MGLangPackage.Literals.FOR_STATEMENT__HEAD)
 		}
 	}
-	
-		/**
+
+	/**
 	 * Warns for empty for-loops.
 	 */
 	@Check
@@ -287,14 +288,14 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 	}
-	
+
 	@Check
-	def checkPatternForOnlyRefsToMultiFeatures(PatternForBody body){
-		for(expr : body.commands){
-			if(expr instanceof PatternNodeReference){
-				if(expr.type.upperBound == 1){
+	def checkPatternForOnlyRefsToMultiFeatures(PatternForBody body) {
+		for (expr : body.commands) {
+			if (expr instanceof PatternNodeReference) {
+				if (expr.type.upperBound == 1) {
 					error("Only assignments to *-edges/-references allowed in for-loops.", expr,
-								MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
+						MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
 				}
 			}
 		}
@@ -576,18 +577,19 @@ class MGLangValidator extends AbstractMGLangValidator {
 				if (followingRocIsCyclic(targetNode, targetElement, roc, newLinkedList(ass))) {
 					error("Evaluation of assignment leads to cyclic dependency", ass,
 						MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
-						return true
+					return true
 				}
 			}
 		}
 	}
 
-	def private boolean followingRocIsCyclic(Node targetNode, ENamedElement targetElement, RefOrCall rocToFollow, java.util.List<NodeAttributeAssignment> visitedAssigns) {
+	def private boolean followingRocIsCyclic(Node targetNode, ENamedElement targetElement, RefOrCall rocToFollow,
+		java.util.List<NodeAttributeAssignment> visitedAssigns) {
 		val nextAssignment = findAssignmentToRoc(rocToFollow)
 		if (nextAssignment === null) {
 			return false;
 		}
-		if(visitedAssigns.contains(nextAssignment)){
+		if (visitedAssigns.contains(nextAssignment)) {
 			return true;
 		}
 		val nextNode = nextAssignment.eContainer.eContainer as Node
@@ -611,16 +613,39 @@ class MGLangValidator extends AbstractMGLangValidator {
 		return false;
 	}
 
+	@Check
 	/**
-	 * @returns the NodeAttributeAssignment to the attribute accessed within the given RefOrCall. Null, if there is no attribute access.
+	 * checks whether an attribute used in an assignment is set when referencing a newly defined node
+	 */
+	def checkAttributeSet(NodeAttributeAssignment ass) {
+		// the value to be assigned
+		val value = ass.value
+
+		if (value !== null) {
+			val rocs = EcoreUtil2.getAllContentsOfType(value, RefOrCall)
+			for (roc : rocs) {
+				if (roc.ref !== null && roc.ref instanceof Node && findAssignmentToRoc(roc) === null) {
+					error("Referenced value "+getTextFromEditorFile(getHighestRoc(roc))+" to be assigned is not set", ass,
+						MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
+				}
+			}
+		}
+	}
+
+	def private String getTextFromEditorFile(EObject obj) {
+		return NodeModelUtils.getTokenText(NodeModelUtils.getNode(obj))
+	}
+
+	/**
+	 * @returns the NodeAttributeAssignment to the attribute accessed within the given RefOrCall or the parameter it originated from. Null, if there is no attribute access.
 	 */
 	def private findAssignmentToRoc(RefOrCall roc) {
-		var rocIt = roc
-		if (roc.ref !== null && !roc.ref.eIsProxy) {
-			while (rocIt.target !== null && !(rocIt.ref instanceof ENamedElement)) {
+		var rocIt = getHighestRoc(roc)
+		if (rocIt.ref !== null && !rocIt.ref.eIsProxy) {
+			while (rocIt.target !== null && rocIt.ref !== null && !(rocIt.ref instanceof ENamedElement)) {
 				rocIt = rocIt.target
 			}
-
+			
 			if (rocIt.target !== null) {
 				val eNamedElement = rocIt.ref as ENamedElement
 				val node = rocIt.target.ref
@@ -640,9 +665,14 @@ class MGLangValidator extends AbstractMGLangValidator {
 		}
 	}
 
-//	def private equalENamedElements(ENamedElement e1, ENamedElement e2) {
-//		return e1.name.equals(e2.name) && e1.eContainer == e2.eContainer
-//	}
+	def private getHighestRoc(RefOrCall roc) {
+		var rocIt = roc
+		while (rocIt.eContainer !== null && rocIt.eContainer instanceof RefOrCall) {
+			rocIt = rocIt.eContainer as RefOrCall
+		}
+		return rocIt
+	}
+
 	@Check
 	def matchingParameters_roc(RefOrCall roc) {
 		if (roc.ref !== null && roc.ref instanceof EOperation) {

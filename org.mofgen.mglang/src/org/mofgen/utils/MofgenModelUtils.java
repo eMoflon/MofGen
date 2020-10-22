@@ -19,18 +19,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.util.SimpleAttributeResolver;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MofgenFile;
-import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.ParameterNodeOrPattern;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PrimitiveParameter;
 import org.mofgen.typeModel.TypeModelPackage;
-
-import com.google.common.base.Function;
 
 public class MofgenModelUtils {
 	/**
