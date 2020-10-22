@@ -49,6 +49,9 @@ class PatternBuildSequencer {
 		createNodes(nodes)
 	}
 
+	/**
+	 * @return the source code as string in an order for safe execution, i.e. no compiler or NP-exceptions
+	 */
 	def getOrderedTranslation() {
 		var cnt = 0
 		while (!remainingElements.empty) {
@@ -88,11 +91,12 @@ class PatternBuildSequencer {
 		return internalCoherencyCheck(obj)
 	}
 
-	private def dispatch boolean internalCoherencyCheck(Node node){
+	private def dispatch boolean internalCoherencyCheck(Node node) {
 		val createdBy = node.createdBy
-		if(createdBy instanceof NodeContent){
-			throw new IllegalStateException("All nodes created by plain NodeContent should have been instantiated initially and should therefore be valid")
-		}else{
+		if (createdBy instanceof NodeContent) {
+			throw new IllegalStateException(
+				"All nodes created by plain NodeContent should have been instantiated initially and should therefore be valid")
+		} else {
 			val pc = createdBy as PatternCall
 			return internalCoherencyCheck(pc)
 		}
@@ -228,12 +232,11 @@ class PatternBuildSequencer {
 	 */
 	private def createNodes(List<Node> nodes) {
 		for (node : nodes) {
-			// TODO Ordering for no double creation of nodes (w.r.t. nodes created by pattern calls)
-			srcCodeElements.add(PatternTranslator.translate(node))
-			validElements.add(getValidName(node))
 			val createdBy = node.createdBy
 			if (createdBy !== null) {
 				if (createdBy instanceof NodeContent) {
+					srcCodeElements.add(PatternTranslator.translate(node))
+					validElements.add(getValidName(node))
 					remainingElements.addAll(createdBy.refsAssigns)
 				} else if (createdBy instanceof PatternCall) {
 					remainingElements.add(node)
@@ -241,6 +244,9 @@ class PatternBuildSequencer {
 					throw new IllegalArgumentException(
 						"Given node " + node.name + " is neither created by plain assignments, nor by a pattern call.")
 				}
+			} else {
+				srcCodeElements.add(PatternTranslator.translate(node))
+				validElements.add(getValidName(node))
 			}
 		}
 	}

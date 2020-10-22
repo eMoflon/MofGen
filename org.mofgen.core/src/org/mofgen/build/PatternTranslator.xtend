@@ -114,7 +114,7 @@ class PatternTranslator {
 		if (createdBy instanceof NodeContent) {
 			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»);'''
 		} else if (createdBy instanceof PatternCall) {
-			return '''«node.name» = «GeneralTranslator.translatePatternCall(createdBy)»'''
+			return '''«node.name» = «GeneralTranslator.translatePatternCall(createdBy)»;'''
 		} else {
 			throw new IllegalStateException("Nodes should only be created by NodeContent or a pattern call")
 		}
@@ -191,14 +191,14 @@ class PatternTranslator {
 		return '''
 			«FOR caze : pSwitch.cases SEPARATOR 'else'»
 				if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
-					«FOR refAssign : caze.body.expressions SEPARATOR ';'AFTER';'»
+					«FOR refAssign : caze.body.expressions»
 						«translate(refAssign)»
 					«ENDFOR»
 				}
 			«ENDFOR»
 			«IF pSwitch.^default !== null»
 				else{
-					«FOR refAssign : (pSwitch.^default as PatternCaseBody).expressions SEPARATOR';'AFTER';'»
+					«FOR refAssign : (pSwitch.^default as PatternCaseBody).expressions»
 						«translate(refAssign)»
 					«ENDFOR»
 				}
@@ -215,7 +215,7 @@ class PatternTranslator {
 						«IF caze.when !== null»
 							if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
 						«ENDIF»
-						«FOR bodyExpr : caze.body.expressions SEPARATOR';'AFTER';'»
+						«FOR bodyExpr : caze.body.expressions»
 							«translate(bodyExpr)»
 						«ENDFOR»
 						«IF caze.when !== null»
@@ -225,7 +225,7 @@ class PatternTranslator {
 				«ENDIF»
 				«IF caze instanceof PatternCaseWithoutCast»
 					if(«MofgenUtil.resolveRefOrCall(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
-						«FOR bodyExpr : caze.body.expressions SEPARATOR';'AFTER';'»
+						«FOR bodyExpr : caze.body.expressions»
 							«translate(bodyExpr)»
 						«ENDFOR»
 					}
@@ -233,7 +233,7 @@ class PatternTranslator {
 			«ENDFOR»
 			«IF zwitch.^default !== null»
 				else {
-					«FOR expression : (zwitch.^default as PatternCaseBody).expressions SEPARATOR';'AFTER';'»
+					«FOR expression : (zwitch.^default as PatternCaseBody).expressions»
 						«translate(expression)»
 					«ENDFOR»
 				}

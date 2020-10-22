@@ -42,7 +42,7 @@ class GeneratorTranslator {
 		return '''
 			«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
 				if(«MofgenUtil.getTextFromEditorFile(caze.when)») {
-					«FOR bodyExpr : caze.body.expressions SEPARATOR ';' AFTER ';'»
+					«FOR bodyExpr : caze.body.expressions»
 						«translateGenSwitch(bodyExpr)»
 					«ENDFOR»
 				}
@@ -57,14 +57,14 @@ class GeneratorTranslator {
 
 	def static dispatch private String translateGen(GenSwitchCase zwitch) {
 		return '''
-			«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
+			«FOR caze : zwitch.cases SEPARATOR 'else'»
 				«IF caze instanceof GenCaseWithCast»
 					if(«MofgenUtil.resolveRefOrCall(zwitch.attribute)» instanceof «caze.node.type.instanceTypeName»){
 						«caze.node.type.instanceTypeName»«caze.node.name» = («caze.node.type.instanceTypeName»)«MofgenUtil.resolveRefOrCall(zwitch.attribute)»;
 						«IF caze.when !== null»
 							if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
 						«ENDIF»
-						«FOR bodyExpr : caze.body.expressions SEPARATOR ';' AFTER ';'»
+						«FOR bodyExpr : caze.body.expressions»
 							«translateGenSwitch(bodyExpr)»
 						«ENDFOR»
 						«IF caze.when !== null»
@@ -74,7 +74,7 @@ class GeneratorTranslator {
 				«ENDIF»
 				«IF caze instanceof GenCaseWithoutCast»
 					if(«caze.^val»){
-						«FOR bodyExpr : caze.body.expressions SEPARATOR ';' AFTER ';'»
+						«FOR bodyExpr : caze.body.expressions»
 							«translateGenSwitch(bodyExpr)»
 						«ENDFOR»
 					}
@@ -93,7 +93,7 @@ class GeneratorTranslator {
 	}
 
 	def static dispatch private String translateGen(PatternCall pc) {
-		return translatePatternCall(pc)
+		return '''«translatePatternCall(pc)»;'''
 	}
 
 	def static dispatch private String translateGen(Variable variable) {
@@ -108,18 +108,18 @@ class GeneratorTranslator {
 			}
 
 			return '''
-				«patternType» «variable.name» = «translatePatternCall(variable.value as PatternCall)»
+				«patternType» «variable.name» = «translatePatternCall(variable.value as PatternCall)»;
 			'''
 		} else {
 			val evalResult = (typeChecker.evaluate(variable.value) as EClassifier)
 			return '''
-				«evalResult.name» «variable.name» = «MofgenUtil.getTextFromEditorFile(variable.value)»
+				«evalResult.name» «variable.name» = «MofgenUtil.getTextFromEditorFile(variable.value)»;
 			'''
 		}
 	}
 
 	def static dispatch private String translateGen(VariableManipulation vm) {
-		return '''«vm.^var» = «vm.^val»'''
+		return '''«vm.^var» = «vm.^val»;'''
 	}
 
 	def static dispatch private String translateGen(CollectionManipulation cm) { return '''«cm»''' }
@@ -128,7 +128,7 @@ class GeneratorTranslator {
 	def static dispatch private String translateGen(GenReturn ret){
 	
 		return '''
-		return «ret.returnValue.name»
+		return «ret.returnValue.name»;
 		'''
 	}
 
@@ -156,17 +156,17 @@ class GeneratorTranslator {
 
 		return '''for(«headSrc»){
 		«FOR bodyExpr : forStatement.body.commands» 
-			«translateGen(bodyExpr)»;
+			«translateGen(bodyExpr)»
 		«ENDFOR»
 		}'''
 	}
 
 	def static private String translateCollection(Collection coll) {
 		if (coll instanceof List) {
-			return '''List<«MofgenUtil.getListType(coll).name»> «coll.name» = new LinkedList<>()'''
+			return '''List<«MofgenUtil.getListType(coll).name»> «coll.name» = new LinkedList<>();'''
 		}
 		if (coll instanceof Map) {
-			return '''Map<«MofgenUtil.getMapKeyType(coll).name», «MofgenUtil.getMapEntryType(coll).name»> «coll.name» = new HashMap<>()'''
+			return '''Map<«MofgenUtil.getMapKeyType(coll).name», «MofgenUtil.getMapEntryType(coll).name»> «coll.name» = new HashMap<>();'''
 		}
 	}
 

@@ -150,7 +150,7 @@ class JavaFileGenerator {
 				public EObject start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
 				«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaTypeAsString(parameter)» «parameter.name»Value«ENDFOR»
 				«FOR expression : gen.commands»
-					«GeneratorTranslator.translate(expression)»;
+					«GeneratorTranslator.translate(expression)»
 				«ENDFOR»
 				}				
 			}
