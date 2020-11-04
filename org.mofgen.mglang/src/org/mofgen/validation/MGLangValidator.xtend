@@ -53,7 +53,6 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.Parameter
 
 /**
  * This class contains custom validation rules. 
@@ -773,7 +772,16 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		} else {
 			if (roc.bracesSet) {
-				error(roc.ref + " is not a method", MGLangPackage.Literals.REF_OR_CALL__BRACES_SET) // TODO Correct highlighting?
+				val ref = roc.ref
+				if(ref instanceof EAttribute){
+					error(ref.name + " is not a method", MGLangPackage.Literals.REF_OR_CALL__REF)
+				}else
+				if(ref instanceof EReference){
+					error(ref.name + " is not a method", MGLangPackage.Literals.REF_OR_CALL__REF)
+				}else{
+					error(ref + " is not a method", MGLangPackage.Literals.REF_OR_CALL__REF)
+				}
+				
 				return;
 			}
 		}
