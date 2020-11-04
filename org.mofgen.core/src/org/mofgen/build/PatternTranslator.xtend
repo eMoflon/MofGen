@@ -1,28 +1,26 @@
 package org.mofgen.build
 
-import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment
+import org.mofgen.mGLang.NodeContent
+import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCaseBody
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternCaseWithoutCast
+import org.mofgen.mGLang.PatternForStatement
 import org.mofgen.mGLang.PatternIfElseSwitch
-import org.mofgen.mGLang.PatternNodeReference
+import org.mofgen.mGLang.PatternNodeReferenceToNode
+import org.mofgen.mGLang.PatternNodeReferenceToPatternCall
 import org.mofgen.mGLang.PatternReturn
 import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.mofgen.mGLang.ParamManipulation
-import org.mofgen.mGLang.PatternNodeReferenceToNode
-import org.mofgen.mGLang.PatternNodeReferenceToPatternCall
-import org.mofgen.mGLang.PatternForStatement
-import org.mofgen.mGLang.RangeForHead
-import org.mofgen.mGLang.NodeContent
 
 class PatternTranslator {
 
@@ -38,7 +36,7 @@ class PatternTranslator {
 					patternParameterTypes.put(parameter, parameter.type.literal)
 				} else if (parameter instanceof ParameterNodeOrPattern) {
 					val type = parameter.type
-					if (type instanceof EClass) {
+					if (type instanceof EClassifier) {
 						patternParameterTypes.put(parameter, type.name)
 					} else if (type instanceof Pattern) {
 						patternParameterTypes.put(parameter, NameProvider.getPatternClassName(type))

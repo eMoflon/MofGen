@@ -4,9 +4,10 @@ import java.util.HashMap;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.EcoreUtil2;
+import org.mofgen.mGLang.ArithmeticExpression;
 import org.mofgen.mGLang.List;
 import org.mofgen.mGLang.ListAdHoc;
 import org.mofgen.mGLang.ListDeclaration;
@@ -21,7 +22,6 @@ import org.mofgen.mGLang.MapTupel;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.Variable;
-import org.mofgen.mGLang.ArithmeticExpression;
 
 /**
  * Keeps track of the types of different Maps and Lists. Updated on every
@@ -33,9 +33,9 @@ import org.mofgen.mGLang.ArithmeticExpression;
 public class TypeRegistry {
 
 	public static TypeCalculator typeCalc = new TypeCalculator();
-	public static HashMap<List, EClass> listTypes;
-	public static HashMap<Map, EClass> keyTypes;
-	public static HashMap<Map, EClass> entryTypes;
+	public static HashMap<List, EClassifier> listTypes;
+	public static HashMap<Map, EClassifier> keyTypes;
+	public static HashMap<Map, EClassifier> entryTypes;
 	/**
 	 * Of type object since it can hold patterns or EClasses
 	 */
@@ -207,28 +207,28 @@ public class TypeRegistry {
 		} else {
 			// MapDeclaration
 			MapDeclaration decl = (MapDeclaration) defOrDecl;
-			EClass keyType = decl.getKeyType();
-			EClass entryType = decl.getEntryType();
+			EClassifier keyType = decl.getKeyType();
+			EClassifier entryType = decl.getEntryType();
 			keyTypes.put(map, keyType);
 			entryTypes.put(map, entryType);
 		}
 	}
 
-	public static EClass getListType(List list) {
+	public static EClassifier getListType(List list) {
 		if (update) {
 			updateListRegistry((MofgenFile) EcoreUtil2.getRootContainer(list));
 		}
 		return listTypes.get(list);
 	}
 
-	public static EClass getMapKeyType(Map map) {
+	public static EClassifier getMapKeyType(Map map) {
 		if (update) {
 			updateMapRegistry((MofgenFile) EcoreUtil2.getRootContainer(map));
 		}
 		return keyTypes.get(map);
 	}
 
-	public static EClass getMapEntryType(Map map) {
+	public static EClassifier getMapEntryType(Map map) {
 		if (update) {
 			updateMapRegistry((MofgenFile) EcoreUtil2.getRootContainer(map));
 		}

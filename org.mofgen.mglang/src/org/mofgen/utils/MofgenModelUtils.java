@@ -299,8 +299,6 @@ public class MofgenModelUtils {
 				return TypeModelPackage.Literals.NUMBER;
 			case DOUBLE:
 				return TypeModelPackage.Literals.NUMBER;
-			case STRING:
-				return TypeModelPackage.Literals.STRING;
 			case CHAR:
 				return TypeModelPackage.Literals.STRING;
 			case BOOLEAN:

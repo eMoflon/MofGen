@@ -284,7 +284,6 @@ class Calculator {
 		if (roc.ref instanceof Variable) {
 			return internalEvaluate((roc.ref as Variable).value)
 		}
-		// TODO This can usually be only inferred during runtime. therefore separate type checker? OR even turn THIS class into a type checker only?
 		if (roc.ref instanceof PrimitiveParameter) {
 			val primPram = roc.ref as PrimitiveParameter
 			switch primPram.type {
@@ -292,7 +291,6 @@ class Calculator {
 				case PrimitiveType.INT: {
 					return 0.0
 				}
-				case PrimitiveType.STRING,
 				case PrimitiveType.CHAR: {
 					return ""
 				}

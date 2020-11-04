@@ -317,7 +317,6 @@ class TypeCalculator {
 					case PrimitiveType.INT: {
 						return TypeModelPackage.Literals.NUMBER
 					}
-					case PrimitiveType.STRING,
 					case PrimitiveType.CHAR: {
 						return TypeModelPackage.Literals.STRING
 					}

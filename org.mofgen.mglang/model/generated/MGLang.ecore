@@ -262,7 +262,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ListDefOrDecl"/>
   <eClassifiers xsi:type="ecore:EClass" name="ListDeclaration" eSuperTypes="#//ListDefOrDecl">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ListDefinition" eSuperTypes="#//ListDefOrDecl"/>
   <eClassifiers xsi:type="ecore:EClass" name="ListAdHoc" eSuperTypes="#//ListDefinition">
@@ -275,8 +275,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MapDefOrDecl"/>
   <eClassifiers xsi:type="ecore:EClass" name="MapDeclaration" eSuperTypes="#//MapDefOrDecl">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="keyType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="entryType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="keyType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entryType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MapDefinition" eSuperTypes="#//MapDefOrDecl"/>
   <eClassifiers xsi:type="ecore:EClass" name="MapAdHoc" eSuperTypes="#//MapDefinition">
@@ -308,8 +308,7 @@
     <eLiterals name="INT" literal="int"/>
     <eLiterals name="CHAR" value="1" literal="char"/>
     <eLiterals name="DOUBLE" value="2" literal="double"/>
-    <eLiterals name="STRING" value="3" literal="String"/>
-    <eLiterals name="BOOLEAN" value="4" literal="boolean"/>
+    <eLiterals name="BOOLEAN" value="3" literal="boolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RelationalOp">
     <eLiterals name="GREATER" literal=">"/>

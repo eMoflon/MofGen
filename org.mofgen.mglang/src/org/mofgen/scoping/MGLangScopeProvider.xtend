@@ -8,9 +8,13 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.EcoreUtil2
+import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.ForStatement
@@ -116,18 +120,39 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 
 	def getScopeForListDeclaration_Type(ListDeclaration decl) {
-		val file = getRootFile(decl)
-		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
+		return getTypeScopeForCollection(EcoreUtil2.getContainerOfType(decl, Collection))
+	}
+
+	/**
+	 * provides the scope of types for collections
+	 */
+	def private getTypeScopeForCollection(Collection coll) {
+		val file = getRootFile(coll)
+		val types = newLinkedList()
+		for (clazz : MofgenModelUtils.getClasses(file)) {
+			types.add(EObjectDescription.create(QualifiedName.create(clazz.name), clazz))
+		}
+		types.addAll(getCollectionTypeDescriptions())
+		return new SimpleScope(IScope.NULLSCOPE, types)
+	}
+
+	/**
+	 * provides all relevant collection datatypes within the ecore package as a list of EObjectDescriptions
+	 */
+	def private getCollectionTypeDescriptions() {
+		return #[EObjectDescription.create(QualifiedName.create("Integer"), EcorePackage.Literals.EINT),
+			EObjectDescription.create(QualifiedName.create("Double"), EcorePackage.Literals.EDOUBLE),
+			EObjectDescription.create(QualifiedName.create("String"), EcorePackage.Literals.ESTRING),
+			EObjectDescription.create(QualifiedName.create("Boolean"), EcorePackage.Literals.EBOOLEAN),
+			EObjectDescription.create(QualifiedName.create("Char"), EcorePackage.Literals.ECHAR)]
 	}
 
 	def getScopeForMapDeclaration_KeyType(MapDeclaration decl) {
-		val file = getRootFile(decl)
-		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
+		return getTypeScopeForCollection(EcoreUtil2.getContainerOfType(decl, Collection))
 	}
 
 	def getScopeForMapDeclaration_EntryType(MapDeclaration decl) {
-		val file = getRootFile(decl)
-		return Scopes.scopeFor(MofgenModelUtils.getClasses(file))
+		return getTypeScopeForCollection(EcoreUtil2.getContainerOfType(decl, Collection))
 	}
 
 	def getScopeForCollectionManipulation_Trg(CollectionManipulation cm) {
@@ -204,7 +229,10 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			val root = MofgenModelUtils.getRootFile(paramNode)
 			val classes = MofgenModelUtils.getUniqueClasses(root)
 			val patterns = EcoreUtil2.getAllContentsOfType(root, Pattern)
-			return Scopes.scopeFor(classes + patterns)
+			val parentScope = Scopes.scopeFor(classes + patterns)
+			val dataTypes = #[EObjectDescription.create(QualifiedName.create("String"), EcorePackage.Literals.ESTRING)]
+			return new SimpleScope(parentScope, dataTypes)
+
 		}
 	}
 
@@ -360,7 +388,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				if (head instanceof ListForEachHead) {
 					iteratorVars.add(head.iteratorVar)
 				}
-				if(head instanceof RangeForHead){
+				if (head instanceof RangeForHead) {
 					iteratorVars.add(head.iteratorVar)
 				}
 			}

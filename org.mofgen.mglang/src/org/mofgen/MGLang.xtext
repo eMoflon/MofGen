@@ -88,7 +88,7 @@ Parameter:
 PrimitiveParameter:
 	type=PrimitiveType name=ID;
 
-ParameterNodeOrPattern:
+ParameterNodeOrPattern: //TODO add String as type here
 	(srcModel=[Import] '.')? type=[ecore::EObject] name=ID;	//EObject to allow for eClasses from metamodels or for patterns as a whole
 
 PatternSwitch:
@@ -221,7 +221,7 @@ ListDefOrDecl:
 	ListDefinition | ListDeclaration;
 
 ListDeclaration:
-	'of' type=[ecore::EClass];
+	'of' type=[ecore::EClassifier];
 
 ListDefinition:
 	ASSIGNMENT_OP ListAdHoc;
@@ -236,7 +236,7 @@ MapDefOrDecl:
 	MapDefinition | MapDeclaration;
 
 MapDeclaration:
-	'of' '(' keyType=[ecore::EClass] ',' entryType=[ecore::EClass] ')'
+	'of' '(' keyType=[ecore::EClassifier] ',' entryType=[ecore::EClassifier] ')'
 ;
 
 MapDefinition:
@@ -287,7 +287,7 @@ enum MathFunc: //TODO Replace by methods of java.math or similar
 	SQRT='sqrt' | ABS='abs';
 
 enum PrimitiveType:	//TODO: Replace by standard eDataTypes?
-	INT='int' | CHAR='char' | DOUBLE='double' | STRING='String' | BOOLEAN='boolean' //String as Primitive? (and therefore also better lowercase?)
+	INT='int' | CHAR='char' | DOUBLE='double' | BOOLEAN='boolean'
 ;
 
 terminal DOUBLE returns ecore::EDouble:
