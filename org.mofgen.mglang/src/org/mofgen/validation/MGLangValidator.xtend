@@ -53,6 +53,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.MapAdHoc
 
 /**
  * This class contains custom validation rules. 
@@ -670,6 +671,20 @@ class MGLangValidator extends AbstractMGLangValidator {
 			rocIt = rocIt.eContainer as RefOrCall
 		}
 		return rocIt
+	}
+	
+	@Check
+	/**
+	 * Checks whether all keys within an ad-hoc created map are unique
+	 */
+	def checkMapKeysUnique(MapAdHoc definition){
+		val keys = definition.entries.map[e|calc.evaluate(e.key)]
+		val set = newHashSet()
+		for(key : keys){
+			if(!set.add(key)){
+				error("Key \""+ key + "\" is not unique.", EcoreUtil2.getContainerOfType(definition, Map), MGLangPackage.Literals.MAP__DEF_OR_DECL)
+			}
+		}
 	}
 
 	@Check
