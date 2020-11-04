@@ -375,12 +375,13 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 					if (givenParameterType instanceof EClassifier && neededParameterType instanceof EClassifier) {
 						if (!(MofgenModelUtils.getEClassForInternalModel(neededParameterType as EClassifier).isSuperTypeOf(MofgenModelUtils.getEClassForInternalModel(givenParameterType as EClassifier)))) {
-							val givenParameterTypeEClass = givenParameterType as EClass
+							val givenParameterTypeEClassifier = givenParameterType as EClassifier
 							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
-								if (givenParameterType !== neededParameterType) {
+								// TODO implicit conversion to string where possible
+								if (givenParameterType !== neededParameterType && neededParameterType !== TypeModelPackage.Literals.STRING) {
 									error(
-										"Given type " + givenParameterTypeEClass.name + " does not match needed type " +
-											(neededParameterType as EClass).name,
+										"Given type " + givenParameterTypeEClassifier.name + " does not match needed type " +
+											(neededParameterType as EClassifier).name,
 										MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 								}
 							}

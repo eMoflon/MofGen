@@ -21,6 +21,7 @@ import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import org.eclipse.emf.ecore.EcorePackage
 
 class PatternTranslator {
 
@@ -37,7 +38,11 @@ class PatternTranslator {
 				} else if (parameter instanceof ParameterNodeOrPattern) {
 					val type = parameter.type
 					if (type instanceof EClassifier) {
-						patternParameterTypes.put(parameter, type.name)
+						if(type == EcorePackage.Literals.ESTRING){
+							patternParameterTypes.put(parameter, "String")
+						}else{
+							patternParameterTypes.put(parameter, type.name)
+						}
 					} else if (type instanceof Pattern) {
 						patternParameterTypes.put(parameter, NameProvider.getPatternClassName(type))
 					} else {
@@ -55,8 +60,8 @@ class PatternTranslator {
 		«getPatternDoc(pattern)»
 		«getPatternSignature(pattern)»
 			
-			«FOR node : nodes SEPARATOR ';' AFTER ';'»
-				«node.type.name» «node.name»
+			«FOR node : nodes»
+				«node.type.name» «node.name»;
 			«ENDFOR»
 			
 			public «NameProvider.getPatternClassName(pattern)»(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»

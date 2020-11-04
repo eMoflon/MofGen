@@ -5,24 +5,31 @@ import java.util.Map
 import java.util.Optional
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.mofgen.build.MofgenBuilder
+import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.interpreter.TypeRegistry
+import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.List
 import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.Parameter
+import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.PrimitiveParameter
+import org.mofgen.typeModel.TypeModelPackage
 
 class MofgenUtil {
 
 	def static String getTextFromEditorFile(EObject obj) {
 		return NodeModelUtils.getTokenText(NodeModelUtils.getNode(obj))
 	}
-
-	
 
 	/**
 	 * Scans all EPackages known by the build process for the given class
@@ -61,17 +68,73 @@ class MofgenUtil {
 	}
 
 	def static getListType(List list) {
-		TypeRegistry.getListType(list)
+		val listType = TypeRegistry.getListType(list)
+		return convertTypeToStandardType(listType)
+	}
+
+	def private static convertTypeToStandardType(EClassifier type) {
+		switch type {
+			case EcorePackage.Literals.ESTRING: TypeModelPackage.Literals.STRING
+			case EcorePackage.Literals.EINT,
+			case EcorePackage.Literals.EDOUBLE: TypeModelPackage.Literals.NUMBER
+			case EcorePackage.Literals.ECHAR: TypeModelPackage.Literals.STRING
+			case EcorePackage.Literals.EBOOLEAN: TypeModelPackage.Literals.BOOLEAN
+			default: type
+		}
+	}
+
+	/**
+	 * returns a translation that also contains a cast between the given and needed parameter,
+	 * as long as it is between primitive types and string. if there is no need to cast,
+	 * the normal translation will be returned.
+	 */
+	def static convertIfPrimitiveCastNeeded(Parameter neededParameter, ArithmeticExpression givenParam) {
+		val calc = new TypeCalculator()
+
+		if (neededParameter instanceof PrimitiveParameter) {
+			val neededParameterType = neededParameter.type
+			var givenParameterType = calc.evaluate(givenParam)
+			if (givenParameterType === EcorePackage.Literals.ESTRING) {
+				if(neededParameterType.literal.equals("int")){
+					return '''Integer.valueOf(«getTextFromEditorFile(givenParam)»)'''
+				} 
+				if(neededParameterType.literal.equals("double")){
+					return '''Double.valueOf(«getTextFromEditorFile(givenParam)»)'''
+				}
+				if(neededParameterType.literal.equals("boolean")){
+					return '''Boolean.valueOf(«getTextFromEditorFile(givenParam)»)'''
+				}
+			}
+		}
+
+		if (neededParameter instanceof ParameterNodeOrPattern) {
+			if (neededParameter.type === EcorePackage.Literals.ESTRING) {
+				val givenParamEval = calc.evaluate(givenParam)
+				if (givenParamEval instanceof EDataType && isDataTypePrimitive(givenParamEval as EDataType)) {
+					return '''String.valueOf(«getTextFromEditorFile(givenParam)»)'''
+				}
+			}
+		}
+		
+		return getTextFromEditorFile(givenParam)
+	}
+	
+	/**
+	 * return true if the given datatype is an eint, edouble, echar or eboolean
+	 */
+	def static boolean isDataTypePrimitive(EDataType dt){
+		return dt === EcorePackage.Literals.EINT || dt === EcorePackage.Literals.EDOUBLE || dt === EcorePackage.Literals.EBOOLEAN || dt === EcorePackage.Literals.ECHAR
 	}
 
 	def static getMapKeyType(org.mofgen.mGLang.Map map) {
-		TypeRegistry.getMapKeyType(map)
+		val keyType = TypeRegistry.getMapKeyType(map)
+		return convertTypeToStandardType(keyType)
 	}
 
 	def static getMapEntryType(org.mofgen.mGLang.Map map) {
-		TypeRegistry.getMapEntryType(map)
+		val entryType = TypeRegistry.getMapEntryType(map)
+		return convertTypeToStandardType(entryType)
 	}
-
 
 	/**
 	 * The set of meta-model resources loaded.
@@ -144,8 +207,8 @@ class MofgenUtil {
 			metaModelResources.remove(uri);
 		}
 	}
-	
-	def static getGetterMethod(Node node){
+
+	def static getGetterMethod(Node node) {
 		return '''get«node.name.toFirstUpper»()'''
 	}
 

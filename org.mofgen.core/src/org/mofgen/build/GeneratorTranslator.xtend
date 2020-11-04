@@ -124,7 +124,9 @@ class GeneratorTranslator {
 		return '''«vm.^var» = «vm.^val»;'''
 	}
 
-	def static dispatch private String translateGen(CollectionManipulation cm) { return '''«cm»''' }
+	def static dispatch private String translateGen(CollectionManipulation cm) {
+		return '''«MofgenUtil.getTextFromEditorFile(cm)»;'''
+	}
 	
 		
 	def static dispatch private String translateGen(GenReturn ret){

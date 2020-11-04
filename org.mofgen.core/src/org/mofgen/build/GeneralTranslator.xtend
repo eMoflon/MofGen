@@ -1,43 +1,49 @@
 package org.mofgen.build
 
-import org.mofgen.mGLang.PatternCall
-import org.mofgen.util.NameProvider
-import org.mofgen.util.MofgenUtil
-import org.mofgen.mGLang.ForHead
-import org.mofgen.mGLang.RangeForHead
-import org.mofgen.mGLang.GeneralForEachHead
-import org.mofgen.mGLang.ListForEachHead
-import org.mofgen.mGLang.ParameterNodeOrPattern
-import org.mofgen.mGLang.Import
-import org.mofgen.mGLang.PrimitiveParameter
-import org.mofgen.mGLang.RefOrCall
-import org.eclipse.emf.ecore.ENamedElement
-import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EEnum
-import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.Variable
+import org.eclipse.emf.ecore.EEnumLiteral
+import org.eclipse.emf.ecore.ENamedElement
 import org.mofgen.mGLang.ArithmeticExpression
-import org.mofgen.mGLang.Literal
-import org.mofgen.mGLang.UnaryMinus
+import org.mofgen.mGLang.ForHead
 import org.mofgen.mGLang.FunctionCall
+import org.mofgen.mGLang.GeneralForEachHead
+import org.mofgen.mGLang.Import
+import org.mofgen.mGLang.ListForEachHead
+import org.mofgen.mGLang.Literal
+import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.NegationExpression
+import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.PatternCall
+import org.mofgen.mGLang.Primary
+import org.mofgen.mGLang.PrimitiveParameter
+import org.mofgen.mGLang.RangeForHead
+import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Rel
 import org.mofgen.mGLang.Secondary
-import org.mofgen.mGLang.Primary
 import org.mofgen.mGLang.Tertiary
-import org.mofgen.interpreter.TypeRegistry
+import org.mofgen.mGLang.UnaryMinus
+import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
-import org.mofgen.mGLang.Map
+import org.mofgen.util.MofgenUtil
+import org.mofgen.util.NameProvider
 
 class GeneralTranslator {
 
 	def static String translatePatternCall(PatternCall pc) {
 		val pReturn = pc.called.^return
+		
+		val paramsTranslated = newLinkedList()
+		for(var i = 0; i < pc.params.params.size; i++){
+			paramsTranslated.add(MofgenUtil.convertIfPrimitiveCastNeeded(pc.called.parameters.get(i), pc.params.params.get(i)))
+		}
+		
 		if (pReturn !== null && pReturn.returnValue !== null) {
-			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»))«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn.returnValue)»
+			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»))«ELSE»«FOR paramText : paramsTranslated SEPARATOR ',' AFTER ')'» «paramText»
+			«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn.returnValue)»
 			'''
 		} else {
-			return '''new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»)«ELSE»«FOR param : pc.params.params SEPARATOR ',' AFTER ')'» «MofgenUtil.getTextFromEditorFile(param)»«ENDFOR»
+			return '''new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»)«ELSE»«FOR paramText : paramsTranslated SEPARATOR ',' AFTER ')'» «paramText»«ENDFOR»
 				«ENDIF»
 			'''
 		}
@@ -50,10 +56,10 @@ class GeneralTranslator {
 				var typeString = ""
 				var collectionString = ""
 				if(head.eref == TypeModelPackage.Literals.MAP__ENTRIES){
-					typeString = TypeRegistry.getMapEntryType(head.src.ref as Map).name
+					typeString = MofgenUtil.getMapEntryType(head.src.ref as Map).name
 					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».values()'''
 				}else if(head.eref == TypeModelPackage.Literals.MAP__KEYS){
-					typeString = TypeRegistry.getMapEntryType(head.src.ref as Map).name
+					typeString = MofgenUtil.getMapKeyType(head.src.ref as Map).name
 					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».keySet()'''
 				}else{
 					typeString = head.eref.name
