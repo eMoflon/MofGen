@@ -58,6 +58,9 @@
       <genOperations ecoreOperation="typeModel.ecore#//List/remove">
         <genParameters ecoreParameter="typeModel.ecore#//List/remove/obj"/>
       </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//List/addAll">
+        <genParameters ecoreParameter="typeModel.ecore#//List/addAll/coll"/>
+      </genOperations>
     </genClasses>
     <genClasses image="false" ecoreClass="typeModel.ecore#//Collection"/>
     <genClasses ecoreClass="typeModel.ecore#//EnumLiteral"/>

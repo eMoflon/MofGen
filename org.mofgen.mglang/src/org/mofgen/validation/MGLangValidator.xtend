@@ -21,6 +21,7 @@ import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Collection
+import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.ForRange
 import org.mofgen.mGLang.GenCaseWithCast
 import org.mofgen.mGLang.GenCaseWithoutCast
@@ -33,6 +34,7 @@ import org.mofgen.mGLang.List
 import org.mofgen.mGLang.ListAdHoc
 import org.mofgen.mGLang.MGLangPackage
 import org.mofgen.mGLang.Map
+import org.mofgen.mGLang.MapAdHoc
 import org.mofgen.mGLang.MapTupel
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment
@@ -53,7 +55,6 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.MapAdHoc
 
 /**
  * This class contains custom validation rules. 
@@ -290,6 +291,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
+	/**
+	 * checks that in a for-loop within a pattern only assignments to *-references appear
+	 */
 	def checkPatternForOnlyRefsToMultiFeatures(PatternForBody body) {
 		for (expr : body.commands) {
 			if (expr instanceof PatternNodeReference) {
@@ -625,8 +629,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 			val rocs = EcoreUtil2.getAllContentsOfType(value, RefOrCall)
 			for (roc : rocs) {
 				if (roc.ref !== null && roc.ref instanceof Node && findAssignmentToRoc(roc) === null) {
-					error("Referenced value "+getTextFromEditorFile(getHighestRoc(roc))+" to be assigned is not set", ass,
-						MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
+					error(
+						"Referenced value " + getTextFromEditorFile(getHighestRoc(roc)) + " to be assigned is not set",
+						ass, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
 				}
 			}
 		}
@@ -645,7 +650,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 			while (rocIt.target !== null && rocIt.ref !== null && !(rocIt.ref instanceof ENamedElement)) {
 				rocIt = rocIt.target
 			}
-			
+
 			if (rocIt.target !== null) {
 				val eNamedElement = rocIt.ref as ENamedElement
 				val node = rocIt.target.ref
@@ -672,17 +677,141 @@ class MGLangValidator extends AbstractMGLangValidator {
 		}
 		return rocIt
 	}
-	
+
 	@Check
 	/**
 	 * Checks whether all keys within an ad-hoc created map are unique
 	 */
-	def checkMapKeysUnique(MapAdHoc definition){
+	def checkMapKeysUnique(MapAdHoc definition) {
 		val keys = definition.entries.map[e|calc.evaluate(e.key)]
 		val set = newHashSet()
-		for(key : keys){
-			if(!set.add(key)){
-				error("Key \""+ key + "\" is not unique.", EcoreUtil2.getContainerOfType(definition, Map), MGLangPackage.Literals.MAP__DEF_OR_DECL)
+		for (key : keys) {
+			if (!set.add(key)) {
+				error("Key \"" + key + "\" is not unique.", EcoreUtil2.getContainerOfType(definition, Map),
+					MGLangPackage.Literals.MAP__DEF_OR_DECL)
+			}
+		}
+	}
+
+	@Check
+	def matchingParameters_collManipulation(CollectionManipulation cm) {
+		val op = cm.op
+		var neededParameters = op.EParameters
+		val givenParameters = cm.params.params
+
+		// check number of parameters
+		if (givenParameters.size != neededParameters.size) {
+			error("Method \"" + op.name + "\" needs " + neededParameters.size + " parameters but was given " +
+				givenParameters.size, MGLangPackage.Literals.COLLECTION_MANIPULATION__OP)
+			return
+		}
+
+		// get needed parameters corresponding to the internal type system
+		var neededParams = newLinkedList()
+		switch op {
+			case TypeModelPackage.Literals.LIST___INDEX_OF__EOBJECT,
+			case TypeModelPackage.Literals.LIST___ADD__EOBJECT,
+			case TypeModelPackage.Literals.LIST___REMOVE__EOBJECT,
+			case TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT: {
+				neededParams.add(TypeRegistry.getListType(cm.trg as List))
+			}
+			case TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT,
+			case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
+				neededParams.add(TypeRegistry.getMapKeyType(cm.trg as Map))
+			}
+			case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
+			case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
+				neededParams.add(TypeRegistry.getMapEntryType(cm.trg as Map))
+			}
+			case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {
+				neededParams.add(TypeRegistry.getMapKeyType(cm.trg as Map))
+				neededParams.add(TypeRegistry.getMapEntryType(cm.trg as Map))
+			}
+			case TypeModelPackage.Literals.LIST___ADD_ALL__LIST: {
+				neededParams.add(MGLangPackage.Literals.LIST)
+			}
+			default: {
+				neededParams.addAll(op.EParameters.map [ x |
+					if (x instanceof Pattern) {
+						x as Pattern
+					} else {
+						x.EType
+					}
+				])
+			}
+		}
+
+		// Check parameter types
+		checkMatchingParameterTypes(givenParameters, neededParams,
+			MGLangPackage.Literals.COLLECTION_MANIPULATION__PARAMS)
+
+		// check collection types for given collection
+		if (op == TypeModelPackage.Literals.LIST___ADD_ALL__LIST) {
+			val neededListType = TypeRegistry.getListType(cm.trg as List)
+			for (givenParam : givenParameters) {
+				val givenParamEval = typeChecker.evaluate(givenParam)
+				if (givenParamEval == TypeModelPackage.Literals.LIST) {
+					val givenListType = TypeRegistry.getListType((givenParam as RefOrCall).ref as List)
+					if (!MofgenModelUtils.getEClassForInternalModel(neededListType).isSuperTypeOf(MofgenModelUtils.getEClassForInternalModel(givenListType))) {
+						error(
+							"List " + cm.trg.name + " is of other type than given list " +
+								((givenParam as RefOrCall).ref as List).name, MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG)
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Checks the consistency of parameter types w.r.t. the internal type system and throws errors at the given errorLoc when encountering any violations
+	 */
+	def private checkMatchingParameterTypes(java.util.List<ArithmeticExpression> givenParams,
+		java.util.List<EObject> neededParams, EReference errorLoc) {
+		// Check parameter types
+		for (var i = 0; i < givenParams.size; i++) {
+			try {
+				val givenParameterEval = typeChecker.evaluate(givenParams.get(i))
+				val neededParameterEval = neededParams.get(i)
+
+				if (givenParameterEval instanceof EClassifier && neededParameterEval instanceof EClassifier) {
+
+					val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
+						givenParameterEval as EClassifier)
+					val neededParameterType = MofgenModelUtils.getEClassForInternalModel(
+						neededParameterEval as EClassifier)
+
+					if (!(givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
+						neededParameterType.isSuperTypeOf(givenParameterType))) {
+						if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
+							if (givenParameterType !== neededParameterType) {
+								error(
+									"Given parameter type " + givenParameterType.name +
+										" does not match needed parameter type " + neededParameterType.name, errorLoc)
+							}
+						}
+					}
+				} else if (givenParameterEval instanceof Pattern && neededParameterEval instanceof Pattern) {
+					val givenParameterPattern = givenParameterEval as Pattern
+					val neededParameterPattern = neededParameterEval as Pattern
+					if (!givenParameterPattern.name.equals(neededParameterPattern.name)) {
+						error("Needed Pattern " + neededParameterPattern.name + " but was given Pattern " +
+							givenParameterPattern.name, errorLoc)
+					}
+				} else {
+					if (givenParameterEval instanceof Pattern) {
+						error("Was given Pattern " + givenParameterEval.name + " but needed EClass " +
+							MofgenModelUtils.getEClassForInternalModel(neededParameterEval as EClassifier).name,
+							errorLoc)
+					} else {
+						error(
+							"Was given EClass " +
+								MofgenModelUtils.getEClassForInternalModel(givenParameterEval as EClassifier).name +
+								" but needed Pattern " + (neededParameterEval as Pattern).name, errorLoc)
+					}
+				}
+
+			} catch (MismatchingTypesException e) {
+				error(e.message, errorLoc)
 			}
 		}
 	}
@@ -698,29 +827,37 @@ class MGLangValidator extends AbstractMGLangValidator {
 				if (op !== null && roc.params !== null && roc.params.params !== null) {
 					val givenParams = roc.params.params
 					var neededParams = newLinkedList()
-
-					if (op == TypeModelPackage.Literals.LIST___INDEX_OF__EOBJECT ||
-						op == TypeModelPackage.Literals.LIST___ADD__EOBJECT ||
-						op == TypeModelPackage.Literals.LIST___REMOVE__EOBJECT ||
-						op == TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT) {
-						neededParams.add(TypeRegistry.getListType(roc.target.ref as List))
-					} else if (op == TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT ||
-						op == TypeModelPackage.Literals.MAP___GET__EOBJECT) {
-						neededParams.add(TypeRegistry.getMapKeyType(roc.target.ref as Map))
-					} else if (op == TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT ||
-						op == TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT) {
-						neededParams.add(TypeRegistry.getMapEntryType(roc.target.ref as Map))
-					} else if (op == TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT) {
-						neededParams.add(TypeRegistry.getMapKeyType(roc.target.ref as Map))
-						neededParams.add(TypeRegistry.getMapEntryType(roc.target.ref as Map))
-					} else {
-						neededParams.addAll(op.EParameters.map [ x |
-							if (x instanceof Pattern) {
-								x as Pattern
-							} else {
-								x.EType
-							}
-						])
+					switch op {
+						case TypeModelPackage.Literals.LIST___INDEX_OF__EOBJECT,
+						case TypeModelPackage.Literals.LIST___ADD__EOBJECT,
+						case TypeModelPackage.Literals.LIST___REMOVE__EOBJECT,
+						case TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT: {
+							neededParams.add(TypeRegistry.getListType(roc.target.ref as List))
+						}
+						case TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT,
+						case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
+							neededParams.add(TypeRegistry.getMapKeyType(roc.target.ref as Map))
+						}
+						case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
+						case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
+							neededParams.add(TypeRegistry.getMapEntryType(roc.target.ref as Map))
+						}
+						case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {
+							neededParams.add(TypeRegistry.getMapKeyType(roc.target.ref as Map))
+							neededParams.add(TypeRegistry.getMapEntryType(roc.target.ref as Map))
+						}
+						case TypeModelPackage.Literals.LIST___ADD_ALL__LIST: {
+							neededParams.add(MGLangPackage.Literals.LIST)
+						}
+						default: {
+							neededParams.addAll(op.EParameters.map [ x |
+								if (x instanceof Pattern) {
+									x as Pattern
+								} else {
+									x.EType
+								}
+							])
+						}
 					}
 
 					// Check parameter count
@@ -731,72 +868,20 @@ class MGLangValidator extends AbstractMGLangValidator {
 					}
 
 					// Check parameter types
-					for (var i = 0; i < givenParams.size; i++) {
-						try {
-							val givenParameterEval = typeChecker.evaluate(givenParams.get(i))
-							val neededParameterEval = neededParams.get(i)
-
-							if (givenParameterEval instanceof EClassifier &&
-								neededParameterEval instanceof EClassifier) {
-
-								val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
-									givenParameterEval as EClassifier)
-								val neededParameterType = MofgenModelUtils.getEClassForInternalModel(
-									neededParameterEval as EClassifier)
-
-								if (!(givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
-									neededParameterType.isSuperTypeOf(givenParameterType))) {
-									if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
-										if (givenParameterType !== neededParameterType) {
-											error(
-												"Given parameter type " + givenParameterType.name +
-													" does not match needed parameter type " + neededParameterType.name,
-												MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-										}
-									}
-								}
-
-							} else if (givenParameterEval instanceof Pattern &&
-								neededParameterEval instanceof Pattern) {
-								val givenParameterPattern = givenParameterEval as Pattern
-								val neededParameterPattern = neededParameterEval as Pattern
-								if (!givenParameterPattern.name.equals(neededParameterPattern.name)) {
-									error("Needed Pattern " + neededParameterPattern.name + " but was given Pattern " +
-										givenParameterPattern.name, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-								}
-							} else {
-								if (givenParameterEval instanceof Pattern) {
-									error("Was given Pattern " + givenParameterEval.name + " but needed EClass " +
-										MofgenModelUtils.getEClassForInternalModel(neededParameterEval as EClassifier).
-											name, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-								} else {
-									error(
-										"Was given EClass " +
-											MofgenModelUtils.getEClassForInternalModel(
-												givenParameterEval as EClassifier).name + " but needed Pattern " +
-											(neededParameterEval as Pattern).name,
-										MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-								}
-							}
-
-						} catch (MismatchingTypesException e) {
-							error(e.message, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
-						}
-					}
+					checkMatchingParameterTypes(givenParams, neededParams, MGLangPackage.Literals.REF_OR_CALL__PARAMS)
 				}
 			}
 		} else {
 			if (roc.bracesSet) {
 				val ref = roc.ref
-				if(ref instanceof EAttribute){
+				if (ref instanceof EAttribute) {
 					error(ref.name + " is not a method", MGLangPackage.Literals.REF_OR_CALL__REF)
-				}else
-				if(ref instanceof EReference){
+				} else if (ref instanceof EReference) {
 					error(ref.name + " is not a method", MGLangPackage.Literals.REF_OR_CALL__REF)
-				}else{
+				} else {
 					error(ref + " is not a method", MGLangPackage.Literals.REF_OR_CALL__REF)
 				}
-				
+
 				return;
 			}
 		}

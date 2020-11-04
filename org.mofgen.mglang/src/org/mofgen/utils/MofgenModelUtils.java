@@ -19,12 +19,15 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
+import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.Import;
+import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.ParameterNodeOrPattern;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PrimitiveParameter;
+import org.mofgen.mGLang.RefOrCall;
 import org.mofgen.typeModel.TypeModelPackage;
 
 public class MofgenModelUtils {
@@ -324,6 +327,12 @@ public class MofgenModelUtils {
 
 	public static EClass getEClassForInternalModel(EClassifier classifier) {
 		if (classifier != null && classifier instanceof EClass) {
+			if(classifier == MGLangPackage.Literals.LIST) {
+				return TypeModelPackage.Literals.LIST;
+			}
+			if(classifier == MGLangPackage.Literals.MAP) {
+				return TypeModelPackage.Literals.MAP;
+			}
 			return (EClass) classifier;
 		}
 		if (classifier != null && classifier instanceof EEnum) {
