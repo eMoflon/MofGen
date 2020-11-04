@@ -100,7 +100,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 				error("Expected number but was given type " + eval.name, obj, errorLoc)
 				return false
 			} else if (eval !== TypeModelPackage.Literals.NUMBER) {
-				error("Expected number but was given type " + (eval as EClass).name, obj, errorLoc)
+				error("Expected number but was given type " + (eval as EClassifier).name, obj, errorLoc)
 				return false
 			} else {
 				return true
@@ -373,8 +373,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 					val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
 
-					if (givenParameterType instanceof EClass && neededParameterType instanceof EClass) {
-						if (!((neededParameterType as EClass).isSuperTypeOf(givenParameterType as EClass))) {
+					if (givenParameterType instanceof EClassifier && neededParameterType instanceof EClassifier) {
+						if (!(MofgenModelUtils.getEClassForInternalModel(neededParameterType as EClassifier).isSuperTypeOf(MofgenModelUtils.getEClassForInternalModel(givenParameterType as EClassifier)))) {
 							val givenParameterTypeEClass = givenParameterType as EClass
 							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
 								if (givenParameterType !== neededParameterType) {
@@ -395,10 +395,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 					} else {
 						if (givenParameterType instanceof Pattern) {
 							error("Given Pattern " + givenParameterType.name + " does not match needed type " +
-								(neededParameterType as EClass).name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+								(neededParameterType as EClassifier).name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 						} else {
-							val givenParameterTypeEClass = givenParameterType as EClass
-							error("Given type " + givenParameterTypeEClass.name + " does not match needed Pattern " +
+							val givenParameterTypeEClassifier = givenParameterType as EClassifier
+							error("Given type " + givenParameterTypeEClassifier.name + " does not match needed Pattern " +
 								(neededParameterType as Pattern).name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 						}
 					}
