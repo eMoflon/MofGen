@@ -278,6 +278,7 @@
     <genClasses ecoreClass="MGLang.ecore#//NumberLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//NumberLiteral/val"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//NullLiteral"/>
     <genClasses ecoreClass="MGLang.ecore#//Tertiary">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Tertiary/left"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Tertiary/op"/>

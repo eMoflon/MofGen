@@ -51,10 +51,13 @@ import org.mofgen.mGLang.PatternWhenCase
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.RefParams
+import org.mofgen.mGLang.Rel
+import org.mofgen.mGLang.RelationalOp
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.NullLiteral
 
 /**
  * This class contains custom validation rules. 
@@ -886,6 +889,18 @@ class MGLangValidator extends AbstractMGLangValidator {
 				return;
 			}
 		}
+	}
+	
+	@Check
+	// TODO testing
+	def checkNullOnlyInComparisons(NullLiteral lit){
+		val container = lit.eContainer;
+		if(container instanceof Rel){
+			if(container.relation === RelationalOp.EQUAL || container.relation === RelationalOp.UNEQUAL){
+				return
+			}
+		}
+		error("Use of '"+NodeModelUtils.getTokenText(NodeModelUtils.getNode(lit))+"' is only allowed for null", lit.eContainingFeature)
 	}
 
 }

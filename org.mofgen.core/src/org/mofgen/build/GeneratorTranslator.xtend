@@ -132,7 +132,7 @@ class GeneratorTranslator {
 	def static dispatch private String translateGen(GenReturn ret){
 	
 		return '''
-		return «ret.returnValue.name»;
+		return  «MofgenUtil.getTextFromEditorFile(ret.returnValue)»;
 		'''
 	}
 

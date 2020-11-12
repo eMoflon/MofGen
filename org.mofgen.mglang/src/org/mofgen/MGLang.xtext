@@ -3,8 +3,6 @@ grammar org.mofgen.MGLang with org.eclipse.xtext.common.Terminals
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate mGLang "http://www.mofgen.org/MGLang"
 
-// TODO Unique names for variable and pattern names (except for outer/inner scope shadowing) ?
-
 MofgenFile:
 	(imports+=Import)*
 	(config=Config)
@@ -35,7 +33,7 @@ Pattern:
 	(return=PatternReturn)?;
 
 PatternCommand:
-	Node | ParamManipulation; //TODO Introduce one more switch type: outside of all nodes to specify whether the nodes should be created at all
+	Node | ParamManipulation;
 
 PatternReturn:
 	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
@@ -250,8 +248,6 @@ MapTupel:
 
 	//======================================Arithmetics============================================
 	
-	// TODO allow null checks
-	
 ArithmeticExpression:
 	TertiaryExpression;
 
@@ -272,7 +268,7 @@ BaseExpr returns ArithmeticExpression:
 	expr=ArithmeticExpression ')' | {UnaryMinus} '-' expr=BaseExpr | Literal | RefOrCall | PatternCall;
 
 Literal:
-	BooleanLiteral | StringLiteral | NumberLiteral;
+	BooleanLiteral | StringLiteral | NumberLiteral | NullLiteral;
 
 BooleanLiteral:
 	val=(TRUE | FALSE);
@@ -282,6 +278,10 @@ StringLiteral:
 
 NumberLiteral:
 	val=DOUBLE;
+	
+NullLiteral:
+	{NullLiteral} NULL
+;
 
 enum MathFunc: //TODO Replace by methods of java.math or similar
 	SQRT='sqrt' | ABS='abs';
@@ -298,6 +298,10 @@ terminal TRUE returns ecore::EBoolean:
 
 terminal FALSE returns ecore::EBoolean:
 	'false';
+
+terminal NULL:
+	'null'
+;
 
 enum RelationalOp:
 	GREATER='>' |
