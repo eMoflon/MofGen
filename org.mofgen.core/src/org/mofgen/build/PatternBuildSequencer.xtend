@@ -56,7 +56,7 @@ class PatternBuildSequencer {
 		while (!remainingElements.empty) {
 			val elem = remainingElements.remove()
 			if (checkCoherency(elem)) {
-				val translation = PatternTranslator.translate(elem)
+				val translation =getTranslation(elem)
 				srcCodeElements.add(translation)
 				makeTranslatedElementValid(elem)
 				cnt = 0
@@ -238,7 +238,7 @@ class PatternBuildSequencer {
 			val createdBy = node.createdBy
 			if (createdBy !== null) {
 				if (createdBy instanceof NodeContent) {
-					srcCodeElements.add(PatternTranslator.translate(node))
+					srcCodeElements.add(getTranslation(node))
 					validElements.add(getValidName(node))
 					remainingElements.addAll(createdBy.refsAssigns)
 				} else if (createdBy instanceof PatternCall) {
@@ -248,9 +248,13 @@ class PatternBuildSequencer {
 						"Given node " + node.name + " is neither created by plain assignments, nor by a pattern call.")
 				}
 			} else {
-				srcCodeElements.add(PatternTranslator.translate(node))
+				srcCodeElements.add(getTranslation(node))
 				validElements.add(getValidName(node))
 			}
 		}
+	}
+	
+	private def getTranslation(EObject obj){
+		return PatternTranslator.translate(obj)+';'
 	}
 }

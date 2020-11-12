@@ -85,7 +85,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 					val castStart = calc.evaluate(start) as Double
 					val castEnd = calc.evaluate(end) as Double
 					if (castStart > castEnd) {
-						error("Limiting bound is less than starting value",
+						error("Limiting bound is less than starting value", //TODO! --> see tests
 							MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
 					}
 				}
@@ -380,7 +380,6 @@ class MGLangValidator extends AbstractMGLangValidator {
 						if (!(MofgenModelUtils.getEClassForInternalModel(neededParameterType as EClassifier).isSuperTypeOf(MofgenModelUtils.getEClassForInternalModel(givenParameterType as EClassifier)))) {
 							val givenParameterTypeEClassifier = givenParameterType as EClassifier
 							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
-								// TODO implicit conversion to string where possible
 								if (givenParameterType !== neededParameterType) {
 									if(!(MofgenModelUtils.isPrimitiveType(givenParameterTypeEClassifier) && neededParameterType === TypeModelPackage.Literals.STRING)){
 									error(

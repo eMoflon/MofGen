@@ -3,6 +3,7 @@ package org.mofgen.build
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.ENamedElement
+import org.eclipse.emf.ecore.EObject
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.ForHead
 import org.mofgen.mGLang.FunctionCall
@@ -27,7 +28,6 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.eclipse.emf.ecore.EObject
 
 class GeneralTranslator {
 
@@ -43,6 +43,7 @@ class GeneralTranslator {
 			paramsTranslated.add(MofgenUtil.convertIfPrimitiveCastNeeded(pc.called.parameters.get(i), pc.params.params.get(i)))
 		}
 		
+		// TODO only write "getAttribute()"-Part if it is explicitly needed. Not for every pattern call where no return value is needed.
 		if (pReturn !== null && pReturn.returnValue !== null) {
 			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»))«ELSE»«FOR paramText : paramsTranslated SEPARATOR ',' AFTER ')'» «paramText»
 			«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn.returnValue)»

@@ -24,6 +24,7 @@ import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.typeModel.TypeModelPackage
+import org.mofgen.mGLang.Pattern
 
 class MofgenUtil {
 
@@ -80,6 +81,28 @@ class MofgenUtil {
 			case EcorePackage.Literals.ECHAR: TypeModelPackage.Literals.STRING
 			case EcorePackage.Literals.EBOOLEAN: TypeModelPackage.Literals.BOOLEAN
 			default: type
+		}
+	}
+	
+	
+	/**
+	 * Returns the equivalent Java type as String for the given Parameter object.
+	 */
+	static def getJavaTypeAsString(Parameter parameter) {
+		if (parameter instanceof PrimitiveParameter) {
+			val type = parameter.type
+			return type.literal
+		}
+		if (parameter instanceof ParameterNodeOrPattern) {
+			val type = parameter.type
+			if (type instanceof Node) {
+				return type.type.instanceTypeName
+			} else if (type instanceof Pattern) {
+				return type.eClass.instanceTypeName
+			} else {
+				return new IllegalArgumentException(
+					"Parameter that is not primitive must reference a node or a pattern");
+			}
 		}
 	}
 

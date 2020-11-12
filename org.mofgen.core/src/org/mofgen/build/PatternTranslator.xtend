@@ -103,11 +103,11 @@ class PatternTranslator {
 
 		if (ref.type.upperBound < 1) {
 			return '''
-				«nodeName».«NameProvider.getGetterName(ref.type)»().add(«ref.node.name»);
+				«nodeName».«NameProvider.getGetterName(ref.type)»().add(«ref.node.name»)
 			'''
 		} else {
 			return '''
-				«nodeName».«NameProvider.getSetterName(ref.type)»(«ref.node.name»);
+				«nodeName».«NameProvider.getSetterName(ref.type)»(«ref.node.name»)
 			'''
 		}
 	}
@@ -117,12 +117,12 @@ class PatternTranslator {
 		val ePackage = MofgenUtil.getEPackage(eClass)
 		val createdBy = node.createdBy
 		if(createdBy === null){
-			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»);'''
+			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»)'''
 		}
 		if (createdBy instanceof NodeContent) {
-			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»);'''
+			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»)'''
 		} else if (createdBy instanceof PatternCall) {
-			return '''«node.name» = «translate(createdBy)»;'''
+			return '''«node.name» = «translate(createdBy)»'''
 		} else {
 			throw new IllegalStateException("Nodes should only be created by NodeContent or a pattern call")
 		}
@@ -140,11 +140,11 @@ class PatternTranslator {
 
 		if (ref.type.upperBound < 1) {
 			return '''
-				«nodeName».«NameProvider.getGetterName(ref.type)»().add(«translate(ref.pc)»);
+				«nodeName».«NameProvider.getGetterName(ref.type)»().add(«translate(ref.pc)»)
 			'''
 		} else {
 			return '''
-				«nodeName».«NameProvider.getSetterName(ref.type)»(«translate(ref.pc)»);
+				«nodeName».«NameProvider.getSetterName(ref.type)»(«translate(ref.pc)»)
 			'''
 		}
 	}
@@ -152,13 +152,13 @@ class PatternTranslator {
 	private static def dispatch String internalTranslate(NodeAttributeAssignment ass) {
 		val node = EcoreUtil2.getContainerOfType(ass, Node)
 		return '''
-			«node.name».«NameProvider.getSetterName(ass.target)»(«translate(ass.value)»);
+			«node.name».«NameProvider.getSetterName(ass.target)»(«translate(ass.value)»)
 		'''
 	}
 
 	private static def dispatch String internalTranslate(PatternReturn pReturn) {
 		if (pReturn.returnValue !== null) {
-			return '''return «pReturn.returnValue.name»;'''
+			return '''return «pReturn.returnValue.name»'''
 		} else {
 			// TODO return Pattern as a whole?
 		}
@@ -170,7 +170,7 @@ class PatternTranslator {
 
 		return '''for(«headSrc»){
 		«FOR bodyExpr : patternFor.body.commands» 
-			«translate(bodyExpr)»
+			«translate(bodyExpr)»;
 		«ENDFOR»
 		}'''
 	}
@@ -196,14 +196,14 @@ class PatternTranslator {
 			«FOR caze : pSwitch.cases SEPARATOR 'else'»
 				if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
 					«FOR refAssign : caze.body.expressions»
-						«translate(refAssign)»
+						«translate(refAssign)»;
 					«ENDFOR»
 				}
 			«ENDFOR»
 			«IF pSwitch.^default !== null»
 				else{
 					«FOR refAssign : (pSwitch.^default as PatternCaseBody).expressions»
-						«translate(refAssign)»
+						«translate(refAssign)»;
 					«ENDFOR»
 				}
 			«ENDIF»
@@ -220,7 +220,7 @@ class PatternTranslator {
 							if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
 						«ENDIF»
 						«FOR bodyExpr : caze.body.expressions»
-							«translate(bodyExpr)»
+							«translate(bodyExpr)»;
 						«ENDFOR»
 						«IF caze.when !== null»
 							}
@@ -230,7 +230,7 @@ class PatternTranslator {
 				«IF caze instanceof PatternCaseWithoutCast»
 					if(«translate(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
 						«FOR bodyExpr : caze.body.expressions»
-							«translate(bodyExpr)»
+							«translate(bodyExpr)»;
 						«ENDFOR»
 					}
 				«ENDIF»
@@ -238,7 +238,7 @@ class PatternTranslator {
 			«IF zwitch.^default !== null»
 				else {
 					«FOR expression : (zwitch.^default as PatternCaseBody).expressions»
-						«translate(expression)»
+						«translate(expression)»;
 					«ENDFOR»
 				}
 			«ENDIF»

@@ -194,6 +194,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		dependencies.addAll(ePackageDependencies);
 		boolean changedBasics = ManifestFileUpdater.setBasicProperties(manifest, project.getName());
 		boolean updatedDependencies = ManifestFileUpdater.updateDependencies(manifest, dependencies);
+		
 		return changedBasics || updatedDependencies;
 	}
 

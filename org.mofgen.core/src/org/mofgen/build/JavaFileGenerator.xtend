@@ -11,11 +11,7 @@ import org.mofgen.api.EClassifiersManager
 import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.MofgenFile
-import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.Parameter
-import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
-import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.NameProvider
 
 /**
@@ -132,28 +128,7 @@ class JavaFileGenerator {
 
 		val genSourceCode = '''
 			«printHeader(genPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
-			
-			/**
-			 * The generator «NameProvider.getGeneratorClassName(gen)».
-			 */
-			public class «NameProvider.getGeneratorClassName(gen)» extends «GENERATOR_SUPER_CLASS» {
-			
-				public «NameProvider.getGeneratorClassName(gen)» (){
-					this.name = "«gen.name»";
-				}
-			
-				@Override
-				/**
-				* Runs the specified generator with the given parameters.
-				* @return the EObject to be saved aka the containing root object of the generated structure (Must be specified by the user!)
-				*/
-				public EObject start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
-				«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «getJavaTypeAsString(parameter)» «parameter.name»Value«ENDFOR»
-				«FOR expression : gen.commands»
-					«GeneratorTranslator.translate(expression)»
-				«ENDFOR»
-				}				
-			}
+			«GeneratorTranslator.translate(gen)»
 			
 		'''
 		// TODO provide overriding toString implementation
@@ -173,6 +148,7 @@ class JavaFileGenerator {
 		val patternSourceCode = '''
 			«printHeader(patternPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
 			«PatternTranslator.translate(pattern)»
+			
 		'''
 		// TODO provide overriding toString implementation
 		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode)
@@ -197,27 +173,6 @@ class JavaFileGenerator {
 	private def getSubPackageName(String subPackage) {
 		val dot = if(packageName.equals("")) "" else "."
 		return '''«packageName»«dot»«subPackage»'''
-	}
-
-	/**
-	 * Returns the equivalent Java type as String for the given Parameter object.
-	 */
-	static def getJavaTypeAsString(Parameter parameter) {
-		if (parameter instanceof PrimitiveParameter) {
-			val type = parameter.type
-			return type.literal
-		}
-		if (parameter instanceof ParameterNodeOrPattern) {
-			val type = parameter.type
-			if (type instanceof Node) {
-				return type.type.instanceTypeName
-			} else if (type instanceof Pattern) {
-				return type.eClass.instanceTypeName
-			} else {
-				return new IllegalArgumentException(
-					"Parameter that is not primitive must reference a node or a pattern");
-			}
-		}
 	}
 
 	/**
