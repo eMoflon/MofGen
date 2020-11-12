@@ -22,9 +22,6 @@ import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
 import org.eclipse.emf.ecore.EcorePackage
-import org.mofgen.mGLang.ArithmeticExpression
-import org.mofgen.mGLang.ForHead
-import org.mofgen.mGLang.RefOrCall
 import org.eclipse.emf.ecore.EObject
 
 class PatternTranslator {
@@ -125,7 +122,7 @@ class PatternTranslator {
 		if (createdBy instanceof NodeContent) {
 			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»);'''
 		} else if (createdBy instanceof PatternCall) {
-			return '''«node.name» = «GeneralTranslator.translate(createdBy)»;'''
+			return '''«node.name» = «translate(createdBy)»;'''
 		} else {
 			throw new IllegalStateException("Nodes should only be created by NodeContent or a pattern call")
 		}
@@ -158,14 +155,6 @@ class PatternTranslator {
 			«node.name».«NameProvider.getSetterName(ass.target)»(«translate(ass.value)»);
 		'''
 	}
-	
-	private static def dispatch String internalTranslate(ArithmeticExpression ae){
-		return GeneralTranslator.translate(ae)
-	}
-
-	private static def dispatch String internalTranslate(PatternCall pc) {
-		return GeneralTranslator.translate(pc)
-	}
 
 	private static def dispatch String internalTranslate(PatternReturn pReturn) {
 		if (pReturn.returnValue !== null) {
@@ -173,10 +162,6 @@ class PatternTranslator {
 		} else {
 			// TODO return Pattern as a whole?
 		}
-	}
-	
-	private static def dispatch String internalTranslate(ForHead head){
-		return GeneralTranslator.translate(head)
 	}
 
 	private static def dispatch String internalTranslate(PatternForStatement patternFor) {
@@ -204,10 +189,6 @@ class PatternTranslator {
 				
 			«ENDFOR»
 		'''
-	}
-	
-	private static def dispatch String internalTranslate(RefOrCall roc){
-		return GeneralTranslator.translate(roc)
 	}
 
 	private static def dispatch String internalTranslate(PatternIfElseSwitch pSwitch) {
@@ -262,6 +243,11 @@ class PatternTranslator {
 				}
 			«ENDIF»
 		'''
+	}
+	
+	// all objects that have to be translated but are not exclusive to patterns are forwarded to the general translator
+	private static def dispatch String internalTranslate(EObject obj){
+		return GeneralTranslator.translate(obj)
 	}
 
 }

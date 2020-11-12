@@ -2,6 +2,7 @@ package org.mofgen.build
 
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EObject
 import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
@@ -12,17 +13,15 @@ import org.mofgen.mGLang.GenForStatement
 import org.mofgen.mGLang.GenIfElseSwitch
 import org.mofgen.mGLang.GenReturn
 import org.mofgen.mGLang.GenSwitchCase
-import org.mofgen.mGLang.GenSwitchExpression
-import org.mofgen.mGLang.GeneratorExpression
 import org.mofgen.mGLang.List
+import org.mofgen.mGLang.ListAdHoc
 import org.mofgen.mGLang.Map
+import org.mofgen.mGLang.MapAdHoc
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.mofgen.mGLang.ListAdHoc
-import org.mofgen.mGLang.MapAdHoc
 
 /**
  * Translates given expressions to source code that will be used as part of the API.
@@ -32,20 +31,16 @@ class GeneratorTranslator {
 	@Inject static TypeCalculator typeChecker = new TypeCalculator();
 
 	// ------------------------------------------ GeneratorExpression dispatcher ------------------------------------------
-	def static String translate(GeneratorExpression expr) {
-		return translateGen(expr)
+	def static String translate(EObject expr) {
+		return internalTranslate(expr)
 	}
 
-	def static dispatch private String translateGen(GenForStatement forStatement) {
-		return translateForStatement(forStatement)
-	}
-
-	def static dispatch private String translateGen(GenIfElseSwitch zwitch) {
+	def static dispatch private String internalTranslate(GenIfElseSwitch zwitch) {
 		return '''
 			«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
 				if(«MofgenUtil.getTextFromEditorFile(caze.when)») {
 					«FOR bodyExpr : caze.body.expressions»
-						«translateGenSwitch(bodyExpr)»
+						«translate(bodyExpr)»
 					«ENDFOR»
 				}
 			«ENDFOR»
@@ -57,17 +52,17 @@ class GeneratorTranslator {
 		'''
 	}
 
-	def static dispatch private String translateGen(GenSwitchCase zwitch) {
+	def static dispatch private String internalTranslate(GenSwitchCase zwitch) {
 		return '''
 			«FOR caze : zwitch.cases SEPARATOR 'else'»
 				«IF caze instanceof GenCaseWithCast»
-					if(«GeneralTranslator.translate(zwitch.attribute)» instanceof «caze.node.type.instanceTypeName»){
-						«caze.node.type.instanceTypeName»«caze.node.name» = («caze.node.type.instanceTypeName»)«GeneralTranslator.translate(zwitch.attribute)»;
+					if(«translate(zwitch.attribute)» instanceof «caze.node.type.instanceTypeName»){
+						«caze.node.type.instanceTypeName»«caze.node.name» = («caze.node.type.instanceTypeName»)«translate(zwitch.attribute)»;
 						«IF caze.when !== null»
 							if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
 						«ENDIF»
 						«FOR bodyExpr : caze.body.expressions»
-							«translateGenSwitch(bodyExpr)»
+							«translate(bodyExpr)»
 						«ENDFOR»
 						«IF caze.when !== null»
 							}
@@ -77,7 +72,7 @@ class GeneratorTranslator {
 				«IF caze instanceof GenCaseWithoutCast»
 					if(«caze.^val»){
 						«FOR bodyExpr : caze.body.expressions»
-							«translateGenSwitch(bodyExpr)»
+							«translate(bodyExpr)»
 						«ENDFOR»
 					}
 				«ENDIF»
@@ -90,15 +85,7 @@ class GeneratorTranslator {
 		'''
 	}
 
-	def static dispatch private String translateGen(Collection coll) {
-		return translateCollection(coll)
-	}
-
-	def static dispatch private String translateGen(PatternCall pc) {
-		return '''«GeneralTranslator.translate(pc)»;'''
-	}
-
-	def static dispatch private String translateGen(Variable variable) {
+	def static dispatch private String internalTranslate(Variable variable) {
 		if (variable.value instanceof PatternCall) {
 			val calledPattern = (variable.value as PatternCall).called
 			val patternReturn = calledPattern.^return
@@ -110,7 +97,7 @@ class GeneratorTranslator {
 			}
 
 			return '''
-				«patternType» «variable.name» = «GeneralTranslator.translate(variable.value as PatternCall)»;
+				«patternType» «variable.name» = «translate(variable.value as PatternCall)»;
 			'''
 		} else {
 			val evalResult = (typeChecker.evaluate(variable.value) as EClassifier)
@@ -120,49 +107,34 @@ class GeneratorTranslator {
 		}
 	}
 
-	def static dispatch private String translateGen(VariableManipulation vm) {
+	def static dispatch private String internalTranslate(VariableManipulation vm) {
 		return '''«vm.^var» = «vm.^val»;'''
 	}
 
-	def static dispatch private String translateGen(CollectionManipulation cm) {
+	def static dispatch private String internalTranslate(CollectionManipulation cm) {
 		return '''«MofgenUtil.getTextFromEditorFile(cm)»;'''
 	}
 	
-		
-	def static dispatch private String translateGen(GenReturn ret){
-		return '''«MofgenUtil.getTextFromEditorFile(ret)»;'''
+	def static dispatch private String internalTranslate(GenReturn ret){
+		return '''return «translate(ret.returnValue)»;'''
+	}
+	
+	def static dispatch private String internalTranslate(PatternCall pc){
+		return '''«GeneralTranslator.translate(pc)»;'''
 	}
 
-	// ------------------------------------------ GenSwitchExpression dispatcher ------------------------------------------
-	def static String translate(GenSwitchExpression expr) {
-		return translateGenSwitch(expr)
-	}
-
-	def static dispatch private String translateGenSwitch(GenForStatement forStatement) {
-		return translateForStatement(forStatement)
-	}
-
-	def static dispatch private String translateGenSwitch(Collection coll) {
-		return translateCollection(coll)
-	}
-
-	def static dispatch private String translateGenSwitch(PatternCall pc) {
-		return GeneralTranslator.translate(pc)
-	}
-
-	// ------------------------------------------ single translations ------------------------------------------
-	def static private String translateForStatement(GenForStatement forStatement) {
+	def static dispatch private String internalTranslate(GenForStatement forStatement) {
 		val head = forStatement.head
-		val headSrc = GeneralTranslator.translate(head)
+		val headSrc = translate(head)
 
 		return '''for(«headSrc»){
 		«FOR bodyExpr : forStatement.body.commands» 
-			«translateGen(bodyExpr)»
+			«translate(bodyExpr)»
 		«ENDFOR»
 		}'''
 	}
 
-	def static private String translateCollection(Collection coll) {
+	def static dispatch private String internalTranslate(Collection coll) {
 		if (coll instanceof List) {
 			return
 			'''
@@ -177,6 +149,12 @@ class GeneratorTranslator {
 			«fillCollection(coll)»
 			'''
 		}
+	}
+
+		
+	// all objects that have to be translated but are not exclusive to patterns are forwarded to the general translator
+	private static def dispatch String internalTranslate(EObject obj){
+		return GeneralTranslator.translate(obj)
 	}
 
 	def static private String fillCollection(List list){

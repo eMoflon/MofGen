@@ -163,8 +163,9 @@
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//GeneratorExpression"/>
     <genClasses ecoreClass="MGLang.ecore#//GenReturn">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenReturn/returnValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenReturn/returnValue"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//RefOrCallOrPatternCall"/>
     <genClasses ecoreClass="MGLang.ecore#//CollectionManipulation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//CollectionManipulation/trg"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//CollectionManipulation/op"/>

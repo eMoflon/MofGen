@@ -56,7 +56,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="refsAssigns" upperBound="-1"
         eType="#//NodeReferenceOrAssignmentOrControlFlow" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternCall" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression #//ArithmeticExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCall" eSuperTypes="#//GeneratorExpression #//RefOrCallOrPatternCall #//GenSwitchExpression #//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="called" eType="#//Pattern"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" eType="#//PatternCallParameters"
         containment="true"/>
@@ -138,7 +138,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Case"/>
-  <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//ArithmeticExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//RefOrCallOrPatternCall #//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//RefOrCall"
         containment="true"/>
@@ -158,8 +158,10 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GeneratorExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="GenReturn" eSuperTypes="#//GeneratorExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="#//Variable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="#//RefOrCallOrPatternCall"
+        containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RefOrCallOrPatternCall"/>
   <eClassifiers xsi:type="ecore:EClass" name="CollectionManipulation" eSuperTypes="#//GeneratorExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="trg" eType="#//Collection"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="op" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EOperation"/>

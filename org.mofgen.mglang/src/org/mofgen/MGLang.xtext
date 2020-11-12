@@ -135,7 +135,11 @@ GeneratorExpression: //Only serves as super class for all possible commands with
 	;
 	
 GenReturn:
-	'return' returnValue = [Variable] //TODO: extend to simple PatternCall as well
+	'return' returnValue = RefOrCallOrPatternCall //TODO: extend to simple PatternCall as well
+;
+
+RefOrCallOrPatternCall:
+	RefOrCall | PatternCall
 ;
 
 CollectionManipulation:
