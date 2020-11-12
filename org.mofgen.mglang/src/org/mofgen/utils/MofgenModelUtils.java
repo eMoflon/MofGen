@@ -2,6 +2,7 @@ package org.mofgen.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -291,8 +292,15 @@ public class MofgenModelUtils {
 		metaModelResources.put(uri, resource);
 	}
 
+	public static boolean isPrimitiveType(EClassifier clazz) {
+
+		return clazz == EcorePackage.Literals.EINT || clazz == EcorePackage.Literals.EBOOLEAN
+				|| clazz == EcorePackage.Literals.ECHAR || clazz == EcorePackage.Literals.EDOUBLE;
+	}
+
 	/**
-	 * @return the type of the given parameter in terms of the internal type system (see TypeModel) as Class or the needed Pattern
+	 * @return the type of the given parameter in terms of the internal type system
+	 *         (see TypeModel) as Class or the needed Pattern
 	 */
 	public static EObject getInternalParameterType(Parameter param) {
 		if (param instanceof PrimitiveParameter) {
@@ -310,27 +318,27 @@ public class MofgenModelUtils {
 				throw new IllegalArgumentException(
 						"Unexpected type " + primPram.getType() + " for parameter " + param.getName());
 			}
-		}else if (param instanceof ParameterNodeOrPattern) {
+		} else if (param instanceof ParameterNodeOrPattern) {
 			ParameterNodeOrPattern nodeOrPattern = (ParameterNodeOrPattern) param;
 			EObject parameterType = nodeOrPattern.getType();
 			if (parameterType instanceof Pattern) {
 				return (Pattern) parameterType;
-			}else if(parameterType instanceof EClassifier){
+			} else if (parameterType instanceof EClassifier) {
 				return getEClassForInternalModel((EClassifier) parameterType);
-			}else {
-				throw new UnsupportedOperationException("Could not find applicable case for "+ nodeOrPattern);
+			} else {
+				throw new UnsupportedOperationException("Could not find applicable case for " + nodeOrPattern);
 			}
-		}else {
+		} else {
 			throw new IllegalArgumentException("Unknown parameter type for parameter " + param.getName());
 		}
 	}
 
 	public static EClass getEClassForInternalModel(EClassifier classifier) {
 		if (classifier != null && classifier instanceof EClass) {
-			if(classifier == MGLangPackage.Literals.LIST) {
+			if (classifier == MGLangPackage.Literals.LIST) {
 				return TypeModelPackage.Literals.LIST;
 			}
-			if(classifier == MGLangPackage.Literals.MAP) {
+			if (classifier == MGLangPackage.Literals.MAP) {
 				return TypeModelPackage.Literals.MAP;
 			}
 			return (EClass) classifier;
@@ -381,13 +389,17 @@ public class MofgenModelUtils {
 			return str.substring(0, 1).toUpperCase() + str.substring(1);
 		}
 	}
-	
+
 	/**
-	 * Exactly like EcoreUtil.getContainerOfType() but returning the container of the given type closest to root.
-	 * @return the container of given type closest to the root element. Null, if there is no such element.
+	 * Exactly like EcoreUtil.getContainerOfType() but returning the container of
+	 * the given type closest to root.
+	 * 
+	 * @return the container of given type closest to the root element. Null, if
+	 *         there is no such element.
 	 */
 	/* @Nullable */
-	public static <T extends EObject> T getHightestContainerOfType(/* @Nullable */ EObject ele, /* @NonNull */ Class<T> type) {
+	public static <T extends EObject> T getHightestContainerOfType(/* @Nullable */ EObject ele,
+			/* @NonNull */ Class<T> type) {
 		T highest = null;
 		for (EObject e = ele; e != null; e = e.eContainer())
 			if (type.isInstance(e))
