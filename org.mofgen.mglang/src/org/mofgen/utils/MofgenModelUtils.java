@@ -381,4 +381,18 @@ public class MofgenModelUtils {
 			return str.substring(0, 1).toUpperCase() + str.substring(1);
 		}
 	}
+	
+	/**
+	 * Exactly like EcoreUtil.getContainerOfType() but returning the container of the given type closest to root.
+	 * @return the container of given type closest to the root element. Null, if there is no such element.
+	 */
+	/* @Nullable */
+	public static <T extends EObject> T getHightestContainerOfType(/* @Nullable */ EObject ele, /* @NonNull */ Class<T> type) {
+		T highest = null;
+		for (EObject e = ele; e != null; e = e.eContainer())
+			if (type.isInstance(e))
+				highest = type.cast(e);
+		return highest;
+	}
+
 }

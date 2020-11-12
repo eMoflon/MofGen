@@ -88,7 +88,7 @@ Parameter:
 PrimitiveParameter:
 	type=PrimitiveType name=ID;
 
-ParameterNodeOrPattern: //TODO add String as type here
+ParameterNodeOrPattern:
 	(srcModel=[Import] '.')? type=[ecore::EObject] name=ID;	//EObject to allow for eClasses from metamodels or for patterns as a whole
 
 PatternSwitch:
@@ -115,7 +115,7 @@ PatternCaseWithCast:
 PatternCaseWithoutCast:
 	'case' val=ArithmeticExpression':' body=PatternCaseBody;
 
-PatternCaseBody:	//TODO: one more pattern switch object for switches outside of node definitions
+PatternCaseBody:	//TODO: one more pattern switch object for switches outside of node definitions --> is that necessary?
 	{PatternCaseBody} '{' (expressions+=NodeReferenceOrAssignmentOrControlFlow)* '}' | expressions+=NodeReferenceOrAssignmentOrControlFlow;
 
 Case:

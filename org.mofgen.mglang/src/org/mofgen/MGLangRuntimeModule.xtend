@@ -3,9 +3,17 @@
  */
 package org.mofgen
 
+import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.mofgen.scoping.MofgenQualifiedNameProvider
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 class MGLangRuntimeModule extends AbstractMGLangRuntimeModule {
+	
+	// contributed by org.eclipse.xtext.xtext.generator.exporting.QualifiedNamesFragment2
+	override Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
+		return MofgenQualifiedNameProvider
+	}
+	
 }
