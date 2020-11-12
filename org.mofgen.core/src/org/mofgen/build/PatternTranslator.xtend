@@ -22,10 +22,18 @@ import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
 import org.eclipse.emf.ecore.EcorePackage
+import org.mofgen.mGLang.ArithmeticExpression
+import org.mofgen.mGLang.ForHead
+import org.mofgen.mGLang.RefOrCall
+import org.eclipse.emf.ecore.EObject
 
 class PatternTranslator {
 
-	static def dispatch String translate(Pattern pattern) {
+	static def String translate(EObject obj){
+		return internalTranslate(obj)
+	}
+
+	private static def dispatch String internalTranslate(Pattern pattern) {
 
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
 		val paramManipulations = EcoreUtil2.getAllContentsOfType(pattern, ParamManipulation)
@@ -86,7 +94,7 @@ class PatternTranslator {
 		'''
 	}
 
-	static def dispatch String translate(PatternNodeReferenceToNode ref) {
+	private static def dispatch String internalTranslate(PatternNodeReferenceToNode ref) {
 		val node = EcoreUtil2.getContainerOfType(ref, Node)
 		var nodeName = ""
 		if (node !== null) {
@@ -107,7 +115,7 @@ class PatternTranslator {
 		}
 	}
 
-	static def dispatch String translate(Node node) {
+	private static def dispatch String internalTranslate(Node node) {
 		val eClass = node.type
 		val ePackage = MofgenUtil.getEPackage(eClass)
 		val createdBy = node.createdBy
@@ -117,13 +125,13 @@ class PatternTranslator {
 		if (createdBy instanceof NodeContent) {
 			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»);'''
 		} else if (createdBy instanceof PatternCall) {
-			return '''«node.name» = «GeneralTranslator.translatePatternCall(createdBy)»;'''
+			return '''«node.name» = «GeneralTranslator.translate(createdBy)»;'''
 		} else {
 			throw new IllegalStateException("Nodes should only be created by NodeContent or a pattern call")
 		}
 	}
 
-	static def dispatch String translate(PatternNodeReferenceToPatternCall ref) {
+	private static def dispatch String internalTranslate(PatternNodeReferenceToPatternCall ref) {
 		val node = EcoreUtil2.getContainerOfType(ref, Node)
 		var nodeName = ""
 		if (node !== null) {
@@ -144,28 +152,36 @@ class PatternTranslator {
 		}
 	}
 
-	static def dispatch String translate(NodeAttributeAssignment ass) {
+	private static def dispatch String internalTranslate(NodeAttributeAssignment ass) {
 		val node = EcoreUtil2.getContainerOfType(ass, Node)
 		return '''
-			«node.name».«NameProvider.getSetterName(ass.target)»(«GeneralTranslator.translateArithmeticExpression(ass.value)»);
+			«node.name».«NameProvider.getSetterName(ass.target)»(«translate(ass.value)»);
 		'''
 	}
-
-	static def dispatch String translate(PatternCall pc) {
-		return GeneralTranslator.translatePatternCall(pc)
+	
+	private static def dispatch String internalTranslate(ArithmeticExpression ae){
+		return GeneralTranslator.translate(ae)
 	}
 
-	static def dispatch String translate(PatternReturn pReturn) {
+	private static def dispatch String internalTranslate(PatternCall pc) {
+		return GeneralTranslator.translate(pc)
+	}
+
+	private static def dispatch String internalTranslate(PatternReturn pReturn) {
 		if (pReturn.returnValue !== null) {
 			return '''return «pReturn.returnValue.name»;'''
 		} else {
 			// TODO return Pattern as a whole?
 		}
 	}
+	
+	private static def dispatch String internalTranslate(ForHead head){
+		return GeneralTranslator.translate(head)
+	}
 
-	static def dispatch String translate(PatternForStatement patternFor) {
+	private static def dispatch String internalTranslate(PatternForStatement patternFor) {
 		val head = patternFor.head
-		val headSrc = GeneralTranslator.translateForHead(head)
+		val headSrc = translate(head)
 
 		return '''for(«headSrc»){
 		«FOR bodyExpr : patternFor.body.commands» 
@@ -189,8 +205,12 @@ class PatternTranslator {
 			«ENDFOR»
 		'''
 	}
+	
+	private static def dispatch String internalTranslate(RefOrCall roc){
+		return GeneralTranslator.translate(roc)
+	}
 
-	static def dispatch String translate(PatternIfElseSwitch pSwitch) {
+	private static def dispatch String internalTranslate(PatternIfElseSwitch pSwitch) {
 		return '''
 			«FOR caze : pSwitch.cases SEPARATOR 'else'»
 				if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
@@ -209,7 +229,7 @@ class PatternTranslator {
 		'''
 	}
 
-	static def dispatch String translate(PatternSwitchCase zwitch) {
+	private static def dispatch String internalTranslate(PatternSwitchCase zwitch) {
 		return '''
 			«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
 				«IF caze instanceof PatternCaseWithCast»
@@ -227,7 +247,7 @@ class PatternTranslator {
 					}
 				«ENDIF»
 				«IF caze instanceof PatternCaseWithoutCast»
-					if(«GeneralTranslator.translateRefOrCall(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
+					if(«translate(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
 						«FOR bodyExpr : caze.body.expressions»
 							«translate(bodyExpr)»
 						«ENDFOR»

@@ -27,10 +27,15 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import org.eclipse.emf.ecore.EObject
 
 class GeneralTranslator {
 
-	def static String translatePatternCall(PatternCall pc) {
+	def static String translate(EObject obj){
+		return internalTranslate(obj)
+	}
+
+	private def static dispatch String internalTranslate(PatternCall pc) {
 		val pReturn = pc.called.^return
 		
 		val paramsTranslated = newLinkedList()
@@ -49,7 +54,7 @@ class GeneralTranslator {
 		}
 	}
 
-	def static String translateForHead(ForHead head) {
+	private def static dispatch String internalTranslate(ForHead head) {
 		val headSrc = switch head {
 			RangeForHead: '''int «head.iteratorVar.name» = «MofgenUtil.getTextFromEditorFile(head.range.start)»; «head.iteratorVar.name» <= «MofgenUtil.getTextFromEditorFile(head.range.end)»; «head.iteratorVar.name»++'''
 			GeneralForEachHead: {
@@ -76,32 +81,32 @@ class GeneralTranslator {
 	/**
 	 * translates the given arithmetic expression to source code
 	 */
-	def static String translateArithmeticExpression(ArithmeticExpression ae) {
+	private def static dispatch String internalTranslate(ArithmeticExpression ae) {
 		switch ae {
 			RefOrCall:
-				return translateRefOrCall(ae)
+				return translate(ae)
 			Literal:
 				return MofgenUtil.getTextFromEditorFile(ae)
 			PatternCall:
-				return GeneralTranslator.translatePatternCall(ae)
+				return translate(ae)
 			UnaryMinus:
-				return '''-«translateArithmeticExpression(ae.expr)»'''
+				return '''-«translate(ae.expr)»'''
 			FunctionCall: {
 				switch ae.func {
-					case SQRT: return '''Math.sqrt(«translateArithmeticExpression(ae.expr)»'''
-					case ABS: return '''Math.abs(«translateArithmeticExpression(ae.expr)»'''
+					case SQRT: return '''Math.sqrt(«translate(ae.expr)»'''
+					case ABS: return '''Math.abs(«translate(ae.expr)»'''
 				}
 			}
 			NegationExpression:
-				return '''!«translateArithmeticExpression(ae.expr)»'''
+				return '''!«translate(ae.expr)»'''
 			Rel:
-				return '''«translateArithmeticExpression(ae.left)»«ae.relation.literal»«translateArithmeticExpression(ae.right)»'''
+				return '''«translate(ae.left)»«ae.relation.literal»«translate(ae.right)»'''
 			Primary:
-				return '''«translateArithmeticExpression(ae.left)»«ae.op.literal»«translateArithmeticExpression(ae.right)»'''
+				return '''«translate(ae.left)»«ae.op.literal»«translate(ae.right)»'''
 			Secondary:
-				return '''«translateArithmeticExpression(ae.left)»«ae.op.literal»«translateArithmeticExpression(ae.right)»'''
+				return '''«translate(ae.left)»«ae.op.literal»«translate(ae.right)»'''
 			Tertiary:
-				return '''«translateArithmeticExpression(ae.left)»«ae.op.literal»«translateArithmeticExpression(ae.right)»'''
+				return '''«translate(ae.left)»«ae.op.literal»«translate(ae.right)»'''
 			default:
 				return MofgenUtil.getTextFromEditorFile(ae)
 		}
@@ -112,14 +117,14 @@ class GeneralTranslator {
 	 * @param roc the RefOrCall object
 	 * @return the source code as string
 	 */
-	def static String translateRefOrCall(RefOrCall roc) {
+	private def static dispatch String internalTranslate(RefOrCall roc) {
 		val ref = roc.ref
 		switch ref {
 			ENamedElement: {
 				var prefix = ""
 				var suffix = "()"
 				if (roc.target !== null) {
-					prefix = '''«translateRefOrCall(roc.target)».'''
+					prefix = '''«translate(roc.target)».'''
 				}
 				if (roc.ref instanceof EEnum || roc.ref instanceof EEnumLiteral) {
 					suffix = ""
@@ -128,14 +133,14 @@ class GeneralTranslator {
 			}
 			Node: {
 				if (roc.target !== null) {
-					return '''«translateRefOrCall(roc.target)».«ref.name»'''
+					return '''«translate(roc.target)».«ref.name»'''
 				} else {
 					return ref.name
 				}
 			}
 			Variable: {
 				if (roc.target !== null) {
-					return '''«translateRefOrCall(roc.target)».«ref.name»'''
+					return '''«translate(roc.target)».«ref.name»'''
 				} else {
 					return ref.name
 				}
@@ -151,7 +156,7 @@ class GeneralTranslator {
 			}
 			default: {
 				if (roc.target !== null) {
-					return '''«translateRefOrCall(roc.target)».«MofgenUtil.getTextFromEditorFile(ref)»'''
+					return '''«translate(roc.target)».«MofgenUtil.getTextFromEditorFile(ref)»'''
 				} else {
 					return MofgenUtil.getTextFromEditorFile(ref)
 				}
