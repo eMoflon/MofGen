@@ -234,8 +234,16 @@ class MofgenUtil {
 		}
 	}
 
-	def static getGetterMethod(Node node) {
+	def dispatch static getGetterMethod(Node node) {
 		return '''get«node.name.toFirstUpper»()'''
+	}
+	
+	def dispatch static getGetterMethod(Parameter pNode){
+		return '''get«NameProvider.getParameterName(pNode).toFirstUpper»()'''
+	}
+	
+	def dispatch static getGetterMethod(EObject obj){
+		throw new UnsupportedOperationException("Cannot provide parameter name to given object type "+obj)
 	}
 
 }

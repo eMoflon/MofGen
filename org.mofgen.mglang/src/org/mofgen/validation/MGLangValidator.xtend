@@ -58,6 +58,7 @@ import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.NullLiteral
+import org.mofgen.mGLang.ParameterNodeOrPattern
 
 /**
  * This class contains custom validation rules. 
@@ -89,7 +90,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 						val endCast = endEval as Double
 						if (startCast > endCast) {
 							error("Limiting bound is less than starting value",
-							MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
+								MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
 						}
 					}
 				}
@@ -384,7 +385,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 						if (!(MofgenModelUtils.getEClassForInternalModel(neededParameterType as EClassifier).
 							isSuperTypeOf(
 								MofgenModelUtils.getEClassForInternalModel(givenParameterType as EClassifier)))) {
-							val givenParameterTypeEClassifier = MofgenModelUtils.getEClassForInternalModel(givenParameterType as EClassifier)
+							val givenParameterTypeEClassifier = MofgenModelUtils.getEClassForInternalModel(
+								givenParameterType as EClassifier)
 							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
 								if (givenParameterType !== neededParameterType) {
 									if (!(givenParameterTypeEClassifier == TypeModelPackage.Literals.NUMBER &&
@@ -441,12 +443,24 @@ class MGLangValidator extends AbstractMGLangValidator {
 									"Pattern " + pc.called.name + " returns " + pc.called.name + " but " + node.name +
 										" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
 							} else {
-								if (retVal.type !== null && retVal.type !== node.type) {
-									error(
-										"Pattern " + pc.called.name + " returns " +
-											pc.called.^return.returnValue.type.name + " but " + node.name +
-											" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
+								if (retVal instanceof Node) {
+									val retValType = retVal.type
+									if (retValType !== null && retValType !== node.type) {
+										error(
+											"Pattern " + pc.called.name + " returns " +
+												retValType + " but " + node.name +
+												" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
+									}
+								} else if (retVal instanceof ParameterNodeOrPattern) {
+									val retValType = retVal.type
+									if (retValType !== null && retValType !== node.type) {
+										error(
+											"Pattern " + pc.called.name + " returns " +
+												retValType + " but " + node.name +
+												" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
+									}
 								}
+
 							}
 						}
 					}

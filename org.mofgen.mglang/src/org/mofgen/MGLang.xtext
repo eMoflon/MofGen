@@ -36,7 +36,7 @@ PatternCommand:
 	Node | ParamManipulation;
 
 PatternReturn:
-	{PatternReturn} 'return' 'this' ('.' returnValue=[Node])?;
+	{PatternReturn} 'return' 'this' ('.' returnValue=[ecore::EObject])?; //TODO allow Nodes AND parameters in scoping
 
 ParamManipulation:
 	param=[ParameterNodeOrPattern] content=NodeContent;
@@ -70,8 +70,9 @@ NodeReferenceOrControlFlow:
 PatternNodeReference:
 	PatternNodeReferenceToNode | PatternNodeReferenceToPatternCall
 ;
+
 PatternNodeReferenceToNode:
-	type=[ecore::EReference] '->' node=[Node];
+	type=[ecore::EReference] '->' node=RefOrCall; // allow nodes, parameter nodes and access to nodes in patterns as parameter objects in scoping! TODO
 
 PatternNodeReferenceToPatternCall:
 	type=[ecore::EReference] '->' pc=PatternCall
@@ -123,6 +124,7 @@ Case:
 RefOrCall:
 	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params=RefParams)?
 	bracesSet?=')')?)*;
+	
 RefParams:
 	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
@@ -184,7 +186,7 @@ GenForBody:
 	{GenForBody} (commands+=GeneratorExpression)*;
 
 GenSwitchExpression:
-	GenForStatement | Collection | PatternCall;
+	GenForStatement | Collection | CollectionManipulation | VariableManipulation | PatternCall;
 
 GenSwitch:
 	GenIfElseSwitch | GenSwitchCase;

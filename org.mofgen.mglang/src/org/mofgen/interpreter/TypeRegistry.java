@@ -22,7 +22,6 @@ import org.mofgen.mGLang.MapTupel;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.Variable;
-import org.mofgen.typeModel.TypeModelPackage;
 
 /**
  * Keeps track of the types of different Maps and Lists. Updated on every
@@ -134,7 +133,10 @@ public class TypeRegistry {
 		} else {
 			// ListDeclaration
 			ListDeclaration decl = (ListDeclaration) defOrDecl;
-			EClassifier declType = decl.getType();
+			EClassifier declType = EcorePackage.Literals.EOBJECT;
+			if(decl != null) {
+				declType = decl.getType();
+			}
 			listTypes.put(list, declType);
 		}
 	}

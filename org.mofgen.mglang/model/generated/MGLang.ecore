@@ -38,7 +38,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternCommand"/>
   <eClassifiers xsi:type="ecore:EClass" name="PatternReturn">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="#//Node"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParamManipulation" eSuperTypes="#//PatternCommand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="param" eType="#//ParameterNodeOrPattern"/>
@@ -79,7 +79,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EReference"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternNodeReferenceToNode" eSuperTypes="#//PatternNodeReference">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="#//Node"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="#//RefOrCall"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternNodeReferenceToPatternCall" eSuperTypes="#//PatternNodeReference">
     <eStructuralFeatures xsi:type="ecore:EReference" name="pc" eType="#//PatternCall"
@@ -162,13 +163,13 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RefOrCallOrPatternCall"/>
-  <eClassifiers xsi:type="ecore:EClass" name="CollectionManipulation" eSuperTypes="#//GeneratorExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="CollectionManipulation" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="trg" eType="#//Collection"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="op" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EOperation"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" eType="#//RefParams"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VariableManipulation" eSuperTypes="#//GeneratorExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="VariableManipulation" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Variable"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
         containment="true"/>

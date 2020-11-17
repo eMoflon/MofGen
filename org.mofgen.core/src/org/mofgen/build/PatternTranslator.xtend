@@ -1,11 +1,15 @@
 package org.mofgen.build
 
+import java.util.Map
 import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment
 import org.mofgen.mGLang.NodeContent
 import org.mofgen.mGLang.ParamManipulation
+import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
@@ -21,12 +25,10 @@ import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.EObject
 
 class PatternTranslator {
 
-	static def String translate(EObject obj){
+	static def String translate(EObject obj) {
 		return internalTranslate(obj)
 	}
 
@@ -43,9 +45,9 @@ class PatternTranslator {
 				} else if (parameter instanceof ParameterNodeOrPattern) {
 					val type = parameter.type
 					if (type instanceof EClassifier) {
-						if(type == EcorePackage.Literals.ESTRING){
+						if (type == EcorePackage.Literals.ESTRING) {
 							patternParameterTypes.put(parameter, "String")
-						}else{
+						} else {
 							patternParameterTypes.put(parameter, type.name)
 						}
 					} else if (type instanceof Pattern) {
@@ -65,9 +67,17 @@ class PatternTranslator {
 		«getPatternDoc(pattern)»
 		«getPatternSignature(pattern)»
 			
+			// create data fields for actual nodes
 			«FOR node : nodes»
 				«node.type.name» «node.name»;
 			«ENDFOR»
+			
+			// create data fields for parameter nodes
+			«IF !pattern.parameters.empty»
+				«FOR parameter : pattern.parameters»
+					«patternParameterTypes.get(parameter)» «parameter.name»;
+				«ENDFOR»
+			«ENDIF»
 			
 			public «NameProvider.getPatternClassName(pattern)»(«IF !pattern.parameters.empty»«FOR entry : patternParameterTypes.entrySet SEPARATOR ','»«entry.value» «entry.key.name»
 			«ENDFOR»«ENDIF»){
@@ -75,6 +85,7 @@ class PatternTranslator {
 			}
 				
 			«PatternTranslator.createGetters(pattern)»
+			«PatternTranslator.createParameterGetters(patternParameterTypes)»
 		}'''
 	}
 
@@ -92,22 +103,22 @@ class PatternTranslator {
 	}
 
 	private static def dispatch String internalTranslate(PatternNodeReferenceToNode ref) {
-		val node = EcoreUtil2.getContainerOfType(ref, Node)
+		val srcNode = EcoreUtil2.getContainerOfType(ref, Node)
 		var nodeName = ""
-		if (node !== null) {
-			nodeName = node.name
+		if (srcNode !== null) {
+			nodeName = srcNode.name
 		} else {
 			val manip = EcoreUtil2.getContainerOfType(ref, ParamManipulation)
 			nodeName = manip.param.name
 		}
 
-		if (ref.type.upperBound < 1) {
+		if (ref.type.upperBound < 0) {
 			return '''
-				«nodeName».«NameProvider.getGetterName(ref.type)»().add(«ref.node.name»)
+				«nodeName».«NameProvider.getGetterName(ref.type)»().add(«translate(ref.node)»)
 			'''
 		} else {
 			return '''
-				«nodeName».«NameProvider.getSetterName(ref.type)»(«ref.node.name»)
+				«nodeName».«NameProvider.getSetterName(ref.type)»(«translate(ref.node)»)
 			'''
 		}
 	}
@@ -116,7 +127,7 @@ class PatternTranslator {
 		val eClass = node.type
 		val ePackage = MofgenUtil.getEPackage(eClass)
 		val createdBy = node.createdBy
-		if(createdBy === null){
+		if (createdBy === null) {
 			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»)'''
 		}
 		if (createdBy instanceof NodeContent) {
@@ -158,7 +169,14 @@ class PatternTranslator {
 
 	private static def dispatch String internalTranslate(PatternReturn pReturn) {
 		if (pReturn.returnValue !== null) {
-			return '''return «pReturn.returnValue.name»'''
+			val retValue = pReturn.returnValue
+			if (retValue instanceof Node) {
+				return '''return «retValue.name»'''
+			}
+			if (retValue instanceof ParameterNodeOrPattern) {
+				// return '''return «retValue.name»'''
+				// TODO special fields for parameter values to be accessed by specialized get()-Call. Adapt other methods as well!
+			}
 		} else {
 			// TODO return Pattern as a whole?
 		}
@@ -189,6 +207,22 @@ class PatternTranslator {
 				
 			«ENDFOR»
 		'''
+	}
+	
+	private static def createParameterGetters(Map<Parameter, String> pMap){
+		return '''
+			
+			«FOR parameter : pMap.keySet»
+				/**
+				* @return the parameter «parameter.name» attribute of type «pMap.get(parameter)»
+				*/
+				public «pMap.get(parameter)» «MofgenUtil.getGetterMethod(parameter)»{
+					return «NameProvider.getParameterName(parameter)»;
+				}
+				
+			«ENDFOR»
+		'''
+		
 	}
 
 	private static def dispatch String internalTranslate(PatternIfElseSwitch pSwitch) {
@@ -244,9 +278,9 @@ class PatternTranslator {
 			«ENDIF»
 		'''
 	}
-	
+
 	// all objects that have to be translated but are not exclusive to patterns are forwarded to the general translator
-	private static def dispatch String internalTranslate(EObject obj){
+	private static def dispatch String internalTranslate(EObject obj) {
 		return GeneralTranslator.translate(obj)
 	}
 

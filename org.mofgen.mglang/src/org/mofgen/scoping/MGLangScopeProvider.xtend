@@ -19,7 +19,6 @@ import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.ForStatement
 import org.mofgen.mGLang.GenCaseWithCast
-import org.mofgen.mGLang.GenReturn
 import org.mofgen.mGLang.GeneralForEachHead
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.Import
@@ -38,13 +37,14 @@ import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternNodeReference
-import org.mofgen.mGLang.PatternNodeReferenceToNode
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.PatternReturn
+import org.eclipse.emf.ecore.EClassifier
 
 /**
  * This class contains custom scoping description.
@@ -60,9 +60,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 		if (isPatternNodeReference_Type(context, reference)) {
 			return getScopeForPatternNodeReference_Type(context as PatternNodeReference)
-		}
-		if (isPatternNodeReferenceToNode_Node(context, reference)) {
-			return getScopeForPatternNodeReferenceToNode_Node(context as PatternNodeReferenceToNode)
 		}
 		if (isNodeAttributeAssignment_Target(context, reference)) {
 			return getScopeForNodeAttributeAssignment_Target(context as NodeAttributeAssignment)
@@ -111,9 +108,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 		if (isPatternCall_called(context, reference)) {
 			return getScopeForPatternCall_called(context as PatternCall)
-		}
-		if (isGenReturn_returnValue(context, reference)) {
-			return getScopeForGenReturn_ReturnValue(context as GenReturn)
 		}
 
 		return super.getScope(context, reference)
@@ -277,15 +271,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	}
 
-	def getScopeForPatternNodeReferenceToNode_Node(PatternNodeReferenceToNode ref) {
-		val root = EcoreUtil2.getContainerOfType(ref, Pattern)
-		if (root === null) {
-			return IScope.NULLSCOPE
-		}
-		val nodes = EcoreUtil2.getAllContentsOfType(root, Node)
-		return Scopes.scopeFor(nodes)
-	}
-
 	def getScopeForNodeAttributeAssignment_Target(NodeAttributeAssignment ass) {
 		val srcNode = EcoreUtil2.getContainerOfType(ass, Node)
 		val srcParamManipulation = EcoreUtil2.getContainerOfType(ass, ParamManipulation)
@@ -340,9 +325,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				params.addAll(pattern.parameters)
 				// get nodes of pattern
 				patternNodes.addAll(pattern.commands.filter(Node))
-
-			// collections.addAll(EcoreUtil2.getAllContentsOfType(pattern, Collection)) //commented out since no collection should appear in patterns
-			// vars.addAll(EcoreUtil2.getAllContentsOfType(pattern, Variable))
 			} else {
 				collections.addAll(EcoreUtil2.getAllContentsOfType(gen, Collection))
 				vars.addAll(EcoreUtil2.getAllContentsOfType(gen, Variable)) // TODO Collect variables correctly (i.e. consider inner/outer scopes)
@@ -472,9 +454,13 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(parameterNodes)
 	}
 
-	def getScopeForGenReturn_ReturnValue(GenReturn ret) {
-		val gen = EcoreUtil2.getContainerOfType(ret, Generator)
-		return Scopes.scopeFor(EcoreUtil2.getAllContentsOfType(gen, Variable)) // TODO more precise scoping
+	def getScopeForPatternReturn_ReturnValue(PatternReturn pRet) {
+		val rootPattern = pRet.eContainer as Pattern
+		val nodes = EcoreUtil2.getAllContentsOfType(rootPattern, Node)
+		val parameterNodes = rootPattern.parameters.filter(ParameterNodeOrPattern).filter [ p |
+			p.type instanceof EClassifier
+		]
+		return Scopes.scopeFor(nodes + parameterNodes)
 	}
 
 	def isPatternNodeReference_Type(
@@ -483,11 +469,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	) {
 		return context instanceof PatternNodeReference &&
 			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE
-	}
-
-	def isPatternNodeReferenceToNode_Node(EObject context, EReference reference) {
-		return context instanceof PatternNodeReferenceToNode &&
-			reference == MGLangPackage.Literals.PATTERN_NODE_REFERENCE_TO_NODE__NODE
 	}
 
 	def isNode_Type(EObject context, EReference reference) {
@@ -563,8 +544,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return context instanceof PatternCall && reference == MGLangPackage.Literals.PATTERN_CALL__CALLED
 	}
 
-	def isGenReturn_returnValue(EObject context, EReference reference) {
-		return context instanceof GenReturn && reference == MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE
+	def isPatternReturn_returnValue(EObject context, EReference reference) {
+		return context instanceof PatternReturn && reference == MGLangPackage.Literals.PATTERN_RETURN__RETURN_VALUE
 	}
 
 	def getRootFile(EObject context) {

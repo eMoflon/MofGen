@@ -1,14 +1,15 @@
 package org.mofgen.util
 
-import org.mofgen.mGLang.Generator
-import org.mofgen.mGLang.Pattern
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.core.resources.IFile
-import org.eclipse.emf.ecore.EPackage
-import org.eclipse.emf.ecore.EEnumLiteral
-import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EEnum
+import org.eclipse.emf.ecore.EEnumLiteral
+import org.eclipse.emf.ecore.ENamedElement
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
+import org.mofgen.mGLang.Generator
+import org.mofgen.mGLang.Parameter
+import org.mofgen.mGLang.Pattern
 
 class NameProvider {
 	/**
@@ -95,9 +96,8 @@ class NameProvider {
 	 * @return the class name as prefix for automatically generated API files
 	 */
 	def static String getClassNamePrefix(IFile file) {
-		val name = file.name
-		val splitted = file.name.split('\\.')
-		return splitted.get(0).toFirstUpper
+		val split = file.name.split('\\.')
+		return split.get(0).toFirstUpper
 	}
 
 	def static String getFactoryClassName(EPackage ePackage) {
@@ -109,6 +109,10 @@ class NameProvider {
 	}
 
 	def static String locationToPackageName(String location) {
-		return location.replace('/', '.').replace('\\', '.');
+		return location.replace('/', '.').replace('\\', '.')
+	}
+	
+	def static String getParameterName(Parameter node){
+		return node.name+"Parameter"
 	}
 }

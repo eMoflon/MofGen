@@ -23,6 +23,9 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.Pattern
 
 /**
  * Translates given expressions to source code that will be used as part of the API.
@@ -134,7 +137,18 @@ class GeneratorTranslator {
 			val patternReturn = calledPattern.^return
 			var patternType = ""
 			if (patternReturn.returnValue !== null) {
-				patternType = patternReturn.returnValue.type.name
+				val retValue = patternReturn.returnValue
+				if(retValue instanceof Node){
+					patternType = retValue.type.name
+				}else if(retValue instanceof ParameterNodeOrPattern){
+					val retValueType = retValue.type
+					if(retValueType instanceof EClassifier){
+						patternType = retValueType.name
+					}else if(retValueType instanceof Pattern){
+						// TODO
+						throw new UnsupportedOperationException()
+					}
+				}
 			} else {
 				patternType = NameProvider.getPatternClassName(calledPattern)
 			}

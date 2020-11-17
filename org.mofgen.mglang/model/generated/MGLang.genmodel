@@ -101,7 +101,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReference/type"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternNodeReferenceToNode">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReferenceToNode/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReferenceToNode/node"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternNodeReferenceToPatternCall">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternNodeReferenceToPatternCall/pc"/>

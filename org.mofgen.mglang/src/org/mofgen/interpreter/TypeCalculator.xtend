@@ -426,7 +426,12 @@ class TypeCalculator {
 		if (ret !== null) {
 			val retValue = ret.returnValue
 			if (retValue !== null) {
-				return retValue.type
+				if(retValue instanceof Node){
+					return retValue.type
+				}else if(retValue instanceof ParameterNodeOrPattern){
+					return retValue.type
+				}
+				
 			} else {
 				return calledPattern
 			}
