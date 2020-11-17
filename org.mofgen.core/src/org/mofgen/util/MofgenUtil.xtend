@@ -136,6 +136,9 @@ class MofgenUtil {
 				if (givenParamEval instanceof EDataType && isDataTypePrimitive(givenParamEval as EDataType)) {
 					return '''String.valueOf(«getTextFromEditorFile(givenParam)»)'''
 				}
+				if(givenParamEval == TypeModelPackage.Literals.NUMBER){
+					return '''String.valueOf(«getTextFromEditorFile(givenParam)»)'''
+				}
 			}
 		}
 		
