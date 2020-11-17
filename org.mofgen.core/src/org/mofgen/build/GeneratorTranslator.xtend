@@ -165,11 +165,11 @@ class GeneratorTranslator {
 	}
 
 	def static dispatch private String internalTranslate(VariableManipulation vm) {
-		return '''«vm.^var» = «vm.^val»'''
+		return '''«vm.^var.name» = «translate(vm.^val)»'''
 	}
 
 	def static dispatch private String internalTranslate(CollectionManipulation cm) {
-		return '''«MofgenUtil.getTextFromEditorFile(cm)»'''
+		return GeneralTranslator.translate(cm)
 	}
 
 	def static dispatch private String internalTranslate(GenReturn ret) {
@@ -177,7 +177,7 @@ class GeneratorTranslator {
 	}
 
 	def static dispatch private String internalTranslate(PatternCall pc) {
-		return '''«GeneralTranslator.translate(pc)»'''
+		return GeneralTranslator.translate(pc)
 	}
 
 	def static dispatch private String internalTranslate(GenForStatement forStatement) {

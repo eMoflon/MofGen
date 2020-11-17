@@ -20,6 +20,7 @@ import org.mofgen.mGLang.PatternNodeReference
 import org.mofgen.mGLang.PatternNodeReferenceToNode
 import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.RefOrCall
+import org.mofgen.mGLang.ParameterNodeOrPattern
 
 class PatternBuildSequencer {
 
@@ -101,6 +102,10 @@ class PatternBuildSequencer {
 			return internalCoherencyCheck(pc)
 		}
 	}
+	
+	private def dispatch boolean internalCoherencyCheck(ParameterNodeOrPattern pNodeOrPattern){
+		return true // there is no possibility of cyclic dependencies when we are given a parameter
+	}
 
 	private def dispatch boolean internalCoherencyCheck(PatternCall pc) {
 		for (param : pc.params.params) {
@@ -155,7 +160,14 @@ class PatternBuildSequencer {
 	}
 
 	private def dispatch boolean internalCoherencyCheck(PatternNodeReferenceToNode pNodeRef) {
-		return validElements.contains(getValidName(pNodeRef.node))
+		val node = pNodeRef.node
+		if(node instanceof Node){
+			return validElements.contains(getValidName(pNodeRef.node))
+		}else if(node instanceof RefOrCall){
+			return checkCoherency(node)
+		}else{
+			throw new IllegalArgumentException("Cannot check coherency of object "+pNodeRef)
+		}
 	}
 
 	private def dispatch boolean internalCoherencyCheck(PatternIfElseSwitch zwitch) {
@@ -196,7 +208,7 @@ class PatternBuildSequencer {
 				val node = EcoreUtil2.getContainerOfType(elem, Node)
 				return node.name + '_' + elem.target.name
 			}
-			PatternNodeReference: {
+			PatternNodeReferenceToNode: {
 				val node = EcoreUtil2.getContainerOfType(elem, Node)
 				if (node !== null) {
 					return node.name + '_' + elem.type.name

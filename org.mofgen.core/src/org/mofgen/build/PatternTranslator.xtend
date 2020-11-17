@@ -75,7 +75,7 @@ class PatternTranslator {
 			// create data fields for parameter nodes
 			«IF !pattern.parameters.empty»
 				«FOR parameter : pattern.parameters»
-					«patternParameterTypes.get(parameter)» «parameter.name»;
+					«patternParameterTypes.get(parameter)» «NameProvider.getParameterName(parameter)»;
 				«ENDFOR»
 			«ENDIF»
 			

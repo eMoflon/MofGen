@@ -28,6 +28,8 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import org.mofgen.mGLang.CollectionManipulation
+import org.mofgen.mGLang.RefParams
 
 class GeneralTranslator {
 
@@ -77,6 +79,28 @@ class GeneralTranslator {
 			ListForEachHead: '''«MofgenUtil.getListType(head.list).name» «head.iteratorVar.name» : «head.list.name»'''
 		}
 		return headSrc
+	}
+	
+	private def static dispatch String internalTranslate(CollectionManipulation cm){
+		val coll = cm.trg
+		val op = cm.op
+		val params = cm.params
+		
+		return '''«coll.name».«op.name»(«internalTranslate(params)»)'''
+	}
+	
+	private def static dispatch String internalTranslate(RefParams refParams){
+		val params = refParams.params
+		if(params.empty){
+			return ""
+		}
+		
+		return
+		'''
+		«FOR param : params SEPARATOR ','»
+			«translate(param)»
+		«ENDFOR»
+		'''
 	}
 	
 	/**
