@@ -30,6 +30,10 @@ import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.RefParams
+import org.mofgen.mGLang.Collection
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EReference
+import org.mofgen.mGLang.IteratorVariable
 
 class GeneralTranslator {
 
@@ -148,13 +152,21 @@ class GeneralTranslator {
 			ENamedElement: {
 				var prefix = ""
 				var suffix = "()"
+				var element = ref.name
 				if (roc.target !== null) {
 					prefix = '''«translate(roc.target)».'''
 				}
-				if (roc.ref instanceof EEnum || roc.ref instanceof EEnumLiteral) {
+				if (ref instanceof EEnum || ref instanceof EEnumLiteral) {
 					suffix = ""
 				}
-				return '''«prefix»«NameProvider.getGetterName(ref)»«suffix»'''
+				if(ref instanceof EAttribute || ref instanceof EReference){
+					element = NameProvider.getGetterName(ref)
+				}else{
+					if(roc.params !== null){
+						suffix = '''(«translate(roc.params)»)'''	
+					}
+				}
+				return '''«prefix»«element»«suffix»'''
 			}
 			Node: {
 				if (roc.target !== null) {
@@ -170,6 +182,7 @@ class GeneralTranslator {
 					return ref.name
 				}
 			}
+			IteratorVariable: return ref.name
 			Import: {
 				return MofgenUtil.getEPackage(ref.uri).name
 			}
@@ -177,6 +190,9 @@ class GeneralTranslator {
 				return ref.name
 			}
 			PrimitiveParameter: {
+				return ref.name
+			}
+			Collection: {
 				return ref.name
 			}
 			default: {

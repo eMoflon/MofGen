@@ -100,8 +100,8 @@ class GeneratorTranslator {
 		return '''
 			«FOR caze : zwitch.cases SEPARATOR 'else'»
 				«IF caze instanceof GenCaseWithCast»
-					if(«translate(zwitch.attribute)» instanceof «caze.node.type.instanceTypeName»){
-						«caze.node.type.instanceTypeName»«caze.node.name» = («caze.node.type.instanceTypeName»)«translate(zwitch.attribute)»;
+					if(«translate(zwitch.attribute)» instanceof «caze.node.type.name»){
+						«caze.node.type.name» «caze.node.name» = («caze.node.type.name») «translate(zwitch.attribute)»;
 						«IF caze.when !== null»
 							if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
 						«ENDIF»
