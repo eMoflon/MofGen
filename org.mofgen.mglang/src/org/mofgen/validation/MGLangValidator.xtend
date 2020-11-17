@@ -82,11 +82,15 @@ class MGLangValidator extends AbstractMGLangValidator {
 				val check1 = checkForNumber(forRange.start, forRange, MGLangPackage.Literals.FOR_RANGE__START)
 				val check2 = checkForNumber(forRange.end, forRange, MGLangPackage.Literals.FOR_RANGE__END)
 				if (check1 && check2) {
-					val castStart = calc.evaluate(start) as Double
-					val castEnd = calc.evaluate(end) as Double
-					if (castStart > castEnd) {
-						error("Limiting bound is less than starting value", //TODO! --> see tests
+					val startEval = calc.evaluate(start)
+					val endEval = calc.evaluate(end)
+					if (startEval instanceof Number && endEval instanceof Number) {
+						val startCast = startEval as Double
+						val endCast = endEval as Double
+						if (startCast > endCast) {
+							error("Limiting bound is less than starting value",
 							MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
+						}
 					}
 				}
 			}
@@ -377,15 +381,19 @@ class MGLangValidator extends AbstractMGLangValidator {
 					val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
 
 					if (givenParameterType instanceof EClassifier && neededParameterType instanceof EClassifier) {
-						if (!(MofgenModelUtils.getEClassForInternalModel(neededParameterType as EClassifier).isSuperTypeOf(MofgenModelUtils.getEClassForInternalModel(givenParameterType as EClassifier)))) {
-							val givenParameterTypeEClassifier = givenParameterType as EClassifier
+						if (!(MofgenModelUtils.getEClassForInternalModel(neededParameterType as EClassifier).
+							isSuperTypeOf(
+								MofgenModelUtils.getEClassForInternalModel(givenParameterType as EClassifier)))) {
+							val givenParameterTypeEClassifier = MofgenModelUtils.getEClassForInternalModel(givenParameterType as EClassifier)
 							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
 								if (givenParameterType !== neededParameterType) {
-									if(!(MofgenModelUtils.isPrimitiveType(givenParameterTypeEClassifier) && neededParameterType === TypeModelPackage.Literals.STRING)){
-									error(
-										"Given type " + givenParameterTypeEClassifier.name + " does not match needed type " +
-											(neededParameterType as EClassifier).name,
-										MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+									if (!(givenParameterTypeEClassifier == TypeModelPackage.Literals.NUMBER &&
+										neededParameterType === TypeModelPackage.Literals.STRING)) {
+										error(
+											"Given type " + givenParameterTypeEClassifier.name +
+												" does not match needed type " +
+												(neededParameterType as EClassifier).name,
+											MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 									}
 								}
 							}
@@ -403,8 +411,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 								(neededParameterType as EClassifier).name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 						} else {
 							val givenParameterTypeEClassifier = givenParameterType as EClassifier
-							error("Given type " + givenParameterTypeEClassifier.name + " does not match needed Pattern " +
-								(neededParameterType as Pattern).name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+							error(
+								"Given type " + givenParameterTypeEClassifier.name + " does not match needed Pattern " +
+									(neededParameterType as Pattern).name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 						}
 					}
 				}
@@ -757,10 +766,11 @@ class MGLangValidator extends AbstractMGLangValidator {
 				val givenParamEval = typeChecker.evaluate(givenParam)
 				if (givenParamEval == TypeModelPackage.Literals.LIST) {
 					val givenListType = TypeRegistry.getListType((givenParam as RefOrCall).ref as List)
-					if (!MofgenModelUtils.getEClassForInternalModel(neededListType).isSuperTypeOf(MofgenModelUtils.getEClassForInternalModel(givenListType))) {
-						error(
-							"List " + cm.trg.name + " is of other type than given list " +
-								((givenParam as RefOrCall).ref as List).name, MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG)
+					if (!MofgenModelUtils.getEClassForInternalModel(neededListType).isSuperTypeOf(
+						MofgenModelUtils.getEClassForInternalModel(givenListType))) {
+						error("List " + cm.trg.name + " is of other type than given list " +
+							((givenParam as RefOrCall).ref as List).name,
+							MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG)
 					}
 				}
 			}
@@ -891,17 +901,18 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 	}
-	
+
 	@Check
 	// TODO testing
-	def checkNullOnlyInComparisons(NullLiteral lit){
+	def checkNullOnlyInComparisons(NullLiteral lit) {
 		val container = lit.eContainer;
-		if(container instanceof Rel){
-			if(container.relation === RelationalOp.EQUAL || container.relation === RelationalOp.UNEQUAL){
+		if (container instanceof Rel) {
+			if (container.relation === RelationalOp.EQUAL || container.relation === RelationalOp.UNEQUAL) {
 				return
 			}
 		}
-		error("Use of '"+NodeModelUtils.getTokenText(NodeModelUtils.getNode(lit))+"' is only allowed for null", lit.eContainingFeature)
+		error("Use of '" + NodeModelUtils.getTokenText(NodeModelUtils.getNode(lit)) + "' is only allowed for null",
+			lit.eContainingFeature)
 	}
 
 }

@@ -285,19 +285,20 @@ class Calculator {
 			return internalEvaluate((roc.ref as Variable).value)
 		}
 		if (roc.ref instanceof PrimitiveParameter) {
-			val primPram = roc.ref as PrimitiveParameter
-			switch primPram.type {
-				case PrimitiveType.DOUBLE,
-				case PrimitiveType.INT: {
-					return 0.0
-				}
-				case PrimitiveType.CHAR: {
-					return ""
-				}
-				case PrimitiveType.BOOLEAN: {
-					return false
-				}
-			}
+			return roc.ref
+//			val primPram = roc.ref as PrimitiveParameter
+//			switch primPram.type {
+//				case PrimitiveType.DOUBLE,
+//				case PrimitiveType.INT: {
+//					return 0.0
+//				}
+//				case PrimitiveType.CHAR: {
+//					return ""
+//				}
+//				case PrimitiveType.BOOLEAN: {
+//					return false
+//				}
+//			}
 		}
 		return roc.ref
 	}
