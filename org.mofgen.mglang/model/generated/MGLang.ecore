@@ -335,6 +335,13 @@
     <eLiterals name="DIV" value="1" literal="/"/>
     <eLiterals name="AND" value="2" literal="&amp;&amp;"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Rel" eSuperTypes="#//ArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//ArithmeticExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="relation" eType="#//RelationalOp"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//ArithmeticExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Tertiary" eSuperTypes="#//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//ArithmeticExpression"
         containment="true"/>
@@ -353,13 +360,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//ArithmeticExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" eType="#//PrimaryOp"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//ArithmeticExpression"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Rel" eSuperTypes="#//ArithmeticExpression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="left" eType="#//ArithmeticExpression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="relation" eType="#//RelationalOp"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>

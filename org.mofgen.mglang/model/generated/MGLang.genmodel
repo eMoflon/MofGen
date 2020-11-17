@@ -280,6 +280,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//NumberLiteral/val"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//NullLiteral"/>
+    <genClasses ecoreClass="MGLang.ecore#//Rel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Rel/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Rel/relation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Rel/right"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Tertiary">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Tertiary/left"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Tertiary/op"/>
@@ -294,11 +299,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Primary/left"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Primary/op"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Primary/right"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//Rel">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Rel/left"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Rel/relation"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Rel/right"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//NegationExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//NegationExpression/expr"/>

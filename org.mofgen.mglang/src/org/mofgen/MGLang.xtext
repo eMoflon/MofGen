@@ -251,9 +251,12 @@ MapTupel:
 	'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')';
 
 	//======================================Arithmetics============================================
-	
+
 ArithmeticExpression:
-	TertiaryExpression;
+	RelationExpression;
+
+RelationExpression returns ArithmeticExpression:
+	TertiaryExpression ({Rel.left=current} relation=RelationalOp right=TertiaryExpression)*;
 
 TertiaryExpression returns ArithmeticExpression:
 	SecondaryExpression ({Tertiary.left=current} op=TertiaryOp right=SecondaryExpression)*;
@@ -262,10 +265,7 @@ SecondaryExpression returns ArithmeticExpression:
 	PrimaryExpr ({Secondary.left=current} op=SecondaryOp right=PrimaryExpr)*;
 
 PrimaryExpr returns ArithmeticExpression:
-	RelationExpression ({Primary.left=current} op=PrimaryOp right=RelationExpression)*;
-
-RelationExpression returns ArithmeticExpression:
-	BaseExpr ({Rel.left=current} relation=RelationalOp right=BaseExpr)*;
+	BaseExpr ({Primary.left=current} op=PrimaryOp right=BaseExpr)*;
 
 BaseExpr returns ArithmeticExpression:
 	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
