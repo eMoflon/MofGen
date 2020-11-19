@@ -36,6 +36,9 @@
       <genOperations ecoreOperation="typeModel.ecore#//Map/getKeyToEntry">
         <genParameters ecoreParameter="typeModel.ecore#//Map/getKeyToEntry/entry"/>
       </genOperations>
+      <genOperations ecoreOperation="typeModel.ecore#//Map/remove">
+        <genParameters ecoreParameter="typeModel.ecore#//Map/remove/key"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="typeModel.ecore#//List">
       <genOperations ecoreOperation="typeModel.ecore#//List/get">
