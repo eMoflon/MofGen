@@ -418,6 +418,9 @@ class TypeCalculator {
 					if (op == TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT) {
 						return TypeRegistry.getMapKeyType(trg.ref as Map)
 					}
+					if (op == TypeModelPackage.Literals.MAP___REMOVE__EOBJECT) {
+						return TypeRegistry.getMapEntryType(trg.ref as Map)
+					}
 				}
 				return MofgenModelUtils.getEClassForInternalModel(op.EType)
 			}

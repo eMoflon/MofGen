@@ -98,6 +98,27 @@ class MGLangValidator extends AbstractMGLangValidator {
 		}
 	}
 
+	@Check
+	def checkNoCollectionManipulationWithoutSideEffects(CollectionManipulation cm) {
+		val op = cm.op
+		if (cm.trg instanceof List) {
+			if (op !== TypeModelPackage.Literals.LIST___ADD__EOBJECT &&
+				op !== TypeModelPackage.Literals.LIST___ADD_ALL__LIST &&
+				op !== TypeModelPackage.Literals.LIST___REMOVE__EOBJECT &&
+				op !== TypeModelPackage.Literals.LIST___REMOVE_AT__INT) {
+					warning("Stand-alone operation on collection without side-effect", MGLangPackage.Literals.COLLECTION_MANIPULATION__OP)
+			}
+		} else if (cm.trg instanceof Map) {
+			if (op !== TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT&&
+				op !== TypeModelPackage.Literals.MAP___REMOVE__EOBJECT) {
+					warning("Stand-alone operation on collection without side-effect", MGLangPackage.Literals.COLLECTION_MANIPULATION__OP)
+			}
+		} else {
+			throw new IllegalArgumentException("CollectionManipulations should only refer to Lists or Maps but got "+cm.trg)
+		}
+
+	}
+
 	/**
 	 * Error at errorLoc if the given obj does not evaluate to a numerical value.
 	 */
@@ -390,7 +411,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
 								if (givenParameterType !== neededParameterType) {
 									if (givenParameterTypeEClassifier instanceof EClass) {
-										if (!(TypeModelPackage.Literals.NUMBER.isSuperTypeOf(givenParameterTypeEClassifier) &&
+										if (!(TypeModelPackage.Literals.NUMBER.isSuperTypeOf(
+											givenParameterTypeEClassifier) &&
 											neededParameterType === TypeModelPackage.Literals.STRING)) {
 											error(
 												"Given type " + givenParameterTypeEClassifier.name +

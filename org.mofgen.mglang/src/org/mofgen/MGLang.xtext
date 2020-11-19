@@ -289,7 +289,7 @@ NullLiteral:
 	{NullLiteral} NULL
 ;
 
-enum MathFunc: //TODO Replace by methods of java.math or similar
+enum MathFunc:
 	SQRT='sqrt' | ABS='abs';
 
 enum PrimitiveType:	//TODO: Replace by standard eDataTypes?
