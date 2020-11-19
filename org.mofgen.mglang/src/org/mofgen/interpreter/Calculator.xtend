@@ -1,35 +1,34 @@
 package org.mofgen.interpreter
 
-import org.mofgen.mGLang.ArithmeticExpression
-import org.mofgen.mGLang.Tertiary
-import org.mofgen.mGLang.Secondary
-import org.mofgen.mGLang.Primary
-import org.mofgen.mGLang.Rel
-import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.NegationExpression
-import org.mofgen.mGLang.FunctionCall
-import org.mofgen.mGLang.RefOrCall
-import org.mofgen.mGLang.BooleanLiteral
-import org.mofgen.mGLang.NumberLiteral
-import org.mofgen.mGLang.StringLiteral
-import org.eclipse.emf.ecore.EOperation
-import org.mofgen.mGLang.Variable
-import org.mofgen.mGLang.PrimitiveParameter
-import org.mofgen.mGLang.PrimitiveType
-import org.mofgen.mGLang.UnaryMinus
 import com.google.inject.Inject
-import org.mofgen.typeModel.TypeModelPackage
+import org.eclipse.emf.ecore.EOperation
+import org.mofgen.mGLang.ArithmeticExpression
+import org.mofgen.mGLang.BooleanLiteral
+import org.mofgen.mGLang.FunctionCall
+import org.mofgen.mGLang.NegationExpression
+import org.mofgen.mGLang.NumberLiteral
+import org.mofgen.mGLang.PatternCall
+import org.mofgen.mGLang.Primary
+import org.mofgen.mGLang.PrimitiveParameter
+import org.mofgen.mGLang.RefOrCall
+import org.mofgen.mGLang.Rel
+import org.mofgen.mGLang.Secondary
+import org.mofgen.mGLang.StringLiteral
+import org.mofgen.mGLang.Tertiary
+import org.mofgen.mGLang.UnaryMinus
+import org.mofgen.mGLang.Variable
+import org.mofgen.utils.MofgenModelUtils
 
 class Calculator {
 
-	@Inject TypeCalculator typeChecker
-	
+	@Inject TypeCalculator typeChecker //TODO Doubled exception throwing in type checker and actual calculator here. make use of typeChecker for throwing error?
+
 	def Object evaluate(ArithmeticExpression expr) {
-		//Actual calculation
+		// Actual calculation
 		val result = internalEvaluate(expr)
 		switch (result) {
-			case Double: return result as Double
-			case Integer: return (result as Integer).doubleValue
+			case Double: return MofgenModelUtils.getIntegerIfPossible(result as Double)
+			case Integer: return result as Integer
 			case String: return result as String
 			case Boolean: return result as Boolean
 			case EOperation: return result as EOperation
@@ -81,15 +80,28 @@ class Calculator {
 				case OR: return castLeft || castRight
 			}
 
-		} else if(typeChecker.evaluate(tertiary.left) === TypeModelPackage.Literals.NUMBER && typeChecker.evaluate(tertiary.right) === TypeModelPackage.Literals.NUMBER) {
+		} else if (evalLeft instanceof Number && evalRight instanceof Number) {
 			// -------------------- Numerical Values -----------------------	
-			val castLeft = evalLeft as Double
-			val castRight = evalRight as Double
-			switch (tertiary.op) {
-				case PLUS: castLeft + castRight
-				case MINUS: castLeft - castRight
-				case OR: throw new MismatchingTypesException("Cannot use logical OR on numerical values")
+			if (evalLeft instanceof Integer && evalRight instanceof Integer) {
+				var castLeft = evalLeft as Integer
+				var castRight = evalRight as Integer
+
+				switch (tertiary.op) {
+					case PLUS: castLeft + castRight
+					case MINUS: castLeft - castRight
+					case OR: throw new MismatchingTypesException("Cannot use logical OR on numerical values")
+				}
+			} else {
+				var castLeft = evalLeft as Double
+				var castRight = evalRight as Double
+
+				switch (tertiary.op) {
+					case PLUS: castLeft + castRight
+					case MINUS: castLeft - castRight
+					case OR: throw new MismatchingTypesException("Cannot use logical OR on numerical values")
+				}
 			}
+
 		} else {
 			throw new MismatchingTypesException("Invalid Expression.")
 		}
@@ -113,13 +125,23 @@ class Calculator {
 				case MOD: throw new MismatchingTypesException("Cannot use modulo on boolean values")
 				case XOR: return !(castLeft == castRight)
 			}
-		} else if (evalLeft instanceof Double && evalRight instanceof Double) {
+		} else if (evalLeft instanceof Number && evalRight instanceof Number) {
 			// -------------------- Numerical Values -----------------------	
-			val castLeft = evalLeft as Integer
-			val castRight = evalRight as Integer
-			switch (secondary.op) {
-				case MOD: return castLeft % castRight
-				case XOR: throw new MismatchingTypesException("Cannot use modulo on numerical values")
+			if (evalLeft instanceof Integer && evalRight instanceof Integer) {
+				var castLeft = evalLeft as Integer
+				var castRight = evalRight as Integer
+
+				switch (secondary.op) {
+					case MOD: return castLeft % castRight
+					case XOR: throw new MismatchingTypesException("Cannot use XOR on numerical values")
+				}
+			} else {
+				switch (secondary.op) {
+					case MOD:
+						throw new MismatchingTypesException("Can only use modulo on integer values but got double")
+					case XOR:
+						throw new MismatchingTypesException("Cannot use XOR on numerical values")
+				}
 			}
 		} else {
 			throw new MismatchingTypesException("Invalid Expression.")
@@ -146,14 +168,26 @@ class Calculator {
 				case DIV: throw new MismatchingTypesException("Cannot divide boolean values")
 				case AND: return castLeft && castRight
 			}
-		} else if (evalLeft instanceof Double && evalRight instanceof Double) {
+		} else if (evalLeft instanceof Number && evalRight instanceof Number) {
 			// -------------------- Numerical Values -----------------------	
-			val castLeft = evalLeft as Double
-			val castRight = evalRight as Double
-			switch (primary.op) {
-				case MUL: return (castLeft * castRight) as Double
-				case DIV: return (castLeft / castRight) as Double
-				case AND: throw new MismatchingTypesException("Cannot use logical AND on numerical values")
+			if (evalLeft instanceof Integer && evalRight instanceof Integer) {
+				var castLeft = evalLeft as Integer
+				var castRight = evalRight as Integer
+
+				switch (primary.op) {
+					case MUL: return castLeft * castRight
+					case DIV: return castLeft / castRight
+					case AND: throw new MismatchingTypesException("Cannot use logical AND on numerical values")
+				}
+			} else {
+				var castLeft = evalLeft as Double
+				var castRight = evalRight as Double
+
+				switch (primary.op) {
+					case MUL: return castLeft * castRight
+					case DIV: return castLeft / castRight
+					case AND: throw new MismatchingTypesException("Cannot use logical AND on numerical values")
+				}
 			}
 		} else {
 			throw new MismatchingTypesException("Invalid Expression.")
@@ -199,7 +233,7 @@ class Calculator {
 				case LESS:
 					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
 			}
-		} else if (evalLeft instanceof Double && evalRight instanceof Double) {
+		} else if (evalLeft instanceof Number && evalRight instanceof Number) {
 			// -------------------- Numerical Values -----------------------	
 			val castLeft = evalLeft as Double
 			val castRight = evalRight as Double
@@ -221,7 +255,12 @@ class Calculator {
 	}
 
 	def dispatch private internalEvaluate(NumberLiteral lit) {
-		return lit.^val
+		val value = lit.^val
+		if (Math.floor(value) == (value as int)) {
+			return value as int
+		} else {
+			return value as double
+		}
 	}
 
 	def dispatch private internalEvaluate(StringLiteral lit) {
@@ -257,7 +296,7 @@ class Calculator {
 					return Math.sqrt(eval);
 				}
 				if (eval instanceof Integer) {
-					return Math.floor(Math.sqrt(eval)) as int;
+					return MofgenModelUtils.getIntegerIfPossible(Math.sqrt(eval))
 				}
 				if (eval instanceof Boolean) {
 					throw new MismatchingTypesException("Cannot take root of boolean value")
@@ -268,7 +307,7 @@ class Calculator {
 					throw new MismatchingTypesException("Cannot take absolute value of String")
 				}
 				if (eval instanceof Double) {
-					return Math.abs(eval) as double;
+					return MofgenModelUtils.getIntegerIfPossible(Math.abs(eval));
 				}
 				if (eval instanceof Integer) {
 					return Math.abs(eval);
@@ -302,16 +341,23 @@ class Calculator {
 		}
 		return roc.ref
 	}
-	
-	def dispatch private internalEvaluate(UnaryMinus uMinus){
+
+	def dispatch private internalEvaluate(UnaryMinus uMinus) {
 		val eval = evaluate(uMinus.expr)
-		if(eval instanceof String){
+		if (eval instanceof String) {
 			throw new MismatchingTypesException("Cannot negate string.")
 		}
-		if(eval instanceof Boolean){
-			throw new MismatchingTypesException("Cannot use minus-operator on boolean value. For negation use '!' instead.")
+		if (eval instanceof Boolean) {
+			throw new MismatchingTypesException(
+				"Cannot use minus-operator on boolean value. For negation use '!' instead.")
 		}
-		return -(eval as Double).doubleValue;
+		if(eval instanceof Integer){
+			return -(eval);
+		}else if(eval instanceof Double){
+			return -(eval);
+		}else{
+			throw new UnsupportedOperationException("Only Integer or Double values should be negated but got: "+eval)
+		}
 	}
 
 	def dispatch private internalEvaluate(PatternCall pc) {

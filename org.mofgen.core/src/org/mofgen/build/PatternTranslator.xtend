@@ -25,6 +25,7 @@ import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import java.util.List
 
 class PatternTranslator {
 
@@ -35,8 +36,6 @@ class PatternTranslator {
 	private static def dispatch String internalTranslate(Pattern pattern) {
 
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
-		val paramManipulations = EcoreUtil2.getAllContentsOfType(pattern, ParamManipulation)
-
 		val patternParameterTypes = newLinkedHashMap();
 		if (!pattern.parameters.empty) {
 			for (parameter : pattern.parameters) {
@@ -61,7 +60,7 @@ class PatternTranslator {
 			}
 		}
 
-		val sequencer = new PatternBuildSequencer(nodes, paramManipulations)
+		val sequencer = new PatternBuildSequencer(pattern)
 
 		return '''
 		«getPatternDoc(pattern)»

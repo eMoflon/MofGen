@@ -76,8 +76,8 @@ class MofgenUtil {
 	def private static convertTypeToStandardType(EClassifier type) {
 		switch type {
 			case EcorePackage.Literals.ESTRING: TypeModelPackage.Literals.STRING
-			case EcorePackage.Literals.EINT,
-			case EcorePackage.Literals.EDOUBLE: TypeModelPackage.Literals.NUMBER
+			case EcorePackage.Literals.EINT: TypeModelPackage.Literals.INTEGER
+			case EcorePackage.Literals.EDOUBLE: TypeModelPackage.Literals.DOUBLE
 			case EcorePackage.Literals.ECHAR: TypeModelPackage.Literals.STRING
 			case EcorePackage.Literals.EBOOLEAN: TypeModelPackage.Literals.BOOLEAN
 			default: type
@@ -136,7 +136,7 @@ class MofgenUtil {
 				if (givenParamEval instanceof EDataType && isDataTypePrimitive(givenParamEval as EDataType)) {
 					return '''String.valueOf(«getTextFromEditorFile(givenParam)»)'''
 				}
-				if(givenParamEval == TypeModelPackage.Literals.NUMBER){
+				if(givenParamEval instanceof EClass && TypeModelPackage.Literals.NUMBER.isSuperTypeOf(givenParamEval as EClass)){
 					return '''String.valueOf(«getTextFromEditorFile(givenParam)»)'''
 				}
 			}

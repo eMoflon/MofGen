@@ -11,8 +11,12 @@ import org.eclipse.emf.ecore.EReference
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.BooleanLiteral
 import org.mofgen.mGLang.FunctionCall
+import org.mofgen.mGLang.GeneralForEachHead
+import org.mofgen.mGLang.IteratorVariable
 import org.mofgen.mGLang.List
+import org.mofgen.mGLang.ListForEachHead
 import org.mofgen.mGLang.Map
+import org.mofgen.mGLang.MathFunc
 import org.mofgen.mGLang.NegationExpression
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NumberLiteral
@@ -22,6 +26,7 @@ import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.Primary
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.mGLang.PrimitiveType
+import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Rel
 import org.mofgen.mGLang.Secondary
@@ -31,20 +36,21 @@ import org.mofgen.mGLang.UnaryMinus
 import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.IteratorVariable
-import org.mofgen.mGLang.RangeForHead
-import org.mofgen.mGLang.GeneralForEachHead
-import org.mofgen.mGLang.ListForEachHead
 
 class TypeCalculator {
 
 	def EObject evaluate(ArithmeticExpression expr) {
-		return internalEvaluate(expr)
+		val eval = internalEvaluate(expr)
+		if(eval instanceof EClass){
+			return MofgenModelUtils.getEClassForInternalModel(eval)
+		}else{
+			return eval
+		}
 	}
 
 	def dispatch private internalEvaluate(Tertiary tertiary) {
-		val evalLeft = evaluate(tertiary.left)
-		val evalRight = evaluate(tertiary.right)
+		val evalLeft = evaluate(tertiary.left) as EClass
+		val evalRight = evaluate(tertiary.right) as EClass
 
 		if (evalLeft === TypeModelPackage.Literals.STRING && evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
@@ -53,14 +59,14 @@ class TypeCalculator {
 				case MINUS: throw new MismatchingTypesException("Cannot subtract Strings")
 				case OR: throw new MismatchingTypesException("Cannot use logical OR on Strings")
 			}
-		} else if (evalLeft === TypeModelPackage.Literals.STRING && evalRight === TypeModelPackage.Literals.NUMBER) {
+		} else if (evalLeft === TypeModelPackage.Literals.STRING && TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
 			// -------------------- Strings -----------------------	
 			switch (tertiary.op) {
 				case PLUS: return TypeModelPackage.Literals.STRING
 				case MINUS: throw new MismatchingTypesException("Cannot subtract from Strings")
 				case OR: throw new MismatchingTypesException("Cannot use logical OR on Strings")
 			}
-		} else if (evalLeft === TypeModelPackage.Literals.NUMBER && evalRight === TypeModelPackage.Literals.STRING) {
+		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) && evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
 			switch (tertiary.op) {
 				case PLUS: return TypeModelPackage.Literals.STRING
@@ -75,12 +81,22 @@ class TypeCalculator {
 				case OR: return TypeModelPackage.Literals.BOOLEAN
 			}
 
-		} else if (evalLeft === TypeModelPackage.Literals.NUMBER && evalRight === TypeModelPackage.Literals.NUMBER) {
-			// -------------------- Numerical Values -----------------------	
-			switch (tertiary.op) {
-				case PLUS: return TypeModelPackage.Literals.NUMBER
-				case MINUS: return TypeModelPackage.Literals.NUMBER
-				case OR: throw new MismatchingTypesException("Cannot use logical OR on numerical values")
+		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) &&
+			TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
+			if (evalLeft === TypeModelPackage.Literals.DOUBLE || evalRight === TypeModelPackage.Literals.DOUBLE) {
+				// -------------------- Numerical Values -----------------------	
+				switch (tertiary.op) {
+					case PLUS: return TypeModelPackage.Literals.DOUBLE
+					case MINUS: return TypeModelPackage.Literals.DOUBLE
+					case OR: throw new MismatchingTypesException("Cannot use logical OR on numerical values")
+				}
+			} else {
+				// -------------------- Numerical Values -----------------------	
+				switch (tertiary.op) {
+					case PLUS: return TypeModelPackage.Literals.INTEGER
+					case MINUS: return TypeModelPackage.Literals.INTEGER
+					case OR: throw new MismatchingTypesException("Cannot use logical OR on numerical values")
+				}
 			}
 		} else {
 			var evalLeftString = "NULL"
@@ -106,8 +122,8 @@ class TypeCalculator {
 	}
 
 	def dispatch private internalEvaluate(Secondary secondary) {
-		val evalLeft = evaluate(secondary.left)
-		val evalRight = evaluate(secondary.right)
+		val evalLeft = evaluate(secondary.left) as EClass
+		val evalRight = evaluate(secondary.right) as EClass
 
 		if (evalLeft === TypeModelPackage.Literals.STRING && evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
@@ -121,11 +137,20 @@ class TypeCalculator {
 				case MOD: throw new MismatchingTypesException("Cannot use modulo on boolean values")
 				case XOR: return TypeModelPackage.Literals.BOOLEAN
 			}
-		} else if (evalLeft === TypeModelPackage.Literals.NUMBER && evalRight === TypeModelPackage.Literals.NUMBER) {
-			// -------------------- Numerical Values -----------------------	
-			switch (secondary.op) {
-				case MOD: return TypeModelPackage.Literals.NUMBER
-				case XOR: throw new MismatchingTypesException("Cannot use modulo on numerical values")
+		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) &&
+			TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
+			if (evalLeft === TypeModelPackage.Literals.DOUBLE || evalRight === TypeModelPackage.Literals.DOUBLE) {
+				// -------------------- Numerical Values -----------------------	
+				switch (secondary.op) {
+					case MOD: throw new MismatchingTypesException("Can only use modulo on integer values")
+					case XOR: throw new MismatchingTypesException("Can only use modulo on integer values")
+				}
+			} else {
+				// -------------------- Numerical Values -----------------------	
+				switch (secondary.op) {
+					case MOD: return TypeModelPackage.Literals.INTEGER
+					case XOR: throw new MismatchingTypesException("Can only use modulo on integer values")
+				}
 			}
 		} else {
 			var evalLeftString = "NULL"
@@ -151,8 +176,8 @@ class TypeCalculator {
 	}
 
 	def dispatch private internalEvaluate(Primary primary) {
-		val evalLeft = evaluate(primary.left)
-		val evalRight = evaluate(primary.right)
+		val evalLeft = evaluate(primary.left) as EClass
+		val evalRight = evaluate(primary.right) as EClass
 
 		if (evalLeft === TypeModelPackage.Literals.STRING && evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
@@ -168,12 +193,22 @@ class TypeCalculator {
 				case DIV: throw new MismatchingTypesException("Cannot divide boolean values")
 				case AND: return TypeModelPackage.Literals.STRING
 			}
-		} else if (evalLeft === TypeModelPackage.Literals.NUMBER && evalRight === TypeModelPackage.Literals.NUMBER) {
-			// -------------------- Numerical Values -----------------------	
-			switch (primary.op) {
-				case MUL: return TypeModelPackage.Literals.NUMBER
-				case DIV: return TypeModelPackage.Literals.NUMBER
-				case AND: throw new MismatchingTypesException("Cannot use logical AND on numerical values")
+		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) &&
+			TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
+			if (evalLeft === TypeModelPackage.Literals.DOUBLE || evalRight === TypeModelPackage.Literals.DOUBLE) {
+				// -------------------- Numerical Values -----------------------	
+				switch (primary.op) {
+					case MUL: return TypeModelPackage.Literals.DOUBLE
+					case DIV: return TypeModelPackage.Literals.DOUBLE
+					case AND: throw new MismatchingTypesException("Cannot use logical AND on numerical values")
+				}
+			} else {
+				// -------------------- Numerical Values -----------------------	
+				switch (primary.op) {
+					case MUL: return TypeModelPackage.Literals.INTEGER
+					case DIV: return TypeModelPackage.Literals.DOUBLE
+					case AND: throw new MismatchingTypesException("Cannot use logical AND on numerical values")
+				}
 			}
 		} else {
 			var evalLeftString = "NULL"
@@ -199,8 +234,8 @@ class TypeCalculator {
 	}
 
 	def dispatch private internalEvaluate(Rel rel) {
-		val evalLeft = evaluate(rel.left)
-		val evalRight = evaluate(rel.right)
+		val evalLeft = evaluate(rel.left) as EClass
+		val evalRight = evaluate(rel.right) as EClass
 
 		if (evalLeft !== evalRight) {
 			throw new MismatchingTypesException("Cannot compare objects of different types for (in)equality")
@@ -232,7 +267,7 @@ class TypeCalculator {
 				case LESS:
 					throw new MismatchingTypesException("Can only compare boolean values for (in)equality.")
 			}
-		} else if (evalLeft === TypeModelPackage.Literals.NUMBER && evalRight === TypeModelPackage.Literals.NUMBER) {
+		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) && TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
 			// -------------------- Numerical Values -----------------------	
 			return TypeModelPackage.Literals.BOOLEAN
 		} else {
@@ -263,7 +298,12 @@ class TypeCalculator {
 	}
 
 	def dispatch private internalEvaluate(NumberLiteral lit) {
-		return TypeModelPackage.Literals.NUMBER
+		val value = lit.^val
+		if (Math.floor(value) == (value as int)) {
+			return TypeModelPackage.Literals.INTEGER
+		} else {
+			return TypeModelPackage.Literals.DOUBLE
+		}
 	}
 
 	def dispatch private internalEvaluate(StringLiteral lit) {
@@ -289,14 +329,22 @@ class TypeCalculator {
 	def dispatch private internalEvaluate(FunctionCall fc) {
 		val expr = fc.expr
 		val op = fc.func
-		if (evaluate(expr) === TypeModelPackage.Literals.STRING) {
+		val exprType = evaluate(expr)
+		if (exprType === TypeModelPackage.Literals.STRING) {
 			throw new MismatchingTypesException("Cannot use function " + op.getName + "on String")
 		}
-		if (evaluate(expr) === TypeModelPackage.Literals.BOOLEAN) {
+		if (exprType === TypeModelPackage.Literals.BOOLEAN) {
 			throw new MismatchingTypesException("Cannot use function " + op.getName + "on Boolean")
 		}
 
-		return TypeModelPackage.Literals.NUMBER
+		if (op == MathFunc.ABS) {
+			return exprType
+		} else if (op == MathFunc.SQRT) {
+			return TypeModelPackage.Literals.DOUBLE
+		} else {
+			throw new UnsupportedOperationException("Type for using operator " + op.getName + " can not be calculcated")
+		}
+
 	}
 
 	def dispatch private EObject internalEvaluate(RefOrCall roc) {
@@ -313,9 +361,11 @@ class TypeCalculator {
 				return internalEvaluate(ref.value)
 			PrimitiveParameter: {
 				switch ref.type {
-					case PrimitiveType.DOUBLE,
+					case PrimitiveType.DOUBLE: {
+						return TypeModelPackage.Literals.DOUBLE
+					}
 					case PrimitiveType.INT: {
-						return TypeModelPackage.Literals.NUMBER
+						return TypeModelPackage.Literals.INTEGER
 					}
 					case PrimitiveType.CHAR: {
 						return TypeModelPackage.Literals.STRING
@@ -375,7 +425,7 @@ class TypeCalculator {
 				val container = ref.eContainer
 				switch container {
 					RangeForHead: {
-						return TypeModelPackage.Literals.NUMBER
+						return TypeModelPackage.Literals.INTEGER
 					}
 					GeneralForEachHead: {
 						if (container.eref == TypeModelPackage.Literals.MAP__ENTRIES) {
@@ -426,12 +476,12 @@ class TypeCalculator {
 		if (ret !== null) {
 			val retValue = ret.returnValue
 			if (retValue !== null) {
-				if(retValue instanceof Node){
+				if (retValue instanceof Node) {
 					return retValue.type
-				}else if(retValue instanceof ParameterNodeOrPattern){
+				} else if (retValue instanceof ParameterNodeOrPattern) {
 					return retValue.type
 				}
-				
+
 			} else {
 				return calledPattern
 			}

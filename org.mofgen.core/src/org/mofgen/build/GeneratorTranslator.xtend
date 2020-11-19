@@ -26,6 +26,7 @@ import org.mofgen.util.NameProvider
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
+import org.mofgen.typeModel.TypeModelPackage
 
 /**
  * Translates given expressions to source code that will be used as part of the API.
@@ -158,8 +159,16 @@ class GeneratorTranslator {
 			'''
 		} else {
 			val evalResult = (typeChecker.evaluate(variable.value) as EClassifier)
+			var varType = evalResult.name
+			if(evalResult === TypeModelPackage.Literals.DOUBLE){
+				varType = "double"
+			}
+			if(evalResult === TypeModelPackage.Literals.INTEGER){
+				varType = "int"
+			}
+			
 			return '''
-				«evalResult.name» «variable.name» = «MofgenUtil.getTextFromEditorFile(variable.value)»;
+				«varType» «variable.name» = «MofgenUtil.getTextFromEditorFile(variable.value)»;
 			'''
 		}
 	}

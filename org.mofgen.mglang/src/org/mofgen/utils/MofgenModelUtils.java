@@ -2,7 +2,6 @@ package org.mofgen.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +19,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
-import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.Import;
 import org.mofgen.mGLang.MGLangPackage;
 import org.mofgen.mGLang.MofgenFile;
@@ -28,7 +26,6 @@ import org.mofgen.mGLang.Parameter;
 import org.mofgen.mGLang.ParameterNodeOrPattern;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.PrimitiveParameter;
-import org.mofgen.mGLang.RefOrCall;
 import org.mofgen.typeModel.TypeModelPackage;
 
 public class MofgenModelUtils {
@@ -307,9 +304,9 @@ public class MofgenModelUtils {
 			PrimitiveParameter primPram = (PrimitiveParameter) param;
 			switch (primPram.getType()) {
 			case INT:
-				return TypeModelPackage.Literals.NUMBER;
+				return TypeModelPackage.Literals.INTEGER;
 			case DOUBLE:
-				return TypeModelPackage.Literals.NUMBER;
+				return TypeModelPackage.Literals.DOUBLE;
 			case CHAR:
 				return TypeModelPackage.Literals.STRING;
 			case BOOLEAN:
@@ -333,6 +330,11 @@ public class MofgenModelUtils {
 		}
 	}
 
+	
+	public static Number getIntegerIfPossible(double value){
+		return Math.floor(value) == ((int) value) ? (int) Math.floor(value) : value;
+	}
+	
 	public static EClass getEClassForInternalModel(EClassifier classifier) {
 		if (classifier != null && classifier instanceof EClass) {
 			if (classifier == MGLangPackage.Literals.LIST) {

@@ -80,14 +80,14 @@ class MGLangValidator extends AbstractMGLangValidator {
 			if (forRange.start !== null && forRange.end !== null) {
 				val start = forRange.start
 				val end = forRange.end
-				val check1 = checkForNumber(forRange.start, forRange, MGLangPackage.Literals.FOR_RANGE__START)
-				val check2 = checkForNumber(forRange.end, forRange, MGLangPackage.Literals.FOR_RANGE__END)
+				val check1 = checkForInteger(forRange.start, forRange, MGLangPackage.Literals.FOR_RANGE__START)
+				val check2 = checkForInteger(forRange.end, forRange, MGLangPackage.Literals.FOR_RANGE__END)
 				if (check1 && check2) {
 					val startEval = calc.evaluate(start)
 					val endEval = calc.evaluate(end)
-					if (startEval instanceof Number && endEval instanceof Number) {
-						val startCast = startEval as Double
-						val endCast = endEval as Double
+					if (startEval instanceof Integer && endEval instanceof Integer) {
+						val startCast = startEval as Integer
+						val endCast = endEval as Integer
 						if (startCast > endCast) {
 							error("Limiting bound is less than starting value",
 								MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
@@ -101,14 +101,14 @@ class MGLangValidator extends AbstractMGLangValidator {
 	/**
 	 * Error at errorLoc if the given obj does not evaluate to a numerical value.
 	 */
-	def private checkForNumber(ArithmeticExpression expr, EObject obj, EReference errorLoc) {
+	def private checkForInteger(ArithmeticExpression expr, EObject obj, EReference errorLoc) {
 		try {
 			val eval = typeChecker.evaluate(expr)
 			if (eval instanceof Pattern) {
-				error("Expected number but was given type " + eval.name, obj, errorLoc)
+				error("Expected integer but was given type " + eval.name, obj, errorLoc)
 				return false
-			} else if (eval !== TypeModelPackage.Literals.NUMBER) {
-				error("Expected number but was given type " + (eval as EClassifier).name, obj, errorLoc)
+			} else if (eval !== TypeModelPackage.Literals.INTEGER) {
+				error("Expected integer but was given type " + (eval as EClass).name, obj, errorLoc)
 				return false
 			} else {
 				return true
@@ -389,13 +389,15 @@ class MGLangValidator extends AbstractMGLangValidator {
 								givenParameterType as EClassifier)
 							if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
 								if (givenParameterType !== neededParameterType) {
-									if (!(givenParameterTypeEClassifier == TypeModelPackage.Literals.NUMBER &&
-										neededParameterType === TypeModelPackage.Literals.STRING)) {
-										error(
-											"Given type " + givenParameterTypeEClassifier.name +
-												" does not match needed type " +
-												(neededParameterType as EClassifier).name,
-											MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+									if (givenParameterTypeEClassifier instanceof EClass) {
+										if (!(TypeModelPackage.Literals.NUMBER.isSuperTypeOf(givenParameterTypeEClassifier) &&
+											neededParameterType === TypeModelPackage.Literals.STRING)) {
+											error(
+												"Given type " + givenParameterTypeEClassifier.name +
+													" does not match needed type " +
+													(neededParameterType as EClassifier).name,
+												MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+										}
 									}
 								}
 							}
@@ -447,17 +449,17 @@ class MGLangValidator extends AbstractMGLangValidator {
 									val retValType = retVal.type
 									if (retValType !== null && retValType !== node.type) {
 										error(
-											"Pattern " + pc.called.name + " returns " +
-												retValType + " but " + node.name +
-												" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
+											"Pattern " + pc.called.name + " returns " + retValType + " but " +
+												node.name + " expects " + node.type.name,
+											MGLangPackage.Literals.NODE__CREATED_BY)
 									}
 								} else if (retVal instanceof ParameterNodeOrPattern) {
 									val retValType = retVal.type
 									if (retValType !== null && retValType !== node.type) {
 										error(
-											"Pattern " + pc.called.name + " returns " +
-												retValType + " but " + node.name +
-												" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
+											"Pattern " + pc.called.name + " returns " + retValType + " but " +
+												node.name + " expects " + node.type.name,
+											MGLangPackage.Literals.NODE__CREATED_BY)
 									}
 								}
 

@@ -64,5 +64,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="typeModel.ecore#//Collection"/>
     <genClasses ecoreClass="typeModel.ecore#//EnumLiteral"/>
+    <genClasses ecoreClass="typeModel.ecore#//Double"/>
+    <genClasses ecoreClass="typeModel.ecore#//Integer"/>
   </genPackages>
 </genmodel:GenModel>
