@@ -34,6 +34,11 @@ import org.mofgen.mGLang.Collection
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
 import org.mofgen.mGLang.IteratorVariable
+import org.eclipse.emf.ecore.EDataType
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.EClass
+import org.mofgen.mGLang.Parameter
+import org.mofgen.interpreter.TypeCalculator
 
 class GeneralTranslator {
 
@@ -46,10 +51,10 @@ class GeneralTranslator {
 		
 		val paramsTranslated = newLinkedList()
 		for(var i = 0; i < pc.params.params.size; i++){
-			paramsTranslated.add(MofgenUtil.convertIfPrimitiveCastNeeded(pc.called.parameters.get(i), pc.params.params.get(i)))
+			paramsTranslated.add(convertIfPrimitiveCastNeeded(pc.called.parameters.get(i), pc.params.params.get(i)))
 		}
 		
-		// TODO only write "getAttribute()"-Part if it is explicitly needed. Not for every pattern call where no return value is needed.
+		// TODO only generate "get<Attribute>()"-Part if it is explicitly needed. Not for every pattern call where no return value is needed.
 		if (pReturn !== null && pReturn.returnValue !== null) {
 			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»))«ELSE»«FOR paramText : paramsTranslated SEPARATOR ',' AFTER ')'» «paramText»
 			«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn.returnValue)»
@@ -170,7 +175,7 @@ class GeneralTranslator {
 			}
 			Node: {
 				if (roc.target !== null) {
-					return '''«translate(roc.target)».«ref.name»'''
+					return '''«translate(roc.target)».«NameProvider.getGetterName(ref)»()'''
 				} else {
 					return ref.name
 				}
@@ -197,11 +202,51 @@ class GeneralTranslator {
 			}
 			default: {
 				if (roc.target !== null) {
-					return '''«translate(roc.target)».«MofgenUtil.getTextFromEditorFile(ref)»'''
+					return '''«translate(roc.target)».«translate(ref)»'''
 				} else {
-					return MofgenUtil.getTextFromEditorFile(ref)
+					return translate(ref)
 				}
 			}
 		}
+	}
+	
+	
+	/**
+	 * returns a translation that also contains a cast between the given and needed parameter,
+	 * as long as it is between primitive types and string. if there is no need to cast,
+	 * the normal translation will be returned.
+	 */
+	def static convertIfPrimitiveCastNeeded(Parameter neededParameter, ArithmeticExpression givenParam) {
+		val calc = new TypeCalculator()
+
+		if (neededParameter instanceof PrimitiveParameter) {
+			val neededParameterType = neededParameter.type
+			var givenParameterType = calc.evaluate(givenParam)
+			if (givenParameterType === EcorePackage.Literals.ESTRING) {
+				if(neededParameterType.literal.equals("int")){
+					return '''Integer.valueOf(«translate(givenParam)»)'''
+				} 
+				if(neededParameterType.literal.equals("double")){
+					return '''Double.valueOf(«translate(givenParam)»)'''
+				}
+				if(neededParameterType.literal.equals("boolean")){
+					return '''Boolean.valueOf(«translate(givenParam)»)'''
+				}
+			}
+		}
+
+		if (neededParameter instanceof ParameterNodeOrPattern) {
+			if (neededParameter.type === EcorePackage.Literals.ESTRING) {
+				val givenParamEval = calc.evaluate(givenParam)
+				if (givenParamEval instanceof EDataType && MofgenUtil.isDataTypePrimitive(givenParamEval as EDataType)) {
+					return '''String.valueOf(«translate(givenParam)»)'''
+				}
+				if(givenParamEval instanceof EClass && TypeModelPackage.Literals.NUMBER.isSuperTypeOf(givenParamEval as EClass)){
+					return '''String.valueOf(«translate(givenParam)»)'''
+				}
+			}
+		}
+		
+		return translate(givenParam)
 	}
 }

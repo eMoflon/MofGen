@@ -68,13 +68,13 @@ class PatternTranslator {
 			
 			// create data fields for actual nodes
 			«FOR node : nodes»
-				«node.type.name» «node.name»;
+				private «node.type.name» «node.name»;
 			«ENDFOR»
 			
 			// create data fields for parameter nodes
 			«IF !pattern.parameters.empty»
 				«FOR parameter : pattern.parameters»
-					«patternParameterTypes.get(parameter)» «NameProvider.getParameterName(parameter)»;
+					private «patternParameterTypes.get(parameter)» «NameProvider.getParameterName(parameter)»;
 				«ENDFOR»
 			«ENDIF»
 			

@@ -168,7 +168,7 @@ class GeneratorTranslator {
 			}
 			
 			return '''
-				«varType» «variable.name» = «MofgenUtil.getTextFromEditorFile(variable.value)»;
+				«varType» «variable.name» = «translate(variable.value)»;
 			'''
 		}
 	}

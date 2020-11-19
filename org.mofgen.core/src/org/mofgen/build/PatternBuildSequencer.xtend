@@ -13,6 +13,8 @@ import org.mofgen.mGLang.NodeAttributeAssignment
 import org.mofgen.mGLang.NodeContent
 import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.Parameter
+import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternForStatement
 import org.mofgen.mGLang.PatternIfElseSwitch
@@ -20,8 +22,6 @@ import org.mofgen.mGLang.PatternNodeReference
 import org.mofgen.mGLang.PatternNodeReferenceToNode
 import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.RefOrCall
-import org.mofgen.mGLang.ParameterNodeOrPattern
-import org.mofgen.mGLang.Pattern
 import org.mofgen.util.NameProvider
 
 class PatternBuildSequencer {
@@ -176,7 +176,13 @@ class PatternBuildSequencer {
 			if(roc.ref instanceof EEnumLiteral){
 				return true;
 			}
-			return validElements.contains(getValidName(roc)) // TODO only when ref is from a newly created node. not necessarily at objects passed as parameters!
+			if(roc.target.ref instanceof ParameterNodeOrPattern){
+				val possiblePattern = roc.target.ref as ParameterNodeOrPattern
+				if(possiblePattern.type instanceof Pattern){
+					return true;
+				}
+			}
+			return validElements.contains(getValidName(roc)) // only when ref is from a newly created node. not necessarily at objects passed as parameters!
 		}
 	}
 

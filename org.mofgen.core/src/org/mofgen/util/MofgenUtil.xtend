@@ -15,16 +15,14 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.mofgen.build.MofgenBuilder
-import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.interpreter.TypeRegistry
-import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.List
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.typeModel.TypeModelPackage
-import org.mofgen.mGLang.Pattern
 
 class MofgenUtil {
 
@@ -104,45 +102,6 @@ class MofgenUtil {
 					"Parameter that is not primitive must reference a node or a pattern");
 			}
 		}
-	}
-
-	/**
-	 * returns a translation that also contains a cast between the given and needed parameter,
-	 * as long as it is between primitive types and string. if there is no need to cast,
-	 * the normal translation will be returned.
-	 */
-	def static convertIfPrimitiveCastNeeded(Parameter neededParameter, ArithmeticExpression givenParam) {
-		val calc = new TypeCalculator()
-
-		if (neededParameter instanceof PrimitiveParameter) {
-			val neededParameterType = neededParameter.type
-			var givenParameterType = calc.evaluate(givenParam)
-			if (givenParameterType === EcorePackage.Literals.ESTRING) {
-				if(neededParameterType.literal.equals("int")){
-					return '''Integer.valueOf(«getTextFromEditorFile(givenParam)»)'''
-				} 
-				if(neededParameterType.literal.equals("double")){
-					return '''Double.valueOf(«getTextFromEditorFile(givenParam)»)'''
-				}
-				if(neededParameterType.literal.equals("boolean")){
-					return '''Boolean.valueOf(«getTextFromEditorFile(givenParam)»)'''
-				}
-			}
-		}
-
-		if (neededParameter instanceof ParameterNodeOrPattern) {
-			if (neededParameter.type === EcorePackage.Literals.ESTRING) {
-				val givenParamEval = calc.evaluate(givenParam)
-				if (givenParamEval instanceof EDataType && isDataTypePrimitive(givenParamEval as EDataType)) {
-					return '''String.valueOf(«getTextFromEditorFile(givenParam)»)'''
-				}
-				if(givenParamEval instanceof EClass && TypeModelPackage.Literals.NUMBER.isSuperTypeOf(givenParamEval as EClass)){
-					return '''String.valueOf(«getTextFromEditorFile(givenParam)»)'''
-				}
-			}
-		}
-		
-		return getTextFromEditorFile(givenParam)
 	}
 	
 	/**

@@ -413,6 +413,10 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					return Scopes.scopeFor(enumLiterals)
 				}
 				Variable: {
+					if(ref.value instanceof PatternCall){
+						val pc = ref.value as PatternCall
+						return getScopeForAllNodesAndParams(pc.called)
+					}
 					return IScope.NULLSCOPE
 				}
 				IteratorVariable: {
@@ -455,9 +459,12 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 
 	def getScopeForPatternReturn_ReturnValue(PatternReturn pRet) {
-		val rootPattern = pRet.eContainer as Pattern
-		val nodes = EcoreUtil2.getAllContentsOfType(rootPattern, Node)
-		val parameterNodes = rootPattern.parameters.filter(ParameterNodeOrPattern).filter [ p |
+		return getScopeForAllNodesAndParams(pRet.eContainer as Pattern)
+	}
+	
+	def getScopeForAllNodesAndParams(Pattern pattern){
+		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+		val parameterNodes = pattern.parameters.filter(ParameterNodeOrPattern).filter [ p |
 			p.type instanceof EClassifier
 		]
 		return Scopes.scopeFor(nodes + parameterNodes)

@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EReference
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.Pattern
+import org.mofgen.mGLang.Node
 
 class NameProvider {
 	/**
@@ -27,7 +28,7 @@ class NameProvider {
 	}
 
 	/**
-	 * Returns the getter method name for the given name.
+	 * Returns the method name for the given name with the given prefix.
 	 */
 	def static String getMethodName(String prefix, String name) {
 		return prefix + name.toFirstUpper
@@ -85,7 +86,15 @@ class NameProvider {
 		if (namedElement.name == "values") {
 			return 'values'
 		}
-		return 'get' + namedElement.name.toFirstUpper
+		return getGetterName(namedElement.name)
+	}
+	
+	def static String getGetterName(Node node){
+		return getGetterName(node.name)
+	}
+	
+	private def static String getGetterName(String str){
+		return 'get'+str.toFirstUpper
 	}
 
 	def static String getPatternCreate(Pattern pattern) {

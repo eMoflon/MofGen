@@ -389,7 +389,7 @@ class TypeCalculator {
 				return TypeModelPackage.Literals.ENUM_LITERAL
 			}
 			Node: {
-				return (roc.ref as Node).type
+				return (ref as Node).type
 			}
 			Map: {
 				return TypeModelPackage.Literals.MAP
