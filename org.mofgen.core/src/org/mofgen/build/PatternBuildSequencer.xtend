@@ -21,6 +21,8 @@ import org.mofgen.mGLang.PatternNodeReferenceToNode
 import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.ParameterNodeOrPattern
+import org.mofgen.mGLang.Pattern
+import org.mofgen.util.NameProvider
 
 class PatternBuildSequencer {
 
@@ -39,16 +41,35 @@ class PatternBuildSequencer {
 	 */
 	Queue<EObject> remainingElements
 
-	new(List<Node> nodes, List<ParamManipulation> paramManipulations) {
+	new(Pattern pattern) {
+		
+		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+		val paramManipulations = EcoreUtil2.getAllContentsOfType(pattern, ParamManipulation)
+		val parameters = pattern.parameters
+		
 		validElements = newHashSet()
 		remainingElements = newLinkedList()
 		srcCodeElements = newLinkedList()
 		for (paramManipulation : paramManipulations) {
 			remainingElements.addAll(paramManipulation.content.refsAssigns)
 		}
+		translateParameterVariableAssigns(parameters)
 		createNodes(nodes)
 	}
-
+	
+	/**
+	 * Sets every parameter to a certain parameter variable within the pattern object.
+	 */
+	private def translateParameterVariableAssigns(List<Parameter> parameters){
+		for(param : parameters){
+			val srcCode =
+			'''
+			this.«NameProvider.getParameterName(param)» = «param.name»; 
+			'''
+			srcCodeElements.add(srcCode)
+		}
+	}
+	
 	/**
 	 * @return the source code as string in an order for safe execution, i.e. no compiler or NP-exceptions
 	 */
@@ -242,8 +263,9 @@ class PatternBuildSequencer {
 		}
 	}
 
+
 	/**
-	 * creates/translated all nodes and then adds all sub-expressions within the node-objects to the elementsLeft list. 
+	 * creates/translates all nodes and then adds all sub-expressions within the node-objects to the elementsLeft list. 
 	 */
 	private def createNodes(List<Node> nodes) {
 		for (node : nodes) {
