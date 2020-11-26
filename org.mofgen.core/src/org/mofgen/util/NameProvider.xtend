@@ -11,8 +11,12 @@ import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.RefOrCall
 
 class NameProvider {
+	
+	final static String PARAMETER_SUFFIX = "Parameter"
+	
 	/**
 	 * Returns the java class name for the given pattern
 	 */
@@ -122,6 +126,10 @@ class NameProvider {
 	}
 	
 	def static String getParameterName(Parameter param){
-		return param.name+"Parameter"
+		return param.name+PARAMETER_SUFFIX
+	}
+	
+	def static String getParameterName(String str){
+		return str+PARAMETER_SUFFIX
 	}
 }

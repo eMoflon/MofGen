@@ -24,6 +24,7 @@ import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.mGLang.RefOrCall
+import org.mofgen.mGLang.PatternReturn
 
 class MofgenUtil {
 
@@ -82,8 +83,7 @@ class MofgenUtil {
 			default: type
 		}
 	}
-	
-	
+
 	/**
 	 * Returns the equivalent Java type as String for the given Parameter object.
 	 */
@@ -104,12 +104,13 @@ class MofgenUtil {
 			}
 		}
 	}
-	
+
 	/**
 	 * return true if the given datatype is an eint, edouble, echar or eboolean
 	 */
-	def static boolean isDataTypePrimitive(EDataType dt){
-		return dt === EcorePackage.Literals.EINT || dt === EcorePackage.Literals.EDOUBLE || dt === EcorePackage.Literals.EBOOLEAN || dt === EcorePackage.Literals.ECHAR
+	def static boolean isDataTypePrimitive(EDataType dt) {
+		return dt === EcorePackage.Literals.EINT || dt === EcorePackage.Literals.EDOUBLE ||
+			dt === EcorePackage.Literals.EBOOLEAN || dt === EcorePackage.Literals.ECHAR
 	}
 
 	def static getMapKeyType(org.mofgen.mGLang.Map map) {
@@ -197,17 +198,31 @@ class MofgenUtil {
 	def dispatch static String getGetterMethod(Node node) {
 		return '''get«node.name.toFirstUpper»()'''
 	}
-	
-	def dispatch static String getGetterMethod(Parameter pNode){
+
+	def dispatch static String getGetterMethod(Parameter pNode) {
 		return '''get«NameProvider.getParameterName(pNode).toFirstUpper»()'''
 	}
-	
-	def dispatch static String getGetterMethod(RefOrCall roc){
-		return getGetterMethod(roc.ref)
+
+	def dispatch static String getGetterMethod(PatternReturn ret) {
+		val retVal = ret.retValue
+		val ref = retVal.ref
+		if (ref instanceof Parameter) {
+			return getGetterMethod(ref)
+		} else {
+			return getGetterMethod(ref)
+		}
 	}
-	
-	def dispatch static String getGetterMethod(EObject obj){
-		throw new UnsupportedOperationException("Cannot provide parameter name to given object type "+obj)
+
+	def static boolean isThisCall(RefOrCall roc) {
+		var rocIt = roc
+		while (rocIt.target !== null) {
+			rocIt = rocIt.target
+		}
+		return rocIt.thisUsed
+	}
+
+	def dispatch static String getGetterMethod(EObject obj) {
+		throw new UnsupportedOperationException("Cannot provide parameter name to given object type " + obj)
 	}
 
 }

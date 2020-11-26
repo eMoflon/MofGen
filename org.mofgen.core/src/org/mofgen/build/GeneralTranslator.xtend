@@ -60,7 +60,7 @@ class GeneralTranslator {
 		// TODO only generate "get<Attribute>()"-Part if it is explicitly needed. Not for every pattern call where no return value is needed.
 		if (pReturn !== null && pReturn.retValue !== null && !pReturn.retValue.thisUsed) {
 			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»))«ELSE»«FOR paramText : paramsTranslated SEPARATOR ',' AFTER ')'» «paramText»
-			«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn.retValue)»
+			«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn)»
 			'''
 		} else {
 			return '''new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»)«ELSE»«FOR paramText : paramsTranslated SEPARATOR ',' AFTER ')'» «paramText»«ENDFOR»

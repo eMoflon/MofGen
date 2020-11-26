@@ -25,7 +25,6 @@ import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import java.util.List
 
 class PatternTranslator {
 
@@ -127,12 +126,12 @@ class PatternTranslator {
 		val ePackage = MofgenUtil.getEPackage(eClass)
 		val createdBy = node.createdBy
 		if (createdBy === null) {
-			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»)'''
+			return '''this.«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»)'''
 		}
 		if (createdBy instanceof NodeContent) {
-			return '''«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»)'''
+			return '''this.«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»)'''
 		} else if (createdBy instanceof PatternCall) {
-			return '''«node.name» = «translate(createdBy)»'''
+			return '''this.«node.name» = «translate(createdBy)»'''
 		} else {
 			throw new IllegalStateException("Nodes should only be created by NodeContent or a pattern call")
 		}
@@ -162,7 +161,7 @@ class PatternTranslator {
 	private static def dispatch String internalTranslate(NodeAttributeAssignment ass) {
 		val node = EcoreUtil2.getContainerOfType(ass, Node)
 		return '''
-			«node.name».«NameProvider.getSetterName(ass.target)»(«translate(ass.value)»)
+			this.«node.name».«NameProvider.getSetterName(ass.target)»(«translate(ass.value)»)
 		'''
 	}
 
@@ -175,8 +174,6 @@ class PatternTranslator {
 			if (retValue instanceof Parameter) {
 				return '''return «NameProvider.getParameterName(retValue)»'''
 			}
-		} else {
-			// TODO return Pattern as a whole?
 		}
 	}
 

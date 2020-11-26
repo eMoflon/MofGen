@@ -18,15 +18,13 @@ import org.mofgen.mGLang.List
 import org.mofgen.mGLang.ListAdHoc
 import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.MapAdHoc
+import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
+import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.ParameterNodeOrPattern
-import org.mofgen.mGLang.Pattern
-import org.mofgen.typeModel.TypeModelPackage
 
 /**
  * Translates given expressions to source code that will be used as part of the API.
