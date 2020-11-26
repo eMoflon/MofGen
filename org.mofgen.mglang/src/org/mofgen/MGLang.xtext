@@ -306,7 +306,7 @@ terminal FALSE returns ecore::EBoolean:
 	'false';
 
 terminal NULL:
-	'null'
+	'none'
 ;
 
 enum RelationalOp:

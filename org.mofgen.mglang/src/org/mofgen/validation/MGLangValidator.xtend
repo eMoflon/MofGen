@@ -251,7 +251,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 	/**
 	 * Checks that the return type of a generator is valid, i.e. no patterns being returned but concrete nodes/EObjects 
 	 */
-	def checkValidReturnValue(Generator gen) {
+	def checkValidReturnValue(GenReturn genRet) {
+		// What is valid?: Variable, PatternCall with return value, Access of elements of a pattern variable, access of list/map with objects as elements
 		// TODO filter RefOrCall structure. no pattern calls without return value or returning pattern as a whole or only primitive value
 	}
 
