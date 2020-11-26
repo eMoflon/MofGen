@@ -7,6 +7,7 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.util.Strings;
 import org.mofgen.mGLang.ForStatement;
 import org.mofgen.mGLang.IteratorVariable;
+import org.mofgen.mGLang.Parameter;
 import org.mofgen.utils.MofgenModelUtils;
 
 public class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvider {
@@ -32,7 +33,10 @@ public class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedName
 				}
 			}
 			return qualifiedNameFromConverter;
-		} else {
+		} else if(obj instanceof Parameter) {
+			return super.computeFullyQualifiedNameFromNameAttribute(obj).append("_parameter");
+		}
+		else {
 			return super.computeFullyQualifiedNameFromNameAttribute(obj);
 		}
 	}
