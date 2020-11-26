@@ -36,14 +36,15 @@ PatternCommand:
 	Node | ParamManipulation;
 
 PatternReturn:
-	{PatternReturn} 'return' 'this' ('.' returnValue=[ecore::EObject])?; //TODO allow Nodes AND parameters in scoping
+	{PatternReturn} 'return' retValue=RefOrCall;
 
 ParamManipulation:
 	param=[ParameterNodeOrPattern] content=NodeContent;
 
 Node:
 	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
-	createdBy=PatternCall))?;
+	createdBy=PatternCall) | (ASSIGNMENT_OP
+	createdBy=RefOrCall))?;
 
 NodeContent:
 	{NodeContent} '{' (refsAssigns+=NodeReferenceOrAssignmentOrControlFlow)* '}';
@@ -72,6 +73,7 @@ PatternNodeReference:
 ;
 
 PatternNodeReferenceToNode:
+	// TODO Adapt scoping!
 	type=[ecore::EReference] '->' node=RefOrCall; // allow nodes, parameter nodes and access to nodes in patterns as parameter objects in scoping! TODO
 
 PatternNodeReferenceToPatternCall:
@@ -120,10 +122,9 @@ PatternCaseBody:	//TODO: one more pattern switch object for switches outside of 
 Case:
 	PatternCase | GenCase;
 
-	//Using generic eobject references to make enums possible.
 RefOrCall:
-	ref=[ecore::EObject] ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params=RefParams)?
-	bracesSet?=')')?)*;
+	((thisUsed?='this') | ref=[ecore::EObject]) ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params=RefParams)?
+	bracesSet?=')')?)*;//Using generic eobject references to make enums possible.
 	
 RefParams:
 	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
@@ -137,7 +138,7 @@ GeneratorExpression: //Only serves as super class for all possible commands with
 	;
 	
 GenReturn:
-	'return' returnValue = RefOrCallOrPatternCall //TODO: extend to simple PatternCall as well
+	'return' returnValue = RefOrCallOrPatternCall //TODO: validation
 ;
 
 RefOrCallOrPatternCall:
@@ -272,6 +273,7 @@ PrimaryExpr returns ArithmeticExpression:
 BaseExpr returns ArithmeticExpression:
 	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
 	expr=ArithmeticExpression ')' | {UnaryMinus} '-' expr=BaseExpr | Literal | RefOrCall | PatternCall;
+	// TODO Validate ThisRefOrCall
 
 Literal:
 	BooleanLiteral | StringLiteral | NumberLiteral | NullLiteral;

@@ -5,6 +5,7 @@ package org.mofgen.scoping
 
 import java.util.ArrayList
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
@@ -37,14 +38,13 @@ import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternNodeReference
+import org.mofgen.mGLang.PatternReturn
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.PatternReturn
-import org.eclipse.emf.ecore.EClassifier
 
 /**
  * This class contains custom scoping description.
@@ -322,9 +322,20 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			var collections = new ArrayList<Collection>()
 
 			if (pattern !== null) {
-				params.addAll(pattern.parameters)
-				// get nodes of pattern
-				patternNodes.addAll(pattern.commands.filter(Node))
+				val highestRoc = MofgenModelUtils.getHightestContainerOfType(r, RefOrCall)
+				if (highestRoc.eContainingFeature === MGLangPackage.Literals.NODE__CREATED_BY) {
+					params.addAll(pattern.parameters.filter(ParameterNodeOrPattern).filter [ p |
+						p.type instanceof EClassifier && !MofgenModelUtils.isPrimitiveType(p.type as EClassifier)
+					])
+				} else {
+					params.addAll(pattern.parameters)
+				}
+
+				// get nodes of pattern (which names do not match any parameter names!)
+				val parameterNames = pattern.parameters.map[p|p.name]
+				patternNodes.addAll(EcoreUtil2.getAllContentsOfType(pattern, Node).filter [ n |
+					!parameterNames.contains(n.name)
+				])
 			} else {
 				collections.addAll(EcoreUtil2.getAllContentsOfType(gen, Collection))
 				vars.addAll(EcoreUtil2.getAllContentsOfType(gen, Variable)) // TODO Collect variables correctly (i.e. consider inner/outer scopes)
@@ -391,6 +402,17 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 		} else {
 			val trg = r.target
+			if (trg.thisUsed) {
+				// get nodes of pattern
+				val pattern = EcoreUtil2.getContainerOfType(r, Pattern)
+				if (pattern === null) {
+					return IScope.NULLSCOPE
+				} else {
+					val patternNodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+					return Scopes.scopeFor(patternNodes)
+				}
+			}
+
 			val ref = trg.ref
 			val refClass = ref.eClass
 
@@ -413,7 +435,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					return Scopes.scopeFor(enumLiterals)
 				}
 				Variable: {
-					if(ref.value instanceof PatternCall){
+					if (ref.value instanceof PatternCall) {
 						val pc = ref.value as PatternCall
 						return getScopeForAllNodesAndParams(pc.called)
 					}
@@ -458,15 +480,23 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return Scopes.scopeFor(parameterNodes)
 	}
 
-	def getScopeForPatternReturn_ReturnValue(PatternReturn pRet) {
-		return getScopeForAllNodesAndParams(pRet.eContainer as Pattern)
-	}
-	
-	def getScopeForAllNodesAndParams(Pattern pattern){
+	def getScopeForAllNodesAndParams(Pattern pattern) {
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
 		val parameterNodes = pattern.parameters.filter(ParameterNodeOrPattern).filter [ p |
 			p.type instanceof EClassifier
 		]
+		return Scopes.scopeFor(nodes + parameterNodes)
+	}
+
+	/**
+	 *  Returns all parameters of the pattern and all nodes that do not have the same names as any parameter
+	 */
+	def getScopeForAllNotShadowedNodesAndParams(Pattern pattern) {
+		val parameterNames = pattern.parameters.map[p|p.name]
+		val parameterNodes = pattern.parameters.filter(ParameterNodeOrPattern).filter [ p |
+			p.type instanceof EClassifier
+		]
+		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node).filter[n|!parameterNames.contains(n.name)]
 		return Scopes.scopeFor(nodes + parameterNodes)
 	}
 
@@ -549,10 +579,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	def isPatternCall_called(EObject context, EReference reference) {
 		return context instanceof PatternCall && reference == MGLangPackage.Literals.PATTERN_CALL__CALLED
-	}
-
-	def isPatternReturn_returnValue(EObject context, EReference reference) {
-		return context instanceof PatternReturn && reference == MGLangPackage.Literals.PATTERN_RETURN__RETURN_VALUE
 	}
 
 	def getRootFile(EObject context) {

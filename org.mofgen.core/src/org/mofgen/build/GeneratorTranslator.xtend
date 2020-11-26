@@ -57,11 +57,11 @@ class GeneratorTranslator {
 				public EObject start(«IF gen.params.size == 0») {«ELSE»,«ENDIF»
 				«FOR parameter : gen.params SEPARATOR ', ' AFTER '){'»final «MofgenUtil.getJavaTypeAsString(parameter)» «parameter.name»Value«ENDFOR»
 					«FOR expression : gen.commands»
-					«GeneratorTranslator.translate(expression)»;
+						«GeneratorTranslator.translate(expression)»;
 					«ENDFOR»
 				}				
 			}
-			'''
+		'''
 	}
 
 	private static def getGeneratorDoc(Generator gen) {
@@ -137,21 +137,17 @@ class GeneratorTranslator {
 			val calledPattern = (variable.value as PatternCall).called
 			val patternReturn = calledPattern.^return
 			var patternType = ""
-			if (patternReturn.returnValue !== null) {
-				val retValue = patternReturn.returnValue
-				if(retValue instanceof Node){
-					patternType = retValue.type.name
-				}else if(retValue instanceof ParameterNodeOrPattern){
-					val retValueType = retValue.type
-					if(retValueType instanceof EClassifier){
-						patternType = retValueType.name
-					}else if(retValueType instanceof Pattern){
-						// TODO
-						throw new UnsupportedOperationException()
-					}
+			if (patternReturn.retValue !== null) {
+				val retValue = patternReturn.retValue
+				val retValueEval = typeChecker.evaluate(retValue)
+				if (retValueEval instanceof EClassifier) {
+					patternType = retValueEval.name
+				} else if (retValueEval instanceof Pattern) {
+					patternType = NameProvider.getPatternClassName(retValueEval)
+				} else {
+					throw new IllegalStateException(
+						"Type checker should have either returned an eClassifier or a valid PatternObject")
 				}
-			} else {
-				patternType = NameProvider.getPatternClassName(calledPattern)
 			}
 
 			return '''
@@ -160,13 +156,13 @@ class GeneratorTranslator {
 		} else {
 			val evalResult = (typeChecker.evaluate(variable.value) as EClassifier)
 			var varType = evalResult.name
-			if(evalResult === TypeModelPackage.Literals.DOUBLE){
+			if (evalResult === TypeModelPackage.Literals.DOUBLE) {
 				varType = "double"
 			}
-			if(evalResult === TypeModelPackage.Literals.INTEGER){
+			if (evalResult === TypeModelPackage.Literals.INTEGER) {
 				varType = "int"
 			}
-			
+
 			return '''
 				«varType» «variable.name» = «translate(variable.value)»;
 			'''

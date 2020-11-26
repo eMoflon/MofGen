@@ -38,7 +38,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternCommand"/>
   <eClassifiers xsi:type="ecore:EClass" name="PatternReturn">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="retValue" eType="#//RefOrCall"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParamManipulation" eSuperTypes="#//PatternCommand">
     <eStructuralFeatures xsi:type="ecore:EReference" name="param" eType="#//ParameterNodeOrPattern"/>
@@ -140,6 +141,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Case"/>
   <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//RefOrCallOrPatternCall #//ArithmeticExpression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="thisUsed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//RefOrCall"
         containment="true"/>

@@ -42,22 +42,25 @@ import org.mofgen.interpreter.TypeCalculator
 
 class GeneralTranslator {
 
-	def static String translate(EObject obj){
+	def static String translate(EObject obj) {
+		if (obj === null) {
+			throw new IllegalArgumentException("Cannot translate null")
+		}
 		return internalTranslate(obj)
 	}
 
 	private def static dispatch String internalTranslate(PatternCall pc) {
 		val pReturn = pc.called.^return
-		
+
 		val paramsTranslated = newLinkedList()
-		for(var i = 0; i < pc.params.params.size; i++){
+		for (var i = 0; i < pc.params.params.size; i++) {
 			paramsTranslated.add(convertIfPrimitiveCastNeeded(pc.called.parameters.get(i), pc.params.params.get(i)))
 		}
-		
+
 		// TODO only generate "get<Attribute>()"-Part if it is explicitly needed. Not for every pattern call where no return value is needed.
-		if (pReturn !== null && pReturn.returnValue !== null) {
+		if (pReturn !== null && pReturn.retValue !== null && !pReturn.retValue.thisUsed) {
 			return '''(new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»))«ELSE»«FOR paramText : paramsTranslated SEPARATOR ',' AFTER ')'» «paramText»
-			«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn.returnValue)»
+			«ENDFOR»)«ENDIF».«MofgenUtil.getGetterMethod(pReturn.retValue)»
 			'''
 		} else {
 			return '''new «NameProvider.getPatternClassName(pc.called)»(«IF pc.params.params.empty»)«ELSE»«FOR paramText : paramsTranslated SEPARATOR ',' AFTER ')'» «paramText»«ENDFOR»
@@ -72,46 +75,45 @@ class GeneralTranslator {
 			GeneralForEachHead: {
 				var typeString = ""
 				var collectionString = ""
-				if(head.eref == TypeModelPackage.Literals.MAP__ENTRIES){
+				if (head.eref == TypeModelPackage.Literals.MAP__ENTRIES) {
 					typeString = MofgenUtil.getMapEntryType(head.src.ref as Map).name
 					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».values()'''
-				}else if(head.eref == TypeModelPackage.Literals.MAP__KEYS){
+				} else if (head.eref == TypeModelPackage.Literals.MAP__KEYS) {
 					typeString = MofgenUtil.getMapKeyType(head.src.ref as Map).name
 					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».keySet()'''
-				}else{
+				} else {
 					typeString = head.eref.name
 					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».«NameProvider.getGetterName(head.eref)»()'''
 				}
-				
+
 				'''«typeString» «head.iteratorVar.name» : «collectionString» '''
 			}
 			ListForEachHead: '''«MofgenUtil.getListType(head.list).name» «head.iteratorVar.name» : «head.list.name»'''
 		}
 		return headSrc
 	}
-	
-	private def static dispatch String internalTranslate(CollectionManipulation cm){
+
+	private def static dispatch String internalTranslate(CollectionManipulation cm) {
 		val coll = cm.trg
 		val op = cm.op
 		val params = cm.params
-		
+
 		return '''«coll.name».«op.name»(«internalTranslate(params)»)'''
 	}
-	
-	private def static dispatch String internalTranslate(RefParams refParams){
+
+	private def static dispatch String internalTranslate(RefParams refParams) {
 		val params = refParams.params
-		if(params.empty){
+		if (params.empty) {
 			return ""
 		}
-		
-		return
-		'''
-		«FOR param : params SEPARATOR ','»
-			«translate(param)»
-		«ENDFOR»
+
+		return '''
+			«FOR param : params SEPARATOR ','»
+				«translate(param)»
+			«ENDFOR»
 		'''
 	}
-	
+
 	/**
 	 * translates the given arithmetic expression to source code
 	 */
@@ -164,17 +166,17 @@ class GeneralTranslator {
 				if (ref instanceof EEnum || ref instanceof EEnumLiteral) {
 					suffix = ""
 				}
-				if(ref instanceof EAttribute || ref instanceof EReference){
+				if (ref instanceof EAttribute || ref instanceof EReference) {
 					element = NameProvider.getGetterName(ref)
-				}else{
-					if(roc.params !== null){
-						suffix = '''(«translate(roc.params)»)'''	
+				} else {
+					if (roc.params !== null) {
+						suffix = '''(«translate(roc.params)»)'''
 					}
 				}
 				return '''«prefix»«element»«suffix»'''
 			}
 			Node: {
-				if (roc.target !== null) {
+				if (roc.target !== null && !roc.target.thisUsed) {
 					return '''«translate(roc.target)».«NameProvider.getGetterName(ref)»()'''
 				} else {
 					return ref.name
@@ -187,15 +189,16 @@ class GeneralTranslator {
 					return ref.name
 				}
 			}
-			IteratorVariable: return ref.name
+			IteratorVariable:
+				return ref.name
 			Import: {
 				return MofgenUtil.getEPackage(ref.uri).name
 			}
 			ParameterNodeOrPattern: {
-				return ref.name
+				return NameProvider.getParameterName(ref)
 			}
 			PrimitiveParameter: {
-				return ref.name
+				return NameProvider.getParameterName(ref)
 			}
 			Collection: {
 				return ref.name
@@ -209,8 +212,7 @@ class GeneralTranslator {
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * returns a translation that also contains a cast between the given and needed parameter,
 	 * as long as it is between primitive types and string. if there is no need to cast,
@@ -223,13 +225,13 @@ class GeneralTranslator {
 			val neededParameterType = neededParameter.type
 			var givenParameterType = calc.evaluate(givenParam)
 			if (givenParameterType === EcorePackage.Literals.ESTRING) {
-				if(neededParameterType.literal.equals("int")){
+				if (neededParameterType.literal.equals("int")) {
 					return '''Integer.valueOf(«translate(givenParam)»)'''
-				} 
-				if(neededParameterType.literal.equals("double")){
+				}
+				if (neededParameterType.literal.equals("double")) {
 					return '''Double.valueOf(«translate(givenParam)»)'''
 				}
-				if(neededParameterType.literal.equals("boolean")){
+				if (neededParameterType.literal.equals("boolean")) {
 					return '''Boolean.valueOf(«translate(givenParam)»)'''
 				}
 			}
@@ -238,15 +240,17 @@ class GeneralTranslator {
 		if (neededParameter instanceof ParameterNodeOrPattern) {
 			if (neededParameter.type === EcorePackage.Literals.ESTRING) {
 				val givenParamEval = calc.evaluate(givenParam)
-				if (givenParamEval instanceof EDataType && MofgenUtil.isDataTypePrimitive(givenParamEval as EDataType)) {
+				if (givenParamEval instanceof EDataType &&
+					MofgenUtil.isDataTypePrimitive(givenParamEval as EDataType)) {
 					return '''String.valueOf(«translate(givenParam)»)'''
 				}
-				if(givenParamEval instanceof EClass && TypeModelPackage.Literals.NUMBER.isSuperTypeOf(givenParamEval as EClass)){
+				if (givenParamEval instanceof EClass &&
+					TypeModelPackage.Literals.NUMBER.isSuperTypeOf(givenParamEval as EClass)) {
 					return '''String.valueOf(«translate(givenParam)»)'''
 				}
 			}
 		}
-		
+
 		return translate(givenParam)
 	}
 }

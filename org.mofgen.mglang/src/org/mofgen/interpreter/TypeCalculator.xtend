@@ -36,19 +36,24 @@ import org.mofgen.mGLang.UnaryMinus
 import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.eclipse.xtext.EcoreUtil2
 
 class TypeCalculator {
 
 	def EObject evaluate(ArithmeticExpression expr) {
 		val eval = internalEvaluate(expr)
-		if(eval instanceof EClass){
+		if (eval instanceof EClass) {
 			return MofgenModelUtils.getEClassForInternalModel(eval)
-		}else{
+		} else {
 			return eval
 		}
 	}
+	
+	def dispatch private EObject internalEvaluate(Node node){
+		return node.type
+	}
 
-	def dispatch private internalEvaluate(Tertiary tertiary) {
+	def dispatch private EObject internalEvaluate(Tertiary tertiary) {
 		val evalLeft = evaluate(tertiary.left) as EClass
 		val evalRight = evaluate(tertiary.right) as EClass
 
@@ -59,14 +64,16 @@ class TypeCalculator {
 				case MINUS: throw new MismatchingTypesException("Cannot subtract Strings")
 				case OR: throw new MismatchingTypesException("Cannot use logical OR on Strings")
 			}
-		} else if (evalLeft === TypeModelPackage.Literals.STRING && TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
+		} else if (evalLeft === TypeModelPackage.Literals.STRING &&
+			TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
 			// -------------------- Strings -----------------------	
 			switch (tertiary.op) {
 				case PLUS: return TypeModelPackage.Literals.STRING
 				case MINUS: throw new MismatchingTypesException("Cannot subtract from Strings")
 				case OR: throw new MismatchingTypesException("Cannot use logical OR on Strings")
 			}
-		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) && evalRight === TypeModelPackage.Literals.STRING) {
+		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) &&
+			evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
 			switch (tertiary.op) {
 				case PLUS: return TypeModelPackage.Literals.STRING
@@ -121,7 +128,7 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(Secondary secondary) {
+	def dispatch private EObject internalEvaluate(Secondary secondary) {
 		val evalLeft = evaluate(secondary.left) as EClass
 		val evalRight = evaluate(secondary.right) as EClass
 
@@ -175,7 +182,7 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(Primary primary) {
+	def dispatch private EObject internalEvaluate(Primary primary) {
 		val evalLeft = evaluate(primary.left) as EClass
 		val evalRight = evaluate(primary.right) as EClass
 
@@ -233,7 +240,7 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(Rel rel) {
+	def dispatch private EObject internalEvaluate(Rel rel) {
 		val evalLeft = evaluate(rel.left) as EClass
 		val evalRight = evaluate(rel.right) as EClass
 
@@ -267,7 +274,8 @@ class TypeCalculator {
 				case LESS:
 					throw new MismatchingTypesException("Can only compare boolean values for (in)equality.")
 			}
-		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) && TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
+		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) &&
+			TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
 			// -------------------- Numerical Values -----------------------	
 			return TypeModelPackage.Literals.BOOLEAN
 		} else {
@@ -293,11 +301,11 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(BooleanLiteral lit) {
+	def dispatch private EObject internalEvaluate(BooleanLiteral lit) {
 		return TypeModelPackage.Literals.BOOLEAN
 	}
 
-	def dispatch private internalEvaluate(NumberLiteral lit) {
+	def dispatch private EObject internalEvaluate(NumberLiteral lit) {
 		val value = lit.^val
 		if (Math.floor(value) == (value as int)) {
 			return TypeModelPackage.Literals.INTEGER
@@ -306,11 +314,11 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(StringLiteral lit) {
+	def dispatch private EObject internalEvaluate(StringLiteral lit) {
 		return TypeModelPackage.Literals.STRING
 	}
 
-	def dispatch private internalEvaluate(NegationExpression negExpr) {
+	def dispatch private EObject internalEvaluate(NegationExpression negExpr) {
 		val toNeg = negExpr.expr
 		val eval = evaluate(toNeg)
 		if (eval === TypeModelPackage.Literals.STRING) {
@@ -326,7 +334,7 @@ class TypeCalculator {
 		throw new MismatchingTypesException("Unhandled type in negating expression")
 	}
 
-	def dispatch private internalEvaluate(FunctionCall fc) {
+	def dispatch private EObject internalEvaluate(FunctionCall fc) {
 		val expr = fc.expr
 		val op = fc.func
 		val exprType = evaluate(expr)
@@ -349,34 +357,40 @@ class TypeCalculator {
 
 	def dispatch private EObject internalEvaluate(RefOrCall roc) {
 
-		if (roc.ref.eIsProxy) {
+		if (roc.ref !== null && roc.ref.eIsProxy) {
 			return null;
 		}
 
 		var highestRoc = getSuperRoc(roc)
 		var ref = highestRoc.ref
 
+		if(ref === null && highestRoc.thisUsed){
+			return EcoreUtil2.getContainerOfType(highestRoc, Pattern)
+		}
+
 		switch ref {
 			Variable:
 				return internalEvaluate(ref.value)
 			PrimitiveParameter: {
-				switch ref.type {
-					case PrimitiveType.DOUBLE: {
-						return TypeModelPackage.Literals.DOUBLE
-					}
-					case PrimitiveType.INT: {
-						return TypeModelPackage.Literals.INTEGER
-					}
-					case PrimitiveType.CHAR: {
-						return TypeModelPackage.Literals.STRING
-					}
-					case PrimitiveType.BOOLEAN: {
-						return TypeModelPackage.Literals.BOOLEAN
+				if (ref.type !== null) {
+					switch ref.type {
+						case PrimitiveType.DOUBLE: {
+							return TypeModelPackage.Literals.DOUBLE
+						}
+						case PrimitiveType.INT: {
+							return TypeModelPackage.Literals.INTEGER
+						}
+						case PrimitiveType.CHAR: {
+							return TypeModelPackage.Literals.STRING
+						}
+						case PrimitiveType.BOOLEAN: {
+							return TypeModelPackage.Literals.BOOLEAN
+						}
 					}
 				}
 			}
 			ParameterNodeOrPattern: {
-				if (ref.type instanceof Pattern) {
+				if (ref.type !== null && ref.type instanceof Pattern) {
 					return ref.type
 				} else {
 					return MofgenModelUtils.getEClassForInternalModel(ref.type as EClassifier)
@@ -406,12 +420,12 @@ class TypeCalculator {
 			EOperation: {
 				val op = ref
 				val trg = roc.target
-				if (trg.ref instanceof List) {
+				if (trg !== null && trg.ref !== null && trg.ref instanceof List) {
 					if (op == TypeModelPackage.Literals.LIST___GET__INT) {
 						return TypeRegistry.getListType(trg.ref as List)
 					}
 				}
-				if (trg.ref instanceof Map) {
+				if (trg !== null && trg.ref !== null && trg.ref instanceof Map) {
 					if (op == TypeModelPackage.Literals.MAP___GET__EOBJECT) {
 						return TypeRegistry.getMapEntryType(trg.ref as Map)
 					}
@@ -444,6 +458,8 @@ class TypeCalculator {
 					}
 				}
 			}
+			Pattern:
+				return ref
 			default: {
 				throw new IllegalStateException("Could not handle type of " + highestRoc.ref)
 			}
@@ -473,18 +489,13 @@ class TypeCalculator {
 		return eval;
 	}
 
-	def dispatch private internalEvaluate(PatternCall pc) {
-		val ret = pc.called.^return
+	def dispatch private EObject internalEvaluate(PatternCall pc) {
 		val calledPattern = pc.called
+		val ret = pc.called.^return
 		if (ret !== null) {
-			val retValue = ret.returnValue
+			val retValue = internalEvaluate(ret.retValue)
 			if (retValue !== null) {
-				if (retValue instanceof Node) {
-					return retValue.type
-				} else if (retValue instanceof ParameterNodeOrPattern) {
-					return retValue.type
-				}
-
+				return retValue
 			} else {
 				return calledPattern
 			}

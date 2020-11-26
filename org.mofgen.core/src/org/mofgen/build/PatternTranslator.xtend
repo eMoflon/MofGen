@@ -167,14 +167,13 @@ class PatternTranslator {
 	}
 
 	private static def dispatch String internalTranslate(PatternReturn pReturn) {
-		if (pReturn.returnValue !== null) {
-			val retValue = pReturn.returnValue
+		if (pReturn.retValue !== null) {
+			val retValue = pReturn.retValue.ref
 			if (retValue instanceof Node) {
 				return '''return «retValue.name»'''
 			}
-			if (retValue instanceof ParameterNodeOrPattern) {
-				// return '''return «retValue.name»'''
-				// TODO special fields for parameter values to be accessed by specialized get()-Call. Adapt other methods as well!
+			if (retValue instanceof Parameter) {
+				return '''return «NameProvider.getParameterName(retValue)»'''
 			}
 		} else {
 			// TODO return Pattern as a whole?

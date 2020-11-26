@@ -39,6 +39,7 @@ import org.mofgen.mGLang.MapTupel
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment
 import org.mofgen.mGLang.NodeContent
+import org.mofgen.mGLang.NullLiteral
 import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
@@ -57,8 +58,6 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.NullLiteral
-import org.mofgen.mGLang.ParameterNodeOrPattern
 
 /**
  * This class contains custom validation rules. 
@@ -94,6 +93,22 @@ class MGLangValidator extends AbstractMGLangValidator {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	@Check
+	def checkThisInRefOrCall(RefOrCall roc) {
+		var rocIt = roc
+		while (rocIt.target !== null) {
+			rocIt = rocIt.target
+		}
+		if (rocIt.thisUsed) {
+			if (EcoreUtil2.getContainerOfType(roc, Node) !== null && rocIt.eContainingFeature !== MGLangPackage.Literals.REF_OR_CALL__TARGET) {
+				error("This cannot stand alone", MGLangPackage.Literals.REF_OR_CALL__THIS_USED)
+			}
+			if (EcoreUtil2.getContainerOfType(roc, Pattern) === null) {
+				error("Can only use keyword this in patterns", MGLangPackage.Literals.REF_OR_CALL__THIS_USED)
 			}
 		}
 	}
@@ -258,8 +273,22 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 * Checks that the return type of a generator is valid, i.e. no patterns being returned but concrete nodes/EObjects 
 	 */
 	def checkValidReturnValue(GenReturn genRet) {
-		// What is valid?: Variable, PatternCall with return value, Access of elements of a pattern variable, access of list/map with objects as elements
-		// TODO filter RefOrCall structure. no pattern calls without return value or returning pattern as a whole or only primitive value
+		val ret = genRet.returnValue
+		if (ret instanceof RefOrCall) {
+			// TODO
+		} else if (ret instanceof PatternCall) {
+			val pattern = ret.called
+			val patternReturn = pattern.^return
+			if (patternReturn === null) {
+				error("Can not return void pattern", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+			} else {
+				// TODO
+			}
+		} else {
+			throw new IllegalArgumentException(
+				"GenReturns should only be able to hold RefOrCall- or PatternCall-Objects")
+		}
+	// What is valid?: Variable, PatternCall with return value, Access of elements of a pattern variable, access of list/map with objects as elements
 	}
 
 	@Check
@@ -352,6 +381,12 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 			try {
 				if (ass.value !== null) {
+					val assValue = ass.value
+					if (assValue instanceof RefOrCall) {
+						if (assValue.thisUsed) {
+							return;
+						}
+					}
 					val assignedValueEval = typeChecker.evaluate(ass.value)
 					if (assignedValueEval instanceof EClass) {
 						val assignedValue = MofgenModelUtils.getEClassForInternalModel(assignedValueEval)
@@ -470,30 +505,18 @@ class MGLangValidator extends AbstractMGLangValidator {
 							error("Pattern " + pc.called.name + " returns null but " + node.name + " expects " +
 								node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
 						} else {
-							val retVal = ret.returnValue
+							val retVal = ret.retValue
 							if (retVal === null) {
 								error(
 									"Pattern " + pc.called.name + " returns " + pc.called.name + " but " + node.name +
 										" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
 							} else {
-								if (retVal instanceof Node) {
-									val retValType = retVal.type
-									if (retValType !== null && retValType !== node.type) {
-										error(
-											"Pattern " + pc.called.name + " returns " + retValType + " but " +
-												node.name + " expects " + node.type.name,
-											MGLangPackage.Literals.NODE__CREATED_BY)
-									}
-								} else if (retVal instanceof ParameterNodeOrPattern) {
-									val retValType = retVal.type
-									if (retValType !== null && retValType !== node.type) {
-										error(
-											"Pattern " + pc.called.name + " returns " + retValType + " but " +
-												node.name + " expects " + node.type.name,
-											MGLangPackage.Literals.NODE__CREATED_BY)
-									}
+								val retValType = typeChecker.evaluate(retVal)
+								if (retValType !== null && retValType !== node.type) {
+									error(
+										"Pattern " + pc.called.name + " returns " + retValType + " but " + node.name +
+											" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
 								}
-
 							}
 						}
 					}
@@ -962,8 +985,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 				return
 			}
 		}
-		error("Use of '" + NodeModelUtils.getTokenText(NodeModelUtils.getNode(lit)) + "' is only allowed for null",
-			lit.eContainingFeature)
+		error("Use of null is only allowed in relational operations", lit.eContainingFeature)
 	}
 
 }

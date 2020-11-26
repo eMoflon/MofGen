@@ -67,7 +67,7 @@
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternCommand"/>
     <genClasses ecoreClass="MGLang.ecore#//PatternReturn">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternReturn/returnValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternReturn/retValue"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//ParamManipulation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ParamManipulation/param"/>
@@ -149,6 +149,7 @@
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Case"/>
     <genClasses ecoreClass="MGLang.ecore#//RefOrCall">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//RefOrCall/thisUsed"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/ref"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/target"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//RefOrCall/params"/>

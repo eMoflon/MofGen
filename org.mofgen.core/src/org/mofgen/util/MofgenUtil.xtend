@@ -23,6 +23,7 @@ import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.typeModel.TypeModelPackage
+import org.mofgen.mGLang.RefOrCall
 
 class MofgenUtil {
 
@@ -193,15 +194,19 @@ class MofgenUtil {
 		}
 	}
 
-	def dispatch static getGetterMethod(Node node) {
+	def dispatch static String getGetterMethod(Node node) {
 		return '''get«node.name.toFirstUpper»()'''
 	}
 	
-	def dispatch static getGetterMethod(Parameter pNode){
+	def dispatch static String getGetterMethod(Parameter pNode){
 		return '''get«NameProvider.getParameterName(pNode).toFirstUpper»()'''
 	}
 	
-	def dispatch static getGetterMethod(EObject obj){
+	def dispatch static String getGetterMethod(RefOrCall roc){
+		return getGetterMethod(roc.ref)
+	}
+	
+	def dispatch static String getGetterMethod(EObject obj){
 		throw new UnsupportedOperationException("Cannot provide parameter name to given object type "+obj)
 	}
 

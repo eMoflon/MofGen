@@ -121,7 +121,7 @@ class NameProvider {
 		return location.replace('/', '.').replace('\\', '.')
 	}
 	
-	def static String getParameterName(Parameter node){
-		return node.name+"Parameter"
+	def static String getParameterName(Parameter param){
+		return param.name+"Parameter"
 	}
 }

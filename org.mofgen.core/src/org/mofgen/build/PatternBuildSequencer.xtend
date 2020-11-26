@@ -42,11 +42,11 @@ class PatternBuildSequencer {
 	Queue<EObject> remainingElements
 
 	new(Pattern pattern) {
-		
+
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
 		val paramManipulations = EcoreUtil2.getAllContentsOfType(pattern, ParamManipulation)
 		val parameters = pattern.parameters
-		
+
 		validElements = newHashSet()
 		remainingElements = newLinkedList()
 		srcCodeElements = newLinkedList()
@@ -56,20 +56,19 @@ class PatternBuildSequencer {
 		translateParameterVariableAssigns(parameters)
 		createNodes(nodes)
 	}
-	
+
 	/**
 	 * Sets every parameter to a certain parameter variable within the pattern object.
 	 */
-	private def translateParameterVariableAssigns(List<Parameter> parameters){
-		for(param : parameters){
-			val srcCode =
-			'''
-			this.«NameProvider.getParameterName(param)» = «param.name»; 
+	private def translateParameterVariableAssigns(List<Parameter> parameters) {
+		for (param : parameters) {
+			val srcCode = '''
+				this.«NameProvider.getParameterName(param)» = «param.name»; 
 			'''
 			srcCodeElements.add(srcCode)
 		}
 	}
-	
+
 	/**
 	 * @return the source code as string in an order for safe execution, i.e. no compiler or NP-exceptions
 	 */
@@ -78,7 +77,7 @@ class PatternBuildSequencer {
 		while (!remainingElements.empty) {
 			val elem = remainingElements.remove()
 			if (checkCoherency(elem)) {
-				val translation =getTranslation(elem)
+				val translation = getTranslation(elem)
 				srcCodeElements.add(translation)
 				makeTranslatedElementValid(elem)
 				cnt = 0
@@ -123,8 +122,8 @@ class PatternBuildSequencer {
 			return internalCoherencyCheck(pc)
 		}
 	}
-	
-	private def dispatch boolean internalCoherencyCheck(ParameterNodeOrPattern pNodeOrPattern){
+
+	private def dispatch boolean internalCoherencyCheck(ParameterNodeOrPattern pNodeOrPattern) {
 		return true // there is no possibility of cyclic dependencies when we are given a parameter
 	}
 
@@ -167,20 +166,23 @@ class PatternBuildSequencer {
 				return true;
 			} else if (roc.ref instanceof Parameter) {
 				return true;
+			} else if (roc.thisUsed) {
+				var parentRef = roc.eContainer()
+				if (parentRef instanceof RefOrCall) {
+					return internalCoherencyCheck(parentRef.ref)
+				}
+				return false
 			} else {
 				throw new IllegalStateException(
 					"In patterns should only occur direct references to nodes but got unexpected reference to " +
 						roc.ref)
 			}
 		} else {
-			if(roc.ref instanceof EEnumLiteral){
+			if (roc.ref instanceof EEnumLiteral) {
 				return true;
 			}
-			if(roc.target.ref instanceof ParameterNodeOrPattern){
-				val possiblePattern = roc.target.ref as ParameterNodeOrPattern
-				if(possiblePattern.type instanceof Pattern){
-					return true;
-				}
+			if (roc.target.ref instanceof ParameterNodeOrPattern) {
+				return true;
 			}
 			return validElements.contains(getValidName(roc)) // only when ref is from a newly created node. not necessarily at objects passed as parameters!
 		}
@@ -188,12 +190,12 @@ class PatternBuildSequencer {
 
 	private def dispatch boolean internalCoherencyCheck(PatternNodeReferenceToNode pNodeRef) {
 		val node = pNodeRef.node
-		if(node instanceof Node){
+		if (node instanceof Node) {
 			return validElements.contains(getValidName(pNodeRef.node))
-		}else if(node instanceof RefOrCall){
+		} else if (node instanceof RefOrCall) {
 			return checkCoherency(node)
-		}else{
-			throw new IllegalArgumentException("Cannot check coherency of object "+pNodeRef)
+		} else {
+			throw new IllegalArgumentException("Cannot check coherency of object " + pNodeRef)
 		}
 	}
 
@@ -249,7 +251,11 @@ class PatternBuildSequencer {
 			RefOrCall: {
 				var name = ""
 				if (elem.target !== null) {
-					return getValidName(elem.target) + '_' + getNameForRocRef(elem.ref)
+					if (elem.target.thisUsed) {
+						return getNameForRocRef(elem.ref)
+					} else {
+						return getValidName(elem.target) + '_' + getNameForRocRef(elem.ref)
+					}
 				} else {
 					val ref = elem.ref
 					switch ref {
@@ -268,7 +274,6 @@ class PatternBuildSequencer {
 			Node: return ref.name
 		}
 	}
-
 
 	/**
 	 * creates/translates all nodes and then adds all sub-expressions within the node-objects to the elementsLeft list. 
@@ -293,8 +298,8 @@ class PatternBuildSequencer {
 			}
 		}
 	}
-	
-	private def getTranslation(EObject obj){
-		return PatternTranslator.translate(obj)+';'
+
+	private def getTranslation(EObject obj) {
+		return PatternTranslator.translate(obj) + ';'
 	}
 }
