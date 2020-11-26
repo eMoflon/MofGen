@@ -24,7 +24,7 @@ class JavaFileGenerator {
 	/**
 	 * The name of the package.
 	 */
-	String packageName 
+	String packageName
 
 	/**
 	 * The prefix for the API class name.
@@ -69,11 +69,12 @@ class JavaFileGenerator {
 	 */
 	def generateAppClass(IFolder appPackage) {
 		val imports = eClassifiersManager.importsForPackages
-		imports.addAll('java.util.LinkedList', 'java.util.List', 'org.mofgen.api.MofgenApp', 'org.mofgen.api.'+GENERATOR_SUPER_CLASS,
-		appPackage.project.name+'.api.generators.*', 'org.eclipse.emf.ecore.EObject')
+		imports.addAll('java.util.LinkedList', 'java.util.List', 'org.mofgen.api.MofgenApp',
+			'org.mofgen.api.' + GENERATOR_SUPER_CLASS, appPackage.project.name + '.api.generators.*',
+			'org.eclipse.emf.ecore.EObject')
 
 		val generators = EcoreUtil2.getAllContentsOfType(editorModel, Generator)
-		
+
 		val modelPath = appPackage.project.getFolder(MofgenBuilder.DEFAULT_MODEL_LOCATION).location.toString
 
 		val appSourceCode = '''
@@ -96,7 +97,7 @@ class JavaFileGenerator {
 					«««super(workspacePath);
 					generators = new LinkedList<>();
 					«FOR gen : generators»
-						generators.add(new «NameProvider.getGeneratorClassName(gen)»());
+					generators.add(new «NameProvider.getGeneratorClassName(gen)»());
 					«ENDFOR»
 				}
 				
@@ -114,7 +115,10 @@ class JavaFileGenerator {
 				}
 			}
 		'''
-		writeFile(appPackage.getFile(NameProvider.getAppClassName(appPackage.project.name) + '.java'), appSourceCode)
+		val finalSrcCode = MofgenCodeFormatter.formatCode(filterGeneratedCode(appSourceCode));
+		
+		writeFile(appPackage.getFile(NameProvider.getAppClassName(appPackage.project.name) + '.java'),
+			finalSrcCode)
 	}
 
 	/**
@@ -122,7 +126,7 @@ class JavaFileGenerator {
 	 */
 	def generateGenClass(IFolder genPackage, Generator gen) {
 		val imports = newHashSet('java.util.ArrayList', 'java.util.List', 'java.util.Map', 'java.util.HashMap',
-			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.'+GENERATOR_SUPER_CLASS)
+			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.' + GENERATOR_SUPER_CLASS)
 		imports.add(genPackage.project.name + '.api.patterns.*')
 		imports.addAll(eClassifiersManager.getAllImports(editorModel))
 
@@ -131,8 +135,10 @@ class JavaFileGenerator {
 			«GeneratorTranslator.translate(gen)»
 			
 		'''
+		val finalSrcCode = MofgenCodeFormatter.formatCode(filterGeneratedCode(genSourceCode));
 		// TODO provide overriding toString implementation
-		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), genSourceCode)
+		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"),
+			finalSrcCode)
 	}
 
 	/**
@@ -141,7 +147,7 @@ class JavaFileGenerator {
 	def generatePatternClass(IFolder patternPackage, Pattern pattern) {
 		val imports = eClassifiersManager.getAllImports(editorModel)
 		imports.addAll(
-			'org.mofgen.api.'+PATTERN_SUPER_CLASS,
+			'org.mofgen.api.' + PATTERN_SUPER_CLASS,
 			'org.eclipse.emf.ecore.EObject'
 		)
 
@@ -150,8 +156,11 @@ class JavaFileGenerator {
 			«PatternTranslator.translate(pattern)»
 			
 		'''
+		
+		val finalSrcCode = MofgenCodeFormatter.formatCode(filterGeneratedCode(patternSourceCode));
 		// TODO provide overriding toString implementation
-		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), patternSourceCode)
+		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"),
+			finalSrcCode)
 	}
 
 	/**
@@ -185,6 +194,16 @@ class JavaFileGenerator {
 		} else {
 			file.create(contentStream, true, null)
 		}
+	}
+
+	/**
+	 * filteres the given String by removing all semicolons following a curled bracket, orphaned semicolons in empty lines and semicolons following semicolons.
+	 */
+	def filterGeneratedCode(String code) {
+		val codeProcessed = code.replaceAll("};+", "}")
+		val codeProcessed2 = codeProcessed.replaceAll(";+[\\n\\t\\r]*;+[\\n\\r]", ";\n")
+		val codeProcessed3 = codeProcessed2.replaceAll("}[\\n\\t\\r]*;*[\\n\\r]", "}\n")
+		return codeProcessed3;
 	}
 
 	/**
