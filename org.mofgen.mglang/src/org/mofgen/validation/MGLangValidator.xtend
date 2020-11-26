@@ -101,22 +101,26 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def checkNoCollectionManipulationWithoutSideEffects(CollectionManipulation cm) {
 		val op = cm.op
-		if (cm.trg instanceof List) {
-			if (op !== TypeModelPackage.Literals.LIST___ADD__EOBJECT &&
-				op !== TypeModelPackage.Literals.LIST___ADD_ALL__LIST &&
-				op !== TypeModelPackage.Literals.LIST___REMOVE__EOBJECT &&
-				op !== TypeModelPackage.Literals.LIST___REMOVE_AT__INT) {
-					warning("Stand-alone operation on collection without side-effect", MGLangPackage.Literals.COLLECTION_MANIPULATION__OP)
+		if (op !== null) {
+			if (cm.trg instanceof List) {
+				if (op !== TypeModelPackage.Literals.LIST___ADD__EOBJECT &&
+					op !== TypeModelPackage.Literals.LIST___ADD_ALL__LIST &&
+					op !== TypeModelPackage.Literals.LIST___REMOVE__EOBJECT &&
+					op !== TypeModelPackage.Literals.LIST___REMOVE_AT__INT) {
+					warning("Stand-alone operation on collection without side-effect",
+						MGLangPackage.Literals.COLLECTION_MANIPULATION__OP)
+				}
+			} else if (cm.trg instanceof Map) {
+				if (op !== TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT &&
+					op !== TypeModelPackage.Literals.MAP___REMOVE__EOBJECT) {
+					warning("Stand-alone operation on collection without side-effect",
+						MGLangPackage.Literals.COLLECTION_MANIPULATION__OP)
+				}
+			} else {
+				throw new IllegalArgumentException(
+					"CollectionManipulations should only refer to Lists or Maps but got " + cm.trg)
 			}
-		} else if (cm.trg instanceof Map) {
-			if (op !== TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT&&
-				op !== TypeModelPackage.Literals.MAP___REMOVE__EOBJECT) {
-					warning("Stand-alone operation on collection without side-effect", MGLangPackage.Literals.COLLECTION_MANIPULATION__OP)
-			}
-		} else {
-			throw new IllegalArgumentException("CollectionManipulations should only refer to Lists or Maps but got "+cm.trg)
 		}
-
 	}
 
 	/**
@@ -125,14 +129,16 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def private checkForInteger(ArithmeticExpression expr, EObject obj, EReference errorLoc) {
 		try {
 			val eval = typeChecker.evaluate(expr)
-			if (eval instanceof Pattern) {
-				error("Expected integer but was given type " + eval.name, obj, errorLoc)
-				return false
-			} else if (eval !== TypeModelPackage.Literals.INTEGER) {
-				error("Expected integer but was given type " + (eval as EClass).name, obj, errorLoc)
-				return false
-			} else {
-				return true
+			if (eval !== null) {
+				if (eval instanceof Pattern) {
+					error("Expected integer but was given type " + eval.name, obj, errorLoc)
+					return false
+				} else if (eval !== TypeModelPackage.Literals.INTEGER) {
+					error("Expected integer but was given type " + (eval as EClass).name, obj, errorLoc)
+					return false
+				} else {
+					return true
+				}
 			}
 		} catch (MismatchingTypesException e) {
 			error(e.message, obj, errorLoc)
@@ -185,7 +191,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		if (caze.when !== null) {
 			try {
 				val res = typeChecker.evaluate(caze.when)
-				if (res !== TypeModelPackage.Literals.BOOLEAN) {
+				if (res !== null && res !== TypeModelPackage.Literals.BOOLEAN) {
 					error("Needs boolean value for conditional expression", caze,
 						MGLangPackage.Literals.GEN_WHEN_CASE__WHEN)
 				}
@@ -203,7 +209,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		if (caze.when !== null) {
 			try {
 				val res = typeChecker.evaluate(caze.when)
-				if (res !== TypeModelPackage.Literals.BOOLEAN) {
+				if (res !== null && res !== TypeModelPackage.Literals.BOOLEAN) {
 					error("Needs boolean value for conditional expression", caze,
 						MGLangPackage.Literals.PATTERN_CASE_WITH_CAST__WHEN)
 				}
@@ -325,11 +331,13 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 * checks that in a for-loop within a pattern only assignments to *-references appear
 	 */
 	def checkPatternForOnlyRefsToMultiFeatures(PatternForBody body) {
-		for (expr : body.commands) {
-			if (expr instanceof PatternNodeReference) {
-				if (expr.type.upperBound == 1) {
-					error("Only assignments to *-edges/-references allowed in for-loops.", expr,
-						MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
+		if (body.commands !== null) {
+			for (expr : body.commands) {
+				if (expr instanceof PatternNodeReference) {
+					if (expr.type.upperBound == 1) {
+						error("Only assignments to *-edges/-references allowed in for-loops.", expr,
+							MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
+					}
 				}
 			}
 		}
@@ -590,7 +598,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 				var varTypeString = ""
 				var givenTypeString = ""
 
-				if (varType !== givenType) {
+				if (varType !== null && givenType !== null && varType !== givenType) {
 					if (varType instanceof Pattern) {
 						varTypeString = varType.name
 					}
@@ -614,7 +622,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		}
 	}
 
-	// TODO cyclic dependencies when using switch expressions?
+// TODO cyclic dependencies when using switch expressions? --> Not possible to determine because of runtime dependence. Handle in Builder!
 	/**
 	 * Checks whether there emerges a cyclic dependency from that assignment
 	 */
@@ -736,80 +744,84 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 * Checks whether all keys within an ad-hoc created map are unique
 	 */
 	def checkMapKeysUnique(MapAdHoc definition) {
-		val keys = definition.entries.map[e|calc.evaluate(e.key)]
-		val set = newHashSet()
-		for (key : keys) {
-			if (!set.add(key)) {
-				error("Key \"" + key + "\" is not unique.", EcoreUtil2.getContainerOfType(definition, Map),
-					MGLangPackage.Literals.MAP__DEF_OR_DECL)
+		if (definition.entries !== null) {
+			val keys = definition.entries.map[e|calc.evaluate(e.key)]
+			val set = newHashSet()
+			for (key : keys) {
+				if (!set.add(key)) {
+					error("Key \"" + key + "\" is not unique.", EcoreUtil2.getContainerOfType(definition, Map),
+						MGLangPackage.Literals.MAP__DEF_OR_DECL)
+				}
 			}
 		}
 	}
 
 	@Check
 	def matchingParameters_collManipulation(CollectionManipulation cm) {
-		val op = cm.op
-		var neededParameters = op.EParameters
-		val givenParameters = cm.params.params
+		if (cm.op !== null && cm.params !== null && cm.params.params !== null) {
+			val op = cm.op
+			var neededParameters = op.EParameters
+			val givenParameters = cm.params.params
 
-		// check number of parameters
-		if (givenParameters.size != neededParameters.size) {
-			error("Method \"" + op.name + "\" needs " + neededParameters.size + " parameters but was given " +
-				givenParameters.size, MGLangPackage.Literals.COLLECTION_MANIPULATION__OP)
-			return
-		}
+			// check number of parameters
+			if (givenParameters.size != neededParameters.size) {
+				error("Method \"" + op.name + "\" needs " + neededParameters.size + " parameters but was given " +
+					givenParameters.size, MGLangPackage.Literals.COLLECTION_MANIPULATION__OP)
+				return
+			}
 
-		// get needed parameters corresponding to the internal type system
-		var neededParams = newLinkedList()
-		switch op {
-			case TypeModelPackage.Literals.LIST___INDEX_OF__EOBJECT,
-			case TypeModelPackage.Literals.LIST___ADD__EOBJECT,
-			case TypeModelPackage.Literals.LIST___REMOVE__EOBJECT,
-			case TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT: {
-				neededParams.add(TypeRegistry.getListType(cm.trg as List))
+			// get needed parameters corresponding to the internal type system
+			var neededParams = newLinkedList()
+			switch op {
+				case TypeModelPackage.Literals.LIST___INDEX_OF__EOBJECT,
+				case TypeModelPackage.Literals.LIST___ADD__EOBJECT,
+				case TypeModelPackage.Literals.LIST___REMOVE__EOBJECT,
+				case TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT: {
+					neededParams.add(TypeRegistry.getListType(cm.trg as List))
+				}
+				case TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT,
+				case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
+					neededParams.add(TypeRegistry.getMapKeyType(cm.trg as Map))
+				}
+				case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
+				case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
+					neededParams.add(TypeRegistry.getMapEntryType(cm.trg as Map))
+				}
+				case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {
+					neededParams.add(TypeRegistry.getMapKeyType(cm.trg as Map))
+					neededParams.add(TypeRegistry.getMapEntryType(cm.trg as Map))
+				}
+				case TypeModelPackage.Literals.LIST___ADD_ALL__LIST: {
+					neededParams.add(MGLangPackage.Literals.LIST)
+				}
+				default: {
+					neededParams.addAll(op.EParameters.map [ x |
+						if (x instanceof Pattern) {
+							x as Pattern
+						} else {
+							x.EType
+						}
+					])
+				}
 			}
-			case TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT,
-			case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
-				neededParams.add(TypeRegistry.getMapKeyType(cm.trg as Map))
-			}
-			case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
-			case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
-				neededParams.add(TypeRegistry.getMapEntryType(cm.trg as Map))
-			}
-			case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {
-				neededParams.add(TypeRegistry.getMapKeyType(cm.trg as Map))
-				neededParams.add(TypeRegistry.getMapEntryType(cm.trg as Map))
-			}
-			case TypeModelPackage.Literals.LIST___ADD_ALL__LIST: {
-				neededParams.add(MGLangPackage.Literals.LIST)
-			}
-			default: {
-				neededParams.addAll(op.EParameters.map [ x |
-					if (x instanceof Pattern) {
-						x as Pattern
-					} else {
-						x.EType
-					}
-				])
-			}
-		}
 
-		// Check parameter types
-		checkMatchingParameterTypes(givenParameters, neededParams,
-			MGLangPackage.Literals.COLLECTION_MANIPULATION__PARAMS)
+			// Check parameter types
+			checkMatchingParameterTypes(givenParameters, neededParams,
+				MGLangPackage.Literals.COLLECTION_MANIPULATION__PARAMS)
 
-		// check collection types for given collection
-		if (op == TypeModelPackage.Literals.LIST___ADD_ALL__LIST) {
-			val neededListType = TypeRegistry.getListType(cm.trg as List)
-			for (givenParam : givenParameters) {
-				val givenParamEval = typeChecker.evaluate(givenParam)
-				if (givenParamEval == TypeModelPackage.Literals.LIST) {
-					val givenListType = TypeRegistry.getListType((givenParam as RefOrCall).ref as List)
-					if (!MofgenModelUtils.getEClassForInternalModel(neededListType).isSuperTypeOf(
-						MofgenModelUtils.getEClassForInternalModel(givenListType))) {
-						error("List " + cm.trg.name + " is of other type than given list " +
-							((givenParam as RefOrCall).ref as List).name,
-							MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG)
+			// check collection types for given collection
+			if (op == TypeModelPackage.Literals.LIST___ADD_ALL__LIST) {
+				val neededListType = TypeRegistry.getListType(cm.trg as List)
+				for (givenParam : givenParameters) {
+					val givenParamEval = typeChecker.evaluate(givenParam)
+					if (givenParamEval == TypeModelPackage.Literals.LIST) {
+						val givenListType = TypeRegistry.getListType((givenParam as RefOrCall).ref as List)
+						if (!MofgenModelUtils.getEClassForInternalModel(neededListType).isSuperTypeOf(
+							MofgenModelUtils.getEClassForInternalModel(givenListType))) {
+							error("List " + cm.trg.name + " is of other type than given list " +
+								((givenParam as RefOrCall).ref as List).name,
+								MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG)
+						}
 					}
 				}
 			}
