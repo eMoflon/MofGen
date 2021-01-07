@@ -58,6 +58,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * This class contains custom validation rules. 
@@ -76,7 +77,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def validForRange(RangeForHead head) {
 		val forRange = head.range
 		if (forRange !== null) {
-			if (forRange.start !== null && !forRange.start.eIsProxy && forRange.end !== null && !forRange.end.eIsProxy) {
+			if (forRange.start !== null && !forRange.start.eIsProxy && forRange.end !== null &&
+				!forRange.end.eIsProxy) {
 				val start = forRange.start
 				val end = forRange.end
 				val check1 = checkForInteger(forRange.start, forRange, MGLangPackage.Literals.FOR_RANGE__START)
@@ -104,7 +106,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 			rocIt = rocIt.target
 		}
 		if (rocIt.thisUsed) {
-			if (EcoreUtil2.getContainerOfType(roc, Node) !== null && rocIt.eContainingFeature !== MGLangPackage.Literals.REF_OR_CALL__TARGET) {
+			if (EcoreUtil2.getContainerOfType(roc, Node) !== null &&
+				rocIt.eContainingFeature !== MGLangPackage.Literals.REF_OR_CALL__TARGET) {
 				error("This cannot stand alone", MGLangPackage.Literals.REF_OR_CALL__THIS_USED)
 			}
 			if (EcoreUtil2.getContainerOfType(roc, Pattern) === null) {
@@ -274,8 +277,14 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 */
 	def checkValidReturnValue(GenReturn genRet) {
 		val ret = genRet.returnValue
+
 		if (ret instanceof RefOrCall) {
-			// TODO
+			val typeEval = typeChecker.evaluate(ret)
+			if (typeEval instanceof EClass) {
+				if (TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(typeEval)) {
+					error("Can not return primitive values or strings", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+				}
+			}
 		} else if (ret instanceof PatternCall) {
 			val pattern = ret.called
 			val patternReturn = pattern.^return
@@ -286,7 +295,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 			throw new IllegalArgumentException(
 				"GenReturns should only be able to hold RefOrCall- or PatternCall-Objects")
 		}
-	// What is valid?: Variables containing EOBJECTS(!, i.e. no strings or primitives), PatternCall with return value, Access of elements of a pattern variable, access of list/map with objects as elements
+	// What is valid?: Variables containing EObjects(i.e. no strings or primitives), PatternCall with return value, Access of elements of a pattern variable, access of list/map with objects as elements
 	}
 
 	@Check
@@ -439,7 +448,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 					val givenParameterType = typeChecker.evaluate(givenParameterExpression)
 					if (givenParameterType === null) {
-						return; // TODO ?
+						return;
 					}
 
 					val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
@@ -709,7 +718,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 		if (value !== null && !value.eIsProxy) {
 			val rocs = EcoreUtil2.getAllContentsOfType(value, RefOrCall)
 			for (roc : rocs) {
-				if (roc.ref !== null && !roc.ref.eIsProxy && roc.ref instanceof Node && findAssignmentToRoc(roc) === null) {
+				if (roc.ref !== null && !roc.ref.eIsProxy && roc.ref instanceof Node &&
+					findAssignmentToRoc(roc) === null) {
 					error(
 						"Referenced value " + getTextFromEditorFile(getHighestRoc(roc)) + " to be assigned is not set",
 						ass, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
@@ -728,7 +738,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def private findAssignmentToRoc(RefOrCall roc) {
 		var rocIt = getHighestRoc(roc)
 		if (rocIt.ref !== null && !rocIt.ref.eIsProxy) {
-			while (rocIt.target !== null && !rocIt.eIsProxy && rocIt.ref !== null && !(rocIt.ref instanceof ENamedElement)) {
+			while (rocIt.target !== null && !rocIt.eIsProxy && rocIt.ref !== null &&
+				!(rocIt.ref instanceof ENamedElement)) {
 				rocIt = rocIt.target
 			}
 
