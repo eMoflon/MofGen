@@ -25,6 +25,7 @@ import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.PatternReturn
+import org.eclipse.emf.ecore.EStructuralFeature
 
 class MofgenUtil {
 
@@ -196,20 +197,41 @@ class MofgenUtil {
 	}
 
 	def dispatch static String getGetterMethod(Node node) {
-		return '''get«node.name.toFirstUpper»()'''
+		return '''«NameProvider.getGetterName(node)»()'''
 	}
 
 	def dispatch static String getGetterMethod(Parameter pNode) {
-		return '''get«NameProvider.getParameterName(pNode).toFirstUpper»()'''
+		return '''«NameProvider.getGetterName(pNode)»()'''
+	}
+
+	def dispatch static String getGetterMethod(EStructuralFeature structuralFeature) {
+		return '''«NameProvider.getGetterName(structuralFeature)»()'''
 	}
 
 	def dispatch static String getGetterMethod(PatternReturn ret) {
 		val retVal = ret.retValue
+		if(retVal instanceof RefOrCall){
+			return getGetterMethod(retVal)
+		}
+		
 		val ref = retVal.ref
 		if (ref instanceof Parameter) {
 			return getGetterMethod(ref)
 		} else {
 			return getGetterMethod(ref)
+		}
+	}
+
+	def dispatch static String getGetterMethod(RefOrCall roc) {
+		val ref = roc.ref
+		if (roc.target !== null && roc.target.ref !== null) {
+			return getGetterMethod(roc.target) + "." + getGetterMethod(ref)
+		} else {
+			if(ref === null){
+				return ""
+			}else{
+				return getGetterMethod(ref)
+			}
 		}
 	}
 

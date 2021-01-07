@@ -167,13 +167,15 @@ class PatternTranslator {
 
 	private static def dispatch String internalTranslate(PatternReturn pReturn) {
 		if (pReturn.retValue !== null) {
-			val retValue = pReturn.retValue.ref
-			if (retValue instanceof Node) {
-				return '''return «retValue.name»'''
-			}
-			if (retValue instanceof Parameter) {
-				return '''return «NameProvider.getParameterName(retValue)»'''
-			}
+			return '''return «GeneralTranslator.translate(pReturn.retValue)»'''
+
+//			val retValue = pReturn.retValue.ref
+//			if (retValue instanceof Node) {
+//				return '''return «retValue.name»'''
+//			}
+//			if (retValue instanceof Parameter) {
+//				return '''return «NameProvider.getParameterName(retValue)»'''
+//			}
 		}
 	}
 

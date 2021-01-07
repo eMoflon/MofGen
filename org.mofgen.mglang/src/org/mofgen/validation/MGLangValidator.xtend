@@ -281,14 +281,12 @@ class MGLangValidator extends AbstractMGLangValidator {
 			val patternReturn = pattern.^return
 			if (patternReturn === null) {
 				error("Can not return void pattern", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
-			} else {
-				// TODO
 			}
 		} else {
 			throw new IllegalArgumentException(
 				"GenReturns should only be able to hold RefOrCall- or PatternCall-Objects")
 		}
-	// What is valid?: Variable, PatternCall with return value, Access of elements of a pattern variable, access of list/map with objects as elements
+	// What is valid?: Variables containing EOBJECTS(!, i.e. no strings or primitives), PatternCall with return value, Access of elements of a pattern variable, access of list/map with objects as elements
 	}
 
 	@Check

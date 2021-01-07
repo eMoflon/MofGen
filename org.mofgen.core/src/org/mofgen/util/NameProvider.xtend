@@ -8,11 +8,9 @@ import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
 import org.mofgen.mGLang.Generator
+import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.Pattern
-import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.RefOrCall
-import org.eclipse.core.resources.IProject
 
 class NameProvider {
 	
@@ -104,6 +102,10 @@ class NameProvider {
 	
 	def static String getGetterName(Node node){
 		return getGetterName(node.name)
+	}
+	
+	def static String getGetterName(Parameter param){
+		return getGetterName(NameProvider.getParameterName(param));
 	}
 	
 	private def static String getGetterName(String str){
