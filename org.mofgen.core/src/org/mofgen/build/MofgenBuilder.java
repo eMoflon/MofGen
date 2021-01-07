@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.xtext.EcoreUtil2;
@@ -73,7 +74,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	public static Registry packageRegistry;
 	
 	@Override
-	public void run(IProject project, Resource resource) {
+	public void run(IProject project) {
 		logger.info("Running MofGenBuilder:");
 		logger.info("Given project: " + project.getName());
 		packageRegistry = new EPackageRegistryImpl();
@@ -81,6 +82,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		double tic = System.currentTimeMillis();
 
 		// clean old code and create folders
+		logger.info("Cleaning old code...");
 		try {
 			removeGeneratedCode(project, "src-gen/**");
 			createFolders(project);
@@ -88,34 +90,47 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			logger.error("Creating project folders failed with: "+e.getMessage()+"\n"+e.getStackTrace());
 			return;
 		}
-
-		logger.info("Creating API..");
-
-		IFolder apiPackage = ensureFolderExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/")));
-
-		MofgenFile editorModel = null;
-		if (!resource.getContents().isEmpty()) {
-			editorModel = (MofgenFile) resource.getContents().get(0);
-			findAllEPackages(editorModel, packageRegistry);
-		}
+		logger.info("Cleaning old code... Done!");
+		logger.info("Creating API...");
 		
-		IFile mofgenFile = null;
+		List<IFile> mofgenFiles = null;
 		try {
-			mofgenFile = getMofgenFile(project);
+			mofgenFiles = getMofgenFiles(project);
 		} catch (Exception e) {
-			logger.error("Retrieving mofgen file failed with: "+e.getMessage()+"\n"+e.getStackTrace());
+			logger.error("Retrieving mofgen files failed with: "+e.getMessage()+"\n"+e.getStackTrace());
 		}
-		if(mofgenFile != null) {
+		if(mofgenFiles != null) {
 			try {
 				updateManifest(project, this::processManifestForPackage);
 			} catch (CoreException e) {
 				logger.error("Updating Manifest failed with " + e.getMessage()+"\n"+e.getStackTrace());
 			}
-			generateAPI(apiPackage, mofgenFile, editorModel, createEClassifierManager(packageRegistry));
+
+			for(IFile mofgenFile : mofgenFiles) {
+				Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+				ResourceSet rs = new ResourceSetImpl();
+				rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
+				Resource fileResource = rs.createResource(URI.createPlatformResourceURI(mofgenFile.getFullPath().toPortableString(), false));
+				try {
+					fileResource.load(null);
+				} catch (IOException e) {
+					logger.error("Loading resource from file "+mofgenFile.getName()+" failed.");
+					logger.error(e.getStackTrace());
+				}
+				
+				MofgenFile editorModel = null;
+				if (!fileResource.getContents().isEmpty()) {
+					editorModel = (MofgenFile) fileResource.getContents().get(0);
+					findAllEPackages(editorModel, packageRegistry);
+				}
+				
+				IFolder apiPackage = ensureFolderExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/")));
+				generateAPI(apiPackage, mofgenFile, editorModel, createEClassifierManager(packageRegistry));
+			}
 		}
 
 		double toc = System.currentTimeMillis();
-		logger.info("Creating API.. Done! (" + (toc - tic) / 1000.0 + " seconds.)");
+		logger.info("Creating API... Done! (" + (toc - tic) / 1000.0 + " seconds.)");
 	}
 
 	/**
@@ -125,17 +140,20 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	 * @param mofgenFile
 	 * @param editorModel
 	 * @param eClassifiersManager
+	 * @throws CoreException 
 	 */
 	private void generateAPI(final IFolder apiPackage, final IFile mofgenFile, final MofgenFile editorModel,
 			final EClassifiersManager eClassifiersManager) {
 		JavaFileGenerator fileGenerator = new JavaFileGenerator(NameProvider.getClassNamePrefix(mofgenFile),
 				packageName, editorModel, eClassifiersManager);
+
+		String mofgenFileName = NameProvider.getFileName(mofgenFile);
 		
 		IFolder appPackage = ensureFolderExists(apiPackage.getFolder(DEFAULT_API_LOCATION));
-		IFolder generatorPackage = ensureFolderExists(apiPackage.getFolder(DEFAULT_GENERATOR_LOCATION));
-		IFolder patternPackage = ensureFolderExists(apiPackage.getFolder(DEFAULT_PATTERN_LOCATION));
+		IFolder generatorPackage = ensureFolderExists(apiPackage.getFolder(DEFAULT_GENERATOR_LOCATION + "/" + mofgenFileName));
+		IFolder patternPackage = ensureFolderExists(apiPackage.getFolder(DEFAULT_PATTERN_LOCATION + "/" + mofgenFileName));
 		
-		fileGenerator.generateAppClass(appPackage);
+		fileGenerator.generateAppClass(appPackage, mofgenFile);
 		
 		List<Generator> generators = EcoreUtil2.getAllContentsOfType(editorModel, Generator.class);
 		generators.forEach(g -> fileGenerator.generateGenClass(generatorPackage, g));
@@ -264,6 +282,14 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 				.filter(f -> MOFGEN_FILE_EXTENSION.equals(f.getFileExtension()) && f.exists()) //
 				.collect(Collectors.toList()).get(0);
 	}
+	
+	private List<IFile> getMofgenFiles(final IProject project) throws Exception {
+		List<IFile> files = new LinkedList<>();
+		crawlSubfolders(project.getFolder(DEFAULT_SRC_LOCATION), files);
+		return files.stream() //
+				.filter(f -> MOFGEN_FILE_EXTENSION.equals(f.getFileExtension()) && f.exists()) //
+				.collect(Collectors.toList());
+	}
 
 	private void removeGeneratedCode(IProject project, String pathString) {
 		// TODO Add progress monitors instead of null parameters
@@ -271,10 +297,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		if(path.lastSegment().equals("**")) {
 			IFolder folder = project.getFolder(path.removeLastSegments(1));
 			try {
-				IResource[] members = folder.members();
-				for(IResource member : members) {
-					member.delete(true, null);
-				}
+				folder.delete(true, null);
 			} catch (CoreException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

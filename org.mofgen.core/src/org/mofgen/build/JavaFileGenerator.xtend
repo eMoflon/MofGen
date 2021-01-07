@@ -67,15 +67,18 @@ class JavaFileGenerator {
 	/**
 	 * Generates the Java App class.
 	 */
-	def generateAppClass(IFolder appPackage) {
+	def generateAppClass(IFolder appPackage, IFile mofgenFile) {
 		val imports = eClassifiersManager.importsForPackages
 		imports.addAll('java.util.LinkedList', 'java.util.List', 'org.mofgen.api.MofgenApp',
-			'org.mofgen.api.' + GENERATOR_SUPER_CLASS, appPackage.project.name + '.api.generators.*',
+			'org.mofgen.api.' + GENERATOR_SUPER_CLASS,
+			appPackage.project.name + '.api.generators.' + NameProvider.getFileName(mofgenFile) + '.*',
 			'org.eclipse.emf.ecore.EObject')
 
 		val generators = EcoreUtil2.getAllContentsOfType(editorModel, Generator)
 
 		val modelPath = appPackage.project.getFolder(MofgenBuilder.DEFAULT_MODEL_LOCATION).location.toString
+
+		val className = NameProvider.getAppClassName(mofgenFile)
 
 		val appSourceCode = '''
 			«printHeader(appPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_API_LOCATION), imports)»
@@ -83,7 +86,7 @@ class JavaFileGenerator {
 			/**
 			 * A mofgen application.
 			 */
-			public class «NameProvider.getAppClassName(appPackage.project.name)» extends «APP_SUPER_CLASS»{
+			public class «className» extends «APP_SUPER_CLASS»{
 				
 				/**
 				* A list containing all defined generators
@@ -93,11 +96,11 @@ class JavaFileGenerator {
 				/**
 				 * Creates a mofgen application
 				 */
-				public «NameProvider.getAppClassName(appPackage.project.name)»() {
+				public «className»() {
 					«««super(workspacePath);
 					generators = new LinkedList<>();
 					«FOR gen : generators»
-					generators.add(new «NameProvider.getGeneratorClassName(gen)»());
+						generators.add(new «NameProvider.getGeneratorClassName(gen)»());
 					«ENDFOR»
 				}
 				
@@ -116,9 +119,8 @@ class JavaFileGenerator {
 			}
 		'''
 		val finalSrcCode = MofgenCodeFormatter.formatCode(filterGeneratedCode(appSourceCode));
-		
-		writeFile(appPackage.getFile(NameProvider.getAppClassName(appPackage.project.name) + '.java'),
-			finalSrcCode)
+
+		writeFile(appPackage.getFile(className + '.java'), finalSrcCode)
 	}
 
 	/**
@@ -127,18 +129,17 @@ class JavaFileGenerator {
 	def generateGenClass(IFolder genPackage, Generator gen) {
 		val imports = newHashSet('java.util.ArrayList', 'java.util.List', 'java.util.Map', 'java.util.HashMap',
 			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.' + GENERATOR_SUPER_CLASS)
-		imports.add(genPackage.project.name + '.api.patterns.*')
+		imports.add(genPackage.project.name + '.api.patterns.' + genPackage.name + ".*")
 		imports.addAll(eClassifiersManager.getAllImports(editorModel))
 
 		val genSourceCode = '''
-			«printHeader(genPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION), imports)»
+			«printHeader(genPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_GENERATOR_LOCATION)+"."+genPackage.name, imports)»
 			«GeneratorTranslator.translate(gen)»
 			
 		'''
 		val finalSrcCode = MofgenCodeFormatter.formatCode(filterGeneratedCode(genSourceCode));
 		// TODO provide overriding toString implementation
-		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"),
-			finalSrcCode)
+		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), finalSrcCode)
 	}
 
 	/**
@@ -152,15 +153,14 @@ class JavaFileGenerator {
 		)
 
 		val patternSourceCode = '''
-			«printHeader(patternPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION), imports)»
+			«printHeader(patternPackage.project.name+NameProvider.locationToPackageName(MofgenBuilder.DEFAULT_PATTERN_LOCATION)+"."+patternPackage.name, imports)»
 			«PatternTranslator.translate(pattern)»
 			
 		'''
-		
+
 		val finalSrcCode = MofgenCodeFormatter.formatCode(filterGeneratedCode(patternSourceCode));
 		// TODO provide overriding toString implementation
-		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"),
-			finalSrcCode)
+		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), finalSrcCode)
 	}
 
 	/**
@@ -197,13 +197,12 @@ class JavaFileGenerator {
 	}
 
 	/**
-	 * filteres the given String by removing all semicolons following a curled bracket, orphaned semicolons in empty lines and semicolons following semicolons.
+	 * filters the given String by removing all semicolons following a curled bracket, orphaned semicolons in empty lines and semicolons following semicolons.
 	 */
 	def filterGeneratedCode(String code) {
-		val codeProcessed = code.replaceAll("};+", "}")
-		val codeProcessed2 = codeProcessed.replaceAll(";+[\\n\\t\\r]*;+[\\n\\r]", ";\n")
-		val codeProcessed3 = codeProcessed2.replaceAll("}[\\n\\t\\r]*;*[\\n\\r]", "}\n")
-		return codeProcessed3;
+		val codeProcessed = code.replaceAll("};+", "}").replaceAll(";+[\\n\\t\\r]*;+[\\n\\r]", ";\n").replaceAll(
+			"}[\\n\\t\\r]*;*[\\n\\r]", "}\n")
+		return codeProcessed;
 	}
 
 	/**

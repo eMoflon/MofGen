@@ -12,6 +12,6 @@ public interface MofgenBuilderExtension {
 	 * @param project
 	 *            the project to build
 	 */
-	public void run(IProject project, Resource resource);
+	public void run(IProject project);
 
 }

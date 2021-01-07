@@ -12,6 +12,7 @@ import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.RefOrCall
+import org.eclipse.core.resources.IProject
 
 class NameProvider {
 	
@@ -45,8 +46,16 @@ class NameProvider {
 		return gen.name.toFirstUpper + "Generator";
 	}
 
-	def static String getAppClassName(String projectName) {
-		return projectName.toFirstUpper + "App"
+	def static String getAppClassName(IFile mofgenFile) {
+		return NameProvider.getFileName(mofgenFile).toFirstUpper + "App"
+	}
+	
+	def static String getFileName(String fileString){
+		return fileString.split("\\.").get(0)
+	}
+	
+	def static String getFileName(IFile file){
+		return file.name.split("\\.").get(0)
 	}
 	
 	/**

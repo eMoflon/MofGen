@@ -40,24 +40,14 @@ override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorCo
 		val output = rs.createResource(URI.createURI(resource.URI.trimFileExtension+".xmi"))
 		output.contents.add(model)
 		EcoreUtil.resolveAll(output)
-//		println(resource.URI)
 
-//		val saveOptions = (output as XMIResource).getDefaultSaveOptions()
-//		saveOptions.put(XMIResource.OPTION_ENCODING,"UTF-8");
-//		saveOptions.put(XMIResource.OPTION_USE_XMI_TYPE, Boolean.TRUE);
-//		saveOptions.put(XMIResource.OPTION_SAVE_TYPE_INFORMATION,Boolean.TRUE);
-//		saveOptions.put(XMIResource.OPTION_SCHEMA_LOCATION_IMPLEMENTATION, Boolean.TRUE);
-//		(output as XMIResource).save(saveOptions)
-//		System.out.println("Xtext model saved to: "+output.URI.path)
-		
 		println("Running Mofgen-Builder extensions...")
 		val workspace = getWorkspace()
 		val project = getProjectOfResource(workspace, output)
 		if(project === null)
 			throw new FileNotFoundException("Could not find xtext model file: "+ output.URI.path)
 			
-		runBuilderExtensions([ext | ext.run(project, output)])
-		
+		runBuilderExtensions([ext | ext.run(project)])
 	}
 	
 	def static IWorkspace getWorkspace() {
