@@ -76,7 +76,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def validForRange(RangeForHead head) {
 		val forRange = head.range
 		if (forRange !== null) {
-			if (forRange.start !== null && forRange.end !== null) {
+			if (forRange.start !== null && !forRange.start.eIsProxy && forRange.end !== null && !forRange.end.eIsProxy) {
 				val start = forRange.start
 				val end = forRange.end
 				val check1 = checkForInteger(forRange.start, forRange, MGLangPackage.Literals.FOR_RANGE__START)
@@ -100,7 +100,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def checkThisInRefOrCall(RefOrCall roc) {
 		var rocIt = roc
-		while (rocIt.target !== null) {
+		while (rocIt.target !== null && !rocIt.target.eIsProxy) {
 			rocIt = rocIt.target
 		}
 		if (rocIt.thisUsed) {
@@ -116,7 +116,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def checkNoCollectionManipulationWithoutSideEffects(CollectionManipulation cm) {
 		val op = cm.op
-		if (op !== null) {
+		if (op !== null && !op.eIsProxy) {
 			if (cm.trg instanceof List) {
 				if (op !== TypeModelPackage.Literals.LIST___ADD__EOBJECT &&
 					op !== TypeModelPackage.Literals.LIST___ADD_ALL__LIST &&
@@ -375,12 +375,12 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def checkAttributeType(NodeAttributeAssignment ass) {
 		val trg = ass.target
-		if (trg !== null && trg instanceof EAttribute) {
+		if (trg !== null && !trg.eIsProxy && trg instanceof EAttribute) {
 			val attribute = trg as EAttribute
 			val attributeType = MofgenModelUtils.getEClassForInternalModel(attribute.EAttributeType)
 
 			try {
-				if (ass.value !== null) {
+				if (ass.value !== null && !ass.value.eIsProxy) {
 					val assValue = ass.value
 					if (assValue instanceof RefOrCall) {
 						if (assValue.thisUsed) {
@@ -417,7 +417,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		var neededParams = 0
 		var actualParams = 0
 
-		if (pc.called !== null && pc.params !== null) {
+		if (pc.called !== null && !pc.called.eIsProxy && pc.params !== null) {
 
 			if (pc.called.parameters !== null) {
 				neededParams = pc.called.parameters.length
@@ -495,11 +495,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def checkTypeForNodeCreationByPatternCall(Node node) {
 		if (node.type !== null) {
-
 			if (node.type !== EcorePackage.Literals.EOBJECT) {
-				if (node.createdBy !== null && node.createdBy instanceof PatternCall) {
+				if (node.createdBy !== null && !node.createdBy.eIsProxy && node.createdBy instanceof PatternCall) {
 					val pc = node.createdBy as PatternCall
-					if (pc.called !== null) {
+					if (pc.called !== null && !pc.called.eIsProxy) {
 						val ret = pc.called.^return
 						if (ret === null) {
 							error("Pattern " + pc.called.name + " returns null but " + node.name + " expects " +
@@ -529,7 +528,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def noVariableAccessBeforeDefinition(RefOrCall roc) {
 		if (roc.target === null) {
 			val ref = roc.ref
-			if (ref !== null) {
+			if (ref !== null && !ref.eIsProxy) {
 				if (ref instanceof Variable) {
 					var rocNode = NodeModelUtils.getNode(roc)
 					val varNode = NodeModelUtils.getNode(ref)
@@ -551,7 +550,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def noVariableWithNullReturningPattern(PatternCall pc) {
 		if (pc.eContainer instanceof Variable) {
-			if (pc.called !== null) {
+			if (pc.called !== null && !pc.called.eIsProxy) {
 				if (pc.called.^return === null) {
 					error("Cannot define variable by calling a pattern with no return", pc.eContainer as Variable,
 						MGLangPackage.Literals.VARIABLE__VALUE);
@@ -612,7 +611,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def noTypeChangeByVariableManipulation(VariableManipulation vm) {
 		val variable = vm.^var
-		if (variable !== null) {
+		if (variable !== null && !variable.eIsProxy) {
 
 			val varType = TypeRegistry.getVarType(variable) as EObject
 			try {
@@ -658,7 +657,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		// the value to be assigned
 		val value = ass.value
 
-		if (targetElement !== null && value !== null) {
+		if (targetElement !== null && !targetElement.eIsProxy && value !== null && !value.eIsProxy) {
 			// retrieve all RefOrCalls and follow them
 			val rocs = EcoreUtil2.getAllContentsOfType(value, RefOrCall)
 			for (roc : rocs) {
@@ -682,7 +681,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		}
 		val nextNode = nextAssignment.eContainer.eContainer as Node
 		val nextTarget = nextAssignment.target
-		if (nextTarget !== null) {
+		if (nextTarget !== null && !nextTarget.eIsProxy) {
 			if (nextNode === targetNode && nextTarget === targetElement) {
 				return true
 			} else {
@@ -709,10 +708,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 		// the value to be assigned
 		val value = ass.value
 
-		if (value !== null) {
+		if (value !== null && !value.eIsProxy) {
 			val rocs = EcoreUtil2.getAllContentsOfType(value, RefOrCall)
 			for (roc : rocs) {
-				if (roc.ref !== null && roc.ref instanceof Node && findAssignmentToRoc(roc) === null) {
+				if (roc.ref !== null && !roc.ref.eIsProxy && roc.ref instanceof Node && findAssignmentToRoc(roc) === null) {
 					error(
 						"Referenced value " + getTextFromEditorFile(getHighestRoc(roc)) + " to be assigned is not set",
 						ass, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
@@ -731,14 +730,14 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def private findAssignmentToRoc(RefOrCall roc) {
 		var rocIt = getHighestRoc(roc)
 		if (rocIt.ref !== null && !rocIt.ref.eIsProxy) {
-			while (rocIt.target !== null && rocIt.ref !== null && !(rocIt.ref instanceof ENamedElement)) {
+			while (rocIt.target !== null && !rocIt.eIsProxy && rocIt.ref !== null && !(rocIt.ref instanceof ENamedElement)) {
 				rocIt = rocIt.target
 			}
 
-			if (rocIt.target !== null) {
+			if (rocIt.target !== null && !rocIt.eIsProxy) {
 				val eNamedElement = rocIt.ref as ENamedElement
 				val node = rocIt.target.ref
-				if (eNamedElement !== null && node !== null && node instanceof Node) {
+				if (eNamedElement !== null && node !== null && !node.eIsProxy && node instanceof Node) {
 					val nodeContent = (node as Node).createdBy
 					if (nodeContent instanceof NodeContent) {
 						// find namedElement
@@ -907,13 +906,13 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 	@Check
 	def matchingParameters_roc(RefOrCall roc) {
-		if (roc.ref !== null && roc.ref instanceof EOperation) {
+		if (roc.ref !== null && !roc.ref.eIsProxy && roc.ref instanceof EOperation) {
 			if (!roc.bracesSet) {
 				error("Missing parameter list", MGLangPackage.Literals.REF_OR_CALL__PARAMS)
 				return;
 			} else {
 				val op = roc.ref as EOperation
-				if (op !== null && roc.params !== null && roc.params.params !== null) {
+				if (op !== null && !op.eIsProxy && roc.params !== null && roc.params.params !== null) {
 					val givenParams = roc.params.params
 					var neededParams = newLinkedList()
 					switch op {
