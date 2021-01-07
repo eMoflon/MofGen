@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -78,12 +79,10 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		packageRegistry = new EPackageRegistryImpl();
 		this.project = project;
 		double tic = System.currentTimeMillis();
-//		System.out.println("Running extension: " + this.getClass().getSimpleName());
-//		System.out.println("Given resource: " + resource.getURI());
 
 		// clean old code and create folders
 		try {
-			// removeGeneratedCode(project, "src-gen/**"); // TODO ?
+			removeGeneratedCode(project, "src-gen/**");
 			createFolders(project);
 		} catch (CoreException e) {
 			logger.error("Creating project folders failed with: "+e.getMessage()+"\n"+e.getStackTrace());
@@ -266,6 +265,33 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 				.collect(Collectors.toList()).get(0);
 	}
 
+	private void removeGeneratedCode(IProject project, String pathString) {
+		// TODO Add progress monitors instead of null parameters
+		IPath path = Path.fromOSString(pathString);
+		if(path.lastSegment().equals("**")) {
+			IFolder folder = project.getFolder(path.removeLastSegments(1));
+			try {
+				IResource[] members = folder.members();
+				for(IResource member : members) {
+					member.delete(true, null);
+				}
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			IFolder folder = project.getFolder(path);
+			IFile file = project.getFile(path);
+			try {
+				folder.delete(true, null);
+				file.delete(true, null);
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	private void crawlSubfolders(final IFolder root, final List<IFile> files) throws CoreException {
 		if (!root.exists())
 			return;
