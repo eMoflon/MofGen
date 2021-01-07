@@ -23,6 +23,7 @@ import org.mofgen.mGLang.PatternNodeReferenceToNode
 import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.util.NameProvider
+import org.mofgen.mGLang.PatternNodeReferenceToPatternCall
 
 class PatternBuildSequencer {
 
@@ -163,7 +164,7 @@ class PatternBuildSequencer {
 	private def dispatch boolean internalCoherencyCheck(RefOrCall roc) {
 		if (roc.target === null) {
 			if (roc.ref instanceof Node) {
-				return true;
+				return (roc.ref as Node).isValid;
 			} else if (roc.ref instanceof Parameter) {
 				return true;
 			} else if (roc.thisUsed) {
@@ -184,19 +185,26 @@ class PatternBuildSequencer {
 			if (roc.target.ref instanceof ParameterNodeOrPattern) {
 				return true;
 			}
-			return validElements.contains(getValidName(roc)) // only when ref is from a newly created node. not necessarily at objects passed as parameters!
+			return roc.isValid // only when ref is from a newly created node. not necessarily at objects passed as parameters!
 		}
+	}
+	
+	private def boolean isValid(EObject object){
+		return validElements.contains(getValidName(object))
 	}
 
 	private def dispatch boolean internalCoherencyCheck(PatternNodeReferenceToNode pNodeRef) {
 		val node = pNodeRef.node
-		if (node instanceof Node) {
-			return validElements.contains(getValidName(pNodeRef.node))
-		} else if (node instanceof RefOrCall) {
+		if (node instanceof RefOrCall) {
 			return checkCoherency(node)
 		} else {
 			throw new IllegalArgumentException("Cannot check coherency of object " + pNodeRef)
 		}
+	}
+	
+	private def dispatch boolean internalCoherencyCheck(PatternNodeReferenceToPatternCall pNodeRef){
+		val pc = pNodeRef.pc
+		return internalCoherencyCheck(pc)
 	}
 
 	private def dispatch boolean internalCoherencyCheck(PatternIfElseSwitch zwitch) {
