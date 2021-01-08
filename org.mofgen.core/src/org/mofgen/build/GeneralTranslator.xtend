@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
-import org.mofgen.interpreter.TypeCalculator
+import org.mofgen.interpreter.MismatchingTypesException
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
@@ -40,6 +40,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import org.mofgen.interpreter.TypeCalculator
 
 class GeneralTranslator {
 
@@ -141,7 +142,7 @@ class GeneralTranslator {
 			Rel: {
 				var emptyCollectionSuffix = ""
 				if ((ae.left instanceof NullLiteral || ae.right instanceof NullLiteral)) {
-					val leftEval = TypeCalculator.evaluate(ae.left)
+					val leftEval = calculateType(ae.left)
 					if (leftEval instanceof EClass) {
 						if (TypeModelPackage.Literals.COLLECTION.isSuperTypeOf(leftEval)) {
 							switch (ae.relation) {
@@ -152,7 +153,7 @@ class GeneralTranslator {
 							}
 						}
 					} 
-					val rightEval = TypeCalculator.evaluate(ae.right)
+					val rightEval = calculateType(ae.right)
 					if (rightEval instanceof EClass) {
 						if (TypeModelPackage.Literals.COLLECTION.isSuperTypeOf(rightEval)) {
 							switch (ae.relation) {
@@ -251,7 +252,7 @@ class GeneralTranslator {
 		
 		if (neededParameter instanceof PrimitiveParameter) {
 			val neededParameterType = neededParameter.type
-			var givenParameterType = TypeCalculator.evaluate(givenParam)
+			var givenParameterType = calculateType(givenParam)
 			if (givenParameterType === EcorePackage.Literals.ESTRING) {
 				if (neededParameterType.literal.equals("int")) {
 					return '''Integer.valueOf(«translate(givenParam)»)'''
@@ -267,7 +268,7 @@ class GeneralTranslator {
 
 		if (neededParameter instanceof ParameterNodeOrPattern) {
 			if (neededParameter.type === EcorePackage.Literals.ESTRING) {
-				val givenParamEval = TypeCalculator.evaluate(givenParam)
+				val givenParamEval = calculateType(givenParam)
 				if (givenParamEval instanceof EDataType &&
 					MofgenUtil.isDataTypePrimitive(givenParamEval as EDataType)) {
 					return '''String.valueOf(«translate(givenParam)»)'''
@@ -278,7 +279,17 @@ class GeneralTranslator {
 				}
 			}
 		}
-
 		return translate(givenParam)
 	}
+	
+	def private static EObject calculateType(ArithmeticExpression ae){
+		try{
+			return TypeCalculator.evaluate(ae)
+		}catch(MismatchingTypesException e){
+			/*
+			 * Nothing to do, needs to be fixed in validator.
+			 */
+		}
+	}
+	
 }

@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EOperation
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.BooleanLiteral
@@ -15,8 +16,14 @@ import org.mofgen.mGLang.FunctionCall
 import org.mofgen.mGLang.GeneralForEachHead
 import org.mofgen.mGLang.IteratorVariable
 import org.mofgen.mGLang.List
+import org.mofgen.mGLang.ListAdHoc
+import org.mofgen.mGLang.ListDeclaration
+import org.mofgen.mGLang.ListDefinition
 import org.mofgen.mGLang.ListForEachHead
 import org.mofgen.mGLang.Map
+import org.mofgen.mGLang.MapAdHoc
+import org.mofgen.mGLang.MapDeclaration
+import org.mofgen.mGLang.MapDefinition
 import org.mofgen.mGLang.MathFunc
 import org.mofgen.mGLang.NegationExpression
 import org.mofgen.mGLang.Node
@@ -38,10 +45,12 @@ import org.mofgen.mGLang.UnaryMinus
 import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.VariableDeclaration
+import org.mofgen.mGLang.VariableDefinition
 
 class TypeCalculator {
 
-	def static EObject evaluate(ArithmeticExpression expr) {
+	def static EObject evaluate(ArithmeticExpression expr) throws MismatchingTypesException {
 		if (expr === null) {
 			throw new IllegalArgumentException("Received null expression")
 		}
@@ -53,15 +62,135 @@ class TypeCalculator {
 		}
 	}
 
+	def static EObject getVarType(Variable v) {
+		if (v instanceof VariableDefinition) {
+			val value = v.getValue()
+			if (value !== null) {
+				val valueEval = TypeCalculator.evaluate(value);
+				if (valueEval !== null) {
+					if (valueEval instanceof Pattern) {
+						return valueEval as Pattern
+					} else if (valueEval instanceof EClass) {
+						return valueEval as EClass
+					} else {
+						throw new IllegalStateException(
+							"Type evaluation of variable expression resulted in " + valueEval +
+								" but should not result in a type different than Pattern or an EClass");
+					}
+				}
+			}
+		} else {
+			val type = (v as VariableDeclaration).getType()
+			return MofgenModelUtils.getEClassForInternalModel(type)
+		}
+	}
+
+	def static EClassifier getListType(List list) {
+		val defOrDecl = list.getDefOrDecl()
+		if (defOrDecl instanceof ListDefinition) {
+			if (defOrDecl instanceof ListAdHoc) {
+				val elements = defOrDecl.getElements()
+				if (elements.isEmpty()) {
+					return EcorePackage.Literals.EOBJECT
+				}
+
+				var listTypeClass = TypeCalculator.evaluate(elements.get(0)) as EClass
+				for (var i = 1; i < elements.size(); i++) {
+					val clazz = TypeCalculator.evaluate(elements.get(i));
+					if (clazz instanceof EClass) {
+						if (clazz != listTypeClass) {
+							if (clazz.isSuperTypeOf(listTypeClass)) {
+								listTypeClass = clazz;
+							} else {
+								if (!listTypeClass.isSuperTypeOf(clazz)) {
+									return EcorePackage.Literals.EOBJECT;
+								}
+							}
+						}
+					} else {
+						throw new UnsupportedOperationException("list of type Pattern should not occur");
+					}
+				}
+				return listTypeClass
+			}
+		} else {
+			// ListDeclaration
+			val decl = defOrDecl as ListDeclaration
+			var declType = EcorePackage.Literals.EOBJECT as EClassifier
+			if (decl !== null) {
+				declType = decl.getType() as EClassifier;
+			}
+			return declType
+		}
+	}
+
+	def static EClassifier getMapType(Map map, boolean getKeyType) {
+		val defOrDecl = map.getDefOrDecl();
+		if (defOrDecl instanceof MapDefinition) {
+			if (defOrDecl instanceof MapAdHoc) {
+
+				val elements = defOrDecl.entries
+				if (elements.isEmpty()) {
+					return EcorePackage.Literals.EOBJECT
+				}
+
+				var keyTypeClass = evaluate(elements.get(0).key) as EClass
+				var valueTypeClass = evaluate(elements.get(0).value) as EClass
+
+				for (var i = 1; i < elements.size(); i++) {
+					val keyEval = TypeCalculator.evaluate(elements.get(i).getKey());
+					val valueEval = TypeCalculator.evaluate(elements.get(i).getValue());
+					if (keyEval instanceof EClass) {
+						val clazz = keyEval as EClass;
+						if (clazz != keyTypeClass) {
+							if (clazz.isSuperTypeOf(keyTypeClass)) {
+								keyTypeClass = clazz;
+							} else {
+								if (!keyTypeClass.isSuperTypeOf(clazz)) {
+									if(getKeyType) return EcorePackage.Literals.EOBJECT;
+								}
+							}
+						}
+					} else {
+						throw new UnsupportedOperationException("keys of type Pattern should not occur");
+					}
+
+					if (valueEval instanceof EClass) {
+						val clazz = valueEval as EClass
+						if (clazz != valueTypeClass) {
+							if (clazz.isSuperTypeOf(valueTypeClass)) {
+								valueTypeClass = clazz;
+							} else {
+								if (!valueTypeClass.isSuperTypeOf(clazz)) {
+									if(!getKeyType) return EcorePackage.Literals.EOBJECT;
+								}
+							}
+						}
+					} else {
+						throw new UnsupportedOperationException("map values of type Pattern should not occur");
+					}
+				}
+				return getKeyType ? keyTypeClass : valueTypeClass
+			}
+		} else {
+			// MapDeclaration
+			val decl = defOrDecl as MapDeclaration;
+			val keyType = decl.getKeyType();
+			val entryType = decl.getEntryType();
+			return getKeyType ? keyType : entryType
+		}
+	}
+
+
 	def static dispatch private EObject internalEvaluate(Node node) {
 		return node.type
 	}
-	
-	def static dispatch private EObject internalEvaluate(Variable variable){
-		return TypeRegistryDispatcher.getVarType(variable)
+
+	def static dispatch private EObject internalEvaluate(Variable variable) {
+		return TypeCalculator.getVarType(variable)
 	}
 
-	def static dispatch private EObject internalEvaluate(Tertiary tertiary) {
+	def static dispatch private EObject internalEvaluate(Tertiary tertiary) throws MismatchingTypesException {
 		val evalLeft = evaluate(tertiary.left) as EClass
 		val evalRight = evaluate(tertiary.right) as EClass
 
@@ -136,7 +265,7 @@ class TypeCalculator {
 		}
 	}
 
-	def static dispatch private EObject internalEvaluate(Secondary secondary) {
+	def static dispatch private EObject internalEvaluate(Secondary secondary) throws MismatchingTypesException {
 		val evalLeft = evaluate(secondary.left) as EClass
 		val evalRight = evaluate(secondary.right) as EClass
 
@@ -190,17 +319,10 @@ class TypeCalculator {
 		}
 	}
 
-	def static dispatch private EObject internalEvaluate(Primary primary) {
+	def static dispatch private EObject internalEvaluate(Primary primary) throws MismatchingTypesException {
 		val evalLeft = evaluate(primary.left) as EClass
 		val evalRight = evaluate(primary.right) as EClass
 
-//		if (evalLeft === TypeModelPackage.Literals.NULL_OBJECT || evalRight === TypeModelPackage.Literals.NULL_OBJECT) {
-//			switch (primary.op) {
-//				case MUL: throw new MismatchingTypesException("Cannot multiply Strings")
-//				case DIV: throw new MismatchingTypesException("Cannot divide Strings")
-//				case AND: throw new MismatchingTypesException("Cannot use logical AND on Strings")
-//			}
-//		}
 		if (evalLeft === TypeModelPackage.Literals.STRING && evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
 			switch (primary.op) {
@@ -255,7 +377,7 @@ class TypeCalculator {
 		}
 	}
 
-	def static dispatch private EObject internalEvaluate(Rel rel) {
+	def static dispatch private EObject internalEvaluate(Rel rel) throws MismatchingTypesException {
 		val evalLeft = evaluate(rel.left) as EClass
 		val evalRight = evaluate(rel.right) as EClass
 
@@ -348,7 +470,7 @@ class TypeCalculator {
 		return TypeModelPackage.Literals.STRING
 	}
 
-	def static dispatch private EObject internalEvaluate(NegationExpression negExpr) {
+	def static dispatch private EObject internalEvaluate(NegationExpression negExpr) throws MismatchingTypesException {
 		val toNeg = negExpr.expr
 		val eval = evaluate(toNeg)
 		if (eval === TypeModelPackage.Literals.STRING) {
@@ -364,7 +486,7 @@ class TypeCalculator {
 		throw new MismatchingTypesException("Unhandled type in negating expression")
 	}
 
-	def static dispatch private EObject internalEvaluate(FunctionCall fc) {
+	def static dispatch private EObject internalEvaluate(FunctionCall fc) throws MismatchingTypesException {
 		val expr = fc.expr
 		val op = fc.func
 		val exprType = evaluate(expr)
@@ -404,7 +526,7 @@ class TypeCalculator {
 
 		switch ref {
 			Variable:
-				return TypeRegistryDispatcher.getVarType(ref)
+				return TypeCalculator.getVarType(ref)
 			PrimitiveParameter: {
 				if (ref.type !== null) {
 					switch ref.type {
@@ -456,18 +578,18 @@ class TypeCalculator {
 				val trg = roc.target
 				if (trg !== null && trg.ref !== null && trg.ref instanceof List) {
 					if (op == TypeModelPackage.Literals.LIST___GET__INT) {
-						return TypeRegistryDispatcher.getListType(trg.ref as List)
+						return TypeCalculator.getListType(trg.ref as List)
 					}
 				}
 				if (trg !== null && trg.ref !== null && trg.ref instanceof Map) {
 					if (op == TypeModelPackage.Literals.MAP___GET__EOBJECT) {
-						return TypeRegistryDispatcher.getMapEntryType(trg.ref as Map)
+						return TypeCalculator.getMapType(trg.ref as Map, false)
 					}
 					if (op == TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT) {
-						return TypeRegistryDispatcher.getMapKeyType(trg.ref as Map)
+						return TypeCalculator.getMapType(trg.ref as Map, true)
 					}
 					if (op == TypeModelPackage.Literals.MAP___REMOVE__EOBJECT) {
-						return TypeRegistryDispatcher.getMapEntryType(trg.ref as Map)
+						return TypeCalculator.getMapType(trg.ref as Map, false)
 					}
 				}
 				return MofgenModelUtils.getEClassForInternalModel(op.EType)
@@ -480,15 +602,15 @@ class TypeCalculator {
 					}
 					GeneralForEachHead: {
 						if (container.eref == TypeModelPackage.Literals.MAP__ENTRIES) {
-							return TypeRegistryDispatcher.getMapEntryType(container.src.ref as Map)
+							return TypeCalculator.getMapType(container.src.ref as Map, false)
 						} else if (container.eref == TypeModelPackage.Literals.MAP__KEYS) {
-							return TypeRegistryDispatcher.getMapKeyType(container.src.ref as Map)
+							return TypeCalculator.getMapType(container.src.ref as Map, true)
 						} else {
 							return container.eref.EType
 						}
 					}
 					ListForEachHead: {
-						return TypeRegistryDispatcher.getListType(container.list)
+						return TypeCalculator.getListType(container.list)
 					}
 				}
 			}
@@ -511,7 +633,7 @@ class TypeCalculator {
 		return iterator
 	}
 
-	def static dispatch private internalEvaluate(UnaryMinus uMinus) {
+	def static dispatch private internalEvaluate(UnaryMinus uMinus) throws MismatchingTypesException {
 		val eval = evaluate(uMinus.expr)
 		if (eval === TypeModelPackage.Literals.STRING) {
 			throw new MismatchingTypesException("Cannot negate string.")

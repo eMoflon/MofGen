@@ -17,7 +17,6 @@ import org.eclipse.xtext.validation.Check
 import org.mofgen.interpreter.Calculator
 import org.mofgen.interpreter.MismatchingTypesException
 import org.mofgen.interpreter.TypeCalculator
-import org.mofgen.interpreter.TypeRegistryDispatcher
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
@@ -82,7 +81,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 					val endEval = Calculator.evaluate(end)
 					if (startEval instanceof Integer && endEval instanceof Integer) {
 						val startCast = startEval as Integer
-						val endCast = endEval as Integer 
+						val endCast = endEval as Integer
 						if (startCast > endCast) {
 							error("Limiting bound is less than starting value",
 								MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
@@ -313,7 +312,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 */
 	@Check
 	def checkForImportConflicts(Import imp) {
-		var imports = EcoreUtil2.getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import) 
+		var imports = EcoreUtil2.getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import)
 		imports.remove(imp)
 		val duplicateClasses = checkImportsForDuplicates(imports, imp)
 		if (!duplicateClasses.isEmpty) {
@@ -422,79 +421,89 @@ class MGLangValidator extends AbstractMGLangValidator {
 		var neededParams = 0
 		var actualParams = 0
 
-		if (pc.called !== null && !pc.called.eIsProxy && pc.params !== null) {
+		try {
 
-			if (pc.called.parameters !== null) {
-				neededParams = pc.called.parameters.length
-			}
-			if (pc.params.params !== null) {
-				actualParams = pc.params.params.length
-			}
+			if (pc.called !== null && !pc.called.eIsProxy && pc.params !== null) {
 
-			if (neededParams != actualParams) {
-				error("Pattern " + pc.called.name + " expects " + neededParams + " parameters but was given " +
-					actualParams, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
-				return;
-			}
+				if (pc.called.parameters !== null) {
+					neededParams = pc.called.parameters.length
+				}
+				if (pc.params.params !== null) {
+					actualParams = pc.params.params.length
+				}
 
-			// check parameter types
-			if (pc.params !== null && pc.params.params !== null && pc.called.parameters !== null) {
+				if (neededParams != actualParams) {
+					error("Pattern " + pc.called.name + " expects " + neededParams + " parameters but was given " +
+						actualParams, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+					return;
+				}
 
-				for (i : 0 ..< pc.params.params.length) {
-					val givenParameterExpression = pc.params.params.get(i)
-					val neededParameter = pc.called.parameters.get(i)
+				// check parameter types
+				if (pc.params !== null && pc.params.params !== null && pc.called.parameters !== null) {
 
-					val givenParameterType = TypeCalculator.evaluate(givenParameterExpression)
+					for (i : 0 ..< pc.params.params.length) {
+						val givenParameterExpression = pc.params.params.get(i)
+						val neededParameter = pc.called.parameters.get(i)
 
-					if (givenParameterType !== null && givenParameterType !== TypeModelPackage.Literals.NULL_OBJECT) {
-						val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
+						val givenParameterType = TypeCalculator.evaluate(givenParameterExpression)
 
-						if (givenParameterType instanceof EClassifier && neededParameterType instanceof EClassifier) {
-							if (!(MofgenModelUtils.getEClassForInternalModel(neededParameterType as EClassifier).
-								isSuperTypeOf(
-									MofgenModelUtils.getEClassForInternalModel(givenParameterType as EClassifier)))) {
-								val givenParameterTypeEClassifier = MofgenModelUtils.getEClassForInternalModel(
-									givenParameterType as EClassifier)
-								if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
-									if (givenParameterType !== neededParameterType) {
-										if (givenParameterTypeEClassifier instanceof EClass) {
-											if (!(TypeModelPackage.Literals.NUMBER.isSuperTypeOf(
-												givenParameterTypeEClassifier) &&
-												neededParameterType === TypeModelPackage.Literals.STRING)) {
-												error(
-													"Given type " + givenParameterTypeEClassifier.name +
-														" does not match needed type " +
-														(neededParameterType as EClassifier).name,
-													MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+						if (givenParameterType !== null &&
+							givenParameterType !== TypeModelPackage.Literals.NULL_OBJECT) {
+							val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
+
+							if (givenParameterType instanceof EClassifier &&
+								neededParameterType instanceof EClassifier) {
+								if (!(MofgenModelUtils.getEClassForInternalModel(neededParameterType as EClassifier).
+									isSuperTypeOf(
+										MofgenModelUtils.getEClassForInternalModel(
+											givenParameterType as EClassifier)))) {
+									val givenParameterTypeEClassifier = MofgenModelUtils.getEClassForInternalModel(
+										givenParameterType as EClassifier)
+									if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
+										if (givenParameterType !== neededParameterType) {
+											if (givenParameterTypeEClassifier instanceof EClass) {
+												if (!(TypeModelPackage.Literals.NUMBER.isSuperTypeOf(
+													givenParameterTypeEClassifier) &&
+													neededParameterType === TypeModelPackage.Literals.STRING)) {
+													error(
+														"Given type " + givenParameterTypeEClassifier.name +
+															" does not match needed type " +
+															(neededParameterType as EClassifier).name,
+														MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+												}
 											}
 										}
 									}
 								}
-							}
-						} else if (givenParameterType instanceof Pattern && neededParameterType instanceof Pattern) {
-							val givenParameterPattern = givenParameterType as Pattern
-							val neededParameterPattern = neededParameterType as Pattern
-							if (!givenParameterPattern.name.equals(neededParameterPattern.name)) {
-								error(
-									"Given Pattern " + givenParameterPattern.name + " does not match needed Pattern " +
-										neededParameterPattern.name, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
-							}
-						} else {
-							if (givenParameterType instanceof Pattern) {
-								error("Given Pattern " + givenParameterType.name + " does not match needed type " +
-									(neededParameterType as EClassifier).name,
-									MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+							} else if (givenParameterType instanceof Pattern &&
+								neededParameterType instanceof Pattern) {
+								val givenParameterPattern = givenParameterType as Pattern
+								val neededParameterPattern = neededParameterType as Pattern
+								if (!givenParameterPattern.name.equals(neededParameterPattern.name)) {
+									error(
+										"Given Pattern " + givenParameterPattern.name +
+											" does not match needed Pattern " + neededParameterPattern.name,
+										MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+								}
 							} else {
-								val givenParameterTypeEClassifier = givenParameterType as EClassifier
-								error(
-									"Given type " + givenParameterTypeEClassifier.name +
-										" does not match needed Pattern " + (neededParameterType as Pattern).name,
-									MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+								if (givenParameterType instanceof Pattern) {
+									error("Given Pattern " + givenParameterType.name + " does not match needed type " +
+										(neededParameterType as EClassifier).name,
+										MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+								} else {
+									val givenParameterTypeEClassifier = givenParameterType as EClassifier
+									error(
+										"Given type " + givenParameterTypeEClassifier.name +
+											" does not match needed Pattern " + (neededParameterType as Pattern).name,
+										MGLangPackage.Literals.PATTERN_CALL__PARAMS)
+								}
 							}
 						}
 					}
 				}
 			}
+		} catch (MismatchingTypesException e) {
+			error(e.message, MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 		}
 	}
 
@@ -627,7 +636,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		val variable = vm.^var
 		if (variable !== null && !variable.eIsProxy) {
 
-			val varType = TypeRegistryDispatcher.getVarType(variable) as EObject
+			val varType = TypeCalculator.getVarType(variable) as EObject
 			try {
 				val givenType = TypeCalculator.evaluate(vm.^val) as EObject
 
@@ -814,19 +823,19 @@ class MGLangValidator extends AbstractMGLangValidator {
 				case TypeModelPackage.Literals.LIST___ADD__EOBJECT,
 				case TypeModelPackage.Literals.LIST___REMOVE__EOBJECT,
 				case TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT: {
-					neededParams.add(TypeRegistryDispatcher.getListType(cm.trg as List))
+					neededParams.add(TypeCalculator.getListType(cm.trg as List))
 				}
 				case TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT,
 				case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
-					neededParams.add(TypeRegistryDispatcher.getMapKeyType(cm.trg as Map))
+					neededParams.add(TypeCalculator.getMapType(cm.trg as Map, true))
 				}
 				case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
 				case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
-					neededParams.add(TypeRegistryDispatcher.getMapEntryType(cm.trg as Map))
+					neededParams.add(TypeCalculator.getMapType(cm.trg as Map, false))
 				}
 				case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {
-					neededParams.add(TypeRegistryDispatcher.getMapKeyType(cm.trg as Map))
-					neededParams.add(TypeRegistryDispatcher.getMapEntryType(cm.trg as Map))
+					neededParams.add(TypeCalculator.getMapType(cm.trg as Map, true))
+					neededParams.add(TypeCalculator.getMapType(cm.trg as Map, false))
 				}
 				case TypeModelPackage.Literals.LIST___ADD_ALL__LIST: {
 					neededParams.add(MGLangPackage.Literals.LIST)
@@ -848,11 +857,11 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 			// check collection types for given collection
 			if (op == TypeModelPackage.Literals.LIST___ADD_ALL__LIST) {
-				val neededListType = TypeRegistryDispatcher.getListType(cm.trg as List)
+				val neededListType = TypeCalculator.getListType(cm.trg as List)
 				for (givenParam : givenParameters) {
 					val givenParamEval = TypeCalculator.evaluate(givenParam)
 					if (givenParamEval == TypeModelPackage.Literals.LIST) {
-						val givenListType = TypeRegistryDispatcher.getListType((givenParam as RefOrCall).ref as List)
+						val givenListType = TypeCalculator.getListType((givenParam as RefOrCall).ref as List)
 						if (!MofgenModelUtils.getEClassForInternalModel(neededListType).isSuperTypeOf(
 							MofgenModelUtils.getEClassForInternalModel(givenListType))) {
 							error("List " + cm.trg.name + " is of other type than given list " +
@@ -936,19 +945,19 @@ class MGLangValidator extends AbstractMGLangValidator {
 						case TypeModelPackage.Literals.LIST___ADD__EOBJECT,
 						case TypeModelPackage.Literals.LIST___REMOVE__EOBJECT,
 						case TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT: {
-							neededParams.add(TypeRegistryDispatcher.getListType(roc.target.ref as List))
+							neededParams.add(TypeCalculator.getListType(roc.target.ref as List))
 						}
 						case TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT,
 						case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
-							neededParams.add(TypeRegistryDispatcher.getMapKeyType(roc.target.ref as Map))
+							neededParams.add(TypeCalculator.getMapType(roc.target.ref as Map, true))
 						}
 						case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
 						case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
-							neededParams.add(TypeRegistryDispatcher.getMapEntryType(roc.target.ref as Map))
+							neededParams.add(TypeCalculator.getMapType(roc.target.ref as Map, false))
 						}
 						case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {
-							neededParams.add(TypeRegistryDispatcher.getMapKeyType(roc.target.ref as Map))
-							neededParams.add(TypeRegistryDispatcher.getMapEntryType(roc.target.ref as Map))
+							neededParams.add(TypeCalculator.getMapType(roc.target.ref as Map, true))
+							neededParams.add(TypeCalculator.getMapType(roc.target.ref as Map, false))
 						}
 						case TypeModelPackage.Literals.LIST___ADD_ALL__LIST: {
 							neededParams.add(MGLangPackage.Literals.LIST)

@@ -3,7 +3,7 @@ package org.mofgen.build
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
-import org.mofgen.interpreter.TypeRegistryDispatcher
+import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.GenCaseBody
@@ -130,7 +130,7 @@ class GeneratorTranslator {
 	}
 
 	def static dispatch private String internalTranslate(VariableDeclaration variable) {
-		val type = TypeRegistryDispatcher.getVarType(variable);
+		val type = TypeCalculator.getVarType(variable);
 		var varTypeSrc = "";
 		if (type instanceof Pattern) {
 			varTypeSrc = NameProvider.getPatternClassName(type)
@@ -146,7 +146,7 @@ class GeneratorTranslator {
 	}
 
 	def static dispatch private String internalTranslate(VariableDefinition variable) {
-		val varType = TypeRegistryDispatcher.getVarType(variable)
+		val varType = TypeCalculator.getVarType(variable)
 		val varTypeSrc = type2src(varType)
 
 		return '''

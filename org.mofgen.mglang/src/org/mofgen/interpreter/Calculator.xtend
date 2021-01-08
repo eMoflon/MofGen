@@ -21,7 +21,7 @@ import org.mofgen.utils.MofgenModelUtils
 
 class Calculator {
 
-	def static Object evaluate(ArithmeticExpression expr) {
+	def static Object evaluate(ArithmeticExpression expr) throws MismatchingTypesException {
 		// Actual calculation
 		val result = internalEvaluate(expr)
 		switch (result) {

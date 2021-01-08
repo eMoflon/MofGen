@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.EcoreUtil2;
-import org.mofgen.interpreter.TypeRegistryDispatcher;
+import org.mofgen.interpreter.TypeCalculator;
 import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
@@ -208,10 +208,13 @@ public class EClassifiersManager {
 		Set<EClassifier> typeSet = new HashSet<>();
 		for(Collection c : colls) {
 			if(c instanceof org.mofgen.mGLang.List) {
-				typeSet.add(TypeRegistryDispatcher.getListType((org.mofgen.mGLang.List)c));
+				EObject val = TypeCalculator.getListType((org.mofgen.mGLang.List)c);
+				if(val instanceof EClassifier) {
+					typeSet.add((EClassifier) val);
+				}
 			}else if(c instanceof org.mofgen.mGLang.Map) {
-				typeSet.add(TypeRegistryDispatcher.getMapKeyType((org.mofgen.mGLang.Map)c));
-				typeSet.add(TypeRegistryDispatcher.getMapEntryType((org.mofgen.mGLang.Map)c));
+				typeSet.add(TypeCalculator.getMapType((org.mofgen.mGLang.Map)c, true));
+				typeSet.add(TypeCalculator.getMapType((org.mofgen.mGLang.Map)c, false));
 			}else {
 				throw new IllegalStateException("There should be no collection of type other than List or Map");
 			}
