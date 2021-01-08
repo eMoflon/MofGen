@@ -1,25 +1,37 @@
 package org.mofgen.build
 
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EcorePackage
+import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.mGLang.ArithmeticExpression
+import org.mofgen.mGLang.Collection
+import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.ForHead
 import org.mofgen.mGLang.FunctionCall
 import org.mofgen.mGLang.GeneralForEachHead
 import org.mofgen.mGLang.Import
+import org.mofgen.mGLang.IteratorVariable
 import org.mofgen.mGLang.ListForEachHead
 import org.mofgen.mGLang.Literal
 import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.NegationExpression
 import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.NullLiteral
+import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.Primary
 import org.mofgen.mGLang.PrimitiveParameter
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
+import org.mofgen.mGLang.RefParams
 import org.mofgen.mGLang.Rel
 import org.mofgen.mGLang.Secondary
 import org.mofgen.mGLang.Tertiary
@@ -28,20 +40,10 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.mofgen.mGLang.CollectionManipulation
-import org.mofgen.mGLang.RefParams
-import org.mofgen.mGLang.Collection
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EReference
-import org.mofgen.mGLang.IteratorVariable
-import org.eclipse.emf.ecore.EDataType
-import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.EClass
-import org.mofgen.mGLang.Parameter
-import org.mofgen.interpreter.TypeCalculator
-import org.mofgen.mGLang.NullLiteral
 
 class GeneralTranslator {
+
+	static TypeCalculator typeChecker = new TypeCalculator()
 
 	def static String translate(EObject obj) {
 		if (obj === null) {
@@ -138,8 +140,34 @@ class GeneralTranslator {
 			}
 			NegationExpression:
 				return '''!«translate(ae.expr)»'''
-			Rel:
-				return '''«translate(ae.left)»«ae.relation.literal»«translate(ae.right)»'''
+			Rel: {
+				var emptyCollectionSuffix = ""
+				if ((ae.left instanceof NullLiteral || ae.right instanceof NullLiteral)) {
+					val leftEval = typeChecker.evaluate(ae.left)
+					if (leftEval instanceof EClass) {
+						if (TypeModelPackage.Literals.COLLECTION.isSuperTypeOf(leftEval)) {
+							switch (ae.relation) {
+								case EQUAL:	emptyCollectionSuffix = '''|| «translate(ae.left)».isEmpty()'''
+								case UNEQUAL: 	emptyCollectionSuffix = '''&& !«translate(ae.left)».isEmpty()'''
+								default: {
+								}
+							}
+						}
+					} 
+					val rightEval = typeChecker.evaluate(ae.right)
+					if (rightEval instanceof EClass) {
+						if (TypeModelPackage.Literals.COLLECTION.isSuperTypeOf(rightEval)) {
+							switch (ae.relation) {
+								case EQUAL: emptyCollectionSuffix = '''|| «translate(ae.right)».isEmpty()'''
+								case UNEQUAL: emptyCollectionSuffix = '''&& !«translate(ae.right)».isEmpty()'''
+								default: {
+								}
+							}
+						}
+					} 
+				}
+				return '''«translate(ae.left)»«ae.relation.literal»«translate(ae.right)»«emptyCollectionSuffix»'''
+			}
 			Primary:
 				return '''«translate(ae.left)»«ae.op.literal»«translate(ae.right)»'''
 			Secondary:

@@ -39,6 +39,7 @@ import org.mofgen.mGLang.MapTupel
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NodeAttributeAssignment
 import org.mofgen.mGLang.NodeContent
+import org.mofgen.mGLang.NullLiteral
 import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
@@ -52,11 +53,10 @@ import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.RefParams
 import org.mofgen.mGLang.Variable
+import org.mofgen.mGLang.VariableDefinition
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.NullLiteral
-import org.mofgen.mGLang.VariableDefinition
 
 /**
  * This class contains custom validation rules. 
@@ -65,7 +65,7 @@ import org.mofgen.mGLang.VariableDefinition
  */
 class MGLangValidator extends AbstractMGLangValidator {
 
-	@Inject Calculator calc
+	@Inject Calculator calc 
 	@Inject TypeCalculator typeChecker
 
 	/**
@@ -279,7 +279,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		if (ret === null) {
 			return
 		}
-		
+
 		if (ret instanceof RefOrCall) {
 			val typeEval = typeChecker.evaluate(ret)
 			if (typeEval instanceof EClass) {
@@ -449,11 +449,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 					val neededParameter = pc.called.parameters.get(i)
 
 					val givenParameterType = typeChecker.evaluate(givenParameterExpression)
-					if (givenParameterType === null) {
-						return;
-					}
 
-					if (givenParameterType !== TypeModelPackage.Literals.NULL_OBJECT) {
+					if (givenParameterType !== null && givenParameterType !== TypeModelPackage.Literals.NULL_OBJECT) {
 						val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
 
 						if (givenParameterType instanceof EClassifier && neededParameterType instanceof EClassifier) {
@@ -885,7 +882,6 @@ class MGLangValidator extends AbstractMGLangValidator {
 				if (givenParameterEval !== TypeModelPackage.Literals.NULL_OBJECT) {
 					val neededParameterEval = neededParams.get(i)
 					if (givenParameterEval instanceof EClassifier && neededParameterEval instanceof EClassifier) {
-
 						val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
 							givenParameterEval as EClassifier)
 						val neededParameterType = MofgenModelUtils.getEClassForInternalModel(

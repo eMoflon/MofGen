@@ -225,7 +225,7 @@ class PatternTranslator {
 	private static def dispatch String internalTranslate(PatternIfElseSwitch pSwitch) {
 		return '''
 			«FOR caze : pSwitch.cases SEPARATOR 'else'»
-				if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
+				if(«translate(caze.when)»){
 					«FOR refAssign : caze.body.expressions»
 						«translate(refAssign)»;
 					«ENDFOR»

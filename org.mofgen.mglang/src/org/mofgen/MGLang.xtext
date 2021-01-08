@@ -71,7 +71,6 @@ PatternNodeReference:
 	PatternNodeReferenceToNode | PatternNodeReferenceToPatternCall;
 
 PatternNodeReferenceToNode:
-// TODO Adapt scoping!
 	type=[ecore::EReference] '->' node=RefOrCall; // allow nodes, parameter nodes and access to nodes in patterns as parameter objects in scoping! TODO
 
 PatternNodeReferenceToPatternCall:
@@ -269,9 +268,9 @@ PrimaryExpr returns ArithmeticExpression:
 	BaseExpr ({Primary.left=current} op=PrimaryOp right=BaseExpr)*;
 
 BaseExpr returns ArithmeticExpression:
+	// TODO introduce "PriorityExpression" in brackets to correctly translate brackets into source code
 	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
 	expr=ArithmeticExpression ')' | {UnaryMinus} '-' expr=BaseExpr | Literal | RefOrCall | PatternCall;
-	// TODO Validate ThisRefOrCall
 
 Literal:
 	BooleanLiteral | StringLiteral | NumberLiteral | NullLiteral;

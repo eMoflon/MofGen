@@ -78,7 +78,7 @@ class GeneratorTranslator {
 	def static dispatch private String internalTranslate(GenIfElseSwitch zwitch) {
 		return '''
 			«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
-				if(«MofgenUtil.getTextFromEditorFile(caze.when)») {
+				if(«translate(caze.when)») {
 					«FOR bodyExpr : caze.body.expressions»
 						«translate(bodyExpr)»;
 					«ENDFOR»
