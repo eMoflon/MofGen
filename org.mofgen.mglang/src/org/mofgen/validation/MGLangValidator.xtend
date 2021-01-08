@@ -3,7 +3,6 @@
  */
 package org.mofgen.validation
 
-import com.google.inject.Inject
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
@@ -18,7 +17,7 @@ import org.eclipse.xtext.validation.Check
 import org.mofgen.interpreter.Calculator
 import org.mofgen.interpreter.MismatchingTypesException
 import org.mofgen.interpreter.TypeCalculator
-import org.mofgen.interpreter.TypeRegistry
+import org.mofgen.interpreter.TypeRegistryDispatcher
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
@@ -65,9 +64,6 @@ import org.mofgen.utils.MofgenModelUtils
  */
 class MGLangValidator extends AbstractMGLangValidator {
 
-	@Inject Calculator calc 
-	@Inject TypeCalculator typeChecker
-
 	/**
 	 * Checks for a valid for range.
 	 */
@@ -82,11 +78,11 @@ class MGLangValidator extends AbstractMGLangValidator {
 				val check1 = checkForInteger(forRange.start, forRange, MGLangPackage.Literals.FOR_RANGE__START)
 				val check2 = checkForInteger(forRange.end, forRange, MGLangPackage.Literals.FOR_RANGE__END)
 				if (check1 && check2) {
-					val startEval = calc.evaluate(start)
-					val endEval = calc.evaluate(end)
+					val startEval = Calculator.evaluate(start)
+					val endEval = Calculator.evaluate(end)
 					if (startEval instanceof Integer && endEval instanceof Integer) {
 						val startCast = startEval as Integer
-						val endCast = endEval as Integer
+						val endCast = endEval as Integer 
 						if (startCast > endCast) {
 							error("Limiting bound is less than starting value",
 								MGLangPackage.Literals.RANGE_FOR_HEAD__RANGE)
@@ -144,7 +140,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 */
 	def private checkForInteger(ArithmeticExpression expr, EObject obj, EReference errorLoc) {
 		try {
-			val eval = typeChecker.evaluate(expr)
+			val eval = TypeCalculator.evaluate(expr)
 			if (eval !== null) {
 				if (eval instanceof Pattern) {
 					error("Expected integer but was given type " + eval.name, obj, errorLoc)
@@ -188,7 +184,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def checkBooleanWhenPattern(PatternWhenCase caze) {
 		if (caze.when !== null) {
 			try {
-				val res = typeChecker.evaluate(caze.when)
+				val res = TypeCalculator.evaluate(caze.when)
 				if (res !== TypeModelPackage.Literals.BOOLEAN) {
 					error("Needs boolean value for conditional expression", caze,
 						MGLangPackage.Literals.PATTERN_WHEN_CASE__WHEN)
@@ -206,7 +202,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def checkBooleanWhenGen(GenWhenCase caze) {
 		if (caze.when !== null) {
 			try {
-				val res = typeChecker.evaluate(caze.when)
+				val res = TypeCalculator.evaluate(caze.when)
 				if (res !== null && res !== TypeModelPackage.Literals.BOOLEAN) {
 					error("Needs boolean value for conditional expression", caze,
 						MGLangPackage.Literals.GEN_WHEN_CASE__WHEN)
@@ -224,7 +220,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def checkBooleanWhenPatternWithCast(PatternCaseWithCast caze) {
 		if (caze.when !== null) {
 			try {
-				val res = typeChecker.evaluate(caze.when)
+				val res = TypeCalculator.evaluate(caze.when)
 				if (res !== null && res !== TypeModelPackage.Literals.BOOLEAN) {
 					error("Needs boolean value for conditional expression", caze,
 						MGLangPackage.Literals.PATTERN_CASE_WITH_CAST__WHEN)
@@ -242,7 +238,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	def checkBooleanWhenGenWithCast(GenCaseWithCast caze) {
 		if (caze.when !== null) {
 			try {
-				val res = typeChecker.evaluate(caze.when)
+				val res = TypeCalculator.evaluate(caze.when)
 				if (res !== TypeModelPackage.Literals.BOOLEAN) {
 					error("Needs boolean value for conditional expression", caze,
 						MGLangPackage.Literals.GEN_CASE_WITH_CAST__WHEN)
@@ -281,7 +277,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		}
 
 		if (ret instanceof RefOrCall) {
-			val typeEval = typeChecker.evaluate(ret)
+			val typeEval = TypeCalculator.evaluate(ret)
 			if (typeEval instanceof EClass) {
 				if (TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(typeEval)) {
 					error("Can not return primitive values or strings", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
@@ -317,7 +313,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 */
 	@Check
 	def checkForImportConflicts(Import imp) {
-		var imports = EcoreUtil2.getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import)
+		var imports = EcoreUtil2.getAllContentsOfType(MofgenModelUtils.getRootFile(imp), Import) 
 		imports.remove(imp)
 		val duplicateClasses = checkImportsForDuplicates(imports, imp)
 		if (!duplicateClasses.isEmpty) {
@@ -396,7 +392,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 							return;
 						}
 					}
-					val assignedValueEval = typeChecker.evaluate(ass.value)
+					val assignedValueEval = TypeCalculator.evaluate(ass.value)
 					if (assignedValueEval instanceof EClass) {
 						val assignedValue = MofgenModelUtils.getEClassForInternalModel(assignedValueEval)
 						if (assignedValue != TypeModelPackage.Literals.ENUM_LITERAL &&
@@ -448,7 +444,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 					val givenParameterExpression = pc.params.params.get(i)
 					val neededParameter = pc.called.parameters.get(i)
 
-					val givenParameterType = typeChecker.evaluate(givenParameterExpression)
+					val givenParameterType = TypeCalculator.evaluate(givenParameterExpression)
 
 					if (givenParameterType !== null && givenParameterType !== TypeModelPackage.Literals.NULL_OBJECT) {
 						val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
@@ -520,7 +516,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 									"Pattern " + pc.called.name + " returns " + pc.called.name + " but " + node.name +
 										" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
 							} else {
-								val retValType = typeChecker.evaluate(retVal)
+								val retValType = TypeCalculator.evaluate(retVal)
 								if (retValType !== null && retValType !== node.type) {
 									error(
 										"Pattern " + pc.called.name + " returns " + retValType + " but " + node.name +
@@ -572,7 +568,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	@Check
 	def illegalArithmeticExpressionVar(ArithmeticExpression ae) {
 		try {
-			typeChecker.evaluate(ae)
+			TypeCalculator.evaluate(ae)
 		} catch (MismatchingTypesException e) {
 			val container = ae.eContainer
 			switch container {
@@ -631,9 +627,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 		val variable = vm.^var
 		if (variable !== null && !variable.eIsProxy) {
 
-			val varType = TypeRegistry.getVarType(variable) as EObject
+			val varType = TypeRegistryDispatcher.getVarType(variable) as EObject
 			try {
-				val givenType = typeChecker.evaluate(vm.^val) as EObject
+				val givenType = TypeCalculator.evaluate(vm.^val) as EObject
 
 				var varTypeString = ""
 				var givenTypeString = ""
@@ -786,7 +782,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 */
 	def checkMapKeysUnique(MapAdHoc definition) {
 		if (definition.entries !== null) {
-			val keys = definition.entries.map[e|calc.evaluate(e.key)]
+			val keys = definition.entries.map[e|Calculator.evaluate(e.key)]
 			val set = newHashSet()
 			for (key : keys) {
 				if (!set.add(key)) {
@@ -818,19 +814,19 @@ class MGLangValidator extends AbstractMGLangValidator {
 				case TypeModelPackage.Literals.LIST___ADD__EOBJECT,
 				case TypeModelPackage.Literals.LIST___REMOVE__EOBJECT,
 				case TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT: {
-					neededParams.add(TypeRegistry.getListType(cm.trg as List))
+					neededParams.add(TypeRegistryDispatcher.getListType(cm.trg as List))
 				}
 				case TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT,
 				case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
-					neededParams.add(TypeRegistry.getMapKeyType(cm.trg as Map))
+					neededParams.add(TypeRegistryDispatcher.getMapKeyType(cm.trg as Map))
 				}
 				case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
 				case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
-					neededParams.add(TypeRegistry.getMapEntryType(cm.trg as Map))
+					neededParams.add(TypeRegistryDispatcher.getMapEntryType(cm.trg as Map))
 				}
 				case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {
-					neededParams.add(TypeRegistry.getMapKeyType(cm.trg as Map))
-					neededParams.add(TypeRegistry.getMapEntryType(cm.trg as Map))
+					neededParams.add(TypeRegistryDispatcher.getMapKeyType(cm.trg as Map))
+					neededParams.add(TypeRegistryDispatcher.getMapEntryType(cm.trg as Map))
 				}
 				case TypeModelPackage.Literals.LIST___ADD_ALL__LIST: {
 					neededParams.add(MGLangPackage.Literals.LIST)
@@ -852,11 +848,11 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 			// check collection types for given collection
 			if (op == TypeModelPackage.Literals.LIST___ADD_ALL__LIST) {
-				val neededListType = TypeRegistry.getListType(cm.trg as List)
+				val neededListType = TypeRegistryDispatcher.getListType(cm.trg as List)
 				for (givenParam : givenParameters) {
-					val givenParamEval = typeChecker.evaluate(givenParam)
+					val givenParamEval = TypeCalculator.evaluate(givenParam)
 					if (givenParamEval == TypeModelPackage.Literals.LIST) {
-						val givenListType = TypeRegistry.getListType((givenParam as RefOrCall).ref as List)
+						val givenListType = TypeRegistryDispatcher.getListType((givenParam as RefOrCall).ref as List)
 						if (!MofgenModelUtils.getEClassForInternalModel(neededListType).isSuperTypeOf(
 							MofgenModelUtils.getEClassForInternalModel(givenListType))) {
 							error("List " + cm.trg.name + " is of other type than given list " +
@@ -878,7 +874,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 		// Check parameter types
 		for (var i = 0; i < givenParams.size; i++) {
 			try {
-				val givenParameterEval = typeChecker.evaluate(givenParams.get(i))
+				val givenParameterEval = TypeCalculator.evaluate(givenParams.get(i))
 				if (givenParameterEval !== TypeModelPackage.Literals.NULL_OBJECT) {
 					val neededParameterEval = neededParams.get(i)
 					if (givenParameterEval instanceof EClassifier && neededParameterEval instanceof EClassifier) {
@@ -940,19 +936,19 @@ class MGLangValidator extends AbstractMGLangValidator {
 						case TypeModelPackage.Literals.LIST___ADD__EOBJECT,
 						case TypeModelPackage.Literals.LIST___REMOVE__EOBJECT,
 						case TypeModelPackage.Literals.LIST___CONTAINS__EOBJECT: {
-							neededParams.add(TypeRegistry.getListType(roc.target.ref as List))
+							neededParams.add(TypeRegistryDispatcher.getListType(roc.target.ref as List))
 						}
 						case TypeModelPackage.Literals.MAP___CONTAINS_KEY__EOBJECT,
 						case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
-							neededParams.add(TypeRegistry.getMapKeyType(roc.target.ref as Map))
+							neededParams.add(TypeRegistryDispatcher.getMapKeyType(roc.target.ref as Map))
 						}
 						case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
 						case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
-							neededParams.add(TypeRegistry.getMapEntryType(roc.target.ref as Map))
+							neededParams.add(TypeRegistryDispatcher.getMapEntryType(roc.target.ref as Map))
 						}
 						case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {
-							neededParams.add(TypeRegistry.getMapKeyType(roc.target.ref as Map))
-							neededParams.add(TypeRegistry.getMapEntryType(roc.target.ref as Map))
+							neededParams.add(TypeRegistryDispatcher.getMapKeyType(roc.target.ref as Map))
+							neededParams.add(TypeRegistryDispatcher.getMapEntryType(roc.target.ref as Map))
 						}
 						case TypeModelPackage.Literals.LIST___ADD_ALL__LIST: {
 							neededParams.add(MGLangPackage.Literals.LIST)

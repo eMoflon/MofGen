@@ -43,8 +43,6 @@ import org.mofgen.util.NameProvider
 
 class GeneralTranslator {
 
-	static TypeCalculator typeChecker = new TypeCalculator()
-
 	def static String translate(EObject obj) {
 		if (obj === null) {
 			throw new IllegalArgumentException("Cannot translate null")
@@ -143,7 +141,7 @@ class GeneralTranslator {
 			Rel: {
 				var emptyCollectionSuffix = ""
 				if ((ae.left instanceof NullLiteral || ae.right instanceof NullLiteral)) {
-					val leftEval = typeChecker.evaluate(ae.left)
+					val leftEval = TypeCalculator.evaluate(ae.left)
 					if (leftEval instanceof EClass) {
 						if (TypeModelPackage.Literals.COLLECTION.isSuperTypeOf(leftEval)) {
 							switch (ae.relation) {
@@ -154,7 +152,7 @@ class GeneralTranslator {
 							}
 						}
 					} 
-					val rightEval = typeChecker.evaluate(ae.right)
+					val rightEval = TypeCalculator.evaluate(ae.right)
 					if (rightEval instanceof EClass) {
 						if (TypeModelPackage.Literals.COLLECTION.isSuperTypeOf(rightEval)) {
 							switch (ae.relation) {
@@ -250,11 +248,10 @@ class GeneralTranslator {
 	 * the normal translation will be returned.
 	 */
 	def static convertIfPrimitiveCastNeeded(Parameter neededParameter, ArithmeticExpression givenParam) {
-		val calc = new TypeCalculator()
-
+		
 		if (neededParameter instanceof PrimitiveParameter) {
 			val neededParameterType = neededParameter.type
-			var givenParameterType = calc.evaluate(givenParam)
+			var givenParameterType = TypeCalculator.evaluate(givenParam)
 			if (givenParameterType === EcorePackage.Literals.ESTRING) {
 				if (neededParameterType.literal.equals("int")) {
 					return '''Integer.valueOf(«translate(givenParam)»)'''
@@ -270,7 +267,7 @@ class GeneralTranslator {
 
 		if (neededParameter instanceof ParameterNodeOrPattern) {
 			if (neededParameter.type === EcorePackage.Literals.ESTRING) {
-				val givenParamEval = calc.evaluate(givenParam)
+				val givenParamEval = TypeCalculator.evaluate(givenParam)
 				if (givenParamEval instanceof EDataType &&
 					MofgenUtil.isDataTypePrimitive(givenParamEval as EDataType)) {
 					return '''String.valueOf(«translate(givenParam)»)'''

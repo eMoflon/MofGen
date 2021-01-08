@@ -1,6 +1,5 @@
 package org.mofgen.interpreter
 
-import com.google.inject.Inject
 import org.eclipse.emf.ecore.EOperation
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.BooleanLiteral
@@ -22,9 +21,7 @@ import org.mofgen.utils.MofgenModelUtils
 
 class Calculator {
 
-	@Inject TypeCalculator typeChecker //TODO Doubled exception throwing in type checker and actual calculator here. make use of typeChecker for throwing error? Or is this not automatically handled by the type registry?
-
-	def Object evaluate(ArithmeticExpression expr) {
+	def static Object evaluate(ArithmeticExpression expr) {
 		// Actual calculation
 		val result = internalEvaluate(expr)
 		switch (result) {
@@ -37,7 +34,7 @@ class Calculator {
 		return result
 	}
 
-	def dispatch private internalEvaluate(Tertiary tertiary) {
+	def static dispatch private Object internalEvaluate(Tertiary tertiary) {
 		val evalLeft = evaluate(tertiary.left)
 		val evalRight = evaluate(tertiary.right)
 
@@ -108,7 +105,7 @@ class Calculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(Secondary secondary) {
+	def static dispatch private Object internalEvaluate(Secondary secondary) {
 		val evalLeft = evaluate(secondary.left)
 		val evalRight = evaluate(secondary.right)
 
@@ -149,7 +146,7 @@ class Calculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(Primary primary) {
+	def static dispatch private Object internalEvaluate(Primary primary) {
 		val evalLeft = evaluate(primary.left)
 		val evalRight = evaluate(primary.right)
 
@@ -195,7 +192,7 @@ class Calculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(Rel rel) {
+	def static dispatch private Object internalEvaluate(Rel rel) {
 		val evalLeft = evaluate(rel.left)
 		val evalRight = evaluate(rel.right)
 
@@ -251,11 +248,11 @@ class Calculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(BooleanLiteral lit) {
+	def static dispatch private Object internalEvaluate(BooleanLiteral lit) {
 		return lit.^val
 	}
 
-	def dispatch private internalEvaluate(NumberLiteral lit) {
+	def static dispatch private Object internalEvaluate(NumberLiteral lit) {
 		val value = lit.^val
 		if (Math.floor(value) == (value as int)) {
 			return value as int
@@ -264,11 +261,11 @@ class Calculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(StringLiteral lit) {
+	def static dispatch private Object internalEvaluate(StringLiteral lit) {
 		return lit.^val
 	}
 
-	def dispatch private internalEvaluate(NegationExpression negExpr) {
+	def static dispatch private Object internalEvaluate(NegationExpression negExpr) {
 		val toNeg = negExpr.expr
 		val eval = evaluate(toNeg)
 		if (eval instanceof String) {
@@ -284,7 +281,7 @@ class Calculator {
 		throw new CalculatorException("Unhandled type in negating expression")
 	}
 
-	def dispatch private internalEvaluate(FunctionCall fc) {
+	def static dispatch private Object internalEvaluate(FunctionCall fc) {
 		val func = fc.func
 		val eval = evaluate(fc.expr)
 
@@ -320,7 +317,7 @@ class Calculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(RefOrCall roc) {
+	def static dispatch private Object internalEvaluate(RefOrCall roc) {
 		if (roc.ref instanceof VariableDefinition) {
 			return internalEvaluate((roc.ref as VariableDefinition).value)
 		}
@@ -346,7 +343,7 @@ class Calculator {
 		return roc.ref
 	}
 
-	def dispatch private internalEvaluate(UnaryMinus uMinus) {
+	def static dispatch private Object internalEvaluate(UnaryMinus uMinus) {
 		val eval = evaluate(uMinus.expr)
 		if (eval instanceof String) {
 			throw new MismatchingTypesException("Cannot negate string.")
@@ -364,7 +361,7 @@ class Calculator {
 		}
 	}
 
-	def dispatch private internalEvaluate(PatternCall pc) {
+	def static dispatch private Object internalEvaluate(PatternCall pc) {
 		return pc
 	}
 

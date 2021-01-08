@@ -3,7 +3,6 @@
  */
 package org.mofgen.scoping
 
-import com.google.inject.Inject
 import java.util.ArrayList
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
@@ -43,11 +42,11 @@ import org.mofgen.mGLang.PatternNodeReference
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Variable
+import org.mofgen.mGLang.VariableDeclaration
+import org.mofgen.mGLang.VariableDefinition
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.VariableDeclaration
-import org.mofgen.mGLang.VariableDefinition
 
 /**
  * This class contains custom scoping description.
@@ -56,8 +55,6 @@ import org.mofgen.mGLang.VariableDefinition
  * on how and when to use it.
  */
 class MGLangScopeProvider extends AbstractMGLangScopeProvider {
-
-	@Inject TypeCalculator typeChecker
 
 	override getScope(EObject context, EReference reference) {
 		if (isNode_Type(context, reference)) {
@@ -447,7 +444,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					return Scopes.scopeFor(enumLiterals)
 				}
 				VariableDefinition: {
-					val type = typeChecker.evaluate(ref.value)
+					val type = TypeCalculator.evaluate(ref.value)
 					if (type === null) {
 						return IScope.NULLSCOPE
 					} else if (type.eIsProxy) {

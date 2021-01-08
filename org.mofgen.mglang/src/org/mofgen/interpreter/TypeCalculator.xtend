@@ -41,7 +41,7 @@ import org.mofgen.utils.MofgenModelUtils
 
 class TypeCalculator {
 
-	def EObject evaluate(ArithmeticExpression expr) {
+	def static EObject evaluate(ArithmeticExpression expr) {
 		if (expr === null) {
 			throw new IllegalArgumentException("Received null expression")
 		}
@@ -53,15 +53,15 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private EObject internalEvaluate(Node node) {
+	def static dispatch private EObject internalEvaluate(Node node) {
 		return node.type
 	}
 	
-	def dispatch private EObject internalEvaluate(Variable variable){
-		return TypeRegistry.getVarType(variable)
+	def static dispatch private EObject internalEvaluate(Variable variable){
+		return TypeRegistryDispatcher.getVarType(variable)
 	}
 
-	def dispatch private EObject internalEvaluate(Tertiary tertiary) {
+	def static dispatch private EObject internalEvaluate(Tertiary tertiary) {
 		val evalLeft = evaluate(tertiary.left) as EClass
 		val evalRight = evaluate(tertiary.right) as EClass
 
@@ -136,7 +136,7 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private EObject internalEvaluate(Secondary secondary) {
+	def static dispatch private EObject internalEvaluate(Secondary secondary) {
 		val evalLeft = evaluate(secondary.left) as EClass
 		val evalRight = evaluate(secondary.right) as EClass
 
@@ -190,7 +190,7 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private EObject internalEvaluate(Primary primary) {
+	def static dispatch private EObject internalEvaluate(Primary primary) {
 		val evalLeft = evaluate(primary.left) as EClass
 		val evalRight = evaluate(primary.right) as EClass
 
@@ -255,7 +255,7 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private EObject internalEvaluate(Rel rel) {
+	def static dispatch private EObject internalEvaluate(Rel rel) {
 		val evalLeft = evaluate(rel.left) as EClass
 		val evalRight = evaluate(rel.right) as EClass
 
@@ -327,15 +327,15 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private EObject internalEvaluate(BooleanLiteral lit) {
+	def static dispatch private EObject internalEvaluate(BooleanLiteral lit) {
 		return TypeModelPackage.Literals.BOOLEAN
 	}
 
-	def dispatch private EObject internalEvaluate(NullLiteral lit) {
+	def static dispatch private EObject internalEvaluate(NullLiteral lit) {
 		return TypeModelPackage.Literals.NULL_OBJECT
 	}
 
-	def dispatch private EObject internalEvaluate(NumberLiteral lit) {
+	def static dispatch private EObject internalEvaluate(NumberLiteral lit) {
 		val value = lit.^val
 		if (Math.floor(value) == (value as int)) {
 			return TypeModelPackage.Literals.INTEGER
@@ -344,11 +344,11 @@ class TypeCalculator {
 		}
 	}
 
-	def dispatch private EObject internalEvaluate(StringLiteral lit) {
+	def static dispatch private EObject internalEvaluate(StringLiteral lit) {
 		return TypeModelPackage.Literals.STRING
 	}
 
-	def dispatch private EObject internalEvaluate(NegationExpression negExpr) {
+	def static dispatch private EObject internalEvaluate(NegationExpression negExpr) {
 		val toNeg = negExpr.expr
 		val eval = evaluate(toNeg)
 		if (eval === TypeModelPackage.Literals.STRING) {
@@ -364,7 +364,7 @@ class TypeCalculator {
 		throw new MismatchingTypesException("Unhandled type in negating expression")
 	}
 
-	def dispatch private EObject internalEvaluate(FunctionCall fc) {
+	def static dispatch private EObject internalEvaluate(FunctionCall fc) {
 		val expr = fc.expr
 		val op = fc.func
 		val exprType = evaluate(expr)
@@ -385,7 +385,7 @@ class TypeCalculator {
 
 	}
 
-	def dispatch private EObject internalEvaluate(RefOrCall roc) {
+	def static dispatch private EObject internalEvaluate(RefOrCall roc) {
 
 		if (roc.ref !== null && roc.ref.eIsProxy) {
 			return null;
@@ -404,7 +404,7 @@ class TypeCalculator {
 
 		switch ref {
 			Variable:
-				return TypeRegistry.getVarType(ref)
+				return TypeRegistryDispatcher.getVarType(ref)
 			PrimitiveParameter: {
 				if (ref.type !== null) {
 					switch ref.type {
@@ -456,18 +456,18 @@ class TypeCalculator {
 				val trg = roc.target
 				if (trg !== null && trg.ref !== null && trg.ref instanceof List) {
 					if (op == TypeModelPackage.Literals.LIST___GET__INT) {
-						return TypeRegistry.getListType(trg.ref as List)
+						return TypeRegistryDispatcher.getListType(trg.ref as List)
 					}
 				}
 				if (trg !== null && trg.ref !== null && trg.ref instanceof Map) {
 					if (op == TypeModelPackage.Literals.MAP___GET__EOBJECT) {
-						return TypeRegistry.getMapEntryType(trg.ref as Map)
+						return TypeRegistryDispatcher.getMapEntryType(trg.ref as Map)
 					}
 					if (op == TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT) {
-						return TypeRegistry.getMapKeyType(trg.ref as Map)
+						return TypeRegistryDispatcher.getMapKeyType(trg.ref as Map)
 					}
 					if (op == TypeModelPackage.Literals.MAP___REMOVE__EOBJECT) {
-						return TypeRegistry.getMapEntryType(trg.ref as Map)
+						return TypeRegistryDispatcher.getMapEntryType(trg.ref as Map)
 					}
 				}
 				return MofgenModelUtils.getEClassForInternalModel(op.EType)
@@ -480,15 +480,15 @@ class TypeCalculator {
 					}
 					GeneralForEachHead: {
 						if (container.eref == TypeModelPackage.Literals.MAP__ENTRIES) {
-							return TypeRegistry.getMapEntryType(container.src.ref as Map)
+							return TypeRegistryDispatcher.getMapEntryType(container.src.ref as Map)
 						} else if (container.eref == TypeModelPackage.Literals.MAP__KEYS) {
-							return TypeRegistry.getMapKeyType(container.src.ref as Map)
+							return TypeRegistryDispatcher.getMapKeyType(container.src.ref as Map)
 						} else {
 							return container.eref.EType
 						}
 					}
 					ListForEachHead: {
-						return TypeRegistry.getListType(container.list)
+						return TypeRegistryDispatcher.getListType(container.list)
 					}
 				}
 			}
@@ -503,7 +503,7 @@ class TypeCalculator {
 	/**
 	 * @return the top-roc element, containing all sub-roc-objects if existent
 	 */
-	def private getSuperRoc(RefOrCall roc) {
+	def private static getSuperRoc(RefOrCall roc) {
 		var iterator = roc
 		while (iterator.eContainer instanceof RefOrCall) {
 			iterator = iterator.eContainer as RefOrCall
@@ -511,7 +511,7 @@ class TypeCalculator {
 		return iterator
 	}
 
-	def dispatch private internalEvaluate(UnaryMinus uMinus) {
+	def static dispatch private internalEvaluate(UnaryMinus uMinus) {
 		val eval = evaluate(uMinus.expr)
 		if (eval === TypeModelPackage.Literals.STRING) {
 			throw new MismatchingTypesException("Cannot negate string.")
@@ -523,7 +523,7 @@ class TypeCalculator {
 		return eval;
 	}
 
-	def dispatch private EObject internalEvaluate(PatternCall pc) {
+	def static dispatch private EObject internalEvaluate(PatternCall pc) {
 		val calledPattern = pc.called
 		val ret = pc.called.^return
 		if (ret !== null) {

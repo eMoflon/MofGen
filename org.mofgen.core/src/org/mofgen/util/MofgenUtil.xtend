@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.mofgen.build.MofgenBuilder
-import org.mofgen.interpreter.TypeRegistry
+import org.mofgen.interpreter.TypeRegistryDispatcher
 import org.mofgen.mGLang.List
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Parameter
@@ -70,7 +70,7 @@ class MofgenUtil {
 	}
 
 	def static getListType(List list) {
-		val listType = TypeRegistry.getListType(list)
+		val listType = TypeRegistryDispatcher.getListType(list)
 		return convertTypeToStandardType(listType)
 	}
 
@@ -115,12 +115,12 @@ class MofgenUtil {
 	}
 
 	def static getMapKeyType(org.mofgen.mGLang.Map map) {
-		val keyType = TypeRegistry.getMapKeyType(map)
+		val keyType = TypeRegistryDispatcher.getMapKeyType(map)
 		return convertTypeToStandardType(keyType)
 	}
 
 	def static getMapEntryType(org.mofgen.mGLang.Map map) {
-		val entryType = TypeRegistry.getMapEntryType(map)
+		val entryType = TypeRegistryDispatcher.getMapEntryType(map)
 		return convertTypeToStandardType(entryType)
 	}
 
