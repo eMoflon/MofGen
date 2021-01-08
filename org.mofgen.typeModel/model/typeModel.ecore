@@ -60,4 +60,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="EnumLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="Double" eSuperTypes="#//Number"/>
   <eClassifiers xsi:type="ecore:EClass" name="Integer" eSuperTypes="#//Number"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NullObject"/>
 </ecore:EPackage>

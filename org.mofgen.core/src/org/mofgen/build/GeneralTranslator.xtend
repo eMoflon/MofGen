@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EClass
 import org.mofgen.mGLang.Parameter
 import org.mofgen.interpreter.TypeCalculator
+import org.mofgen.mGLang.NullLiteral
 
 class GeneralTranslator {
 
@@ -121,6 +122,8 @@ class GeneralTranslator {
 		switch ae {
 			RefOrCall:
 				return translate(ae)
+			NullLiteral:
+				return "null"
 			Literal:
 				return MofgenUtil.getTextFromEditorFile(ae)
 			PatternCall:

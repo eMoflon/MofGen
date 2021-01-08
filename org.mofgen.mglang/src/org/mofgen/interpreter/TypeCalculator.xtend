@@ -41,6 +41,9 @@ import org.eclipse.xtext.EcoreUtil2
 class TypeCalculator {
 
 	def EObject evaluate(ArithmeticExpression expr) {
+		if (expr === null) {
+			throw new IllegalArgumentException("Received null expression")
+		}
 		val eval = internalEvaluate(expr)
 		if (eval instanceof EClass) {
 			return MofgenModelUtils.getEClassForInternalModel(eval)
@@ -48,8 +51,8 @@ class TypeCalculator {
 			return eval
 		}
 	}
-	
-	def dispatch private EObject internalEvaluate(Node node){
+
+	def dispatch private EObject internalEvaluate(Node node) {
 		return node.type
 	}
 
@@ -124,7 +127,7 @@ class TypeCalculator {
 
 			throw new MismatchingTypesException(
 				"Cannot use operator " + tertiary.op.toString + " with given values " + evalLeftString + " and " +
-					evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
+					evalRightString)
 		}
 	}
 
@@ -178,7 +181,7 @@ class TypeCalculator {
 
 			throw new MismatchingTypesException(
 				"Cannot use operator " + secondary.op.toString + " with given values " + evalLeftString + " and " +
-					evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
+					evalRightString)
 		}
 	}
 
@@ -236,7 +239,7 @@ class TypeCalculator {
 
 			throw new MismatchingTypesException(
 				"Cannot use operator " + primary.op.toString + " with given values " + evalLeftString + " and " +
-					evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
+					evalRightString)
 		}
 	}
 
@@ -297,7 +300,7 @@ class TypeCalculator {
 
 			throw new MismatchingTypesException(
 				"Cannot use operator " + rel.relation.toString + " with given values " + evalLeftString + " and " +
-					evalRightString) // TODO More detailed description, e.g. by value types/names, i.e. split by EClass and Pattern for evalValues
+					evalRightString)
 		}
 	}
 
@@ -364,8 +367,12 @@ class TypeCalculator {
 		var highestRoc = getSuperRoc(roc)
 		var ref = highestRoc.ref
 
-		if(ref === null && highestRoc.thisUsed){
+		if (ref === null && highestRoc.thisUsed) {
 			return EcoreUtil2.getContainerOfType(highestRoc, Pattern)
+		}
+
+		if (ref === null || ref.eIsProxy) {
+			return null;
 		}
 
 		switch ref {

@@ -3,6 +3,7 @@
  */
 package org.mofgen.scoping
 
+import com.google.inject.Inject
 import java.util.ArrayList
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
@@ -16,6 +17,7 @@ import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.SimpleScope
+import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.ForStatement
@@ -38,7 +40,6 @@ import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternNodeReference
-import org.mofgen.mGLang.PatternReturn
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Variable
@@ -53,6 +54,8 @@ import org.mofgen.utils.MofgenModelUtils
  * on how and when to use it.
  */
 class MGLangScopeProvider extends AbstractMGLangScopeProvider {
+
+	@Inject TypeCalculator typeChecker
 
 	override getScope(EObject context, EReference reference) {
 		if (isNode_Type(context, reference)) {
@@ -435,9 +438,17 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					return Scopes.scopeFor(enumLiterals)
 				}
 				Variable: {
-					if (ref.value instanceof PatternCall) {
-						val pc = ref.value as PatternCall
-						return getScopeForAllNodesAndParams(pc.called)
+					val type = typeChecker.evaluate(ref.value)
+					if (type === null) {
+						return IScope.NULLSCOPE
+					} else if (type.eIsProxy) {
+						throw new IllegalStateException("Encountered Proxy in Variable "+ref.name);
+					} else if (type instanceof EClass) {
+						val attributes = type.EAllAttributes
+						val references = type.EAllReferences
+						return Scopes.scopeFor(attributes + references)
+					} else if (type instanceof Pattern) {
+						return getScopeForAllNodesAndParams(type)
 					}
 					return IScope.NULLSCOPE
 				}
@@ -459,7 +470,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 						return Scopes.scopeFor(type.commands.filter(Node))
 					} else {
 						return IScope.NULLSCOPE
-//						throw new IllegalArgumentException("Only possible types should be eClass or pattern")
 					}
 				}
 				default:

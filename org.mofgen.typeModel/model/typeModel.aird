@@ -5,7 +5,7 @@
     <semanticResources>typeModel.genmodel</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_FardUPc4EeqCh9E24_1m3Q">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_FgOEoPc4EeqCh9E24_1m3Q" name="typeModel" repPath="#_FcgpUPc4EeqCh9E24_1m3Q" changeId="a1dde518-a610-4737-a0ba-653fbc3ac014">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_FgOEoPc4EeqCh9E24_1m3Q" name="typeModel" repPath="#_FcgpUPc4EeqCh9E24_1m3Q" changeId="64eb5c09-3bc3-4eb5-8de8-3a3c942bd681">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="typeModel.ecore#/"/>
       </ownedRepresentationDescriptors>
@@ -191,6 +191,15 @@
           </children>
           <styles xmi:type="notation:ShapeStyle" xmi:id="_ToobgSpWEeuKnt7MVWhunw" fontName="Segoe UI" fontHeight="8"/>
           <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ToobgipWEeuKnt7MVWhunw" x="372" y="432" width="120" height="100"/>
+        </children>
+        <children xmi:type="notation:Node" xmi:id="_32EEMFD8EeuZtdlUOgvEPg" type="2003" element="_31cZIFD8EeuZtdlUOgvEPg">
+          <children xmi:type="notation:Node" xmi:id="_32JjwFD8EeuZtdlUOgvEPg" type="5007"/>
+          <children xmi:type="notation:Node" xmi:id="_32KK0FD8EeuZtdlUOgvEPg" type="7004">
+            <styles xmi:type="notation:SortingStyle" xmi:id="_32KK0VD8EeuZtdlUOgvEPg"/>
+            <styles xmi:type="notation:FilteringStyle" xmi:id="_32KK0lD8EeuZtdlUOgvEPg"/>
+          </children>
+          <styles xmi:type="notation:ShapeStyle" xmi:id="_32EEMVD8EeuZtdlUOgvEPg" fontName="Segoe UI" fontHeight="8"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_32EEMlD8EeuZtdlUOgvEPg" x="594" y="432" width="120" height="100"/>
         </children>
         <styles xmi:type="notation:DiagramStyle" xmi:id="_FhWGAvc4EeqCh9E24_1m3Q"/>
         <edges xmi:type="notation:Edge" xmi:id="_OF9ycPc4EeqCh9E24_1m3Q" type="4001" element="_OFeqQPc4EeqCh9E24_1m3Q" source="_I5S5QPc4EeqCh9E24_1m3Q" target="_KuNMcPc4EeqCh9E24_1m3Q">
@@ -680,6 +689,17 @@
         <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_WCM68ypWEeuKnt7MVWhunw" showIcon="false"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@edgeMappings[name='EC%20ESupertypes']"/>
+    </ownedDiagramElements>
+    <ownedDiagramElements xmi:type="diagram:DNodeList" uid="_31cZIFD8EeuZtdlUOgvEPg" name="NullObject" tooltipText="" width="12" height="10">
+      <target xmi:type="ecore:EClass" href="typeModel.ecore#//NullObject"/>
+      <semanticElements xmi:type="ecore:EClass" href="typeModel.ecore#//NullObject"/>
+      <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+      <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+      <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_31dnQFD8EeuZtdlUOgvEPg" borderSize="1" borderSizeComputationExpression="1" backgroundStyle="Liquid" foregroundColor="255,252,216">
+        <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@style"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
     </ownedDiagramElements>
     <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
     <filterVariableHistory xmi:type="diagram:FilterVariableHistory" uid="_FdjyMPc4EeqCh9E24_1m3Q"/>

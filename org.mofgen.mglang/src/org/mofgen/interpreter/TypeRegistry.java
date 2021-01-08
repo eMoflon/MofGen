@@ -51,7 +51,7 @@ public class TypeRegistry {
 		updateListRegistry(file);
 		updateMapRegistry(file);
 	}
-	
+
 	private static void updateVarRegistry(MofgenFile file) {
 		if (varTypes == null) {
 			varTypes = new HashMap<>();
@@ -85,16 +85,21 @@ public class TypeRegistry {
 
 	private static void putVar(Variable var) {
 		ArithmeticExpression value = var.getValue();
-		Object valueEval = typeCalc.evaluate(value);
-		if(valueEval instanceof Pattern) {
-			varTypes.put(var, (Pattern) valueEval);
-		}else if(valueEval instanceof EClass) {
-			varTypes.put(var, (EClass) valueEval);
-		}else {
-			throw new IllegalStateException("Type evaluation of variable expression resulted in "+ valueEval +" but should not result in a type different than Pattern or an EClass");
+		if (value != null) {
+			Object valueEval = typeCalc.evaluate(value);
+			if (valueEval != null) {
+				if (valueEval instanceof Pattern) {
+					varTypes.put(var, (Pattern) valueEval);
+				} else if (valueEval instanceof EClass) {
+					varTypes.put(var, (EClass) valueEval);
+				} else {
+					throw new IllegalStateException("Type evaluation of variable expression resulted in " + valueEval
+							+ " but should not result in a type different than Pattern or an EClass");
+				}
+			}
 		}
 	}
-	
+
 	private static void putList(List list) {
 		ListDefOrDecl defOrDecl = list.getDefOrDecl();
 		if (defOrDecl instanceof ListDefinition) {
@@ -134,7 +139,7 @@ public class TypeRegistry {
 			// ListDeclaration
 			ListDeclaration decl = (ListDeclaration) defOrDecl;
 			EClassifier declType = EcorePackage.Literals.EOBJECT;
-			if(decl != null) {
+			if (decl != null) {
 				declType = decl.getType();
 			}
 			listTypes.put(list, declType);
@@ -238,7 +243,7 @@ public class TypeRegistry {
 		}
 		return entryTypes.get(map);
 	}
-	
+
 	public static Object getVarType(Variable var) {
 		if (update) {
 			updateVarRegistry((MofgenFile) EcoreUtil2.getRootContainer(var));

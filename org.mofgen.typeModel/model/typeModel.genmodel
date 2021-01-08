@@ -69,5 +69,6 @@
     <genClasses ecoreClass="typeModel.ecore#//EnumLiteral"/>
     <genClasses ecoreClass="typeModel.ecore#//Double"/>
     <genClasses ecoreClass="typeModel.ecore#//Integer"/>
+    <genClasses ecoreClass="typeModel.ecore#//NullObject"/>
   </genPackages>
 </genmodel:GenModel>
