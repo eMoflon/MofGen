@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.xtext.EcoreUtil2;
 import org.mofgen.mGLang.ArithmeticExpression;
@@ -22,6 +23,9 @@ import org.mofgen.mGLang.MapTupel;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Pattern;
 import org.mofgen.mGLang.Variable;
+import org.mofgen.mGLang.VariableDeclaration;
+import org.mofgen.mGLang.VariableDefinition;
+import org.mofgen.utils.MofgenModelUtils;
 
 /**
  * Keeps track of the types of different Maps and Lists. Updated on every
@@ -39,20 +43,32 @@ public class TypeRegistry {
 	/**
 	 * Of type object since it can hold patterns or EClasses
 	 */
-	public static HashMap<Variable, Object> varTypes;
+	public static HashMap<Variable, EObject> varTypes;
+	
+	private static MofgenFile file;
 	/**
 	 * Determines whether all entries should be updated before retrieving values.
 	 * MUST be true if used during scoping. Can be false if used for API generation.
 	 */
 	private static boolean update = true;
 
-	public static void update(MofgenFile file) {
-		updateVarRegistry(file);
-		updateListRegistry(file);
-		updateMapRegistry(file);
+	public static void update() {
+		updateVarRegistry();
+		updateListRegistry();
+		updateMapRegistry();
+	}
+	
+	public static void init(MofgenFile givenFile) {
+		update = true;
+		file = givenFile;
+		listTypes = null;
+		keyTypes = null;
+		entryTypes = null;
+		varTypes = null;
+		update();
 	}
 
-	private static void updateVarRegistry(MofgenFile file) {
+	private static void updateVarRegistry() {
 		if (varTypes == null) {
 			varTypes = new HashMap<>();
 		}
@@ -62,7 +78,7 @@ public class TypeRegistry {
 		}
 	}
 
-	private static void updateListRegistry(MofgenFile file) {
+	private static void updateListRegistry() {
 		if (listTypes == null) {
 			listTypes = new HashMap<>();
 		}
@@ -72,7 +88,7 @@ public class TypeRegistry {
 		}
 	}
 
-	private static void updateMapRegistry(MofgenFile file) {
+	private static void updateMapRegistry() {
 		if (keyTypes == null) {
 			keyTypes = new HashMap<>();
 			entryTypes = new HashMap<>();
@@ -84,19 +100,24 @@ public class TypeRegistry {
 	}
 
 	private static void putVar(Variable var) {
-		ArithmeticExpression value = var.getValue();
-		if (value != null) {
-			Object valueEval = typeCalc.evaluate(value);
-			if (valueEval != null) {
-				if (valueEval instanceof Pattern) {
-					varTypes.put(var, (Pattern) valueEval);
-				} else if (valueEval instanceof EClass) {
-					varTypes.put(var, (EClass) valueEval);
-				} else {
-					throw new IllegalStateException("Type evaluation of variable expression resulted in " + valueEval
-							+ " but should not result in a type different than Pattern or an EClass");
+		if (var instanceof VariableDefinition) {
+			ArithmeticExpression value = ((VariableDefinition) var).getValue();
+			if (value != null) {
+				Object valueEval = typeCalc.evaluate(value);
+				if (valueEval != null) {
+					if (valueEval instanceof Pattern) {
+						varTypes.put(var, (Pattern) valueEval);
+					} else if (valueEval instanceof EClass) {
+						varTypes.put(var, (EClass) valueEval);
+					} else {
+						throw new IllegalStateException("Type evaluation of variable expression resulted in "
+								+ valueEval + " but should not result in a type different than Pattern or an EClass");
+					}
 				}
 			}
+		} else {
+			EClassifier type = ((VariableDeclaration) var).getType();
+			varTypes.put(var, MofgenModelUtils.getEClassForInternalModel(type));
 		}
 	}
 
@@ -225,28 +246,28 @@ public class TypeRegistry {
 
 	public static EClassifier getListType(List list) {
 		if (update) {
-			updateListRegistry((MofgenFile) EcoreUtil2.getRootContainer(list));
+			updateListRegistry();
 		}
 		return listTypes.get(list);
 	}
 
 	public static EClassifier getMapKeyType(Map map) {
 		if (update) {
-			updateMapRegistry((MofgenFile) EcoreUtil2.getRootContainer(map));
+			updateMapRegistry();
 		}
 		return keyTypes.get(map);
 	}
 
 	public static EClassifier getMapEntryType(Map map) {
 		if (update) {
-			updateMapRegistry((MofgenFile) EcoreUtil2.getRootContainer(map));
+			updateMapRegistry();
 		}
 		return entryTypes.get(map);
 	}
 
-	public static Object getVarType(Variable var) {
+	public static EObject getVarType(Variable var) {
 		if (update) {
-			updateVarRegistry((MofgenFile) EcoreUtil2.getRootContainer(var));
+			updateVarRegistry();
 		}
 		return varTypes.get(var);
 	}

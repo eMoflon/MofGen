@@ -31,7 +31,6 @@ import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.xtext.EcoreUtil2;
@@ -268,20 +267,6 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		}
 		System.out.println("GrapeLModel model saved to: " + output.getURI().path());
 	}
-
-	/**
-	 * Returns the .mofgen file.
-	 * 
-	 * @return the file
-	 */
-	// TODO extend to multiple files
-	private IFile getMofgenFile(final IProject project) throws Exception {
-		List<IFile> files = new LinkedList<>();
-		crawlSubfolders(project.getFolder(DEFAULT_SRC_LOCATION), files);
-		return files.stream() //
-				.filter(f -> MOFGEN_FILE_EXTENSION.equals(f.getFileExtension()) && f.exists()) //
-				.collect(Collectors.toList()).get(0);
-	}
 	
 	private List<IFile> getMofgenFiles(final IProject project) throws Exception {
 		List<IFile> files = new LinkedList<>();
@@ -299,7 +284,8 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			try {
 				folder.delete(true, null);
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
+				logger.error("Error occured when deleting old code.");
+				logger.error(e.toString());
 				e.printStackTrace();
 			}
 		}else {
@@ -309,7 +295,8 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 				folder.delete(true, null);
 				file.delete(true, null);
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
+				logger.error("Error occured when deleting old code.");
+				logger.error(e.toString());
 				e.printStackTrace();
 			}
 		}

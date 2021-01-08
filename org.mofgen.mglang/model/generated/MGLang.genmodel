@@ -178,7 +178,12 @@
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Variable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Variable/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Variable/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//VariableDefinition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//VariableDefinition/value"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//VariableDeclaration">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//VariableDeclaration/type"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//ForStatement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//ForStatement/head"/>

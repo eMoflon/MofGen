@@ -46,6 +46,8 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.VariableDeclaration
+import org.mofgen.mGLang.VariableDefinition
 
 /**
  * This class contains custom scoping description.
@@ -112,31 +114,38 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		if (isPatternCall_called(context, reference)) {
 			return getScopeForPatternCall_called(context as PatternCall)
 		}
+		if (isVariableDeclaration_Type(context, reference)) {
+			return getScopeForVariableDeclaration_Type(context as VariableDeclaration)
+		}
 
 		return super.getScope(context, reference)
 	}
 
 	def getScopeForListDeclaration_Type(ListDeclaration decl) {
-		return getTypeScopeForCollection(EcoreUtil2.getContainerOfType(decl, Collection))
+		return getTypesWithinFile(decl)
+	}
+	
+	def getScopeForVariableDeclaration_Type(VariableDeclaration decl){
+		return getTypesWithinFile(decl)
 	}
 
 	/**
-	 * provides the scope of types for collections
+	 * provides all possible types in the file
 	 */
-	def private getTypeScopeForCollection(Collection coll) {
-		val file = getRootFile(coll)
+	def private getTypesWithinFile(EObject obj) {
+		val file = getRootFile(obj)
 		val types = newLinkedList()
 		for (clazz : MofgenModelUtils.getClasses(file)) {
 			types.add(EObjectDescription.create(QualifiedName.create(clazz.name), clazz))
 		}
-		types.addAll(getCollectionTypeDescriptions())
+		types.addAll(getInternalTypeDescriptions())
 		return new SimpleScope(IScope.NULLSCOPE, types)
 	}
 
 	/**
 	 * provides all relevant collection datatypes within the ecore package as a list of EObjectDescriptions
 	 */
-	def private getCollectionTypeDescriptions() {
+	def private getInternalTypeDescriptions() {
 		return #[EObjectDescription.create(QualifiedName.create("Integer"), EcorePackage.Literals.EINT),
 			EObjectDescription.create(QualifiedName.create("Double"), EcorePackage.Literals.EDOUBLE),
 			EObjectDescription.create(QualifiedName.create("String"), EcorePackage.Literals.ESTRING),
@@ -145,11 +154,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	}
 
 	def getScopeForMapDeclaration_KeyType(MapDeclaration decl) {
-		return getTypeScopeForCollection(EcoreUtil2.getContainerOfType(decl, Collection))
+		return getTypesWithinFile(decl)
 	}
 
 	def getScopeForMapDeclaration_EntryType(MapDeclaration decl) {
-		return getTypeScopeForCollection(EcoreUtil2.getContainerOfType(decl, Collection))
+		return getTypesWithinFile(decl)
 	}
 
 	def getScopeForCollectionManipulation_Trg(CollectionManipulation cm) {
@@ -437,13 +446,24 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					val enumLiterals = (ref as EEnum).ELiterals
 					return Scopes.scopeFor(enumLiterals)
 				}
-				Variable: {
+				VariableDefinition: {
 					val type = typeChecker.evaluate(ref.value)
 					if (type === null) {
 						return IScope.NULLSCOPE
 					} else if (type.eIsProxy) {
 						throw new IllegalStateException("Encountered Proxy in Variable "+ref.name);
 					} else if (type instanceof EClass) {
+						val attributes = type.EAllAttributes
+						val references = type.EAllReferences
+						return Scopes.scopeFor(attributes + references)
+					} else if (type instanceof Pattern) {
+						return getScopeForAllNodesAndParams(type)
+					}
+					return IScope.NULLSCOPE
+				}
+				VariableDeclaration: {
+					val type = ref.type
+					if (type instanceof EClass) {
 						val attributes = type.EAllAttributes
 						val references = type.EAllReferences
 						return Scopes.scopeFor(attributes + references)
@@ -543,6 +563,10 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	def isParameterNodeOrPattern_Type(EObject context, EReference reference) {
 		return context instanceof ParameterNodeOrPattern &&
 			reference == MGLangPackage.Literals.PARAMETER_NODE_OR_PATTERN__TYPE
+	}
+	
+	def isVariableDeclaration_Type(EObject context, EReference reference){
+		return context instanceof VariableDeclaration && reference == MGLangPackage.Literals.VARIABLE_DECLARATION__TYPE
 	}
 
 	def isNode_SrcModel(EObject context, EReference reference) {

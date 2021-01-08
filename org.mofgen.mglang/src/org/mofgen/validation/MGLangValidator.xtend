@@ -56,6 +56,7 @@ import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.NullLiteral
+import org.mofgen.mGLang.VariableDefinition
 
 /**
  * This class contains custom validation rules. 
@@ -565,7 +566,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 			if (pc.called !== null && !pc.called.eIsProxy) {
 				if (pc.called.^return === null) {
 					error("Cannot define variable by calling a pattern with no return", pc.eContainer as Variable,
-						MGLangPackage.Literals.VARIABLE__VALUE);
+						MGLangPackage.Literals.VARIABLE_DEFINITION__VALUE);
 				}
 			}
 		}
@@ -578,8 +579,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 		} catch (MismatchingTypesException e) {
 			val container = ae.eContainer
 			switch container {
-				Variable:
-					error(e.message, container, MGLangPackage.Literals.VARIABLE__VALUE)
+				VariableDefinition:
+					error(e.message, container, MGLangPackage.Literals.VARIABLE_DEFINITION__VALUE)
 				PatternCallParameters:
 					error(e.message, container, MGLangPackage.Literals.PATTERN_CALL_PARAMETERS__PARAMS)
 				NodeAttributeAssignment:
@@ -621,10 +622,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
-	def noVariableDefinitionToNull(Variable variable) {
+	def noVariableDefinitionToNull(VariableDefinition variable) {
 		if (variable.value !== null && variable.value instanceof NullLiteral) {
 			error("Can only define none variable with type declaration. Use 'var <name> of <type>' instead.",
-				MGLangPackage.Literals.VARIABLE__VALUE)
+				MGLangPackage.Literals.VARIABLE_DEFINITION__VALUE)
 		}
 	}
 

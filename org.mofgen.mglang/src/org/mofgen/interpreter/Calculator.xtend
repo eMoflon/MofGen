@@ -16,12 +16,13 @@ import org.mofgen.mGLang.Secondary
 import org.mofgen.mGLang.StringLiteral
 import org.mofgen.mGLang.Tertiary
 import org.mofgen.mGLang.UnaryMinus
-import org.mofgen.mGLang.Variable
+import org.mofgen.mGLang.VariableDeclaration
+import org.mofgen.mGLang.VariableDefinition
 import org.mofgen.utils.MofgenModelUtils
 
 class Calculator {
 
-	@Inject TypeCalculator typeChecker //TODO Doubled exception throwing in type checker and actual calculator here. make use of typeChecker for throwing error?
+	@Inject TypeCalculator typeChecker //TODO Doubled exception throwing in type checker and actual calculator here. make use of typeChecker for throwing error? Or is this not automatically handled by the type registry?
 
 	def Object evaluate(ArithmeticExpression expr) {
 		// Actual calculation
@@ -320,8 +321,11 @@ class Calculator {
 	}
 
 	def dispatch private internalEvaluate(RefOrCall roc) {
-		if (roc.ref instanceof Variable) {
-			return internalEvaluate((roc.ref as Variable).value)
+		if (roc.ref instanceof VariableDefinition) {
+			return internalEvaluate((roc.ref as VariableDefinition).value)
+		}
+		if(roc.ref instanceof VariableDeclaration){
+			return roc.ref
 		}
 		if (roc.ref instanceof PrimitiveParameter) {
 			return roc.ref

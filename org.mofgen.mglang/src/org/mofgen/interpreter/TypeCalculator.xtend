@@ -37,6 +37,8 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.eclipse.xtext.EcoreUtil2
+import org.mofgen.mGLang.VariableDefinition
+import org.mofgen.mGLang.VariableDeclaration
 
 class TypeCalculator {
 
@@ -377,7 +379,13 @@ class TypeCalculator {
 
 		switch ref {
 			Variable:
-				return internalEvaluate(ref.value)
+				if(ref instanceof VariableDefinition){
+					return internalEvaluate(ref.value)
+				}else if(ref instanceof VariableDeclaration){
+					return ref.type
+				}else{
+					throw new IllegalArgumentException("Got Reference to variable that is neither defined nor declared")
+				}
 			PrimitiveParameter: {
 				if (ref.type !== null) {
 					switch ref.type {

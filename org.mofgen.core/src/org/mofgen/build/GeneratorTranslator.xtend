@@ -1,9 +1,9 @@
 package org.mofgen.build
 
-import com.google.inject.Inject
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
-import org.mofgen.interpreter.TypeCalculator
+import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.GenCaseBody
@@ -20,7 +20,8 @@ import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.MapAdHoc
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.Variable
+import org.mofgen.mGLang.VariableDeclaration
+import org.mofgen.mGLang.VariableDefinition
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
@@ -30,8 +31,6 @@ import org.mofgen.util.NameProvider
  * Translates given expressions to source code that will be used as part of the API.
  */
 class GeneratorTranslator {
-
-	@Inject static TypeCalculator typeChecker = new TypeCalculator();
 
 	// ------------------------------------------ GeneratorExpression dispatcher ------------------------------------------
 	def static String translate(EObject expr) {
@@ -130,41 +129,55 @@ class GeneratorTranslator {
 		'''
 	}
 
-	def static dispatch private String internalTranslate(Variable variable) {
-		if (variable.value instanceof PatternCall) {
-			val calledPattern = (variable.value as PatternCall).called
-			val patternReturn = calledPattern.^return
-			var patternType = ""
-			if (patternReturn.retValue !== null) {
-				val retValue = patternReturn.retValue
-				val retValueEval = typeChecker.evaluate(retValue)
-				if (retValueEval instanceof EClassifier) {
-					patternType = retValueEval.name
-				} else if (retValueEval instanceof Pattern) {
-					patternType = NameProvider.getPatternClassName(retValueEval)
-				} else {
-					throw new IllegalStateException(
-						"Type checker should have either returned an eClassifier or a valid PatternObject")
-				}
-			}
-
-			return '''
-				«patternType» «variable.name» = «translate(variable.value as PatternCall)»;
-			'''
+	def static dispatch private String internalTranslate(VariableDeclaration variable) {
+		val type = TypeRegistry.getVarType(variable);
+		var varTypeSrc = "";
+		if (type instanceof Pattern) {
+			varTypeSrc = NameProvider.getPatternClassName(type)
+		} else if (type instanceof EClass) {
+			varTypeSrc = type2src(type)
 		} else {
-			val evalResult = (typeChecker.evaluate(variable.value) as EClassifier)
-			var varType = evalResult.name
-			if (evalResult === TypeModelPackage.Literals.DOUBLE) {
-				varType = "double"
-			}
-			if (evalResult === TypeModelPackage.Literals.INTEGER) {
-				varType = "int"
-			}
-
-			return '''
-				«varType» «variable.name» = «translate(variable.value)»;
-			'''
+			throw new IllegalArgumentException("Variable type is neither EClass nor Pattern")
 		}
+
+		return '''
+			«varTypeSrc» «variable.name» = null;
+		'''
+	}
+
+	def static dispatch private String internalTranslate(VariableDefinition variable) {
+		val varType = TypeRegistry.getVarType(variable)
+		val varTypeSrc = type2src(varType)
+
+		return '''
+			«varTypeSrc» «variable.name» = «translate(variable.value)»;
+		'''
+	}
+
+
+	/**
+	 * Translates a given type into source code
+	 */
+	def static dispatch private String type2src(EClassifier type) {
+		var varType = type.name
+		if (type === TypeModelPackage.Literals.DOUBLE) {
+			varType = "double"
+		}
+		if (type === TypeModelPackage.Literals.INTEGER) {
+			varType = "int"
+		}
+		if (type === TypeModelPackage.Literals.BOOLEAN) {
+			varType = "boolean"
+		}
+		return varType
+	}
+	
+		/**
+	 * Translates a given type into source code
+	 */
+	def static dispatch private String type2src(Pattern type) {
+		var varType = NameProvider.getPatternClassName(type)
+		return varType
 	}
 
 	def static dispatch private String internalTranslate(VariableManipulation vm) {

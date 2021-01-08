@@ -65,20 +65,17 @@ PatternForBody:
 	{PatternForBody} (commands+=NodeReferenceOrControlFlow)*;
 
 NodeReferenceOrControlFlow:
-	PatternNodeReference | PatternSwitch | PatternForStatement
-;
+	PatternNodeReference | PatternSwitch | PatternForStatement;
 
 PatternNodeReference:
-	PatternNodeReferenceToNode | PatternNodeReferenceToPatternCall
-;
+	PatternNodeReferenceToNode | PatternNodeReferenceToPatternCall;
 
 PatternNodeReferenceToNode:
-	// TODO Adapt scoping!
+// TODO Adapt scoping!
 	type=[ecore::EReference] '->' node=RefOrCall; // allow nodes, parameter nodes and access to nodes in patterns as parameter objects in scoping! TODO
 
 PatternNodeReferenceToPatternCall:
-	type=[ecore::EReference] '->' pc=PatternCall
-;
+	type=[ecore::EReference] '->' pc=PatternCall;
 
 NodeAttributeAssignment:
 	target=[ecore::ENamedElement] ASSIGNMENT_OP value=ArithmeticExpression;
@@ -90,7 +87,7 @@ PrimitiveParameter:
 	type=PrimitiveType name=ID;
 
 ParameterNodeOrPattern:
-	(srcModel=[Import] '.')? type=[ecore::EObject] name=ID;	//EObject to allow for eClasses from metamodels or for patterns as a whole
+	(srcModel=[Import] '.')? type=[ecore::EObject] name=ID; //EObject to allow for eClasses from metamodels or for patterns as a whole
 
 PatternSwitch:
 	PatternIfElseSwitch | PatternSwitchCase;
@@ -114,18 +111,19 @@ PatternCaseWithCast:
 	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=PatternCaseBody;
 
 PatternCaseWithoutCast:
-	'case' val=ArithmeticExpression':' body=PatternCaseBody;
+	'case' val=ArithmeticExpression ':' body=PatternCaseBody;
 
-PatternCaseBody:	//TODO: one more pattern switch object for switches outside of node definitions --> is that necessary?
-	{PatternCaseBody} '{' (expressions+=NodeReferenceOrAssignmentOrControlFlow)* '}' | expressions+=NodeReferenceOrAssignmentOrControlFlow;
+PatternCaseBody: //TODO: one more pattern switch object for switches outside of node definitions --> is that necessary?
+	{PatternCaseBody} '{' (expressions+=NodeReferenceOrAssignmentOrControlFlow)* '}' |
+	expressions+=NodeReferenceOrAssignmentOrControlFlow;
 
 Case:
 	PatternCase | GenCase;
 
 RefOrCall:
-	((thisUsed?='this') | ref=[ecore::EObject]) ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('(' (params=RefParams)?
-	bracesSet?=')')?)*;//Using generic eobject references to make enums possible.
-	
+	((thisUsed?='this') | ref=[ecore::EObject]) ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('('
+	(params=RefParams)?
+	bracesSet?=')')?)*; //Using generic eobject references to make enums possible.
 RefParams:
 	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
@@ -133,17 +131,14 @@ Generator:
 	'gen' name=ID '(' (params+=Parameter)* ')' '{' (commands+=GeneratorExpression)* '}';
 
 GeneratorExpression: //Only serves as super class for all possible commands within generator
-	GenForStatement | GenSwitch | Collection | Variable | VariableManipulation |
-	CollectionManipulation | PatternCall | GenReturn
-	;
-	
+	GenForStatement | GenSwitch | Collection | Variable | VariableManipulation | CollectionManipulation | PatternCall |
+	GenReturn;
+
 GenReturn:
-	'return' returnValue = RefOrCallOrPatternCall
-;
+	'return' returnValue=RefOrCallOrPatternCall;
 
 RefOrCallOrPatternCall:
-	RefOrCall | PatternCall
-;
+	RefOrCall | PatternCall;
 
 CollectionManipulation:
 	trg=[Collection] '.' op=[ecore::EOperation] '(' (params=RefParams)? ')';
@@ -152,15 +147,19 @@ VariableManipulation:
 	var=[Variable] ASSIGNMENT_OP val=ArithmeticExpression;
 
 Variable:
+	VariableDefinition | VariableDeclaration;
+
+VariableDefinition:
 	'var' name=ID ASSIGNMENT_OP value=ArithmeticExpression;
 
+VariableDeclaration:
+	'var' name=ID 'of' type=[ecore::EClassifier];
+
 ForStatement:
-	GenForStatement | PatternForStatement
-;
+	GenForStatement | PatternForStatement;
 
 ForBody:
-	GenForBody | PatternForBody
-;
+	GenForBody | PatternForBody;
 
 GenForStatement:
 	'for' head=ForHead '{' body=GenForBody '}';
@@ -241,8 +240,7 @@ MapDefOrDecl:
 	MapDefinition | MapDeclaration;
 
 MapDeclaration:
-	'of' '(' keyType=[ecore::EClassifier] ',' entryType=[ecore::EClassifier] ')'
-;
+	'of' '(' keyType=[ecore::EClassifier] ',' entryType=[ecore::EClassifier] ')';
 
 MapDefinition:
 	ASSIGNMENT_OP MapAdHoc;
@@ -286,17 +284,15 @@ StringLiteral:
 
 NumberLiteral:
 	val=DOUBLE;
-	
+
 NullLiteral:
-	{NullLiteral} NULL
-;
+	{NullLiteral} NULL;
 
 enum MathFunc:
 	SQRT='sqrt' | ABS='abs';
 
-enum PrimitiveType:	//TODO: Replace by standard eDataTypes?
-	INT='int' | CHAR='char' | DOUBLE='double' | BOOLEAN='boolean'
-;
+enum PrimitiveType: //TODO: Replace by standard eDataTypes?
+	INT='int' | CHAR='char' | DOUBLE='double' | BOOLEAN='boolean';
 
 terminal DOUBLE returns ecore::EDouble:
 	INT ('.' INT)?;
@@ -308,8 +304,7 @@ terminal FALSE returns ecore::EBoolean:
 	'false';
 
 terminal NULL:
-	'none'
-;
+	'none';
 
 enum RelationalOp:
 	GREATER='>' |

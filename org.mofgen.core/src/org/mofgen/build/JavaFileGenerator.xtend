@@ -61,7 +61,8 @@ class JavaFileGenerator {
 		this.packageName = packageName
 		this.eClassifiersManager = eClassifiersManager
 		this.editorModel = editorModel
-		triggerTypeRegistry(editorModel)
+		TypeRegistry.init(editorModel)
+		TypeRegistry.update = false
 	}
 
 	/**
@@ -203,13 +204,5 @@ class JavaFileGenerator {
 		val codeProcessed = code.replaceAll("};+", "}").replaceAll(";+[\\n\\t\\r]*;+[\\n\\r]", ";\n").replaceAll(
 			"}[\\n\\t\\r]*;*[\\n\\r]", "}\n")
 		return codeProcessed;
-	}
-
-	/**
-	 * Triggers type registry once to collect all needed types for collection management.
-	 */
-	private static def triggerTypeRegistry(MofgenFile file) {
-//		TypeRegistry.update = false; // strange errors when doing this, yet turning it off in turn of potential performance loss
-		TypeRegistry.update(file)
 	}
 }
