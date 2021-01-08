@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.xtext.EcoreUtil2;
 import org.mofgen.api.EClassifiersManager;
 import org.mofgen.generator.MofgenBuilderExtension;
+import org.mofgen.interpreter.TypeRegistry;
 import org.mofgen.mGLang.Generator;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
@@ -74,6 +75,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	
 	@Override
 	public void run(IProject project) {
+		// TODO builder runs as often as files exist in project at first launch
 		logger.info("Running MofGenBuilder:");
 		logger.info("Given project: " + project.getName());
 		packageRegistry = new EPackageRegistryImpl();
@@ -143,6 +145,9 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	 */
 	private void generateAPI(final IFolder apiPackage, final IFile mofgenFile, final MofgenFile editorModel,
 			final EClassifiersManager eClassifiersManager) {
+		TypeRegistry.init(editorModel);
+		TypeRegistry.setUpdate(false);
+		
 		JavaFileGenerator fileGenerator = new JavaFileGenerator(NameProvider.getClassNamePrefix(mofgenFile),
 				packageName, editorModel, eClassifiersManager);
 
@@ -159,6 +164,8 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 
 		List<Pattern> patterns = EcoreUtil2.getAllContentsOfType(editorModel, Pattern.class);
 		patterns.forEach(p -> fileGenerator.generatePatternClass(patternPackage, p));
+		
+		TypeRegistry.setUpdate(true);
 	}
 
 	/**

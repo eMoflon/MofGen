@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EOperation
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.BooleanLiteral
 import org.mofgen.mGLang.FunctionCall
@@ -19,6 +20,7 @@ import org.mofgen.mGLang.Map
 import org.mofgen.mGLang.MathFunc
 import org.mofgen.mGLang.NegationExpression
 import org.mofgen.mGLang.Node
+import org.mofgen.mGLang.NullLiteral
 import org.mofgen.mGLang.NumberLiteral
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
@@ -36,9 +38,6 @@ import org.mofgen.mGLang.UnaryMinus
 import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.eclipse.xtext.EcoreUtil2
-import org.mofgen.mGLang.VariableDefinition
-import org.mofgen.mGLang.VariableDeclaration
 
 class TypeCalculator {
 
@@ -56,6 +55,10 @@ class TypeCalculator {
 
 	def dispatch private EObject internalEvaluate(Node node) {
 		return node.type
+	}
+	
+	def dispatch private EObject internalEvaluate(Variable variable){
+		return TypeRegistry.getVarType(variable)
 	}
 
 	def dispatch private EObject internalEvaluate(Tertiary tertiary) {
@@ -191,6 +194,13 @@ class TypeCalculator {
 		val evalLeft = evaluate(primary.left) as EClass
 		val evalRight = evaluate(primary.right) as EClass
 
+//		if (evalLeft === TypeModelPackage.Literals.NULL_OBJECT || evalRight === TypeModelPackage.Literals.NULL_OBJECT) {
+//			switch (primary.op) {
+//				case MUL: throw new MismatchingTypesException("Cannot multiply Strings")
+//				case DIV: throw new MismatchingTypesException("Cannot divide Strings")
+//				case AND: throw new MismatchingTypesException("Cannot use logical AND on Strings")
+//			}
+//		}
 		if (evalLeft === TypeModelPackage.Literals.STRING && evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
 			switch (primary.op) {
@@ -249,6 +259,17 @@ class TypeCalculator {
 		val evalLeft = evaluate(rel.left) as EClass
 		val evalRight = evaluate(rel.right) as EClass
 
+		if (evalLeft === TypeModelPackage.Literals.NULL_OBJECT || evalRight === TypeModelPackage.Literals.NULL_OBJECT) {
+			switch (rel.relation) {
+				case GREATER: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case GREATER_OR_EQUAL: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case EQUAL: return TypeModelPackage.Literals.BOOLEAN
+				case UNEQUAL: return TypeModelPackage.Literals.BOOLEAN
+				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case LESS: throw new MismatchingTypesException("Can compare none only for (in)equality")
+			}
+		}
+
 		if (evalLeft !== evalRight) {
 			throw new MismatchingTypesException("Cannot compare objects of different types for (in)equality")
 		}
@@ -256,12 +277,12 @@ class TypeCalculator {
 		if (evalLeft === TypeModelPackage.Literals.STRING && evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
 			switch (rel.relation) {
-				case GREATER: throw new MismatchingTypesException("Can only compare Strings for (in)equality.")
-				case GREATER_OR_EQUAL: throw new MismatchingTypesException("Can only compare Strings for (in)equality.")
+				case GREATER: throw new MismatchingTypesException("Can compare Strings only for (in)equality.")
+				case GREATER_OR_EQUAL: throw new MismatchingTypesException("Can compare Strings only for (in)equality.")
 				case EQUAL: return TypeModelPackage.Literals.BOOLEAN
 				case UNEQUAL: return TypeModelPackage.Literals.BOOLEAN
-				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can only compare Strings for (in)equality.")
-				case LESS: throw new MismatchingTypesException("Can only compare Strings for (in)equality.")
+				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can compare Strings only for (in)equality.")
+				case LESS: throw new MismatchingTypesException("Can compare Strings only for (in)equality.")
 			}
 		} else if (evalLeft === TypeModelPackage.Literals.BOOLEAN && evalRight === TypeModelPackage.Literals.BOOLEAN) {
 			// -------------------- Boolean Values -----------------------	
@@ -308,6 +329,10 @@ class TypeCalculator {
 
 	def dispatch private EObject internalEvaluate(BooleanLiteral lit) {
 		return TypeModelPackage.Literals.BOOLEAN
+	}
+
+	def dispatch private EObject internalEvaluate(NullLiteral lit) {
+		return TypeModelPackage.Literals.NULL_OBJECT
 	}
 
 	def dispatch private EObject internalEvaluate(NumberLiteral lit) {
@@ -379,13 +404,7 @@ class TypeCalculator {
 
 		switch ref {
 			Variable:
-				if(ref instanceof VariableDefinition){
-					return internalEvaluate(ref.value)
-				}else if(ref instanceof VariableDeclaration){
-					return ref.type
-				}else{
-					throw new IllegalArgumentException("Got Reference to variable that is neither defined nor declared")
-				}
+				return TypeRegistry.getVarType(ref)
 			PrimitiveParameter: {
 				if (ref.type !== null) {
 					switch ref.type {

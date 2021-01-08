@@ -52,10 +52,10 @@ public class TypeRegistry {
 	 */
 	private static boolean update = true;
 
-	public static void update() {
-		updateVarRegistry();
-		updateListRegistry();
-		updateMapRegistry();
+	public static void update(MofgenFile givenFile) {
+		updateVarRegistry(givenFile);
+		updateListRegistry(givenFile);
+		updateMapRegistry(givenFile);
 	}
 	
 	public static void init(MofgenFile givenFile) {
@@ -65,10 +65,11 @@ public class TypeRegistry {
 		keyTypes = null;
 		entryTypes = null;
 		varTypes = null;
-		update();
+		update(givenFile);
 	}
 
-	private static void updateVarRegistry() {
+	private static void updateVarRegistry(MofgenFile givenFile) {
+		checkFileConsistency(givenFile);
 		if (varTypes == null) {
 			varTypes = new HashMap<>();
 		}
@@ -78,7 +79,8 @@ public class TypeRegistry {
 		}
 	}
 
-	private static void updateListRegistry() {
+	private static void updateListRegistry(MofgenFile givenFile) {
+		checkFileConsistency(givenFile);
 		if (listTypes == null) {
 			listTypes = new HashMap<>();
 		}
@@ -87,8 +89,9 @@ public class TypeRegistry {
 			putList(list);
 		}
 	}
-
-	private static void updateMapRegistry() {
+	
+	private static void updateMapRegistry(MofgenFile givenFile) {
+		checkFileConsistency(givenFile);
 		if (keyTypes == null) {
 			keyTypes = new HashMap<>();
 			entryTypes = new HashMap<>();
@@ -246,30 +249,40 @@ public class TypeRegistry {
 
 	public static EClassifier getListType(List list) {
 		if (update) {
-			updateListRegistry();
+			updateListRegistry((MofgenFile)EcoreUtil2.getRootContainer(list));
 		}
 		return listTypes.get(list);
 	}
 
 	public static EClassifier getMapKeyType(Map map) {
 		if (update) {
-			updateMapRegistry();
+			updateMapRegistry((MofgenFile)EcoreUtil2.getRootContainer(map));
 		}
 		return keyTypes.get(map);
 	}
 
 	public static EClassifier getMapEntryType(Map map) {
 		if (update) {
-			updateMapRegistry();
+			updateMapRegistry((MofgenFile)EcoreUtil2.getRootContainer(map));
 		}
 		return entryTypes.get(map);
 	}
 
 	public static EObject getVarType(Variable var) {
 		if (update) {
-			updateVarRegistry();
+			updateVarRegistry((MofgenFile)EcoreUtil2.getRootContainer(var));
 		}
 		return varTypes.get(var);
+	}
+	
+	/**
+	 * Binds the type registry to the given file if it is different from the current file (Called on every access)
+	 * @param givenFile
+	 */
+	private static void checkFileConsistency(MofgenFile givenFile) {
+		if(file != givenFile) {
+			init(givenFile);
+		}
 	}
 
 	public static void setUpdate(boolean val) {

@@ -8,7 +8,6 @@ import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IFolder
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.api.EClassifiersManager
-import org.mofgen.interpreter.TypeRegistry
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.MofgenFile
 import org.mofgen.mGLang.Pattern
@@ -61,8 +60,6 @@ class JavaFileGenerator {
 		this.packageName = packageName
 		this.eClassifiersManager = eClassifiersManager
 		this.editorModel = editorModel
-		TypeRegistry.init(editorModel)
-		TypeRegistry.update = false
 	}
 
 	/**
