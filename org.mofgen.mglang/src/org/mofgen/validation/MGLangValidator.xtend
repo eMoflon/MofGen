@@ -93,10 +93,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
-	def checkImportResolvable(Import imp){
+	def checkImportResolvable(Import imp) {
 		val opt = MofgenModelUtils.loadEcoreModel(imp.uri)
-		if(!opt.isPresent){
-			error("Cannot load ecore-model from uri "+imp.uri, MGLangPackage.Literals.IMPORT__URI)
+		if (!opt.isPresent) {
+			error("Cannot load ecore-model from uri " + imp.uri, MGLangPackage.Literals.IMPORT__URI)
 		}
 	}
 
@@ -278,7 +278,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 */
 	def checkValidReturnValue(GenReturn genRet) {
 		val retEval = TypeCalculator.evaluate(genRet.returnValue)
-		if(!(retEval instanceof EClassifier)){
+		if (!(retEval instanceof EClassifier)) {
 			error("Invalid return value. Can only return eObjects", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
 		}
 	}
@@ -643,6 +643,17 @@ class MGLangValidator extends AbstractMGLangValidator {
 					}
 					if (givenType instanceof EClass) {
 						givenTypeString = givenType.name
+					}
+
+					if (varType instanceof EClass) {
+						if (givenType instanceof EClass) {
+							if (!varType.isSuperTypeOf(givenType)) {
+								error("Variable " + variable.name + " is of type " + varTypeString + ", not " +
+									givenTypeString, MGLangPackage.Literals.VARIABLE_MANIPULATION__VAL)
+							} else {
+								return
+							}
+						}
 					}
 
 					error("Variable " + variable.name + " is of type " + varTypeString + ", not " + givenTypeString,
