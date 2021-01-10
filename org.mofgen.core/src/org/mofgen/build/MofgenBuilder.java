@@ -77,7 +77,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		// TODO builder runs as often as files exist in project at first launch
 		logger.info("Running MofGenBuilder:");
 		logger.info("Given project: " + project.getName());
-		packageRegistry = new EPackageRegistryImpl();
+		
 		this.project = project;
 		double tic = System.currentTimeMillis();
 
@@ -107,6 +107,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			}
 
 			for(IFile mofgenFile : mofgenFiles) {
+				packageRegistry = new EPackageRegistryImpl();
 				Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 				ResourceSet rs = new ResourceSetImpl();
 				rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
