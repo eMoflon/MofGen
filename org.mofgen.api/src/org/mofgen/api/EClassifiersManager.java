@@ -19,6 +19,7 @@ import org.mofgen.mGLang.Collection;
 import org.mofgen.mGLang.MofgenFile;
 import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.ParameterNodeOrPattern;
+import org.mofgen.mGLang.VariableDeclaration;
 import org.moflon.core.utilities.EcoreUtils;
 
 /**
@@ -145,7 +146,7 @@ public class EClassifiersManager {
 	private static String getFactoryClassName(String modelName) {
 		return Character.toUpperCase(modelName.charAt(0)) + modelName.substring(1) + "Factory";
 	}
-	
+
 	/**
 	 * Determines the set of necessary imports for the given EClassifiers.
 	 * 
@@ -175,9 +176,10 @@ public class EClassifiersManager {
 		imports.addAll(getImportsForCollectionTypes(EcoreUtil2.getAllContentsOfType(editorModel, Collection.class)));
 		imports.addAll(getImportsForPackages());
 		imports.addAll(getImportsForFactories());
+		imports.addAll(getImportsForVariableTypes(EcoreUtil2.getAllContentsOfType(editorModel, VariableDeclaration.class)));
 		return imports;
 	}
-	
+
 	/**
 	 * Determines the set of necessary type imports for a set of nodes.
 	 * 
@@ -189,15 +191,27 @@ public class EClassifiersManager {
 	}
 
 	/**
-	 * Determines the set of necessary type imports for a set of parameter nodes.
+	 * Determines the set of necessary type imports for a list of parameter nodes.
 	 * 
 	 * @param parameters the parameters
 	 * @return the types for Java import statements
 	 */
 	public Set<String> getImportsForParameterNodeTypes(final List<ParameterNodeOrPattern> parameters) {
-		return getImportsForTypes(parameters.stream().filter(n -> n.getType() instanceof EClass).map(n -> (EClass) n.getType()).collect(Collectors.toSet()));
+		return getImportsForTypes(parameters.stream().filter(n -> n.getType() instanceof EClass)
+				.map(n -> (EClass) n.getType()).collect(Collectors.toSet()));
 	}
-	
+
+	/**
+	 * Determines the set of necessary type imports for a list of variables
+	 * (definitions and declarations)
+	 * 
+	 * @param parameters the parameters
+	 * @return the types for Java import statements
+	 */
+	public Set<String> getImportsForVariableTypes(final List<VariableDeclaration> decls) {
+		return getImportsForTypes(decls.stream().map(d -> (EClassifier) d.getType()).collect(Collectors.toSet()));
+	}
+
 	/**
 	 * Determines the set of necessary type imports for a set of collections.
 	 * 
@@ -206,36 +220,37 @@ public class EClassifiersManager {
 	 */
 	public Set<String> getImportsForCollectionTypes(final List<Collection> colls) {
 		Set<EClassifier> typeSet = new HashSet<>();
-		for(Collection c : colls) {
-			if(c instanceof org.mofgen.mGLang.List) {
-				EObject val = TypeCalculator.getListType((org.mofgen.mGLang.List)c);
-				if(val instanceof EClassifier) {
+		for (Collection c : colls) {
+			if (c instanceof org.mofgen.mGLang.List) {
+				EObject val = TypeCalculator.getListType((org.mofgen.mGLang.List) c);
+				if (val instanceof EClassifier) {
 					typeSet.add((EClassifier) val);
 				}
-			}else if(c instanceof org.mofgen.mGLang.Map) {
-				typeSet.add(TypeCalculator.getMapType((org.mofgen.mGLang.Map)c, true));
-				typeSet.add(TypeCalculator.getMapType((org.mofgen.mGLang.Map)c, false));
-			}else {
+			} else if (c instanceof org.mofgen.mGLang.Map) {
+				typeSet.add(TypeCalculator.getMapType((org.mofgen.mGLang.Map) c, true));
+				typeSet.add(TypeCalculator.getMapType((org.mofgen.mGLang.Map) c, false));
+			} else {
 				throw new IllegalStateException("There should be no collection of type other than List or Map");
 			}
 		}
 		return getImportsForTypes(typeSet);
 	}
-	
+
 	/**
 	 * Provides the corresponding Package- and Factory- classes
+	 * 
 	 * @param ePackage - the wanted package
 	 * @return the import names as Strings
 	 */
-	public Set<String> getImportsForEPackages(final Set<EPackage> ePackages){
+	public Set<String> getImportsForEPackages(final Set<EPackage> ePackages) {
 		Set<String> imports = new HashSet<>();
-		for(EPackage ePackage : ePackages) {
-			imports.add(ePackage.getNsPrefix()+"Package");
-			imports.add(ePackage.getNsPrefix()+"Factory");
+		for (EPackage ePackage : ePackages) {
+			imports.add(ePackage.getNsPrefix() + "Package");
+			imports.add(ePackage.getNsPrefix() + "Factory");
 		}
 		return imports;
 	}
-	
+
 	/**
 	 * Returns the names of the meta-model packages.
 	 * 
@@ -253,7 +268,7 @@ public class EClassifiersManager {
 	public Set<String> getImportsForPackages() {
 		return new HashSet<String>(packageNameToPath.values());
 	}
-	
+
 	/**
 	 * Determines the set of necessary imports for the meta-models factories.
 	 * 

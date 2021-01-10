@@ -70,13 +70,18 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	 */
 	private String packageName;
 	
-	public static Registry packageRegistry;
+	/**
+	 * used to determine all necessary imports and dependencies in the manifest
+	 */
+	public static Registry globalPackageRegistry;
 	
 	@Override
 	public void run(IProject project) {
 		// TODO builder runs as often as files exist in project at first launch
 		logger.info("Running MofGenBuilder:");
 		logger.info("Given project: " + project.getName());
+		
+		globalPackageRegistry = new EPackageRegistryImpl();
 		
 		this.project = project;
 		double tic = System.currentTimeMillis();
@@ -107,7 +112,8 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			}
 
 			for(IFile mofgenFile : mofgenFiles) {
-				packageRegistry = new EPackageRegistryImpl();
+				// use local registry for determining imports per file in generated source code
+				Registry localPackageRegistry = new EPackageRegistryImpl();
 				Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
 				ResourceSet rs = new ResourceSetImpl();
 				rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", new XMIResourceFactoryImpl());
@@ -122,12 +128,13 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 				MofgenFile editorModel = null;
 				if (!fileResource.getContents().isEmpty()) {
 					editorModel = (MofgenFile) fileResource.getContents().get(0);
-					findAllEPackages(editorModel, packageRegistry);
+					findAllEPackages(editorModel, localPackageRegistry);
+					findAllEPackages(editorModel, globalPackageRegistry);
 				}
 				
 				IFolder apiPackage = ensureFolderExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/")));
 				try {
-					generateAPI(apiPackage, mofgenFile, editorModel, createEClassifierManager(packageRegistry));
+					generateAPI(apiPackage, mofgenFile, editorModel, createEClassifierManager(localPackageRegistry));
 				}catch(Exception e) {
 					e.printStackTrace();
 					continue;
@@ -214,7 +221,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	private boolean processManifestForPackage(IProject project, Manifest manifest) {
 		List<String> dependencies = new ArrayList<String>();
 		dependencies.addAll(Arrays.asList("org.eclipse.emf.ecore", "mofgen.api", "mofgen"));
-		Set<String> ePackageDependencies = packageRegistry.values().stream().map(p -> ((EPackage)p).getNsPrefix()).collect(Collectors.toSet());
+		Set<String> ePackageDependencies = globalPackageRegistry.values().stream().map(p -> ((EPackage)p).getNsPrefix()).collect(Collectors.toSet());
 		dependencies.addAll(ePackageDependencies);
 		boolean changedBasics = ManifestFileUpdater.setBasicProperties(manifest, project.getName());
 		boolean updatedDependencies = ManifestFileUpdater.updateDependencies(manifest, dependencies);
