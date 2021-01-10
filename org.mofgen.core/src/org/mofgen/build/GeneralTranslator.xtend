@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
 import org.mofgen.interpreter.MismatchingTypesException
+import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
@@ -40,7 +41,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.mofgen.interpreter.TypeCalculator
+import org.mofgen.mGLang.BracketExpression
 
 class GeneralTranslator {
 
@@ -120,7 +121,7 @@ class GeneralTranslator {
 	 * translates the given arithmetic expression to source code
 	 */
 	private def static dispatch String internalTranslate(ArithmeticExpression ae) {
-		switch ae {
+		switch ae {	
 			RefOrCall:
 				return translate(ae)
 			NullLiteral:
@@ -173,6 +174,8 @@ class GeneralTranslator {
 				return '''«translate(ae.left)»«ae.op.literal»«translate(ae.right)»'''
 			Tertiary:
 				return '''«translate(ae.left)»«ae.op.literal»«translate(ae.right)»'''
+			BracketExpression:
+				return '''(«translate(ae.expr)»)'''	
 			default:
 				return MofgenUtil.getTextFromEditorFile(ae)
 		}

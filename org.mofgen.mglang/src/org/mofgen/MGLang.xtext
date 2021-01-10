@@ -272,8 +272,7 @@ PrimaryExpr returns ArithmeticExpression:
 	BaseExpr ({Primary.left=current} op=PrimaryOp right=BaseExpr)*;
 
 BaseExpr returns ArithmeticExpression:
-	// TODO introduce "PriorityExpression" in brackets to correctly translate brackets into source code
-	'(' ArithmeticExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
+	{BracketExpression} '(' expr=RelationExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
 	expr=ArithmeticExpression ')' | {UnaryMinus} '-' expr=BaseExpr | Literal | RefOrCall | PatternCall;
 
 Literal:

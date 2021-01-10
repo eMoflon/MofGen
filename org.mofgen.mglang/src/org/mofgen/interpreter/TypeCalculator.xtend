@@ -47,6 +47,7 @@ import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.VariableDeclaration
 import org.mofgen.mGLang.VariableDefinition
+import org.mofgen.mGLang.BracketExpression
 
 class TypeCalculator {
 
@@ -180,7 +181,7 @@ class TypeCalculator {
 			return getKeyType ? keyType : entryType
 		}
 	}
-
+	
 
 	def static dispatch private EObject internalEvaluate(Node node) {
 		return node.type
@@ -447,6 +448,10 @@ class TypeCalculator {
 				"Cannot use operator " + rel.relation.toString + " with given values " + evalLeftString + " and " +
 					evalRightString)
 		}
+	}
+	
+	def static dispatch private EObject internalEvaluate(BracketExpression bracketExpr){
+		return evaluate(bracketExpr.expr)
 	}
 
 	def static dispatch private EObject internalEvaluate(BooleanLiteral lit) {
