@@ -269,30 +269,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 * Checks that the return type of a generator is valid, i.e. no patterns being returned but concrete nodes/EObjects 
 	 */
 	def checkValidReturnValue(GenReturn genRet) {
-		val ret = genRet.returnValue
-
-		if (ret === null) {
-			return
+		val retEval = TypeCalculator.evaluate(genRet.returnValue)
+		if(!(retEval instanceof EClassifier)){
+			error("Invalid return value. Can only return eObjects", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
 		}
-
-		if (ret instanceof RefOrCall) {
-			val typeEval = TypeCalculator.evaluate(ret)
-			if (typeEval instanceof EClass) {
-				if (TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(typeEval)) {
-					error("Can not return primitive values or strings", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
-				}
-			}
-		} else if (ret instanceof PatternCall) {
-			val pattern = ret.called
-			val patternReturn = pattern.^return
-			if (patternReturn === null) {
-				error("Can not return void pattern", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
-			}
-		} else {
-			throw new IllegalArgumentException(
-				"GenReturns should only be able to hold RefOrCall- or PatternCall-Objects")
-		}
-	// What is valid?: Variables containing EObjects(i.e. no strings or primitives), PatternCall with return value, Access of elements of a pattern variable, access of list/map with objects as elements
 	}
 
 	@Check

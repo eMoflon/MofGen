@@ -49,10 +49,11 @@ import org.mofgen.mGLang.VariableDeclaration
 import org.mofgen.mGLang.VariableDefinition
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.RefOrCallOrPatternCall
 
 class TypeCalculator {
 
-	def static EObject evaluate(ArithmeticExpression expr) throws MismatchingTypesException {
+	def static dispatch EObject evaluate(ArithmeticExpression expr) throws MismatchingTypesException {
 		if (expr === null) {
 			throw new IllegalArgumentException("Received null expression")
 		}
@@ -61,6 +62,14 @@ class TypeCalculator {
 			return MofgenModelUtils.getEClassForInternalModel(eval)
 		} else {
 			return eval
+		}
+	}
+	
+	def static dispatch EObject evaluate(RefOrCallOrPatternCall obj){
+		if(obj instanceof RefOrCall){
+			return evaluate(obj)
+		}else{
+			return evaluate(obj as PatternCall)
 		}
 	}
 
