@@ -346,7 +346,7 @@ class TypeCalculator {
 			switch (primary.op) {
 				case MUL: throw new MismatchingTypesException("Cannot multiply boolean values")
 				case DIV: throw new MismatchingTypesException("Cannot divide boolean values")
-				case AND: return TypeModelPackage.Literals.STRING
+				case AND: return TypeModelPackage.Literals.BOOLEAN
 			}
 		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) &&
 			TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
