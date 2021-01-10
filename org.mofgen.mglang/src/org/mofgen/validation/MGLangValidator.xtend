@@ -93,6 +93,14 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
+	def checkImportResolvable(Import imp){
+		val opt = MofgenModelUtils.loadEcoreModel(imp.uri)
+		if(!opt.isPresent){
+			error("Cannot load ecore-model from uri "+imp.uri, MGLangPackage.Literals.IMPORT__URI)
+		}
+	}
+
+	@Check
 	def checkThisInRefOrCall(RefOrCall roc) {
 		var rocIt = roc
 		while (rocIt.target !== null && !rocIt.target.eIsProxy) {

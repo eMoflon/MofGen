@@ -59,9 +59,6 @@ import org.mofgen.utils.MofgenModelUtils
 class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	override getScope(EObject context, EReference reference) {
-		if (isNode_Type(context, reference)) {
-			return getScopeForNodeCreationType(context as Node)
-		}
 		if (isPatternNodeReference_Type(context, reference)) {
 			return getScopeForPatternNodeReference_Type(context as PatternNodeReference)
 		}
@@ -250,12 +247,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	def getScopeForParameterNodeOrPattern_SrcModel(ParameterNodeOrPattern paramNode) {
 		val imports = EcoreUtil2.getAllContentsOfType(getRootFile(paramNode), Import)
 		return Scopes.scopeFor(imports)
-	}
-
-	def getScopeForNodeCreationType(Node n) {
-		val file = getRootFile(n)
-		val classes = MofgenModelUtils.getClasses(file)
-		return Scopes.scopeFor(classes)
 	}
 
 	def getScopeForPatternNodeReference_Type(PatternNodeReference ref) {
