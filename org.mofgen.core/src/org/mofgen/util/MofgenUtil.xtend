@@ -39,7 +39,7 @@ class MofgenUtil {
 	 * @return the corresponding EPackage
 	 */
 	def static EPackage getEPackage(EClass eClass) {
-		for (Object obj : MofgenBuilder.packageRegistry.values) {
+		for (Object obj : MofgenBuilder.globalPackageRegistry.values) {
 			val ePackage = obj as EPackage
 			if (ePackage.EClassifiers.contains(eClass)) {
 				return ePackage
@@ -71,10 +71,13 @@ class MofgenUtil {
 
 	def static getListType(List list) {
 		val listType = TypeCalculator.getListType(list)
-		return convertTypeToStandardType(listType)
+		return convertETypeToInternalType(listType)
 	}
 
-	def private static convertTypeToStandardType(EClassifier type) {
+	/**
+	 * Converts eTypes to the corresponding type of the internal type model
+	 */
+	def private static convertETypeToInternalType(EClassifier type) {
 		switch type {
 			case EcorePackage.Literals.ESTRING: TypeModelPackage.Literals.STRING
 			case EcorePackage.Literals.EINT: TypeModelPackage.Literals.INTEGER
@@ -116,12 +119,12 @@ class MofgenUtil {
 
 	def static getMapKeyType(org.mofgen.mGLang.Map map) {
 		val keyType = TypeCalculator.getMapType(map, true)
-		return convertTypeToStandardType(keyType)
+		return convertETypeToInternalType(keyType)
 	}
 
 	def static getMapEntryType(org.mofgen.mGLang.Map map) {
 		val entryType = TypeCalculator.getMapType(map, false)
-		return convertTypeToStandardType(entryType)
+		return convertETypeToInternalType(entryType)
 	}
 
 	/**
