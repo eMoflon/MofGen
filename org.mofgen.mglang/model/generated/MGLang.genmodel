@@ -216,6 +216,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenForBody/commands"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//GenSwitchExpression"/>
+    <genClasses ecoreClass="MGLang.ecore#//Switch"/>
     <genClasses ecoreClass="MGLang.ecore#//GenSwitch">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenSwitch/default"/>
     </genClasses>

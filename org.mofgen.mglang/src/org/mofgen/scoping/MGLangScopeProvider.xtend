@@ -20,7 +20,9 @@ import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.ForStatement
+import org.mofgen.mGLang.GenCaseBody
 import org.mofgen.mGLang.GenCaseWithCast
+import org.mofgen.mGLang.GenForBody
 import org.mofgen.mGLang.GeneralForEachHead
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.Import
@@ -121,8 +123,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	def getScopeForListDeclaration_Type(ListDeclaration decl) {
 		return getTypesWithinFile(decl)
 	}
-	
-	def getScopeForVariableDeclaration_Type(VariableDeclaration decl){
+
+	def getScopeForVariableDeclaration_Type(VariableDeclaration decl) {
 		return getTypesWithinFile(decl)
 	}
 
@@ -347,7 +349,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				])
 			} else {
 				collections.addAll(EcoreUtil2.getAllContentsOfType(gen, Collection))
-				vars.addAll(EcoreUtil2.getAllContentsOfType(gen, Variable)) // TODO Collect variables correctly (i.e. consider inner/outer scopes)
+				vars.addAll(getVarsForScope(r))
 			}
 
 			// get nodes of casts in above case-heads (remove names from pattern-nodes eventually)
@@ -448,7 +450,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					if (type === null) {
 						return IScope.NULLSCOPE
 					} else if (type.eIsProxy) {
-						throw new IllegalStateException("Encountered Proxy in Variable "+ref.name);
+						throw new IllegalStateException("Encountered Proxy in Variable " + ref.name);
 					} else if (type instanceof EClass) {
 						val attributes = type.EAllAttributes
 						val references = type.EAllReferences
@@ -493,6 +495,28 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					return IScope.NULLSCOPE
 			}
 		}
+	}
+
+	def private dispatch getVarsFromBody(GenForBody body){
+		val exprs = body.commands
+		return exprs.filter(Variable)
+	}
+	
+	def private dispatch getVarsFromBody(GenCaseBody body){
+		val exprs = body.expressions
+		return exprs.filter(Variable)
+	}
+
+	def private getVarsForScope(EObject obj) {
+		val vars = newLinkedList()
+		// obj in switch --> get all vars in this switch and all switches above
+		var superControlFlowConstructs = EcoreUtil2.getAllContainers(obj).filter[c| c instanceof GenCaseBody || c instanceof GenForBody]
+		for (c : superControlFlowConstructs){
+			vars.addAll(getVarsFromBody(c))
+		}
+		val gen = EcoreUtil2.getContainerOfType(obj, Generator)
+		vars.addAll(gen.commands.filter(Variable))
+		return vars
 	}
 
 	def getScopeForParamManipulation_Param(ParamManipulation pm) {
@@ -561,8 +585,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		return context instanceof ParameterNodeOrPattern &&
 			reference == MGLangPackage.Literals.PARAMETER_NODE_OR_PATTERN__TYPE
 	}
-	
-	def isVariableDeclaration_Type(EObject context, EReference reference){
+
+	def isVariableDeclaration_Type(EObject context, EReference reference) {
 		return context instanceof VariableDeclaration && reference == MGLangPackage.Literals.VARIABLE_DECLARATION__TYPE
 	}
 

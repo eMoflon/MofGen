@@ -187,6 +187,10 @@ GenForBody:
 GenSwitchExpression:
 	GenForStatement | GenSwitch | Collection | CollectionManipulation | Variable | VariableManipulation | PatternCall;
 
+Switch:
+	GenSwitch | PatternSwitch
+;
+
 GenSwitch:
 	GenIfElseSwitch | GenSwitchCase;
 

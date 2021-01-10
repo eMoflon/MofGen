@@ -102,7 +102,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="srcModel" eType="#//Import"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternSwitch" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow #//NodeReferenceOrControlFlow">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternSwitch" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow #//NodeReferenceOrControlFlow #//Switch">
     <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//PatternCaseBody"
         containment="true"/>
   </eClassifiers>
@@ -225,7 +225,8 @@
         eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenSwitchExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GenSwitch" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="Switch"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenSwitch" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression #//Switch">
     <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//GenDefault"
         containment="true"/>
   </eClassifiers>
