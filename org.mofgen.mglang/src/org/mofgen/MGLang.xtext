@@ -185,7 +185,7 @@ GenForBody:
 	{GenForBody} (commands+=GeneratorExpression)*;
 
 GenSwitchExpression:
-	GenForStatement | Collection | CollectionManipulation | VariableManipulation | PatternCall;
+	GenForStatement | GenSwitch | Collection | CollectionManipulation | Variable | VariableManipulation | PatternCall;
 
 GenSwitch:
 	GenIfElseSwitch | GenSwitchCase;

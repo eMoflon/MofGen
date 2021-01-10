@@ -176,7 +176,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//GeneratorExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableDefinition" eSuperTypes="#//Variable">
@@ -225,7 +225,7 @@
         eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenSwitchExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GenSwitch" eSuperTypes="#//GeneratorExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="GenSwitch" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//GenDefault"
         containment="true"/>
   </eClassifiers>
