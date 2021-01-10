@@ -134,8 +134,8 @@ class GeneralTranslator {
 				return '''-«translate(ae.expr)»'''
 			FunctionCall: {
 				switch ae.func {
-					case SQRT: return '''Math.sqrt(«translate(ae.expr)»'''
-					case ABS: return '''Math.abs(«translate(ae.expr)»'''
+					case SQRT: return '''Math.sqrt(«translate(ae.expr)»)'''
+					case ABS: return '''Math.abs(«translate(ae.expr)»)'''
 				}
 			}
 			NegationExpression:
