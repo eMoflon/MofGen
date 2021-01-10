@@ -459,9 +459,10 @@ class MGLangValidator extends AbstractMGLangValidator {
 											givenParameterType as EClassifier)))) {
 									val givenParameterTypeEClassifier = MofgenModelUtils.getEClassForInternalModel(
 										givenParameterType as EClassifier)
-									if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
-										if (givenParameterType !== neededParameterType) {
-											if (givenParameterTypeEClassifier instanceof EClass) {
+									if (!(neededParameterType === TypeModelPackage.Literals.DOUBLE &&
+										givenParameterTypeEClassifier === TypeModelPackage.Literals.INTEGER))
+										if (neededParameterType !== givenParameterTypeEClassifier)
+											if (neededParameterType !== EcorePackage.Literals.EOBJECT) {
 												if (!(TypeModelPackage.Literals.NUMBER.isSuperTypeOf(
 													givenParameterTypeEClassifier) &&
 													neededParameterType === TypeModelPackage.Literals.STRING)) {
@@ -471,9 +472,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 															(neededParameterType as EClassifier).name,
 														MGLangPackage.Literals.PATTERN_CALL__PARAMS)
 												}
+
 											}
-										}
-									}
 								}
 							} else if (givenParameterType instanceof Pattern &&
 								neededParameterType instanceof Pattern) {

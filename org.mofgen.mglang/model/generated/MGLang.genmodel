@@ -283,8 +283,12 @@
     <genClasses ecoreClass="MGLang.ecore#//StringLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//StringLiteral/val"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//NumberLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//NumberLiteral/val"/>
+    <genClasses ecoreClass="MGLang.ecore#//NumberLiteral"/>
+    <genClasses ecoreClass="MGLang.ecore#//IntegerLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//IntegerLiteral/val"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//DoubleLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//DoubleLiteral/val"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//NullLiteral"/>
     <genClasses ecoreClass="MGLang.ecore#//Rel">

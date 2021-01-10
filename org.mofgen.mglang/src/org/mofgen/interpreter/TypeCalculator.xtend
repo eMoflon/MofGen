@@ -12,8 +12,11 @@ import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.BooleanLiteral
+import org.mofgen.mGLang.BracketExpression
+import org.mofgen.mGLang.DoubleLiteral
 import org.mofgen.mGLang.FunctionCall
 import org.mofgen.mGLang.GeneralForEachHead
+import org.mofgen.mGLang.IntegerLiteral
 import org.mofgen.mGLang.IteratorVariable
 import org.mofgen.mGLang.List
 import org.mofgen.mGLang.ListAdHoc
@@ -28,7 +31,6 @@ import org.mofgen.mGLang.MathFunc
 import org.mofgen.mGLang.NegationExpression
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.NullLiteral
-import org.mofgen.mGLang.NumberLiteral
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
@@ -43,11 +45,10 @@ import org.mofgen.mGLang.StringLiteral
 import org.mofgen.mGLang.Tertiary
 import org.mofgen.mGLang.UnaryMinus
 import org.mofgen.mGLang.Variable
-import org.mofgen.typeModel.TypeModelPackage
-import org.mofgen.utils.MofgenModelUtils
 import org.mofgen.mGLang.VariableDeclaration
 import org.mofgen.mGLang.VariableDefinition
-import org.mofgen.mGLang.BracketExpression
+import org.mofgen.typeModel.TypeModelPackage
+import org.mofgen.utils.MofgenModelUtils
 
 class TypeCalculator {
 
@@ -462,13 +463,12 @@ class TypeCalculator {
 		return TypeModelPackage.Literals.NULL_OBJECT
 	}
 
-	def static dispatch private EObject internalEvaluate(NumberLiteral lit) {
-		val value = lit.^val
-		if (Math.floor(value) == (value as int)) {
-			return TypeModelPackage.Literals.INTEGER
-		} else {
-			return TypeModelPackage.Literals.DOUBLE
-		}
+	def static dispatch private EObject internalEvaluate(DoubleLiteral lit) {
+		return TypeModelPackage.Literals.DOUBLE
+	}
+	
+	def static dispatch private EObject internalEvaluate(IntegerLiteral lit) {
+		return TypeModelPackage.Literals.INTEGER
 	}
 
 	def static dispatch private EObject internalEvaluate(StringLiteral lit) {

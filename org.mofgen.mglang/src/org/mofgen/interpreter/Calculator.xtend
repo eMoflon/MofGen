@@ -3,9 +3,10 @@ package org.mofgen.interpreter
 import org.eclipse.emf.ecore.EOperation
 import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.BooleanLiteral
+import org.mofgen.mGLang.DoubleLiteral
 import org.mofgen.mGLang.FunctionCall
+import org.mofgen.mGLang.IntegerLiteral
 import org.mofgen.mGLang.NegationExpression
-import org.mofgen.mGLang.NumberLiteral
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.Primary
 import org.mofgen.mGLang.PrimitiveParameter
@@ -252,13 +253,14 @@ class Calculator {
 		return lit.^val
 	}
 
-	def static dispatch private Object internalEvaluate(NumberLiteral lit) {
+	def static dispatch private Object internalEvaluate(DoubleLiteral lit) {
 		val value = lit.^val
-		if (Math.floor(value) == (value as int)) {
-			return value as int
-		} else {
-			return value as double
-		}
+		return value as double
+	}
+
+	def static dispatch private Object internalEvaluate(IntegerLiteral lit) {
+		val value = lit.^val
+		return value as int
 	}
 
 	def static dispatch private Object internalEvaluate(StringLiteral lit) {
@@ -321,7 +323,7 @@ class Calculator {
 		if (roc.ref instanceof VariableDefinition) {
 			return internalEvaluate((roc.ref as VariableDefinition).value)
 		}
-		if(roc.ref instanceof VariableDeclaration){
+		if (roc.ref instanceof VariableDeclaration) {
 			return roc.ref
 		}
 		if (roc.ref instanceof PrimitiveParameter) {
@@ -352,12 +354,12 @@ class Calculator {
 			throw new MismatchingTypesException(
 				"Cannot use minus-operator on boolean value. For negation use '!' instead.")
 		}
-		if(eval instanceof Integer){
+		if (eval instanceof Integer) {
 			return -(eval);
-		}else if(eval instanceof Double){
+		} else if (eval instanceof Double) {
 			return -(eval);
-		}else{
-			throw new UnsupportedOperationException("Only Integer or Double values should be negated but got: "+eval)
+		} else {
+			throw new UnsupportedOperationException("Only Integer or Double values should be negated but got: " + eval)
 		}
 	}
 

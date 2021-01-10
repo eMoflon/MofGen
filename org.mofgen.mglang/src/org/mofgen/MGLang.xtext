@@ -72,7 +72,6 @@ PatternNodeReference:
 
 PatternNodeReferenceToNode:
 	type=[ecore::EReference] '->' node=RefOrCall; // allow nodes, parameter nodes and access to nodes in patterns as parameter objects in scoping! TODO
-
 PatternNodeReferenceToPatternCall:
 	type=[ecore::EReference] '->' pc=PatternCall;
 
@@ -87,7 +86,6 @@ PrimitiveParameter:
 
 ParameterNodeOrPattern:
 	(srcModel=[Import] '.')? type=[ecore::EObject] name=ID; //EObject to allow for eClasses from metamodels or for patterns as a whole
-
 PatternSwitch:
 	PatternIfElseSwitch | PatternSwitchCase;
 
@@ -99,7 +97,6 @@ PatternDefault returns PatternCaseBody:
 
 PatternSwitchCase:
 	'switch' '(' attribute=RefOrCall ')' '{' (cases+=PatternCase)+ (default=PatternDefault)? '}'; // TODO restrictions in refOrCall-scoping for attribute?
-
 PatternWhenCase:
 	'when' when=ArithmeticExpression ':' body=PatternCaseBody;
 
@@ -121,8 +118,7 @@ Case:
 
 RefOrCall:
 	((thisUsed?='this') | ref=[ecore::EObject]) ({RefOrCall.target=current} '.' ref=[ecore::ENamedElement] ('('
-	(params=RefParams)?
-	bracesSet?=')')?)*; //Using generic eobject references to make enums possible.
+	(params=RefParams)? bracesSet?=')')?)*; //Using generic eobject references to make enums possible.
 RefParams:
 	params+=ArithmeticExpression (',' params+=ArithmeticExpression)*;
 
@@ -188,8 +184,7 @@ GenSwitchExpression:
 	GenForStatement | GenSwitch | Collection | CollectionManipulation | Variable | VariableManipulation | PatternCall;
 
 Switch:
-	GenSwitch | PatternSwitch
-;
+	GenSwitch | PatternSwitch;
 
 GenSwitch:
 	GenIfElseSwitch | GenSwitchCase;
@@ -205,7 +200,6 @@ GenDefault:
 
 GenSwitchCase:
 	'switch' '(' attribute=RefOrCall ')' '{' (cases+=GenCase)+ (default=GenDefault)? '}'; // TODO restrictions in refOrCall-scoping for attribute?
-
 GenCase:
 	GenCaseWithCast | GenCaseWithoutCast;
 
@@ -255,7 +249,6 @@ MapTupel:
 	'(' key=ArithmeticExpression ',' value=ArithmeticExpression ')';
 
 	//======================================Arithmetics============================================
-
 ArithmeticExpression:
 	RelationExpression;
 
@@ -272,7 +265,8 @@ PrimaryExpr returns ArithmeticExpression:
 	BaseExpr ({Primary.left=current} op=PrimaryOp right=BaseExpr)*;
 
 BaseExpr returns ArithmeticExpression:
-	{BracketExpression} '(' expr=RelationExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall} func=MathFunc '('
+	{BracketExpression} '(' expr=RelationExpression ')' | {NegationExpression} '!' expr=BaseExpr | {FunctionCall}
+	func=MathFunc '('
 	expr=ArithmeticExpression ')' | {UnaryMinus} '-' expr=BaseExpr | Literal | RefOrCall | PatternCall;
 
 Literal:
@@ -285,6 +279,13 @@ StringLiteral:
 	val=STRING;
 
 NumberLiteral:
+	IntegerLiteral | DoubleLiteral
+;
+
+IntegerLiteral:
+	val=INT;
+
+DoubleLiteral:
 	val=DOUBLE;
 
 NullLiteral:
@@ -297,7 +298,7 @@ enum PrimitiveType: //TODO: Replace by standard eDataTypes?
 	INT='int' | CHAR='char' | DOUBLE='double' | BOOLEAN='boolean';
 
 terminal DOUBLE returns ecore::EDouble:
-	INT ('.' INT)?;
+	INT '.' INT;
 
 terminal TRUE returns ecore::EBoolean:
 	'true';
@@ -309,26 +310,16 @@ terminal NULL:
 	'none';
 
 enum RelationalOp:
-	GREATER='>' |
-	GREATER_OR_EQUAL='>=' |
-	EQUAL='==' |
-	UNEQUAL='!=' |
-	LESS_OR_EQUAL='<=' |
-	LESS='<';
+	GREATER='>' | GREATER_OR_EQUAL='>=' | EQUAL='==' | UNEQUAL='!=' | LESS_OR_EQUAL='<=' | LESS='<';
 
 enum TertiaryOp:
-	PLUS='+' |
-	MINUS='-' |
-	OR='||';
+	PLUS='+' | MINUS='-' | OR='||';
 
 enum SecondaryOp:
-	MOD='%' |
-	XOR='^';
+	MOD='%' | XOR='^';
 
 enum PrimaryOp:
-	MUL='*' |
-	DIV='/' |
-	AND='&&';
+	MUL='*' | DIV='/' | AND='&&';
 
 terminal ASSIGNMENT_OP:
 	'=';

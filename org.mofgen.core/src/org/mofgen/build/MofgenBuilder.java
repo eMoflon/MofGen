@@ -125,7 +125,12 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 				}
 				
 				IFolder apiPackage = ensureFolderExists(project.getFolder(SOURCE_GEN_FOLDER + "/" + project.getName().replace(".", "/")));
-				generateAPI(apiPackage, mofgenFile, editorModel, createEClassifierManager(packageRegistry));
+				try {
+					generateAPI(apiPackage, mofgenFile, editorModel, createEClassifierManager(packageRegistry));
+				}catch(Exception e) {
+					e.printStackTrace();
+					continue;
+				}
 			}
 		}
 
