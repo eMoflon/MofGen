@@ -37,7 +37,10 @@ class PatternTranslator {
 		return
 		'''
 		public String toString(){
-			return "Pattern «pattern.name»	[«EcoreUtil2.getAllContentsOfType(pattern, Node).toString»]";
+			return "Pattern «pattern.name»"
+			+"\nNodes: «EcoreUtil2.getAllContentsOfType(pattern, Node).toString»"
+			+"\nParameters: «pattern.parameters.toString»"
+			;
 		}
 		
 		'''
