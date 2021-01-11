@@ -1,13 +1,17 @@
 package org.mofgen.scoping;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.DefaultDeclarativeQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.util.Strings;
 import org.mofgen.mGLang.ForStatement;
 import org.mofgen.mGLang.IteratorVariable;
+import org.mofgen.mGLang.Node;
 import org.mofgen.mGLang.Parameter;
+import org.mofgen.mGLang.Pattern;
+import org.mofgen.mGLang.Switch;
 import org.mofgen.utils.MofgenModelUtils;
 
 public class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvider {
@@ -35,6 +39,23 @@ public class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedName
 			return qualifiedNameFromConverter;
 		} else if(obj instanceof Parameter) {
 			return super.computeFullyQualifiedNameFromNameAttribute(obj).append("_parameter");
+		} else if(obj instanceof Node) {
+			Node node = (Node) obj;
+			Switch containingSwitch = EcoreUtil2.getContainerOfType(obj, Switch.class);
+			if(containingSwitch != null) {
+				int lineNumber = NodeModelUtils.getNode(containingSwitch).getStartLine();
+				String switchName = "switch" + String.valueOf(lineNumber);
+				
+				String name = getResolver().apply(obj);
+				if (Strings.isEmpty(name))
+					return null;
+				QualifiedName qualifiedNameFromConverter = getConverter()
+						.toQualifiedName(switchName + "." + getConverter().toQualifiedName(name));
+				
+				return qualifiedNameFromConverter.append("_"+node.getType()+"_"+node.getName());
+			}else {
+				return super.computeFullyQualifiedNameFromNameAttribute(obj);
+			}
 		}
 		else {
 			return super.computeFullyQualifiedNameFromNameAttribute(obj);
