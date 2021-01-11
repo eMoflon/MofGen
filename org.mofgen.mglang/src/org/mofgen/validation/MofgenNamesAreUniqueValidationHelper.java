@@ -8,10 +8,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.validation.NamesAreUniqueValidationHelper;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
+import org.mofgen.mGLang.ForStatement;
 import org.mofgen.mGLang.GenCaseWithCast;
 import org.mofgen.mGLang.IteratorVariable;
 import org.mofgen.mGLang.Node;
@@ -25,12 +27,10 @@ public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidati
 
 	private Map<QualifiedName, IEObjectDescription> nameToDescription;
 
-	// TODO introduce well-thought namespace concept
-
 	@Override
 	/**
 	 * Implements super-method except that IteratorVariables are not respected when
-	 * checking for duplicate names (clustering seems to fail here somehow)
+	 * checking for duplicate names
 	 */
 	protected void checkDescriptionForDuplicatedName(IEObjectDescription description,
 			Map<EClass, Map<QualifiedName, IEObjectDescription>> clusterTypeToName,
@@ -58,15 +58,7 @@ public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidati
 
 			QualifiedName qualifiedSpecialCaseName = null;
 			List<String> qualifiedSpecialCaseNameSegments = new ArrayList<>();
-			// IteratorVariable --> remove "forXXX"-namespaces since it should also not
-			// collide with normal variables
-			if (object instanceof IteratorVariable) {
-				for (String segment : qualifiedName.getSegments()) {
-					if (!segment.startsWith(MofgenQualifiedNameProvider.FOR_PREFIX)) {
-						qualifiedSpecialCaseNameSegments.add(segment);
-					}
-				}
-			}
+
 			// remove switch and case namespace since it should also not collide with normal
 			// variables or nodes
 			if (object instanceof Node && (object.eContainer() instanceof GenCaseWithCast
@@ -92,19 +84,17 @@ public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidati
 						if (!(prevObject instanceof Node && object instanceof Node
 								&& !(object.eContainer() instanceof Pattern)
 								&& !(prevObject.eContainer() instanceof Pattern))) {
-							if(prevObject instanceof IteratorVariable && object instanceof IteratorVariable && (EcoreUtil.isAncestor(object, prevObject)||EcoreUtil.isAncestor(prevObject, object))){
 							createDuplicateNameError(prevDescription, eClass, prevEClass, acceptor);
 							nameToDescription.put(qualifiedSpecialCaseName, null);
 							if (prevEClass != null) {
 								createDuplicateNameError(description, eClass, prevEClass, acceptor);
 							}
 						}
-						}
 					}
-
-				} else {
-					nameToDescription.put(qualifiedSpecialCaseName, description);
 				}
+
+			} else {
+				nameToDescription.put(qualifiedSpecialCaseName, description);
 			}
 		}
 	}

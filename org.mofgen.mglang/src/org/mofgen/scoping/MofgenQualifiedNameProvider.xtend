@@ -56,7 +56,6 @@ class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvide
 	}
 
 	def dispatch QualifiedName computeFullyQualifiedNameInternal(Node node) {
-
 		val qualifiedNameSegments = newLinkedList();
 		qualifiedNameSegments.add(node.name);
 		for (obj : EcoreUtil2.getAllContainers(node)) {
