@@ -43,8 +43,9 @@ class PatternBuildSequencer {
 	Queue<EObject> remainingElements
 
 	new(Pattern pattern) {
-
-		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+		// filter if nodes are really child of pattern since node construct is also used in switches
+		// TODO maybe refactor this, so there can be a clear grammatical distinction?
+		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node).filter[n|n.eContainer instanceof Pattern].toList
 		val paramManipulations = EcoreUtil2.getAllContentsOfType(pattern, ParamManipulation)
 		val parameters = pattern.parameters
 
@@ -188,8 +189,8 @@ class PatternBuildSequencer {
 			return roc.isValid // only when ref is from a newly created node. not necessarily at objects passed as parameters!
 		}
 	}
-	
-	private def boolean isValid(EObject object){
+
+	private def boolean isValid(EObject object) {
 		return validElements.contains(getValidName(object))
 	}
 
@@ -201,8 +202,8 @@ class PatternBuildSequencer {
 			throw new IllegalArgumentException("Cannot check coherency of object " + pNodeRef)
 		}
 	}
-	
-	private def dispatch boolean internalCoherencyCheck(PatternNodeReferenceToPatternCall pNodeRef){
+
+	private def dispatch boolean internalCoherencyCheck(PatternNodeReferenceToPatternCall pNodeRef) {
 		val pc = pNodeRef.pc
 		return internalCoherencyCheck(pc)
 	}
@@ -213,7 +214,10 @@ class PatternBuildSequencer {
 			switchExpressions.addAll(caze.body.expressions)
 			switchExpressions.add(caze.when)
 		}
-		switchExpressions.addAll(zwitch.^default.expressions)
+		val defaultObj = zwitch.^default
+		if (defaultObj !== null) {
+			switchExpressions.addAll(defaultObj.expressions)
+		}
 
 		for (expr : switchExpressions) {
 			if (!internalCoherencyCheck(expr)) {
@@ -228,7 +232,10 @@ class PatternBuildSequencer {
 		for (caze : zwitch.cases) {
 			switchExpressions.addAll(caze.body.expressions)
 		}
-		switchExpressions.addAll(zwitch.^default.expressions)
+		val defaultObj = zwitch.^default
+		if (defaultObj !== null) {
+			switchExpressions.addAll(defaultObj.expressions)
+		}
 		switchExpressions.add(zwitch.attribute)
 
 		for (expr : switchExpressions) {

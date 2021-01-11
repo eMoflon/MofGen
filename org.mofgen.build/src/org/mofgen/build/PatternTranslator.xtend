@@ -260,10 +260,10 @@ class PatternTranslator {
 		return '''
 			«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
 				«IF caze instanceof PatternCaseWithCast»
-					if(«zwitch.attribute» instanceof «caze.node.type.instanceTypeName»){
-						«caze.node.type.instanceTypeName»«caze.node.name» = («caze.node.type.instanceTypeName»)«zwitch.attribute»
+					if(«translate(zwitch.attribute)» instanceof «caze.node.type.name»){
+						«caze.node.type.name» «caze.node.name» = («caze.node.type.name») «translate(zwitch.attribute)»;
 						«IF caze.when !== null»
-							if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
+							if(«translate(caze.when)»){
 						«ENDIF»
 						«FOR bodyExpr : caze.body.expressions»
 							«translate(bodyExpr)»;
