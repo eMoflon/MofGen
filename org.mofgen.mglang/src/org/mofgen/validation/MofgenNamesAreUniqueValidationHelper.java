@@ -7,17 +7,25 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.validation.NamesAreUniqueValidationHelper;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
+import org.mofgen.mGLang.GenCaseWithCast;
 import org.mofgen.mGLang.IteratorVariable;
+import org.mofgen.mGLang.Node;
+import org.mofgen.mGLang.Pattern;
+import org.mofgen.mGLang.PatternCaseWithCast;
+import org.mofgen.scoping.MofgenQualifiedNameProvider;
 
 import com.google.common.collect.Maps;
 
 public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidationHelper {
 
 	private Map<QualifiedName, IEObjectDescription> nameToDescription;
+
+	// TODO introduce well-thought namespace concept
 
 	@Override
 	/**
@@ -48,57 +56,73 @@ public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidati
 				nameToDescription.put(qualifiedName, description);
 			}
 
-//			if (object instanceof IteratorVariable) {
-//
-//				List<String> qualifiedIteratorNameSegments = new ArrayList<>();
-//				for (String segment : qualifiedName.getSegments()) {
-//					if (!segment.startsWith("for")) {
-//						qualifiedIteratorNameSegments.add(segment);
-//					}
-//				}
-//				QualifiedName qualifiedIteratorName = QualifiedName.create(qualifiedIteratorNameSegments);
-//				prevDescription = nameToDescription.get(qualifiedIteratorName);
-//
-//
-//				if (nameToDescription.containsKey(qualifiedIteratorName)) {
-//					EClass eClass = object.eClass();
-//					EClass prevEClass = null;
-//					if (prevDescription != null) {
-//						EObject prevObject = prevDescription.getEObjectOrProxy();
-//						
-//						if(!(prevObject instanceof IteratorVariable)) {
-//							prevEClass = prevObject.eClass();
-//							createDuplicateNameError(prevDescription, eClass, prevEClass, acceptor);
-//							nameToDescription.put(qualifiedIteratorName, null);
-//						}
-//					}
-//					if(prevEClass != null) {
-//						createDuplicateNameError(description, eClass, prevEClass, acceptor);
-//					}
-//				} else {
-//					nameToDescription.put(qualifiedIteratorName, description);
-//				}
-//			}
+			QualifiedName qualifiedSpecialCaseName = null;
+			List<String> qualifiedSpecialCaseNameSegments = new ArrayList<>();
+			// IteratorVariable --> remove "forXXX"-namespaces since it should also not
+			// collide with normal variables
+			if (object instanceof IteratorVariable) {
+				for (String segment : qualifiedName.getSegments()) {
+					if (!segment.startsWith(MofgenQualifiedNameProvider.FOR_PREFIX)) {
+						qualifiedSpecialCaseNameSegments.add(segment);
+					}
+				}
+			}
+			// remove switch and case namespace since it should also not collide with normal
+			// variables or nodes
+			if (object instanceof Node && (object.eContainer() instanceof GenCaseWithCast
+					|| object.eContainer() instanceof PatternCaseWithCast)) {
+				for (String segment : qualifiedName.getSegments()) {
+					if (!segment.startsWith(MofgenQualifiedNameProvider.SWITCH_PREFIX)
+							&& !segment.startsWith(MofgenQualifiedNameProvider.CASE__PREFIX)) {
+						qualifiedSpecialCaseNameSegments.add(segment);
+					}
+				}
+			}
 
+			if (!qualifiedSpecialCaseNameSegments.isEmpty()) {
+				qualifiedSpecialCaseName = QualifiedName.create(qualifiedSpecialCaseNameSegments);
+				prevDescription = nameToDescription.get(qualifiedSpecialCaseName);
+
+				if (nameToDescription.containsKey(qualifiedSpecialCaseName)) {
+					EClass eClass = object.eClass();
+					EClass prevEClass = null;
+					if (prevDescription != null) {
+						EObject prevObject = prevDescription.getEObjectOrProxy();
+						prevEClass = prevObject.eClass();
+						if (!(prevObject instanceof Node && object instanceof Node
+								&& !(object.eContainer() instanceof Pattern)
+								&& !(prevObject.eContainer() instanceof Pattern))) {
+							if(prevObject instanceof IteratorVariable && object instanceof IteratorVariable && (EcoreUtil.isAncestor(object, prevObject)||EcoreUtil.isAncestor(prevObject, object))){
+							createDuplicateNameError(prevDescription, eClass, prevEClass, acceptor);
+							nameToDescription.put(qualifiedSpecialCaseName, null);
+							if (prevEClass != null) {
+								createDuplicateNameError(description, eClass, prevEClass, acceptor);
+							}
+						}
+						}
+					}
+
+				} else {
+					nameToDescription.put(qualifiedSpecialCaseName, description);
+				}
+			}
 		}
 	}
-	
-	protected void createDuplicateNameError(IEObjectDescription description, EClass clusterType, EClass clusterType2, ValidationMessageAcceptor acceptor) {
+
+	protected void createDuplicateNameError(IEObjectDescription description, EClass clusterType, EClass clusterType2,
+			ValidationMessageAcceptor acceptor) {
 		EObject object = description.getEObjectOrProxy();
 		EStructuralFeature feature = getNameFeature(object);
-		acceptor.acceptError(
-				getDuplicateNameErrorMessage(description, clusterType, clusterType2, feature), 
-				object, 
-				feature,
-				ValidationMessageAcceptor.INSIGNIFICANT_INDEX,
-				getErrorCode());
+		acceptor.acceptError(getDuplicateNameErrorMessage(description, clusterType, clusterType2, feature), object,
+				feature, ValidationMessageAcceptor.INSIGNIFICANT_INDEX, getErrorCode());
 	}
-	
-	public String getDuplicateNameErrorMessage(IEObjectDescription description, EClass clusterType, EClass clusterType2, EStructuralFeature feature) {
-		if(clusterType2 == null) {
+
+	public String getDuplicateNameErrorMessage(IEObjectDescription description, EClass clusterType, EClass clusterType2,
+			EStructuralFeature feature) {
+		if (clusterType2 == null) {
 			return super.getDuplicateNameErrorMessage(description, clusterType, feature);
 		}
-		
+
 		EObject object = description.getEObjectOrProxy();
 		String shortName = String.valueOf(feature != null ? object.eGet(feature) : "<unnamed>");
 		StringBuilder result = new StringBuilder(64);
@@ -128,7 +152,7 @@ public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidati
 						}
 					}
 				}
-			} 
+			}
 		}
 		return result.toString();
 	}

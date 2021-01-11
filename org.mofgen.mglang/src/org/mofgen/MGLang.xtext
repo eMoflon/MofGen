@@ -207,7 +207,7 @@ GenCaseWithCast:
 	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=GenCaseBody;
 
 GenCaseWithoutCast:
-	'case' val=ArithmeticExpression ':' body=GenCaseBody;
+	'case' val=ArithmeticExpression ':' body=GenCaseBody; // TODO where is this actually used? maybe remove and refactor switch hierarchy then?
 
 GenCaseBody:
 	{GenCaseBody} '{' (expressions+=GenSwitchExpression)* '}' | expressions+=GenSwitchExpression;
