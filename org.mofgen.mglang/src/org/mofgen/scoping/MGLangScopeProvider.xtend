@@ -362,6 +362,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			// collect enums
 			val root = MofgenModelUtils.getRootFile(r)
 			val enums = MofgenModelUtils.getEnums(root)
+			val enumLiterals = MofgenModelUtils.getEnumLiterals(root)
 
 			// collect imports
 			val imports = EcoreUtil2.getAllContentsOfType(root, Import)
@@ -385,7 +386,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 				}
 				if (head instanceof RangeForHead) {
 					iteratorVars.add(head.iteratorVar)
-				}
+				} // TODO create super class for ForHead
 			}
 
 			// add (eventually cast) nodes of switch if in switch
@@ -400,7 +401,8 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			}
 
 			return Scopes.scopeFor(
-				params + patternNodes + collections + vars + imports + enums + iteratorVars + switchNodes)
+				params + patternNodes + collections + vars + imports + enums + enumLiterals + iteratorVars +
+					switchNodes)
 
 		} else {
 			val trg = r.target
@@ -488,12 +490,12 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		}
 	}
 
-	def private dispatch getVarsFromBody(GenForBody body){
+	def private dispatch getVarsFromBody(GenForBody body) {
 		val exprs = body.commands
 		return exprs.filter(Variable)
 	}
-	
-	def private dispatch getVarsFromBody(GenCaseBody body){
+
+	def private dispatch getVarsFromBody(GenCaseBody body) {
 		val exprs = body.expressions
 		return exprs.filter(Variable)
 	}
@@ -501,8 +503,10 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 	def private getVarsForScope(EObject obj) {
 		val vars = newLinkedList()
 		// obj in switch --> get all vars in this switch and all switches above
-		var superControlFlowConstructs = EcoreUtil2.getAllContainers(obj).filter[c| c instanceof GenCaseBody || c instanceof GenForBody]
-		for (c : superControlFlowConstructs){
+		var superControlFlowConstructs = EcoreUtil2.getAllContainers(obj).filter [ c |
+			c instanceof GenCaseBody || c instanceof GenForBody
+		]
+		for (c : superControlFlowConstructs) {
 			vars.addAll(getVarsFromBody(c))
 		}
 		val gen = EcoreUtil2.getContainerOfType(obj, Generator)

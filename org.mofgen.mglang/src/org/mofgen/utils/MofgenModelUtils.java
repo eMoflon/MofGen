@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -149,6 +150,20 @@ public class MofgenModelUtils {
 		});
 
 		return enums;
+	}
+	
+	/**
+	 * Returns all EEnumLiterals imported into the given file.
+	 * 
+	 * @param file the Mofgen file
+	 */
+	public static ArrayList<EEnumLiteral> getEnumLiterals(final MofgenFile file) {
+		final ArrayList<EEnumLiteral> enumLiterals = new ArrayList<>();
+		file.getImports().forEach(i -> {
+			loadEcoreModel(i.getUri()).ifPresent(m -> enumLiterals.addAll(getElements(m, EEnumLiteral.class)));
+		});
+
+		return enumLiterals;
 	}
 
 	/**

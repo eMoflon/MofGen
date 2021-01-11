@@ -26,6 +26,9 @@ import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
+import org.eclipse.xtext.EcoreUtil2
+import org.mofgen.mGLang.GenWhenCase
+import org.eclipse.emf.ecore.EcorePackage
 
 /**
  * Translates given expressions to source code that will be used as part of the API.
@@ -78,11 +81,7 @@ class GeneratorTranslator {
 	def static dispatch private String internalTranslate(GenIfElseSwitch zwitch) {
 		return '''
 			«FOR caze : zwitch.cases SEPARATOR 'else' AFTER ''»
-				if(«translate(caze.when)») {
-					«FOR bodyExpr : caze.body.expressions»
-						«translate(bodyExpr)»;
-					«ENDFOR»
-				}
+				«translate(caze)»
 			«ENDFOR»
 			«IF zwitch.^default !== null»
 				else {
@@ -94,39 +93,112 @@ class GeneratorTranslator {
 		'''
 	}
 
-	def static dispatch private String internalTranslate(GenSwitchCase zwitch) {
+	def static dispatch private String internalTranslate(GenWhenCase caze) {
 		return '''
-			«FOR caze : zwitch.cases SEPARATOR 'else'»
-				«IF caze instanceof GenCaseWithCast»
-					if(«translate(zwitch.attribute)» instanceof «caze.node.type.name»){
-						«caze.node.type.name» «caze.node.name» = («caze.node.type.name») «translate(zwitch.attribute)»;
-						«IF caze.when !== null»
-							if(«translate(caze.when)»){
-						«ENDIF»
-						«FOR bodyExpr : caze.body.expressions»
-							«translate(bodyExpr)»;
-						«ENDFOR»
-						«IF caze.when !== null»
-							}
-						«ENDIF»
-					}
-				«ENDIF»
-				«IF caze instanceof GenCaseWithoutCast»
-					if(«caze.^val»){
-						«FOR bodyExpr : caze.body.expressions»
-							«translate(bodyExpr)»;
-						«ENDFOR»
-					}
-				«ENDIF»
+			if(«translate(caze.when)») {
+			«FOR bodyExpr : caze.body.expressions»
+				«translate(bodyExpr)»;
 			«ENDFOR»
-			«IF zwitch.^default !== null»
-				else {
+			}
+		'''
+	}
+
+	def static dispatch private String internalTranslate(GenCaseWithCast caze) {
+		val zwitch = EcoreUtil2.getContainerOfType(caze, GenSwitchCase)
+		return '''
+		if(«translate(zwitch.attribute)» instanceof «caze.node.type.name»){
+			«caze.node.type.name» «caze.node.name» = («caze.node.type.name») «translate(zwitch.attribute)»;
+			«IF caze.when !== null»
+				if(«translate(caze.when)»){
+			«ENDIF»
+			«FOR bodyExpr : caze.body.expressions»
+				«translate(bodyExpr)»;
+			«ENDFOR»
+			«IF caze.when !== null»
+				}
+				«IF zwitch.^default !== null && doCasesContainReturn(zwitch)»
+					else {
+						//default case to guarantee return
 					«FOR bodyExpr : (zwitch.^default.body as GenCaseBody).expressions»
 						«translate(bodyExpr)»;
 					«ENDFOR»
+					}
+				«ENDIF»
+		«ENDIF»
+		}'''
+	}
+	
+	def static boolean doCasesContainReturn(GenSwitchCase zwitch){
+		for(caze : zwitch.cases){
+			val expressions = caze.body.expressions
+			if(expressions.filter(GenReturn).empty){
+				return false
+			}
+		}
+		return true
+	}
+
+	def static dispatch private String internalTranslate(GenCaseWithoutCast caze) {
+		val zwitch = EcoreUtil2.getContainerOfType(caze, GenSwitchCase)
+		val isEnum = TypeCalculator.evaluate(zwitch.attribute) === TypeModelPackage.Literals.ENUM
+		return isEnum ? translateCaseWithEnum(caze) : translateCaseWithoutEnum(caze)
+	}
+
+	def static private translateCaseWithoutEnum(GenCaseWithoutCast caze) {
+		return '''
+		if(«translate(caze.^val)»){
+		«FOR bodyExpr : caze.body.expressions»
+			«translate(bodyExpr)»;
+		«ENDFOR»
+		}'''
+	}
+
+	def static dispatch private String internalTranslate(GenSwitchCase zwitch) {
+		val isEnum = TypeCalculator.evaluate(zwitch.attribute) === TypeModelPackage.Literals.ENUM
+		return isEnum ? translateGenSwitchCaseWithEnum(zwitch) : translateGenSwitchCaseWithoutEnum(zwitch)
+	}
+
+	def static private String translateGenSwitchCaseWithoutEnum(GenSwitchCase zwitch) {
+		return '''
+			«FOR caze : zwitch.cases SEPARATOR 'else'»
+				«translate(caze)»
+			«ENDFOR»
+			«IF zwitch.^default !== null»
+				else {
+				«FOR bodyExpr : (zwitch.^default.body as GenCaseBody).expressions»
+					«translate(bodyExpr)»;
+				«ENDFOR»
 				}
 			«ENDIF»
 		'''
+	}
+
+	def static private String translateGenSwitchCaseWithEnum(GenSwitchCase zwitch) {
+		return '''
+			switch(«translate(zwitch.attribute)»){
+			«FOR caze : zwitch.cases»
+				«translate(caze)»
+			«ENDFOR»
+			«IF zwitch.^default !== null»
+				default: {
+				«FOR bodyExpr : (zwitch.^default.body as GenCaseBody).expressions»
+					«translate(bodyExpr)»;
+				«ENDFOR»
+				}
+			«ENDIF»
+			}
+		'''
+	}
+
+	def static private translateCaseWithEnum(GenCaseWithoutCast caze) {
+		// clip enum reference to qualified enum in java code
+		val caseSrc = translate(caze.^val).split('\\.')
+		return '''
+		case «caseSrc.get(caseSrc.length-1)»: {
+		«FOR bodyExpr : caze.body.expressions»
+			«translate(bodyExpr)»;
+		«ENDFOR»
+		}'''
 	}
 
 	def static dispatch private String internalTranslate(VariableDeclaration variable) {
@@ -154,7 +226,6 @@ class GeneratorTranslator {
 		'''
 	}
 
-
 	/**
 	 * Translates a given type into source code
 	 */
@@ -171,8 +242,8 @@ class GeneratorTranslator {
 		}
 		return varType
 	}
-	
-		/**
+
+	/**
 	 * Translates a given type into source code
 	 */
 	def static dispatch private String type2src(Pattern type) {
@@ -189,7 +260,7 @@ class GeneratorTranslator {
 	}
 
 	def static dispatch private String internalTranslate(GenReturn ret) {
-		return '''return «ret.returnValue === null ? "null" : translate(ret.returnValue) »'''
+		return '''return «ret.returnValue === null ? "null" : translate(ret.returnValue)»'''
 	}
 
 	def static dispatch private String internalTranslate(PatternCall pc) {
