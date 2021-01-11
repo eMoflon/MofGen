@@ -625,8 +625,11 @@ class MGLangValidator extends AbstractMGLangValidator {
 		if (variable !== null && !variable.eIsProxy) {
 
 			val varType = TypeCalculator.getVarType(variable) as EObject
+
 			try {
 				val givenType = TypeCalculator.evaluate(vm.^val) as EObject
+
+				if(givenType == TypeModelPackage.Literals.NULL_OBJECT) return;
 
 				var varTypeString = ""
 				var givenTypeString = ""
@@ -877,6 +880,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 * Checks the consistency of parameter types w.r.t. the internal type system and throws errors at the given errorLoc when encountering any violations
 	 */
 	// TODO merge this method and workflow of "matchingParameters_pc()"
+	// and refactor with separate method in for-loop to break by return instead of having x-cillions of if statements
 	def private checkMatchingParameterTypes(java.util.List<ArithmeticExpression> givenParams,
 		java.util.List<EObject> neededParams, EReference errorLoc) {
 		// Check parameter types
