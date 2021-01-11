@@ -48,37 +48,37 @@ public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidati
 				nameToDescription.put(qualifiedName, description);
 			}
 
-			if (object instanceof IteratorVariable) {
-
-				List<String> qualifiedIteratorNameSegments = new ArrayList<>();
-				for (String segment : qualifiedName.getSegments()) {
-					if (!segment.startsWith("for")) {
-						qualifiedIteratorNameSegments.add(segment);
-					}
-				}
-				QualifiedName qualifiedIteratorName = QualifiedName.create(qualifiedIteratorNameSegments);
-				prevDescription = nameToDescription.get(qualifiedIteratorName);
-
-
-				if (nameToDescription.containsKey(qualifiedIteratorName)) {
-					EClass eClass = object.eClass();
-					EClass prevEClass = null;
-					if (prevDescription != null) {
-						EObject prevObject = prevDescription.getEObjectOrProxy();
-						
-						if(!(prevObject instanceof IteratorVariable)) {
-							prevEClass = prevObject.eClass();
-							createDuplicateNameError(prevDescription, eClass, prevEClass, acceptor);
-							nameToDescription.put(qualifiedIteratorName, null);
-						}
-					}
-					if(prevEClass != null) {
-						createDuplicateNameError(description, eClass, prevEClass, acceptor);
-					}
-				} else {
-					nameToDescription.put(qualifiedIteratorName, description);
-				}
-			}
+//			if (object instanceof IteratorVariable) {
+//
+//				List<String> qualifiedIteratorNameSegments = new ArrayList<>();
+//				for (String segment : qualifiedName.getSegments()) {
+//					if (!segment.startsWith("for")) {
+//						qualifiedIteratorNameSegments.add(segment);
+//					}
+//				}
+//				QualifiedName qualifiedIteratorName = QualifiedName.create(qualifiedIteratorNameSegments);
+//				prevDescription = nameToDescription.get(qualifiedIteratorName);
+//
+//
+//				if (nameToDescription.containsKey(qualifiedIteratorName)) {
+//					EClass eClass = object.eClass();
+//					EClass prevEClass = null;
+//					if (prevDescription != null) {
+//						EObject prevObject = prevDescription.getEObjectOrProxy();
+//						
+//						if(!(prevObject instanceof IteratorVariable)) {
+//							prevEClass = prevObject.eClass();
+//							createDuplicateNameError(prevDescription, eClass, prevEClass, acceptor);
+//							nameToDescription.put(qualifiedIteratorName, null);
+//						}
+//					}
+//					if(prevEClass != null) {
+//						createDuplicateNameError(description, eClass, prevEClass, acceptor);
+//					}
+//				} else {
+//					nameToDescription.put(qualifiedIteratorName, description);
+//				}
+//			}
 
 		}
 	}
