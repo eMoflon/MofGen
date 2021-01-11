@@ -32,6 +32,17 @@ class PatternTranslator {
 		return internalTranslate(obj)
 	}
 
+		
+	private static def getToStringMethod(Pattern pattern){
+		return
+		'''
+		public String toString(){
+			return "Pattern «pattern.name»	[«EcoreUtil2.getAllContentsOfType(pattern, Node).toString»]";
+		}
+		
+		'''
+	}
+
 	private static def dispatch String internalTranslate(Pattern pattern) {
 
 		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
@@ -84,6 +95,7 @@ class PatternTranslator {
 				
 			«PatternTranslator.createGetters(pattern)»
 			«PatternTranslator.createParameterGetters(patternParameterTypes)»
+			«PatternTranslator.getToStringMethod(pattern)»
 		}'''
 	}
 

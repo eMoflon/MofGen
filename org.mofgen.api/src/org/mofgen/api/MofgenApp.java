@@ -43,4 +43,6 @@ public abstract class MofgenApp {
 		}
 //		modelResource.unload();
 	}
+	
+	public abstract String toString();
 }

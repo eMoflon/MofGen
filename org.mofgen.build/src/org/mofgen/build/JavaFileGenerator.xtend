@@ -66,6 +66,7 @@ class JavaFileGenerator {
 	 * Generates the Java App class.
 	 */
 	def generateAppClass(IFolder appPackage, IFile mofgenFile) {
+		logger.info("Creating App class for "+mofgenFile.name+" ..")
 		val imports = eClassifiersManager.importsForPackages
 		imports.addAll('java.util.LinkedList', 'java.util.List', 'org.mofgen.api.MofgenApp',
 			'org.mofgen.api.' + GENERATOR_SUPER_CLASS,
@@ -114,17 +115,23 @@ class JavaFileGenerator {
 					}
 					System.out.println("Done!");
 				}
+				
+				public String toString(){
+					return className+"["+generators.toString()+"]";
+				}
 			}
 		'''
 		val finalSrcCode = MofgenCodeFormatter.formatCode(filterGeneratedCode(appSourceCode));
-
+		logger.info("Saving App class for "+mofgenFile.name+" ..")
 		writeFile(appPackage.getFile(className + '.java'), finalSrcCode)
+		logger.info("Done!\n")
 	}
 
 	/**
 	 * Generates the Java Generator class for the given generator.
 	 */
 	def generateGenClass(IFolder genPackage, Generator gen) {
+		logger.info("Creating generator class for "+gen.name+" ..")
 		val imports = newHashSet('java.util.ArrayList', 'java.util.List', 'java.util.Map', 'java.util.HashMap',
 			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.' + GENERATOR_SUPER_CLASS)
 		imports.add(genPackage.project.name + '.api.patterns.' + genPackage.name + ".*")
@@ -136,14 +143,16 @@ class JavaFileGenerator {
 			
 		'''
 		val finalSrcCode = MofgenCodeFormatter.formatCode(filterGeneratedCode(genSourceCode));
-		// TODO provide overriding toString implementation
+		logger.info("Saving generator class for "+gen.name+" ..")
 		writeFile(genPackage.getFile(NameProvider.getGeneratorClassName(gen) + ".java"), finalSrcCode)
+		logger.info("Done!\n")
 	}
 
 	/**
 	 * Generates the Java Generator class for the given pattern.
 	 */
 	def generatePatternClass(IFolder patternPackage, Pattern pattern) {
+		logger.info("Creating pattern class for "+pattern.name+" ..")
 		val imports = eClassifiersManager.getAllImports(editorModel)
 		imports.addAll(
 			'org.mofgen.api.' + PATTERN_SUPER_CLASS,
@@ -157,8 +166,10 @@ class JavaFileGenerator {
 		'''
 
 		val finalSrcCode = MofgenCodeFormatter.formatCode(filterGeneratedCode(patternSourceCode));
-		// TODO provide overriding toString implementation
+		
+		logger.info("Saving pattern class for "+pattern.name+" ..")
 		writeFile(patternPackage.getFile(NameProvider.getPatternClassName(pattern) + ".java"), finalSrcCode)
+		logger.info("Done!\n")
 	}
 
 	/**
