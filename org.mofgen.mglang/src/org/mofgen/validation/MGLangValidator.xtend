@@ -21,10 +21,18 @@ import org.mofgen.mGLang.ArithmeticExpression
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.ForRange
+import org.mofgen.mGLang.ForStatement
+import org.mofgen.mGLang.GenCase
 import org.mofgen.mGLang.GenCaseWithCast
 import org.mofgen.mGLang.GenCaseWithoutCast
+import org.mofgen.mGLang.GenDefault
 import org.mofgen.mGLang.GenForBody
+import org.mofgen.mGLang.GenForStatement
+import org.mofgen.mGLang.GenIfElseSwitch
 import org.mofgen.mGLang.GenReturn
+import org.mofgen.mGLang.GenSwitch
+import org.mofgen.mGLang.GenSwitchCase
+import org.mofgen.mGLang.GenSwitchExpression
 import org.mofgen.mGLang.GenWhenCase
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.Import
@@ -50,6 +58,7 @@ import org.mofgen.mGLang.PatternWhenCase
 import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.RefParams
+import org.mofgen.mGLang.Switch
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableDefinition
 import org.mofgen.mGLang.VariableManipulation
@@ -257,19 +266,118 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	/** 
-	 * Checks that there is exactly one return per generator block 
+	 * Checks that there is one returning statement guaranteed 
 	 */
 	@Check
-	def checkExactlyOneReturn(Generator gen) {
+	def checkGuaranteedReturn(Generator gen) {
 		if (gen.commands !== null) {
-			val retCount = gen.commands.filter(GenReturn).length
-			if (retCount > 1) {
-				error("Only one return per generator allowed", MGLangPackage.Literals.GENERATOR__COMMANDS)
+			val genReturns = gen.commands.filter(GenReturn)
+			val directRetCount = genReturns.length
+			if (directRetCount > 1) {
+				for (genRet : genReturns) {
+					error("Only one return per generator allowed", genRet,
+						MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+				}
 			}
-			if (retCount < 1) {
-				error("Generator block needs return with containment root", MGLangPackage.Literals.GENERATOR__COMMANDS)
+			if (directRetCount < 1) {
+
+				// check if defaults guarantee return
+				val switches = gen.commands.filter(Switch)
+				for (zwitch : switches) {
+					val test = doesControlFlowGuaranteeReturn(zwitch)
+					if(test) return
+				}
+
+				val fors = gen.commands.filter(ForStatement)
+				for (ffor : fors) {
+					val test = doesControlFlowGuaranteeReturn(ffor)
+					if(test) return
+				}
+
+				error("Generator block needs return", gen, MGLangPackage.Literals.GENERATOR__PARAMS)
 			}
 		}
+	}
+
+	/**
+	 * Checks whether the given control flow construct returns in any case.
+	 * @return true only when all possible and the default case return. False, otherwise.
+	 */
+	private def dispatch boolean doesControlFlowGuaranteeReturn(GenIfElseSwitch zwitch) {
+		val cases = zwitch.cases
+		val def = zwitch.^default
+
+		if(def === null) return false
+
+		return doesControlFlowGuaranteeReturn(def) && cases.forall[c|doesControlFlowGuaranteeReturn(c)]
+	}
+
+	private def dispatch boolean doesControlFlowGuaranteeReturn(GenSwitchCase zwitch) {
+		val cases = zwitch.cases
+		val def = zwitch.^default
+
+		if(def === null) return false
+
+		return doesControlFlowGuaranteeReturn(def) && cases.forall[c|doesControlFlowGuaranteeReturn(c)]
+	}
+
+	private def dispatch boolean doesControlFlowGuaranteeReturn(GenCase caze) {
+		val expressions = caze.body.expressions
+		return doesControlFlowContentGuaranteeReturn(expressions)
+	}
+
+	private def dispatch boolean doesControlFlowGuaranteeReturn(GenWhenCase caze) {
+		val expressions = caze.body.expressions
+		return doesControlFlowContentGuaranteeReturn(expressions)
+	}
+
+	private def dispatch boolean doesControlFlowGuaranteeReturn(GenDefault genDef) {
+		val expressions = genDef.body.expressions
+		return doesControlFlowContentGuaranteeReturn(expressions)
+	}
+
+	private def dispatch boolean doesControlFlowGuaranteeReturn(GenForStatement forStatement) {
+		// for loops can only guarantee return if they are guaranteed to be executed.
+		// This is only the case if we have an explicit and valid range given
+		if(!(forStatement.head instanceof RangeForHead)) return false
+
+		val expressions = forStatement.body.commands.filter(GenSwitchExpression).toList
+		return doesControlFlowContentGuaranteeReturn(expressions)
+	}
+
+	private def boolean doesControlFlowContentGuaranteeReturn(java.util.List<GenSwitchExpression> expressions) {
+		val returns = expressions.filter(GenReturn).toList
+		val switches = expressions.filter(GenSwitch).toList
+		val fors = expressions.filter(GenForStatement).toList
+		var returnGuaranteed = false
+		if (returns.length < 1) {
+			for (zwitch : switches) {
+				if (doesControlFlowGuaranteeReturn(zwitch)) {
+					returnGuaranteed = true
+				}
+			}
+			for (ffor : fors) {
+				if (doesControlFlowGuaranteeReturn(ffor)) {
+					returnGuaranteed = true
+				}
+			}
+		} else {
+			returnGuaranteed = true
+		}
+
+		if (returnGuaranteed && !returns.empty) {
+			val lastReturn = returns.get(returns.size - 1)
+			if (expressions.indexOf(lastReturn) !== expressions.length - 1) {
+				warning("This return suppresses lines of code following afterwards", lastReturn,
+					MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+			}
+		}
+
+		return returnGuaranteed
+	}
+
+	private def dispatch boolean doesControlFlowGuaranteeReturn(EObject obj) {
+		return false
 	}
 
 	@Check
@@ -277,20 +385,31 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 * Checks that the return type of a generator is valid, i.e. no patterns being returned but concrete nodes/EObjects 
 	 */
 	def checkValidReturnValue(GenReturn genRet) {
-		val retEval = TypeCalculator.evaluate(genRet.returnValue)
-		if (!(retEval instanceof EClassifier)) {
-			error("Invalid return value. Can only return eObjects", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+		val retValue = genRet.returnValue
+		if (retValue === null) {
+			error("Invalid return value. Can only return EObjects", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+		} else {
+			val retEval = TypeCalculator.evaluate(retValue)
+			if (!(retEval instanceof EClassifier)) {
+				error("Invalid return value. Can only return EObjects", MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+			}
 		}
 	}
 
 	@Check
+	/**
+	 * Only for direct returns outside of control flow constructs.
+	 * Consult checkGuaranteedReturn() for suppression of commands within control flow constructs.
+	 */
 	def checkNoLinesAfterReturn(GenReturn ret) {
-		val gen = EcoreUtil2.getContainerOfType(ret, Generator)
-		val genCommands = gen.commands
-		if (gen.commands !== null) {
-			if (genCommands.indexOf(ret) !== genCommands.length - 1) {
-				warning("This return suppresses lines of code following afterwards",
-					MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+		val container = ret.eContainer
+		if (container instanceof Generator) {
+			val genCommands = container.commands
+			if (container.commands !== null) {
+				if (genCommands.indexOf(ret) !== genCommands.length - 1) {
+					warning("This return suppresses lines of code following afterwards",
+						MGLangPackage.Literals.GEN_RETURN__RETURN_VALUE)
+				}
 			}
 		}
 	}

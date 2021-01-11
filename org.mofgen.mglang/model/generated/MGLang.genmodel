@@ -126,8 +126,8 @@
     <genClasses ecoreClass="MGLang.ecore#//PatternIfElseSwitch">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternIfElseSwitch/cases"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//PatternCaseBody">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseBody/expressions"/>
+    <genClasses ecoreClass="MGLang.ecore#//PatternDefault">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternDefault/body"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternSwitchCase">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternSwitchCase/attribute"/>
@@ -146,6 +146,9 @@
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//PatternCaseWithoutCast">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseWithoutCast/val"/>
+    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//PatternCaseBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//PatternCaseBody/expressions"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Case"/>
     <genClasses ecoreClass="MGLang.ecore#//RefOrCall">
@@ -227,7 +230,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenWhenCase/when"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenWhenCase/body"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//GenDefault"/>
+    <genClasses ecoreClass="MGLang.ecore#//GenDefault">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenDefault/body"/>
+    </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//GenSwitchCase">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenSwitchCase/attribute"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenSwitchCase/cases"/>

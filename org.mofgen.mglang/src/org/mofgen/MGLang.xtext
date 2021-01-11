@@ -92,8 +92,8 @@ PatternSwitch:
 PatternIfElseSwitch:
 	'switch' '{' (cases+=PatternWhenCase)+ (default=PatternDefault)? '}';
 
-PatternDefault returns PatternCaseBody:
-	'default' ':' PatternCaseBody;
+PatternDefault:
+	'default' ':' body=PatternCaseBody;
 
 PatternSwitchCase:
 	'switch' '(' attribute=RefOrCall ')' '{' (cases+=PatternCase)+ (default=PatternDefault)? '}'; // TODO restrictions in refOrCall-scoping for attribute?
@@ -181,7 +181,7 @@ GenForBody:
 	{GenForBody} (commands+=GeneratorExpression)*;
 
 GenSwitchExpression:
-	GenForStatement | GenSwitch | Collection | CollectionManipulation | Variable | VariableManipulation | PatternCall;
+	GenForStatement | GenSwitch | Collection | CollectionManipulation | Variable | VariableManipulation | PatternCall | GenReturn;
 
 Switch:
 	GenSwitch | PatternSwitch;
@@ -196,7 +196,7 @@ GenWhenCase:
 	'when' when=ArithmeticExpression ':' body=GenCaseBody;
 
 GenDefault:
-	'default' ':' GenCaseBody;
+	'default' ':' body=GenCaseBody;
 
 GenSwitchCase:
 	'switch' '(' attribute=RefOrCall ')' '{' (cases+=GenCase)+ (default=GenDefault)? '}'; // TODO restrictions in refOrCall-scoping for attribute?

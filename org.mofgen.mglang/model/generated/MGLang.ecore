@@ -103,16 +103,16 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternSwitch" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow #//NodeReferenceOrControlFlow #//Switch">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//PatternCaseBody"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//PatternDefault"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternIfElseSwitch" eSuperTypes="#//PatternSwitch">
     <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
         eType="#//PatternWhenCase" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternCaseBody">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
-        eType="#//NodeReferenceOrAssignmentOrControlFlow" containment="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternDefault">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//PatternCaseBody"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PatternSwitchCase" eSuperTypes="#//PatternSwitch">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//RefOrCall"
@@ -139,6 +139,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCaseBody">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
+        eType="#//NodeReferenceOrAssignmentOrControlFlow" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Case"/>
   <eClassifiers xsi:type="ecore:EClass" name="RefOrCall" eSuperTypes="#//RefOrCallOrPatternCall #//ArithmeticExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="thisUsed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -160,7 +164,7 @@
         eType="#//GeneratorExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GeneratorExpression"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GenReturn" eSuperTypes="#//GeneratorExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="GenReturn" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="returnValue" eType="#//RefOrCallOrPatternCall"
         containment="true"/>
   </eClassifiers>
@@ -240,7 +244,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//GenCaseBody"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GenDefault"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GenDefault">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//GenCaseBody"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenSwitchCase" eSuperTypes="#//GenSwitch">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//RefOrCall"
         containment="true"/>
@@ -260,7 +267,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GenCaseBody" eSuperTypes="#//GenDefault">
+  <eClassifiers xsi:type="ecore:EClass" name="GenCaseBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
         eType="#//GenSwitchExpression" containment="true"/>
   </eClassifiers>

@@ -74,19 +74,19 @@ class GeneralTranslator {
 
 	private def static dispatch String internalTranslate(ForHead head) {
 		val headSrc = switch head {
-			RangeForHead: '''int «head.iteratorVar.name» = «MofgenUtil.getTextFromEditorFile(head.range.start)»; «head.iteratorVar.name» <= «MofgenUtil.getTextFromEditorFile(head.range.end)»; «head.iteratorVar.name»++'''
+			RangeForHead: '''int «head.iteratorVar.name» = «translate(head.range.start)»; «head.iteratorVar.name» <= «translate(head.range.end)»; «head.iteratorVar.name»++'''
 			GeneralForEachHead: {
 				var typeString = ""
 				var collectionString = ""
 				if (head.eref == TypeModelPackage.Literals.MAP__ENTRIES) {
 					typeString = MofgenUtil.getMapEntryType(head.src.ref as Map).name
-					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».values()'''
+					collectionString = '''«translate(head.src)».values()'''
 				} else if (head.eref == TypeModelPackage.Literals.MAP__KEYS) {
 					typeString = MofgenUtil.getMapKeyType(head.src.ref as Map).name
-					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».keySet()'''
+					collectionString = '''«translate(head.src)».keySet()'''
 				} else {
 					typeString = head.eref.name
-					collectionString = '''«MofgenUtil.getTextFromEditorFile(head.src)».«NameProvider.getGetterName(head.eref)»()'''
+					collectionString = '''«translate(head.src)».«NameProvider.getGetterName(head.eref)»()'''
 				}
 
 				'''«typeString» «head.iteratorVar.name» : «collectionString» '''

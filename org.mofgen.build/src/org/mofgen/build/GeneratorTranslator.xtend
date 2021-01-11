@@ -86,7 +86,7 @@ class GeneratorTranslator {
 			«ENDFOR»
 			«IF zwitch.^default !== null»
 				else {
-					«FOR bodyExpr : (zwitch.^default as GenCaseBody).expressions»
+					«FOR bodyExpr : (zwitch.^default.body as GenCaseBody).expressions»
 						«translate(bodyExpr)»;
 					«ENDFOR»
 				}
@@ -101,7 +101,7 @@ class GeneratorTranslator {
 					if(«translate(zwitch.attribute)» instanceof «caze.node.type.name»){
 						«caze.node.type.name» «caze.node.name» = («caze.node.type.name») «translate(zwitch.attribute)»;
 						«IF caze.when !== null»
-							if(«MofgenUtil.getTextFromEditorFile(caze.when)»){
+							if(«translate(caze.when)»){
 						«ENDIF»
 						«FOR bodyExpr : caze.body.expressions»
 							«translate(bodyExpr)»;
@@ -121,7 +121,7 @@ class GeneratorTranslator {
 			«ENDFOR»
 			«IF zwitch.^default !== null»
 				else {
-					«FOR bodyExpr : (zwitch.^default as GenCaseBody).expressions»
+					«FOR bodyExpr : (zwitch.^default.body as GenCaseBody).expressions»
 						«translate(bodyExpr)»;
 					«ENDFOR»
 				}
@@ -189,7 +189,7 @@ class GeneratorTranslator {
 	}
 
 	def static dispatch private String internalTranslate(GenReturn ret) {
-		return '''return «translate(ret.returnValue)»'''
+		return '''return «ret.returnValue === null ? "null" : translate(ret.returnValue) »'''
 	}
 
 	def static dispatch private String internalTranslate(PatternCall pc) {

@@ -216,7 +216,7 @@ class PatternBuildSequencer {
 		}
 		val defaultObj = zwitch.^default
 		if (defaultObj !== null) {
-			switchExpressions.addAll(defaultObj.expressions)
+			switchExpressions.addAll(defaultObj.body.expressions)
 		}
 
 		for (expr : switchExpressions) {
@@ -234,7 +234,7 @@ class PatternBuildSequencer {
 		}
 		val defaultObj = zwitch.^default
 		if (defaultObj !== null) {
-			switchExpressions.addAll(defaultObj.expressions)
+			switchExpressions.addAll(defaultObj.body.expressions)
 		}
 		switchExpressions.add(zwitch.attribute)
 

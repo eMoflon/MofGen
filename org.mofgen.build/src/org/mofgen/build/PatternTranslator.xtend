@@ -248,7 +248,7 @@ class PatternTranslator {
 			«ENDFOR»
 			«IF pSwitch.^default !== null»
 				else{
-					«FOR refAssign : (pSwitch.^default as PatternCaseBody).expressions»
+					«FOR refAssign : (pSwitch.^default.body as PatternCaseBody).expressions»
 						«translate(refAssign)»;
 					«ENDFOR»
 				}
@@ -274,7 +274,7 @@ class PatternTranslator {
 					}
 				«ENDIF»
 				«IF caze instanceof PatternCaseWithoutCast»
-					if(«translate(zwitch.attribute)»  == «MofgenUtil.getTextFromEditorFile(caze.^val)»){
+					if(«translate(zwitch.attribute)»  == «translate(caze.^val)»){
 						«FOR bodyExpr : caze.body.expressions»
 							«translate(bodyExpr)»;
 						«ENDFOR»
@@ -283,7 +283,7 @@ class PatternTranslator {
 			«ENDFOR»
 			«IF zwitch.^default !== null»
 				else {
-					«FOR expression : (zwitch.^default as PatternCaseBody).expressions»
+					«FOR expression : (zwitch.^default.body as PatternCaseBody).expressions»
 						«translate(expression)»;
 					«ENDFOR»
 				}
