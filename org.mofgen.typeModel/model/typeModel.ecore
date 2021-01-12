@@ -3,7 +3,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="typeModel" nsURI="http://www.example.org/typeModel" nsPrefix="typeModel">
   <eClassifiers xsi:type="ecore:EClass" name="Number" abstract="true" eSuperTypes="#//Primitive"/>
   <eClassifiers xsi:type="ecore:EClass" name="Boolean" eSuperTypes="#//Primitive"/>
-  <eClassifiers xsi:type="ecore:EClass" name="String" eSuperTypes="#//Primitive"/>
+  <eClassifiers xsi:type="ecore:EClass" name="String"/>
   <eClassifiers xsi:type="ecore:EClass" name="Primitive" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="Enum"/>
   <eClassifiers xsi:type="ecore:EClass" name="Map" eSuperTypes="#//Collection">

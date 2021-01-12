@@ -333,9 +333,11 @@
     <eLiterals name="GREATER" literal=">"/>
     <eLiterals name="GREATER_OR_EQUAL" value="1" literal=">="/>
     <eLiterals name="EQUAL" value="2" literal="=="/>
-    <eLiterals name="UNEQUAL" value="3" literal="!="/>
-    <eLiterals name="LESS_OR_EQUAL" value="4" literal="&lt;="/>
-    <eLiterals name="LESS" value="5" literal="&lt;"/>
+    <eLiterals name="EQUAL_IDENTITY" value="3" literal="==="/>
+    <eLiterals name="UNEQUAL_IDENTITY" value="4" literal="!=="/>
+    <eLiterals name="UNEQUAL" value="5" literal="!="/>
+    <eLiterals name="LESS_OR_EQUAL" value="6" literal="&lt;="/>
+    <eLiterals name="LESS" value="7" literal="&lt;"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="TertiaryOp">
     <eLiterals name="PLUS" literal="+"/>

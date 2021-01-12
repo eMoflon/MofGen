@@ -213,6 +213,8 @@ class Calculator {
 				case UNEQUAL: return !castLeft.equals(castRight)
 				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
 				case LESS: throw new MismatchingTypesException("Can only compare Strings for (un)equality.")
+				case EQUAL_IDENTITY: return castLeft.equals(castRight)
+				case UNEQUAL_IDENTITY: return !castLeft.equals(castRight)
 			}
 		} else if (evalLeft instanceof Boolean && evalRight instanceof Boolean) {
 			// -------------------- Boolean Values -----------------------	
@@ -231,6 +233,8 @@ class Calculator {
 					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
 				case LESS:
 					throw new MismatchingTypesException("Can only compare boolean values for (un)equality.")
+				case EQUAL_IDENTITY: return castLeft == castRight
+				case UNEQUAL_IDENTITY: return castLeft != castRight
 			}
 		} else if (evalLeft instanceof Number && evalRight instanceof Number) {
 			// -------------------- Numerical Values -----------------------	
@@ -243,6 +247,8 @@ class Calculator {
 				case UNEQUAL: return castLeft != castRight
 				case LESS_OR_EQUAL: return castLeft <= castRight
 				case LESS: return castLeft < castRight
+				case EQUAL_IDENTITY: return castLeft == castRight
+				case UNEQUAL_IDENTITY: return castLeft != castRight
 			}
 		} else {
 			throw new MismatchingTypesException("Invalid Expression.")

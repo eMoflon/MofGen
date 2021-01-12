@@ -20,6 +20,8 @@
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/GREATER"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/GREATER_OR_EQUAL"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/EQUAL"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/EQUAL_IDENTITY"/>
+      <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/UNEQUAL_IDENTITY"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/UNEQUAL"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/LESS_OR_EQUAL"/>
       <genEnumLiterals ecoreEnumLiteral="MGLang.ecore#//RelationalOp/LESS"/>

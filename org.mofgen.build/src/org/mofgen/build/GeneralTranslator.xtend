@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EcorePackage
 import org.mofgen.interpreter.MismatchingTypesException
 import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.mGLang.ArithmeticExpression
+import org.mofgen.mGLang.BracketExpression
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
 import org.mofgen.mGLang.ForHead
@@ -34,6 +35,7 @@ import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.RefParams
 import org.mofgen.mGLang.Rel
+import org.mofgen.mGLang.RelationalOp
 import org.mofgen.mGLang.Secondary
 import org.mofgen.mGLang.Tertiary
 import org.mofgen.mGLang.UnaryMinus
@@ -41,7 +43,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.mofgen.mGLang.BracketExpression
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 class GeneralTranslator {
 
@@ -50,6 +52,16 @@ class GeneralTranslator {
 			throw new IllegalArgumentException("Cannot translate null")
 		}
 		return internalTranslate(obj)
+	}
+
+	private def static String translate(RelationalOp op) {
+		if (op == RelationalOp.EQUAL_IDENTITY) {
+			return '=='
+		}
+		if (op == RelationalOp.UNEQUAL_IDENTITY) {
+			return '!='
+		}
+		return op.literal
 	}
 
 	private def static dispatch String internalTranslate(PatternCall pc) {
@@ -121,7 +133,7 @@ class GeneralTranslator {
 	 * translates the given arithmetic expression to source code
 	 */
 	private def static dispatch String internalTranslate(ArithmeticExpression ae) {
-		switch ae {	
+		switch ae {
 			RefOrCall:
 				return translate(ae)
 			NullLiteral:
@@ -142,31 +154,67 @@ class GeneralTranslator {
 				return '''!«translate(ae.expr)»'''
 			Rel: {
 				var emptyCollectionSuffix = ""
+				val leftEval = calculateType(ae.left)
+				val rightEval = calculateType(ae.right)
 				if ((ae.left instanceof NullLiteral || ae.right instanceof NullLiteral)) {
-					val leftEval = calculateType(ae.left)
+
 					if (leftEval instanceof EClass) {
 						if (TypeModelPackage.Literals.COLLECTION.isSuperTypeOf(leftEval)) {
 							switch (ae.relation) {
-								case EQUAL:	emptyCollectionSuffix = '''|| «translate(ae.left)».isEmpty()'''
-								case UNEQUAL: 	emptyCollectionSuffix = '''&& !«translate(ae.left)».isEmpty()'''
+								case EQUAL:
+									emptyCollectionSuffix = '''|| «translate(ae.left)».isEmpty()'''
+								case UNEQUAL:
+									emptyCollectionSuffix = '''&& !«translate(ae.left)».isEmpty()'''
 								default: {
 								}
 							}
 						}
-					} 
-					val rightEval = calculateType(ae.right)
+					}
 					if (rightEval instanceof EClass) {
 						if (TypeModelPackage.Literals.COLLECTION.isSuperTypeOf(rightEval)) {
 							switch (ae.relation) {
-								case EQUAL: emptyCollectionSuffix = '''|| «translate(ae.right)».isEmpty()'''
-								case UNEQUAL: emptyCollectionSuffix = '''&& !«translate(ae.right)».isEmpty()'''
+								case EQUAL:
+									emptyCollectionSuffix = '''|| «translate(ae.right)».isEmpty()'''
+								case UNEQUAL:
+									emptyCollectionSuffix = '''&& !«translate(ae.right)».isEmpty()'''
 								default: {
 								}
 							}
 						}
-					} 
+					}
 				}
-				return '''«translate(ae.left)»«ae.relation.literal»«translate(ae.right)»«emptyCollectionSuffix»'''
+
+				if (leftEval instanceof EClass) {
+					if (rightEval instanceof EClass) {
+						if (leftEval !== TypeModelPackage.Literals.NULL_OBJECT &&
+							rightEval !== TypeModelPackage.Literals.NULL_OBJECT) {
+							if (ae.relation == RelationalOp.EQUAL&&
+								!TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(leftEval) &&
+								!TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(leftEval)) {
+									// TODO What to use here?
+									if (isClassImplementingEquals(leftEval)) {
+										return '''«translate(ae.left)».equals(«translate(ae.right)»)'''
+									} else {
+										return '''(new EcoreUtil.EqualityHelper()).equals(«translate(ae.left)», «translate(ae.right)»)'''
+									}
+							}
+							if (ae.relation == RelationalOp.UNEQUAL &&
+								!TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(leftEval) &&
+								!TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(leftEval)) {
+
+								// TODO What to use here?
+								if (isClassImplementingEquals(leftEval)) {
+									return '''!«translate(ae.left)».equals(«translate(ae.right)»)'''
+								} else {
+									return '''!(new EcoreUtil.EqualityHelper()).equals(«translate(ae.left)», «translate(ae.right)»)'''
+								}
+
+							}
+						}
+					}
+				}
+
+				return '''«translate(ae.left)»«translate(ae.relation)»«translate(ae.right)»«emptyCollectionSuffix»'''
 			}
 			Primary:
 				return '''«translate(ae.left)»«ae.op.literal»«translate(ae.right)»'''
@@ -175,10 +223,23 @@ class GeneralTranslator {
 			Tertiary:
 				return '''«translate(ae.left)»«ae.op.literal»«translate(ae.right)»'''
 			BracketExpression:
-				return '''(«translate(ae.expr)»)'''	
+				return '''(«translate(ae.expr)»)'''
 			default:
 				return MofgenUtil.getTextFromEditorFile(ae)
 		}
+	}
+
+	private static def isClassImplementingEquals(EClass eClass) {
+		if(eClass == TypeModelPackage.Literals.STRING){
+			return true;
+		}
+		val allOps = eClass.EAllOperations
+		for (op : allOps) {
+			if (op.name.equals("equals")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -252,7 +313,7 @@ class GeneralTranslator {
 	 * the normal translation will be returned.
 	 */
 	def static convertIfPrimitiveCastNeeded(Parameter neededParameter, ArithmeticExpression givenParam) {
-		
+
 		if (neededParameter instanceof PrimitiveParameter) {
 			val neededParameterType = neededParameter.type
 			var givenParameterType = calculateType(givenParam)
@@ -284,15 +345,15 @@ class GeneralTranslator {
 		}
 		return translate(givenParam)
 	}
-	
-	def private static EObject calculateType(ArithmeticExpression ae){
-		try{
+
+	def private static EObject calculateType(ArithmeticExpression ae) {
+		try {
 			return TypeCalculator.evaluate(ae)
-		}catch(MismatchingTypesException e){
+		} catch (MismatchingTypesException e) {
 			/*
 			 * Nothing to do, needs to be fixed in validator.
 			 */
 		}
 	}
-	
+
 }

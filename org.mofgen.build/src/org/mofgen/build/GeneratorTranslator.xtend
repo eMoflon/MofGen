@@ -3,6 +3,7 @@ package org.mofgen.build
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.EcoreUtil2
 import org.mofgen.interpreter.TypeCalculator
 import org.mofgen.mGLang.Collection
 import org.mofgen.mGLang.CollectionManipulation
@@ -13,6 +14,7 @@ import org.mofgen.mGLang.GenForStatement
 import org.mofgen.mGLang.GenIfElseSwitch
 import org.mofgen.mGLang.GenReturn
 import org.mofgen.mGLang.GenSwitchCase
+import org.mofgen.mGLang.GenWhenCase
 import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.List
 import org.mofgen.mGLang.ListAdHoc
@@ -26,9 +28,6 @@ import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.eclipse.xtext.EcoreUtil2
-import org.mofgen.mGLang.GenWhenCase
-import org.eclipse.emf.ecore.EcorePackage
 
 /**
  * Translates given expressions to source code that will be used as part of the API.

@@ -314,7 +314,7 @@ terminal NULL:
 	'none';
 
 enum RelationalOp:
-	GREATER='>' | GREATER_OR_EQUAL='>=' | EQUAL='==' | UNEQUAL='!=' | LESS_OR_EQUAL='<=' | LESS='<';
+	GREATER='>' | GREATER_OR_EQUAL='>=' | EQUAL='==' | EQUAL_IDENTITY='==='| UNEQUAL_IDENTITY='!==' | UNEQUAL='!=' | LESS_OR_EQUAL='<=' | LESS='<';
 
 enum TertiaryOp:
 	PLUS='+' | MINUS='-' | OR='||';

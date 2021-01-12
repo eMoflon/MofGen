@@ -5,11 +5,10 @@ import org.eclipse.xtext.naming.DefaultDeclarativeQualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.mofgen.mGLang.ForStatement
+import org.mofgen.mGLang.IteratorVariable
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.Switch
-import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.IteratorVariable
 
 class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvider {
 
@@ -22,8 +21,7 @@ class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvide
 		return computeFullyQualifiedNameInternal(obj);
 	}
 
-	def dispatch QualifiedName computeFullyQualifiedNameInternal(ForStatement forStatement) {
-//		val highestFor = MofgenModelUtils.getHightestContainerOfType(forStatement, ForStatement)		
+	def dispatch QualifiedName computeFullyQualifiedNameInternal(ForStatement forStatement) {	
 		val qualifiedForName = deriveFullyQualifiedName(forStatement);
 
 		var obj = forStatement as EObject

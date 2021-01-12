@@ -64,11 +64,11 @@ class TypeCalculator {
 			return eval
 		}
 	}
-	
-	def static dispatch EObject evaluate(RefOrCallOrPatternCall obj){
-		if(obj instanceof RefOrCall){
+
+	def static dispatch EObject evaluate(RefOrCallOrPatternCall obj) {
+		if (obj instanceof RefOrCall) {
 			return evaluate(obj)
-		}else{
+		} else {
 			return evaluate(obj as PatternCall)
 		}
 	}
@@ -191,7 +191,6 @@ class TypeCalculator {
 			return getKeyType ? keyType : entryType
 		}
 	}
-	
 
 	def static dispatch private EObject internalEvaluate(Node node) {
 		return node.type
@@ -392,21 +391,6 @@ class TypeCalculator {
 		val evalLeft = evaluate(rel.left) as EClass
 		val evalRight = evaluate(rel.right) as EClass
 
-		if (evalLeft === TypeModelPackage.Literals.NULL_OBJECT || evalRight === TypeModelPackage.Literals.NULL_OBJECT) {
-			switch (rel.relation) {
-				case GREATER: throw new MismatchingTypesException("Can compare none only for (in)equality")
-				case GREATER_OR_EQUAL: throw new MismatchingTypesException("Can compare none only for (in)equality")
-				case EQUAL: return TypeModelPackage.Literals.BOOLEAN
-				case UNEQUAL: return TypeModelPackage.Literals.BOOLEAN
-				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can compare none only for (in)equality")
-				case LESS: throw new MismatchingTypesException("Can compare none only for (in)equality")
-			}
-		}
-
-		if (evalLeft !== evalRight) {
-			throw new MismatchingTypesException("Cannot compare objects of different types for (in)equality")
-		}
-
 		if (evalLeft === TypeModelPackage.Literals.STRING && evalRight === TypeModelPackage.Literals.STRING) {
 			// -------------------- Strings -----------------------	
 			switch (rel.relation) {
@@ -416,6 +400,20 @@ class TypeCalculator {
 				case UNEQUAL: return TypeModelPackage.Literals.BOOLEAN
 				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can compare Strings only for (in)equality.")
 				case LESS: throw new MismatchingTypesException("Can compare Strings only for (in)equality.")
+				case EQUAL_IDENTITY: return TypeModelPackage.Literals.BOOLEAN
+				case UNEQUAL_IDENTITY: return TypeModelPackage.Literals.BOOLEAN
+			}
+		} else if (evalLeft === TypeModelPackage.Literals.NULL_OBJECT ||
+			evalRight === TypeModelPackage.Literals.NULL_OBJECT) {
+			switch (rel.relation) {
+				case GREATER: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case GREATER_OR_EQUAL: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case EQUAL: return TypeModelPackage.Literals.BOOLEAN
+				case UNEQUAL: return TypeModelPackage.Literals.BOOLEAN
+				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case LESS: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case EQUAL_IDENTITY: return TypeModelPackage.Literals.BOOLEAN
+				case UNEQUAL_IDENTITY: return TypeModelPackage.Literals.BOOLEAN
 			}
 		} else if (evalLeft === TypeModelPackage.Literals.BOOLEAN && evalRight === TypeModelPackage.Literals.BOOLEAN) {
 			// -------------------- Boolean Values -----------------------	
@@ -432,11 +430,26 @@ class TypeCalculator {
 					throw new MismatchingTypesException("Can only compare boolean values for (in)equality.")
 				case LESS:
 					throw new MismatchingTypesException("Can only compare boolean values for (in)equality.")
+				case EQUAL_IDENTITY:
+					throw new MismatchingTypesException("Can only compare objects for (in)identity")
+				case UNEQUAL_IDENTITY:
+					throw new MismatchingTypesException("Can only compare objects for (in)identity")
 			}
 		} else if (TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalLeft) &&
 			TypeModelPackage.Literals.NUMBER.isSuperTypeOf(evalRight)) {
 			// -------------------- Numerical Values -----------------------	
 			return TypeModelPackage.Literals.BOOLEAN
+		} else if (evalLeft == evalRight) {
+			switch (rel.relation) {
+				case GREATER: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case GREATER_OR_EQUAL: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case EQUAL: return TypeModelPackage.Literals.BOOLEAN
+				case UNEQUAL: return TypeModelPackage.Literals.BOOLEAN
+				case LESS_OR_EQUAL: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case LESS: throw new MismatchingTypesException("Can compare none only for (in)equality")
+				case EQUAL_IDENTITY: return TypeModelPackage.Literals.BOOLEAN
+				case UNEQUAL_IDENTITY: return TypeModelPackage.Literals.BOOLEAN
+			}
 		} else {
 			var evalLeftString = "NULL"
 			var evalRightString = "NULL"
@@ -459,8 +472,8 @@ class TypeCalculator {
 					evalRightString)
 		}
 	}
-	
-	def static dispatch private EObject internalEvaluate(BracketExpression bracketExpr){
+
+	def static dispatch private EObject internalEvaluate(BracketExpression bracketExpr) {
 		return evaluate(bracketExpr.expr)
 	}
 
@@ -475,7 +488,7 @@ class TypeCalculator {
 	def static dispatch private EObject internalEvaluate(DoubleLiteral lit) {
 		return TypeModelPackage.Literals.DOUBLE
 	}
-	
+
 	def static dispatch private EObject internalEvaluate(IntegerLiteral lit) {
 		return TypeModelPackage.Literals.INTEGER
 	}

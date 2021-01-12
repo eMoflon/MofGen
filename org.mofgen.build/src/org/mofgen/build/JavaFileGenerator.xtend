@@ -133,7 +133,7 @@ class JavaFileGenerator {
 	def generateGenClass(IFolder genPackage, Generator gen) {
 		logger.debug("Creating generator class for "+gen.name+" ..")
 		val imports = newHashSet('java.util.ArrayList', 'java.util.List', 'java.util.Map', 'java.util.HashMap',
-			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.mofgen.api.' + GENERATOR_SUPER_CLASS)
+			'java.util.LinkedList', 'org.eclipse.emf.ecore.EObject', 'org.eclipse.emf.ecore.util.EcoreUtil', 'org.mofgen.api.' + GENERATOR_SUPER_CLASS)
 		imports.add(genPackage.project.name + '.api.patterns.' + genPackage.name + ".*")
 		imports.addAll(eClassifiersManager.getAllImports(editorModel))
 
