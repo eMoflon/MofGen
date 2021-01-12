@@ -46,10 +46,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="content" eType="#//NodeContent"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//PatternCommand">
+  <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//PatternCommand #//VariableSuperClass">
     <eStructuralFeatures xsi:type="ecore:EReference" name="srcModel" eType="#//Import"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
   </eClassifiers>
@@ -180,9 +179,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="val" eType="#//ArithmeticExpression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="VariableSuperClass">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//GeneratorExpression #//VariableSuperClass #//GenSwitchExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="VariableDefinition" eSuperTypes="#//Variable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//ArithmeticExpression"
         containment="true"/>
@@ -221,9 +221,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ListForEachHead" eSuperTypes="#//ForHead">
     <eStructuralFeatures xsi:type="ecore:EReference" name="list" eType="#//List"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IteratorVariable">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IteratorVariable" eSuperTypes="#//VariableSuperClass"/>
   <eClassifiers xsi:type="ecore:EClass" name="GenForBody" eSuperTypes="#//ForBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
         eType="#//GeneratorExpression" containment="true"/>
@@ -271,9 +269,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expressions" upperBound="-1"
         eType="#//GenSwitchExpression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//GeneratorExpression #//GenSwitchExpression">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Collection" eSuperTypes="#//GeneratorExpression #//VariableSuperClass #//GenSwitchExpression"/>
   <eClassifiers xsi:type="ecore:EClass" name="List" eSuperTypes="#//Collection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="defOrDecl" eType="#//ListDefOrDecl"
         containment="true"/>

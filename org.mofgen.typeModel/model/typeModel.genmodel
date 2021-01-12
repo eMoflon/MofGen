@@ -41,6 +41,7 @@
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="typeModel.ecore#//List">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference typeModel.ecore#//List/elements"/>
       <genOperations ecoreOperation="typeModel.ecore#//List/get">
         <genParameters ecoreParameter="typeModel.ecore#//List/get/index"/>
       </genOperations>

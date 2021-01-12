@@ -141,6 +141,10 @@ CollectionManipulation:
 VariableManipulation:
 	var=[Variable] ASSIGNMENT_OP val=ArithmeticExpression;
 
+VariableSuperClass:
+	Variable | IteratorVariable | Collection | Node
+;
+
 Variable:
 	VariableDefinition | VariableDeclaration;
 

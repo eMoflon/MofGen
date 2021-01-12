@@ -1,31 +1,30 @@
 package org.mofgen.validation;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.validation.NamesAreUniqueValidationHelper;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
-import org.mofgen.mGLang.ForStatement;
-import org.mofgen.mGLang.GenCaseWithCast;
-import org.mofgen.mGLang.IteratorVariable;
-import org.mofgen.mGLang.Node;
-import org.mofgen.mGLang.Pattern;
-import org.mofgen.mGLang.PatternCaseWithCast;
-import org.mofgen.scoping.MofgenQualifiedNameProvider;
+import org.mofgen.mGLang.MGLangPackage;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 
 public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidationHelper {
 
-	private Map<QualifiedName, IEObjectDescription> nameToDescription;
+	private Map<QualifiedName, IEObjectDescription> localNamespaces = Maps.newHashMap();
+	private Map<QualifiedName, IEObjectDescription> globalNamespaces = Maps.newHashMap();
+
+	private ImmutableSet<EClass> globalNamespaceClassesCheckOnly = ImmutableSet
+			.of(MGLangPackage.Literals.ITERATOR_VARIABLE, MGLangPackage.Literals.NODE);
+	private ImmutableSet<EClass> globalNamespaceClasses = ImmutableSet.of(MGLangPackage.Literals.VARIABLE,
+			MGLangPackage.Literals.COLLECTION);
 
 	@Override
 	/**
@@ -35,66 +34,106 @@ public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidati
 	protected void checkDescriptionForDuplicatedName(IEObjectDescription description,
 			Map<EClass, Map<QualifiedName, IEObjectDescription>> clusterTypeToName,
 			ValidationMessageAcceptor acceptor) {
+
+		List<QualifiedName> qualifiedNames = new LinkedList<>();
+		QualifiedName qn = description.getName();
+		qualifiedNames.add(qn);
+
+		QualifiedName reducedQN = getReducedQualifiedName(qn);
+		qualifiedNames.add(reducedQN);
+
+		checkNamespace(description, qn, localNamespaces, acceptor, true);
+		
+		if (partOfGivenNamespace(description, globalNamespaceClasses)) {
+			checkNamespace(description, reducedQN, globalNamespaces, acceptor, true);
+		}
+		if (partOfGivenNamespace(description, globalNamespaceClassesCheckOnly)) {
+			checkNamespace(description, getAllQualifiedSubNames(qn), localNamespaces, acceptor, false);
+			checkNamespace(description, reducedQN, globalNamespaces, acceptor, false);
+		}
+	}
+
+	private QualifiedName getReducedQualifiedName(QualifiedName originalQN) {
+		QualifiedName reducedQN = QualifiedName.create(originalQN.getFirstSegment(), originalQN.getLastSegment());
+		if (originalQN.getSegmentCount() == 1) {
+			reducedQN = QualifiedName.create(originalQN.getFirstSegment());
+		}
+		return reducedQN;
+	}
+
+	private List<QualifiedName> getAllQualifiedSubNames(QualifiedName originalQN) {
+		List<QualifiedName> qualifiedNames = new LinkedList<>();
+		List<String> segments = originalQN.getSegments();
+
+		for (int i = 1; i < segments.size() - 1; i++) {
+			List<String> currentQNSegments = new LinkedList<>();
+			for (int j = 0; j < i; j++) {
+				currentQNSegments.add(segments.get(j));
+			}
+			currentQNSegments.add(originalQN.getLastSegment());
+			qualifiedNames.add(QualifiedName.create(currentQNSegments));
+		}
+		return qualifiedNames;
+	}
+
+	private boolean partOfGivenNamespace(IEObjectDescription description,
+			ImmutableSet<EClass> reducedNameSpaceClasses) {
 		EObject object = description.getEObjectOrProxy();
-		QualifiedName qualifiedName = description.getName();
+		return partOfGivenNamespace(object, reducedNameSpaceClasses);
+	}
 
-		if (nameToDescription == null) {
-			nameToDescription = Maps.newHashMap();
+	private boolean partOfGivenNamespace(EObject object, ImmutableSet<EClass> reducedNameSpaceClasses) {
+		EClass eClass = object.eClass();
+		return partOfGivenNamespace(eClass, reducedNameSpaceClasses);
+	}
+
+	private boolean partOfGivenNamespace(EClass eClass, ImmutableSet<EClass> reducedNameSpaceClasses) {
+		if (reducedNameSpaceClasses.contains(eClass)) {
+			return true;
 		} else {
-			IEObjectDescription prevDescription = nameToDescription.get(qualifiedName);
-			if (nameToDescription.containsKey(qualifiedName)) {
-				EClass eClass = object.eClass();
-				if (prevDescription != null) {
-					EObject prevObject = prevDescription.getEObjectOrProxy();
-					EClass prevEClass = prevObject.eClass();
-
-					createDuplicateNameError(prevDescription, prevEClass, acceptor);
-					nameToDescription.put(qualifiedName, null);
-				}
-				createDuplicateNameError(description, eClass, acceptor);
-			} else {
-				nameToDescription.put(qualifiedName, description);
+			List<EClass> superClasses = eClass.getEAllSuperTypes();
+			if (superClasses == null || superClasses.isEmpty()) {
+				return false;
 			}
-
-			QualifiedName qualifiedSpecialCaseName = null;
-			List<String> qualifiedSpecialCaseNameSegments = new ArrayList<>();
-
-			// remove switch and case namespace since it should also not collide with normal
-			// variables or nodes
-			if (object instanceof Node && (object.eContainer() instanceof GenCaseWithCast
-					|| object.eContainer() instanceof PatternCaseWithCast)) {
-				for (String segment : qualifiedName.getSegments()) {
-					if (!segment.startsWith(MofgenQualifiedNameProvider.SWITCH_PREFIX)
-							&& !segment.startsWith(MofgenQualifiedNameProvider.CASE__PREFIX)) {
-						qualifiedSpecialCaseNameSegments.add(segment);
-					}
+			for (EClass superClass : superClasses) {
+				if (partOfGivenNamespace(superClass, reducedNameSpaceClasses)) {
+					return true;
 				}
 			}
+			return false;
+		}
+	}
 
-			if (!qualifiedSpecialCaseNameSegments.isEmpty()) {
-				qualifiedSpecialCaseName = QualifiedName.create(qualifiedSpecialCaseNameSegments);
-				prevDescription = nameToDescription.get(qualifiedSpecialCaseName);
+	protected void checkNamespace(IEObjectDescription description, List<QualifiedName> qualifiedNames,
+			Map<QualifiedName, IEObjectDescription> namespace, ValidationMessageAcceptor acceptor,
+			boolean putIfAbsent) {
+		for (QualifiedName qualifiedName : qualifiedNames) {
+			checkNamespace(description, qualifiedName, namespace, acceptor, putIfAbsent);
+		}
+	}
 
-				if (nameToDescription.containsKey(qualifiedSpecialCaseName)) {
-					EClass eClass = object.eClass();
-					EClass prevEClass = null;
-					if (prevDescription != null) {
-						EObject prevObject = prevDescription.getEObjectOrProxy();
-						prevEClass = prevObject.eClass();
-						if (!(prevObject instanceof Node && object instanceof Node
-								&& !(object.eContainer() instanceof Pattern)
-								&& !(prevObject.eContainer() instanceof Pattern))) {
-							createDuplicateNameError(prevDescription, eClass, prevEClass, acceptor);
-							nameToDescription.put(qualifiedSpecialCaseName, null);
-							if (prevEClass != null) {
-								createDuplicateNameError(description, eClass, prevEClass, acceptor);
-							}
-						}
-					}
+	protected void checkNamespace(IEObjectDescription description, QualifiedName qualifiedName,
+			Map<QualifiedName, IEObjectDescription> namespace, ValidationMessageAcceptor acceptor,
+			boolean putIfAbsent) {
+		EObject object = description.getEObjectOrProxy();
+		IEObjectDescription prevDescription = namespace.get(qualifiedName);
+		if (namespace.containsKey(qualifiedName)) {
+			EClass eClass = object.eClass();
+			EClass prevEClass = null;
+			if (prevDescription != null) {
+				EObject prevObject = prevDescription.getEObjectOrProxy();
+				prevEClass = prevObject.eClass();
+				createDuplicateNameError(prevDescription, prevEClass, eClass, acceptor);
+				if (putIfAbsent) {
+					namespace.put(qualifiedName, null);
 				}
-
-			} else {
-				nameToDescription.put(qualifiedSpecialCaseName, description);
+			}
+			if (prevEClass != null) {
+				createDuplicateNameError(description, eClass, prevEClass, acceptor);
+			}
+		} else {
+			if (putIfAbsent) {
+				namespace.put(qualifiedName, description);
 			}
 		}
 	}

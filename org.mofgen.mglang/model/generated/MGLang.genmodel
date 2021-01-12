@@ -76,7 +76,6 @@
     <genClasses ecoreClass="MGLang.ecore#//Node">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//Node/srcModel"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//Node/type"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Node/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Node/createdBy"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//NodeContent">
@@ -179,9 +178,10 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//VariableManipulation/var"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//VariableManipulation/val"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//Variable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Variable/name"/>
+    <genClasses ecoreClass="MGLang.ecore#//VariableSuperClass">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//VariableSuperClass/name"/>
     </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//Variable"/>
     <genClasses ecoreClass="MGLang.ecore#//VariableDefinition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//VariableDefinition/value"/>
     </genClasses>
@@ -212,9 +212,7 @@
     <genClasses ecoreClass="MGLang.ecore#//ListForEachHead">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MGLang.ecore#//ListForEachHead/list"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//IteratorVariable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//IteratorVariable/name"/>
-    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//IteratorVariable"/>
     <genClasses ecoreClass="MGLang.ecore#//GenForBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenForBody/commands"/>
     </genClasses>
@@ -250,9 +248,7 @@
     <genClasses ecoreClass="MGLang.ecore#//GenCaseBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//GenCaseBody/expressions"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//Collection">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Collection/name"/>
-    </genClasses>
+    <genClasses ecoreClass="MGLang.ecore#//Collection"/>
     <genClasses ecoreClass="MGLang.ecore#//List">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//List/defOrDecl"/>
     </genClasses>
