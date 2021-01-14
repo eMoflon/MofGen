@@ -11,6 +11,7 @@ import org.mofgen.mGLang.Generator
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.Pattern
+import org.eclipse.emf.ecore.EClassifier
 
 class NameProvider {
 	
@@ -59,9 +60,9 @@ class NameProvider {
 	/**
 	 * @return the literal expression to access the given eClass in its Package
 	 */
-	def static String getLiteralName(EClass clazz){
+	def static String getLiteralName(EClassifier eClassifier){
 		// split camelCase
-		val splitName = clazz.name.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")
+		val splitName = eClassifier.name.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")
 		return '''
 		«FOR nameSegment : splitName SEPARATOR '_'»«nameSegment.toUpperCase»«ENDFOR»
 		'''

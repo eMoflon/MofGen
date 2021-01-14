@@ -64,6 +64,9 @@ import org.mofgen.mGLang.VariableDefinition
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
+import org.mofgen.mGLang.PatternSwitch
+import org.mofgen.mGLang.PatternForStatement
+import org.mofgen.mGLang.PatternCase
 
 /**
  * This class contains custom validation rules. 
@@ -616,6 +619,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 
 	@Check
 	def checkTypeForNodeCreationByPatternCall(Node node) {
+		// TODO use TypeCalculator instead
 		if (node.type !== null) {
 			if (node.type !== EcorePackage.Literals.EOBJECT) {
 				if (node.createdBy !== null && !node.createdBy.eIsProxy && node.createdBy instanceof PatternCall) {
@@ -642,6 +646,91 @@ class MGLangValidator extends AbstractMGLangValidator {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	@Check
+	def checkAllowedPatternSwitchCommands(PatternSwitch pSwitch) {
+		val nodeContainer = EcoreUtil2.getContainerOfType(pSwitch, Node)
+		val paramManipulationContainer = EcoreUtil2.getContainerOfType(pSwitch, ParamManipulation)
+		if (nodeContainer !== null || paramManipulationContainer !== null) {
+			val forbiddenElements = newLinkedList()
+			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, Node))
+			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, ParamManipulation))
+			for (forbiddenElement : forbiddenElements) {
+				switch (forbiddenElement) {
+					case Node:
+						error(
+							"Node creations are only allowed outside of other node creations or parameter object manipulations",
+							forbiddenElement, MGLangPackage.Literals.NODE__CREATED_BY)
+					case ParamManipulation:
+						error(
+							"Parameter object manipulations are only allowed outside of other node creations or parameter object manipulations",
+							forbiddenElement, MGLangPackage.Literals.PARAM_MANIPULATION__CONTENT)
+				}
+			}
+		} else {
+			// do not use control flow or similar, only Nodes and ParamManipulations allowed
+			val forbiddenElements = newLinkedList()
+			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, PatternNodeReference))
+			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, NodeAttributeAssignment))
+			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, PatternForStatement))
+			for (forbiddenElement : forbiddenElements) {
+				switch (forbiddenElement) {
+					case PatternNodeReference:
+						error(
+							"Assignments to node references are only possible within Nodes or Parameter manipulations",
+							forbiddenElement, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
+					case NodeAttributeAssignment:
+						error(
+							"Assignments to node attributes are only possible within Nodes or Parameter manipulations",
+							forbiddenElement, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__TARGET)
+					case PatternForStatement:
+						error("For-Statements in patterns are only possible within Nodes or Parameter manipulations",
+							forbiddenElement, MGLangPackage.Literals.PATTERN_FOR_STATEMENT__BODY)
+				}
+			}
+		}
+	}
+
+	@Check
+	def checkCorrectTypeForNode(Node node) {
+		if (!(node.eContainer instanceof PatternCase) && !(node.eContainer instanceof GenCase)) {
+			val createdBy = node.createdBy
+			if (!(createdBy instanceof NodeContent)) {
+				val nodeType = node.type
+				if (createdBy !== null) {
+					val givenType = TypeCalculator.evaluate(createdBy)
+					if (nodeType != givenType) {
+						error("Given type " + givenType + " does not match needed type " + nodeType,
+							MGLangPackage.Literals.NODE__CREATED_BY)
+					}
+				}
+//				else {
+//					error("Node needs to be assigned a value by '=' or defined in curled brackets",
+//						MGLangPackage.Literals.NODE__TYPE)
+//				}
+			}
+		}
+	}
+
+	@Check
+	def checkSameNodeTypeForSameNameInPattern(Pattern pattern) {
+		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+		val name2Node = newLinkedHashMap()
+		// init map
+		for (node : nodes) {
+			val name = node.name
+			val nodeType = node.type
+			if (name2Node.containsKey(name)) {
+				val prevNode = name2Node.get(name) as Node
+				if (nodeType !== prevNode.type) {
+					error("Node type must be consistent in pattern", node, MGLangPackage.Literals.NODE__TYPE)
+					error("Node type must be consistent in pattern", prevNode, MGLangPackage.Literals.NODE__TYPE)
+				}
+			} else {
+				name2Node.put(name, node)
 			}
 		}
 	}

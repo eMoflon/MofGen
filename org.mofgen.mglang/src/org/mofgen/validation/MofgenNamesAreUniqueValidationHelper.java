@@ -12,6 +12,8 @@ import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.validation.NamesAreUniqueValidationHelper;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
 import org.mofgen.mGLang.MGLangPackage;
+import org.mofgen.mGLang.Node;
+import org.mofgen.mGLang.PatternCase;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -41,7 +43,7 @@ public class MofgenNamesAreUniqueValidationHelper extends NamesAreUniqueValidati
 
 		QualifiedName reducedQN = getReducedQualifiedName(qn);
 		qualifiedNames.add(reducedQN);
-
+		
 		checkNamespace(description, qn, localNamespaces, acceptor, true);
 		
 		if (partOfGivenNamespace(description, globalNamespaceClasses)) {

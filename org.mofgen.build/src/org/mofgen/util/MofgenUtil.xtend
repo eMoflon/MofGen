@@ -38,10 +38,10 @@ class MofgenUtil {
 	 * @param eClass the eClass whose package should be retrieved
 	 * @return the corresponding EPackage
 	 */
-	def static EPackage getEPackage(EClass eClass) {
+	def static EPackage getEPackage(EClassifier eClassifier) {
 		for (Object obj : MofgenBuilder.globalPackageRegistry.values) {
 			val ePackage = obj as EPackage
-			if (ePackage.EClassifiers.contains(eClass)) {
+			if (ePackage.EClassifiers.contains(eClassifier)) {
 				return ePackage
 			}
 		}
