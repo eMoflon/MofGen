@@ -618,39 +618,6 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
-	def checkTypeForNodeCreationByPatternCall(Node node) {
-		// TODO use TypeCalculator instead
-		if (node.type !== null) {
-			if (node.type !== EcorePackage.Literals.EOBJECT) {
-				if (node.createdBy !== null && !node.createdBy.eIsProxy && node.createdBy instanceof PatternCall) {
-					val pc = node.createdBy as PatternCall
-					if (pc.called !== null && !pc.called.eIsProxy) {
-						val ret = pc.called.^return
-						if (ret === null) {
-							error("Pattern " + pc.called.name + " returns null but " + node.name + " expects " +
-								node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
-						} else {
-							val retVal = ret.retValue
-							if (retVal === null) {
-								error(
-									"Pattern " + pc.called.name + " returns " + pc.called.name + " but " + node.name +
-										" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
-							} else {
-								val retValType = TypeCalculator.evaluate(retVal)
-								if (retValType !== null && retValType !== node.type) {
-									error(
-										"Pattern " + pc.called.name + " returns " + retValType + " but " + node.name +
-											" expects " + node.type.name, MGLangPackage.Literals.NODE__CREATED_BY)
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Check
 	def checkAllowedPatternSwitchCommands(PatternSwitch pSwitch) {
 		val nodeContainer = EcoreUtil2.getContainerOfType(pSwitch, Node)
 		val paramManipulationContainer = EcoreUtil2.getContainerOfType(pSwitch, ParamManipulation)
@@ -734,6 +701,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 	}
+
+	// TODO check type for ref-assign in node
 
 	@Check
 	def noVariableAccessBeforeDefinition(RefOrCall roc) {
