@@ -43,7 +43,7 @@ import org.mofgen.mGLang.Variable
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.util.MofgenUtil
 import org.mofgen.util.NameProvider
-import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.emf.ecore.EOperation
 
 class GeneralTranslator {
 
@@ -113,7 +113,15 @@ class GeneralTranslator {
 		val op = cm.op
 		val params = cm.params
 
-		return '''«coll.name».«op.name»(«internalTranslate(params)»)'''
+		return '''«coll.name».«translateCollectionManipulationOperationName(op)»(«internalTranslate(params)»)'''
+	}
+	
+	private def static String translateCollectionManipulationOperationName(EOperation op){
+		if(op == TypeModelPackage.Literals.LIST___REMOVE_AT__INT){
+			return TypeModelPackage.Literals.LIST___REMOVE__EOBJECT.name
+		}else{
+			return op.name
+		}
 	}
 
 	private def static dispatch String internalTranslate(RefParams refParams) {

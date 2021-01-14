@@ -59,7 +59,7 @@ class TypeCalculator {
 		}
 		val eval = internalEvaluate(expr)
 		if (eval instanceof EClass) {
-			return MofgenModelUtils.getEClassForInternalModel(eval)
+			return MofgenModelUtils.getEClassifierForInternalModel(eval)
 		} else {
 			return eval
 		}
@@ -92,7 +92,7 @@ class TypeCalculator {
 			}
 		} else {
 			val type = (v as VariableDeclaration).getType()
-			return MofgenModelUtils.getEClassForInternalModel(type)
+			return MofgenModelUtils.getEClassifierForInternalModel(type)
 		}
 	}
 
@@ -576,7 +576,7 @@ class TypeCalculator {
 				if (ref.type !== null && ref.type instanceof Pattern) {
 					return ref.type
 				} else {
-					return MofgenModelUtils.getEClassForInternalModel(ref.type as EClassifier)
+					return MofgenModelUtils.getEClassifierForInternalModel(ref.type as EClassifier)
 				}
 			}
 			EEnum: {
@@ -595,10 +595,10 @@ class TypeCalculator {
 				return TypeModelPackage.Literals.LIST
 			}
 			EAttribute: {
-				return MofgenModelUtils.getEClassForInternalModel(ref.EType)
+				return MofgenModelUtils.getEClassifierForInternalModel(ref.EType)
 			}
 			EReference: {
-				return MofgenModelUtils.getEClassForInternalModel(ref.EType)
+				return MofgenModelUtils.getEClassifierForInternalModel(ref.EType)
 			}
 			EOperation: {
 				val op = ref
@@ -612,14 +612,11 @@ class TypeCalculator {
 					if (op == TypeModelPackage.Literals.MAP___GET__EOBJECT) {
 						return TypeCalculator.getMapType(trg.ref as Map, false)
 					}
-					if (op == TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT) {
-						return TypeCalculator.getMapType(trg.ref as Map, true)
-					}
 					if (op == TypeModelPackage.Literals.MAP___REMOVE__EOBJECT) {
 						return TypeCalculator.getMapType(trg.ref as Map, false)
 					}
 				}
-				return MofgenModelUtils.getEClassForInternalModel(op.EType)
+				return MofgenModelUtils.getEClassifierForInternalModel(op.EType)
 			}
 			IteratorVariable: {
 				val container = ref.eContainer

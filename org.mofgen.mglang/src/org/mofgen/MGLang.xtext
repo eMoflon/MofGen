@@ -16,17 +16,11 @@ Import:
 
 Config:
 	{Config} 'config' '(' ')' '{'
-	(expressions+=ConfigExpression)*
+	('modelLocation' ASSIGNMENT_OP modelLocation=STRING)?
 	'}';
 
-ConfigExpression:
-	HomeExpression | UseProjectAsHomeExpression;
-
 HomeExpression:
-	'home' ASSIGNMENT_OP uri=STRING;
-
-UseProjectAsHomeExpression:
-	'useProjectLocationAsHome' ASSIGNMENT_OP val=BooleanLiteral;
+	'modelLocation' ASSIGNMENT_OP uri=STRING;
 
 Pattern:
 	'pattern' name=ID ('(' (parameters+=Parameter (',' parameters+=Parameter)*)? ')') '{' (commands+=PatternCommand)* '}'
@@ -42,7 +36,7 @@ ParamManipulation:
 	param=[ParameterNodeOrPattern] content=NodeContent;
 
 Node:
-	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
+	(srcModel=[Import] '.')? type=[ecore::EClassifier] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
 	createdBy=PatternCall) | (ASSIGNMENT_OP
 	createdBy=RefOrCall))?;
 
@@ -71,7 +65,7 @@ PatternNodeReference:
 	PatternNodeReferenceToNode | PatternNodeReferenceToPatternCall;
 
 PatternNodeReferenceToNode:
-	type=[ecore::EReference] '->' node=RefOrCall; // allow nodes, parameter nodes and access to nodes in patterns as parameter objects in scoping! TODO
+	type=[ecore::EReference] '->' node=RefOrCall;
 PatternNodeReferenceToPatternCall:
 	type=[ecore::EReference] '->' pc=PatternCall;
 
@@ -109,7 +103,7 @@ PatternCaseWithCast:
 PatternCaseWithoutCast:
 	'case' val=ArithmeticExpression ':' body=PatternCaseBody;
 
-PatternCaseBody: //TODO: one more pattern switch object for switches outside of node definitions --> is that necessary?
+PatternCaseBody:
 	{PatternCaseBody} '{' (expressions+=NodeReferenceOrAssignmentOrControlFlow)* '}' |
 	expressions+=NodeReferenceOrAssignmentOrControlFlow;
 
@@ -211,7 +205,7 @@ GenCaseWithCast:
 	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=GenCaseBody;
 
 GenCaseWithoutCast:
-	'case' val=ArithmeticExpression ':' body=GenCaseBody; // TODO where is this actually used? maybe remove and refactor switch hierarchy then?
+	'case' val=ArithmeticExpression ':' body=GenCaseBody; // TODO test
 
 GenCaseBody:
 	{GenCaseBody} '{' (expressions+=GenSwitchExpression)* '}' | expressions+=GenSwitchExpression;

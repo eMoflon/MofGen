@@ -33,9 +33,6 @@
       </genOperations>
       <genOperations ecoreOperation="typeModel.ecore#//Map/isEmpty"/>
       <genOperations ecoreOperation="typeModel.ecore#//Map/size"/>
-      <genOperations ecoreOperation="typeModel.ecore#//Map/getKeyToEntry">
-        <genParameters ecoreParameter="typeModel.ecore#//Map/getKeyToEntry/entry"/>
-      </genOperations>
       <genOperations ecoreOperation="typeModel.ecore#//Map/remove">
         <genParameters ecoreParameter="typeModel.ecore#//Map/remove/key"/>
       </genOperations>

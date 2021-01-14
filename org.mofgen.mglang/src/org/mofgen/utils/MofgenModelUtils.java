@@ -336,7 +336,7 @@ public class MofgenModelUtils {
 			if (parameterType instanceof Pattern) {
 				return (Pattern) parameterType;
 			} else if (parameterType instanceof EClassifier) {
-				return getEClassForInternalModel((EClassifier) parameterType);
+				return getEClassifierForInternalModel((EClassifier) parameterType);
 			} else {
 				throw new UnsupportedOperationException("Could not find applicable case for " + nodeOrPattern);
 			}
@@ -350,7 +350,7 @@ public class MofgenModelUtils {
 		return Math.floor(value) == ((int) value) ? (int) Math.floor(value) : value;
 	}
 	
-	public static EClass getEClassForInternalModel(EClassifier classifier) {
+	public static EClass getEClassifierForInternalModel(EClassifier classifier) {
 		if (classifier != null && classifier instanceof EClass) {
 			if (classifier == MGLangPackage.Literals.LIST) {
 				return TypeModelPackage.Literals.LIST;

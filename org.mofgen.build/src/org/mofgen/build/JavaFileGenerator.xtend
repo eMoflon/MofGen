@@ -75,8 +75,11 @@ class JavaFileGenerator {
 
 		val generators = EcoreUtil2.getAllContentsOfType(editorModel, Generator)
 
-		val modelPath = appPackage.project.getFolder(MofgenBuilder.DEFAULT_MODEL_LOCATION).location.toString
-
+		var modelPath = editorModel.config.modelLocation
+		if(modelPath !== null && modelPath.equals("")){
+			modelPath = null;
+		}
+		
 		val className = NameProvider.getAppClassName(mofgenFile)
 
 		val appSourceCode = '''
@@ -96,11 +99,20 @@ class JavaFileGenerator {
 				 * Creates a mofgen application
 				 */
 				public «className»() {
-					«««super(workspacePath);
+					«IF modelPath !== null»
+					super("«modelPath»");
+					«ELSE»
+					super();
+					«ENDIF»
 					generators = new LinkedList<>();
 					«FOR gen : generators»
 						generators.add(new «NameProvider.getGeneratorClassName(gen)»());
 					«ENDFOR»
+				}
+				
+				public static void main(String[] args) {
+					«className» app = new «className»();
+					app.startGeneration();
 				}
 				
 				@Override
@@ -110,8 +122,7 @@ class JavaFileGenerator {
 						System.out.println("Starting generator "+gen.getName()+"...");
 						EObject result = gen.start();
 						
-						String path = "«modelPath»";
-						saveResource(result, path, gen.getName());
+						saveResource(result, modelLocation, gen.getName());
 					}
 					System.out.println("Done!");
 				}

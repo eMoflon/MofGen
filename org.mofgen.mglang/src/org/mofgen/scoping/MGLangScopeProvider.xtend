@@ -41,7 +41,6 @@ import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternNodeReference
-import org.mofgen.mGLang.RangeForHead
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.Variable
 import org.mofgen.mGLang.VariableDeclaration
@@ -230,11 +229,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		} else {
 			val root = MofgenModelUtils.getRootFile(paramNode)
 			val classes = MofgenModelUtils.getUniqueClasses(root)
+			classes.add(EcorePackage.Literals.EOBJECT)
 			val patterns = EcoreUtil2.getAllContentsOfType(root, Pattern)
 			val parentScope = Scopes.scopeFor(classes + patterns)
 			val dataTypes = #[EObjectDescription.create(QualifiedName.create("String"), EcorePackage.Literals.ESTRING)]
 			return new SimpleScope(parentScope, dataTypes)
-
 		}
 	}
 
@@ -310,6 +309,10 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		val root = EcoreUtil2.getRootContainer(pc)
 		return Scopes.scopeFor(EcoreUtil2.getAllContentsOfType(root, Pattern))
 	}
+	
+	def private getAllTrueNodes(Pattern pattern){
+		return EcoreUtil2.getAllContentsOfType(pattern, Node).filter[n|n.eContainer instanceof Pattern]
+	}
 
 	def getScopeForRefOrCall(RefOrCall r) {
 		if (r.target === null) {
@@ -335,7 +338,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 				// get nodes of pattern (which names do not match any parameter names!)
 				val parameterNames = pattern.parameters.map[p|p.name]
-				patternNodes.addAll(EcoreUtil2.getAllContentsOfType(pattern, Node).filter [ n |
+				patternNodes.addAll(getAllTrueNodes(pattern).filter [ n |
 					!parameterNames.contains(n.name)
 				])
 			} else {
@@ -378,15 +381,7 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			}
 			for (statement : forStatements) {
 				val head = statement.head
-				if (head instanceof GeneralForEachHead) {
-					iteratorVars.add(head.iteratorVar)
-				}
-				if (head instanceof ListForEachHead) {
-					iteratorVars.add(head.iteratorVar)
-				}
-				if (head instanceof RangeForHead) {
-					iteratorVars.add(head.iteratorVar)
-				} // TODO create super class for ForHead
+				iteratorVars.add(head.iteratorVar)
 			}
 
 			// add (eventually cast) nodes of switch if in switch
@@ -418,8 +413,6 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			}
 
 			val ref = trg.ref
-			val refClass = ref.eClass
-
 			switch ref {
 				Map: {
 					val ops = TypeModelPackage.Literals.MAP.EAllOperations
@@ -468,9 +461,14 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 					return IScope.NULLSCOPE
 				}
 				Node: {
-					val attrs = refClass.EAllAttributes
-					val refs = refClass.EAllReferences
-					return Scopes.scopeFor(attrs + refs)
+					val eClassifier = ref.type
+					if (eClassifier instanceof EClass) {
+						val attrs = eClassifier.EAllAttributes
+						val refs = eClassifier.EAllReferences
+						return Scopes.scopeFor(attrs + refs)
+					}else{
+						return IScope.NULLSCOPE
+					}
 				}
 				ParameterNodeOrPattern: {
 					val type = ref.type

@@ -50,6 +50,7 @@ import org.mofgen.mGLang.ParamManipulation
 import org.mofgen.mGLang.Pattern
 import org.mofgen.mGLang.PatternCall
 import org.mofgen.mGLang.PatternCallParameters
+import org.mofgen.mGLang.PatternCase
 import org.mofgen.mGLang.PatternCaseWithCast
 import org.mofgen.mGLang.PatternCaseWithoutCast
 import org.mofgen.mGLang.PatternForBody
@@ -64,9 +65,6 @@ import org.mofgen.mGLang.VariableDefinition
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.PatternSwitch
-import org.mofgen.mGLang.PatternForStatement
-import org.mofgen.mGLang.PatternCase
 
 /**
  * This class contains custom validation rules. 
@@ -491,19 +489,19 @@ class MGLangValidator extends AbstractMGLangValidator {
 		val trg = ass.target
 		if (trg !== null && !trg.eIsProxy && trg instanceof EAttribute) {
 			val attribute = trg as EAttribute
-			val attributeType = MofgenModelUtils.getEClassForInternalModel(attribute.EAttributeType)
+			val attributeType = MofgenModelUtils.getEClassifierForInternalModel(attribute.EAttributeType)
 
 			try {
-				if (ass.value !== null && !ass.value.eIsProxy) {
+				if (ass.value !== null && !ass.value.eIsProxy && ass.value !== null && !ass.value.eIsProxy) {
 					val assValue = ass.value
 					if (assValue instanceof RefOrCall) {
-						if (assValue.thisUsed) {
+						if (assValue.thisUsed || (assValue.ref !== null && assValue.ref.eIsProxy)) {
 							return;
 						}
 					}
 					val assignedValueEval = TypeCalculator.evaluate(ass.value)
-					if (assignedValueEval instanceof EClass) {
-						val assignedValue = MofgenModelUtils.getEClassForInternalModel(assignedValueEval)
+					if (assignedValueEval instanceof EClassifier) {
+						val assignedValue = MofgenModelUtils.getEClassifierForInternalModel(assignedValueEval)
 						if (assignedValue != TypeModelPackage.Literals.ENUM_LITERAL &&
 							attributeType == TypeModelPackage.Literals.ENUM) {
 							error("Can only assign enum values to enum attribute " + attribute.name, ass,
@@ -556,18 +554,18 @@ class MGLangValidator extends AbstractMGLangValidator {
 						val neededParameter = pc.called.parameters.get(i)
 
 						val givenParameterType = TypeCalculator.evaluate(givenParameterExpression)
-
+			
 						if (givenParameterType !== null &&
 							givenParameterType !== TypeModelPackage.Literals.NULL_OBJECT) {
 							val neededParameterType = MofgenModelUtils.getInternalParameterType(neededParameter)
 
 							if (givenParameterType instanceof EClassifier &&
 								neededParameterType instanceof EClassifier) {
-								if (!(MofgenModelUtils.getEClassForInternalModel(neededParameterType as EClassifier).
+								if (!(MofgenModelUtils.getEClassifierForInternalModel(neededParameterType as EClassifier).
 									isSuperTypeOf(
-										MofgenModelUtils.getEClassForInternalModel(
+										MofgenModelUtils.getEClassifierForInternalModel(
 											givenParameterType as EClassifier)))) {
-									val givenParameterTypeEClassifier = MofgenModelUtils.getEClassForInternalModel(
+									val givenParameterTypeEClassifier = MofgenModelUtils.getEClassifierForInternalModel(
 										givenParameterType as EClassifier)
 									if (!(neededParameterType === TypeModelPackage.Literals.DOUBLE &&
 										givenParameterTypeEClassifier === TypeModelPackage.Literals.INTEGER))
@@ -618,92 +616,26 @@ class MGLangValidator extends AbstractMGLangValidator {
 	}
 
 	@Check
-	def checkAllowedPatternSwitchCommands(PatternSwitch pSwitch) {
-		val nodeContainer = EcoreUtil2.getContainerOfType(pSwitch, Node)
-		val paramManipulationContainer = EcoreUtil2.getContainerOfType(pSwitch, ParamManipulation)
-		if (nodeContainer !== null || paramManipulationContainer !== null) {
-			val forbiddenElements = newLinkedList()
-			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, Node))
-			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, ParamManipulation))
-			for (forbiddenElement : forbiddenElements) {
-				switch (forbiddenElement) {
-					case Node:
-						error(
-							"Node creations are only allowed outside of other node creations or parameter object manipulations",
-							forbiddenElement, MGLangPackage.Literals.NODE__CREATED_BY)
-					case ParamManipulation:
-						error(
-							"Parameter object manipulations are only allowed outside of other node creations or parameter object manipulations",
-							forbiddenElement, MGLangPackage.Literals.PARAM_MANIPULATION__CONTENT)
-				}
-			}
-		} else {
-			// do not use control flow or similar, only Nodes and ParamManipulations allowed
-			val forbiddenElements = newLinkedList()
-			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, PatternNodeReference))
-			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, NodeAttributeAssignment))
-			forbiddenElements.addAll(EcoreUtil2.getAllContentsOfType(pSwitch, PatternForStatement))
-			for (forbiddenElement : forbiddenElements) {
-				switch (forbiddenElement) {
-					case PatternNodeReference:
-						error(
-							"Assignments to node references are only possible within Nodes or Parameter manipulations",
-							forbiddenElement, MGLangPackage.Literals.PATTERN_NODE_REFERENCE__TYPE)
-					case NodeAttributeAssignment:
-						error(
-							"Assignments to node attributes are only possible within Nodes or Parameter manipulations",
-							forbiddenElement, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__TARGET)
-					case PatternForStatement:
-						error("For-Statements in patterns are only possible within Nodes or Parameter manipulations",
-							forbiddenElement, MGLangPackage.Literals.PATTERN_FOR_STATEMENT__BODY)
-				}
-			}
-		}
-	}
-
-	@Check
 	def checkCorrectTypeForNode(Node node) {
 		if (!(node.eContainer instanceof PatternCase) && !(node.eContainer instanceof GenCase)) {
 			val createdBy = node.createdBy
 			if (!(createdBy instanceof NodeContent)) {
 				val nodeType = node.type
 				if (createdBy !== null) {
+					if(createdBy instanceof RefOrCall){
+						error("This feature is not yet supported", MGLangPackage.Literals.NODE__CREATED_BY)
+					}
+					
 					val givenType = TypeCalculator.evaluate(createdBy)
 					if (nodeType != givenType) {
 						error("Given type " + givenType + " does not match needed type " + nodeType,
 							MGLangPackage.Literals.NODE__CREATED_BY)
 					}
 				}
-//				else {
-//					error("Node needs to be assigned a value by '=' or defined in curled brackets",
-//						MGLangPackage.Literals.NODE__TYPE)
-//				}
 			}
 		}
 	}
-
-	@Check
-	def checkSameNodeTypeForSameNameInPattern(Pattern pattern) {
-		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
-		val name2Node = newLinkedHashMap()
-		// init map
-		for (node : nodes) {
-			val name = node.name
-			val nodeType = node.type
-			if (name2Node.containsKey(name)) {
-				val prevNode = name2Node.get(name) as Node
-				if (nodeType !== prevNode.type) {
-					error("Node type must be consistent in pattern", node, MGLangPackage.Literals.NODE__TYPE)
-					error("Node type must be consistent in pattern", prevNode, MGLangPackage.Literals.NODE__TYPE)
-				}
-			} else {
-				name2Node.put(name, node)
-			}
-		}
-	}
-
-	// TODO check type for ref-assign in node
-
+	
 	@Check
 	def noVariableAccessBeforeDefinition(RefOrCall roc) {
 		if (roc.target === null) {
@@ -914,6 +846,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 			for (roc : rocs) {
 				if (roc.ref !== null && !roc.ref.eIsProxy && roc.ref instanceof Node &&
 					findAssignmentToRoc(roc) === null) {
+						if(roc.ref.eContainer instanceof PatternCase){
+							return
+						}
 					error(
 						"Referenced value " + getTextFromEditorFile(getHighestRoc(roc)) + " to be assigned is not set",
 						ass, MGLangPackage.Literals.NODE_ATTRIBUTE_ASSIGNMENT__VALUE)
@@ -1008,8 +943,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 				case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
 					neededParams.add(TypeCalculator.getMapType(cm.trg as Map, true))
 				}
-				case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
-				case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
+				case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT: {
 					neededParams.add(TypeCalculator.getMapType(cm.trg as Map, false))
 				}
 				case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {
@@ -1041,8 +975,8 @@ class MGLangValidator extends AbstractMGLangValidator {
 					val givenParamEval = TypeCalculator.evaluate(givenParam)
 					if (givenParamEval == TypeModelPackage.Literals.LIST) {
 						val givenListType = TypeCalculator.getListType((givenParam as RefOrCall).ref as List)
-						if (!MofgenModelUtils.getEClassForInternalModel(neededListType).isSuperTypeOf(
-							MofgenModelUtils.getEClassForInternalModel(givenListType))) {
+						if (!MofgenModelUtils.getEClassifierForInternalModel(neededListType).isSuperTypeOf(
+							MofgenModelUtils.getEClassifierForInternalModel(givenListType))) {
 							error("List " + cm.trg.name + " is of other type than given list " +
 								((givenParam as RefOrCall).ref as List).name,
 								MGLangPackage.Literals.COLLECTION_MANIPULATION__TRG)
@@ -1057,7 +991,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 	 * Checks the consistency of parameter types w.r.t. the internal type system and throws errors at the given errorLoc when encountering any violations
 	 */
 	// TODO merge this method and workflow of "matchingParameters_pc()"
-	// and refactor with separate method in for-loop to break by return instead of having x-cillions of if statements
+	// and use TypeCalculator instead of having x-cillions of if statements
 	def private checkMatchingParameterTypes(java.util.List<ArithmeticExpression> givenParams,
 		java.util.List<EObject> neededParams, EReference errorLoc) {
 		// Check parameter types
@@ -1067,9 +1001,9 @@ class MGLangValidator extends AbstractMGLangValidator {
 				if (givenParameterEval !== TypeModelPackage.Literals.NULL_OBJECT) {
 					val neededParameterEval = neededParams.get(i)
 					if (givenParameterEval instanceof EClassifier && neededParameterEval instanceof EClassifier) {
-						val givenParameterType = MofgenModelUtils.getEClassForInternalModel(
+						val givenParameterType = MofgenModelUtils.getEClassifierForInternalModel(
 							givenParameterEval as EClassifier)
-						val neededParameterType = MofgenModelUtils.getEClassForInternalModel(
+						val neededParameterType = MofgenModelUtils.getEClassifierForInternalModel(
 							neededParameterEval as EClassifier)
 
 						if (!(givenParameterType instanceof EClass && neededParameterType instanceof EClass &&
@@ -1093,12 +1027,12 @@ class MGLangValidator extends AbstractMGLangValidator {
 					} else {
 						if (givenParameterEval instanceof Pattern) {
 							error("Was given Pattern " + givenParameterEval.name + " but needed EClass " +
-								MofgenModelUtils.getEClassForInternalModel(neededParameterEval as EClassifier).name,
+								MofgenModelUtils.getEClassifierForInternalModel(neededParameterEval as EClassifier).name,
 								errorLoc)
 						} else {
 							error(
 								"Was given EClass " +
-									MofgenModelUtils.getEClassForInternalModel(givenParameterEval as EClassifier).name +
+									MofgenModelUtils.getEClassifierForInternalModel(givenParameterEval as EClassifier).name +
 									" but needed Pattern " + (neededParameterEval as Pattern).name, errorLoc)
 						}
 					}
@@ -1131,8 +1065,7 @@ class MGLangValidator extends AbstractMGLangValidator {
 						case TypeModelPackage.Literals.MAP___GET__EOBJECT: {
 							neededParams.add(TypeCalculator.getMapType(roc.target.ref as Map, true))
 						}
-						case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT,
-						case TypeModelPackage.Literals.MAP___GET_KEY_TO_ENTRY__EOBJECT: {
+						case TypeModelPackage.Literals.MAP___CONTAINS_VALUE__EOBJECT: {
 							neededParams.add(TypeCalculator.getMapType(roc.target.ref as Map, false))
 						}
 						case TypeModelPackage.Literals.MAP___PUT__EOBJECT_EOBJECT: {

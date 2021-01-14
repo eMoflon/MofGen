@@ -53,14 +53,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Import/name"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Config">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Config/expressions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//Config/modelLocation"/>
     </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//ConfigExpression"/>
     <genClasses ecoreClass="MGLang.ecore#//HomeExpression">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MGLang.ecore#//HomeExpression/uri"/>
-    </genClasses>
-    <genClasses ecoreClass="MGLang.ecore#//UseProjectAsHomeExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//UseProjectAsHomeExpression/val"/>
     </genClasses>
     <genClasses ecoreClass="MGLang.ecore#//Pattern">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MGLang.ecore#//Pattern/parameters"/>

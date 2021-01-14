@@ -47,7 +47,7 @@ class GeneratorTranslator {
 				public «NameProvider.getGeneratorClassName(gen)» (){
 					this.name = "«gen.name»";
 				}
-			
+				
 				@Override
 				/**
 				* Runs the specified generator with the given parameters.
@@ -144,8 +144,9 @@ class GeneratorTranslator {
 	}
 
 	def static private translateCaseWithoutEnum(GenCaseWithoutCast caze) {
+		val zwitch = EcoreUtil2.getContainerOfType(caze, GenSwitchCase)
 		return '''
-		if(«translate(caze.^val)»){
+		if(«translate(caze.^val)» == «translate(zwitch.attribute)»){
 		«FOR bodyExpr : caze.body.expressions»
 			«translate(bodyExpr)»;
 		«ENDFOR»

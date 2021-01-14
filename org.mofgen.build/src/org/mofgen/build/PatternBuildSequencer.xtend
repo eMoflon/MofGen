@@ -24,6 +24,7 @@ import org.mofgen.mGLang.PatternSwitchCase
 import org.mofgen.mGLang.RefOrCall
 import org.mofgen.util.NameProvider
 import org.mofgen.mGLang.PatternNodeReferenceToPatternCall
+import org.mofgen.mGLang.PatternCase
 
 class PatternBuildSequencer {
 
@@ -43,20 +44,27 @@ class PatternBuildSequencer {
 	Queue<EObject> remainingElements
 
 	new(Pattern pattern) {
-		// filter if nodes are really child of pattern since node construct is also used in switches
-		// TODO maybe refactor this, so there can be a clear grammatical distinction?
-		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node).filter[n|n.eContainer instanceof Pattern].toList
-		val paramManipulations = EcoreUtil2.getAllContentsOfType(pattern, ParamManipulation)
-		val parameters = pattern.parameters
-
 		validElements = newHashSet()
 		remainingElements = newLinkedList()
 		srcCodeElements = newLinkedList()
+
+		// filter if nodes are really child of pattern since node construct is also used in switches
+		val allNodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+		val actualPatternNodes = allNodes.filter[n|n.eContainer instanceof Pattern].toList
+		val caseNodes = allNodes.filter[n|n.eContainer instanceof PatternCase].toList
+
+		for (caseNode : caseNodes) {
+			makeElementValid(caseNode)
+		}
+
+		val paramManipulations = EcoreUtil2.getAllContentsOfType(pattern, ParamManipulation)
+		val parameters = pattern.parameters
+
 		for (paramManipulation : paramManipulations) {
 			remainingElements.addAll(paramManipulation.content.refsAssigns)
 		}
 		translateParameterVariableAssigns(parameters)
-		createNodes(nodes)
+		createNodes(actualPatternNodes)
 	}
 
 	/**
@@ -81,7 +89,7 @@ class PatternBuildSequencer {
 			if (checkCoherency(elem)) {
 				val translation = getTranslation(elem)
 				srcCodeElements.add(translation)
-				makeTranslatedElementValid(elem)
+				makeElementValid(elem)
 				cnt = 0
 			} else {
 				remainingElements.add(elem)
@@ -98,7 +106,7 @@ class PatternBuildSequencer {
 	/**
 	 * If the given element is no control flow operation, marks the target of the given elements (either an attribute or a reference) as valid
 	 */
-	private def makeTranslatedElementValid(EObject elem) {
+	private def makeElementValid(EObject elem) {
 		switch elem {
 			NodeAttributeAssignment,
 			Node,
@@ -186,6 +194,15 @@ class PatternBuildSequencer {
 			if (roc.target.ref instanceof ParameterNodeOrPattern) {
 				return true;
 			}
+			// return true if last target is Node in PatternCase
+			var lastTarget = roc
+			while(lastTarget.target !== null){
+				lastTarget = lastTarget.target
+			}
+			if(lastTarget.ref instanceof Node && lastTarget.ref.eContainer instanceof PatternCase){
+				return true;
+			}
+
 			return roc.isValid // only when ref is from a newly created node. not necessarily at objects passed as parameters!
 		}
 	}
@@ -261,32 +278,22 @@ class PatternBuildSequencer {
 					return manip.param.name + "_" + elem.type.name
 				}
 			}
-			Node:
+			Node: {
 				return elem.name
+			}
 			RefOrCall: {
-				var name = ""
 				if (elem.target !== null) {
 					if (elem.target.thisUsed) {
-						return getNameForRocRef(elem.ref)
+						return getValidName(elem.ref)
 					} else {
-						return getValidName(elem.target) + '_' + getNameForRocRef(elem.ref)
+						return getValidName(elem.target) + '_' + getValidName(elem.ref)
 					}
 				} else {
-					val ref = elem.ref
-					switch ref {
-						ENamedElement: return ref.name
-						Node: return ref.name
-					}
+					return getValidName(elem.ref)
 				}
-				return name
 			}
-		}
-	}
-
-	private def String getNameForRocRef(EObject ref) {
-		switch ref {
-			ENamedElement: return ref.name
-			Node: return ref.name
+			ENamedElement:
+				return elem.name
 		}
 	}
 
@@ -303,7 +310,7 @@ class PatternBuildSequencer {
 					remainingElements.addAll(createdBy.refsAssigns)
 				} else if (createdBy instanceof PatternCall) {
 					remainingElements.add(node)
-				} else {
+				} else if(createdBy instanceof RefOrCall){
 					throw new IllegalArgumentException(
 						"Given node " + node.name + " is neither created by plain assignments, nor by a pattern call.")
 				}

@@ -9,6 +9,10 @@ import org.mofgen.mGLang.IteratorVariable
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.Switch
+import org.mofgen.mGLang.GenCase
+import org.mofgen.mGLang.GenSwitchCase
+import org.mofgen.mGLang.PatternCase
+import org.mofgen.mGLang.PatternSwitchCase
 
 class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvider {
 
@@ -21,7 +25,7 @@ class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvide
 		return computeFullyQualifiedNameInternal(obj);
 	}
 
-	def dispatch QualifiedName computeFullyQualifiedNameInternal(ForStatement forStatement) {	
+	def dispatch QualifiedName computeFullyQualifiedNameInternal(ForStatement forStatement) {
 		val qualifiedForName = deriveFullyQualifiedName(forStatement);
 
 		var obj = forStatement as EObject
@@ -34,7 +38,7 @@ class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvide
 		return parentsQualifiedName.append(qualifiedForName);
 	}
 
-	def dispatch QualifiedName computeFullyQualifiedNameInternal(IteratorVariable iteratorVar) {		
+	def dispatch QualifiedName computeFullyQualifiedNameInternal(IteratorVariable iteratorVar) {
 		val qualifiedForName = QualifiedName.create(iteratorVar.name)
 
 		var obj = iteratorVar as EObject
@@ -54,9 +58,45 @@ class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvide
 	}
 
 	def dispatch QualifiedName computeFullyQualifiedNameInternal(Parameter param) {
-		val qualifiedForName = QualifiedName.create(param.name+PARAMETER_SUFFIX)
+		val qualifiedForName = QualifiedName.create(param.name + PARAMETER_SUFFIX)
 
 		var obj = param as EObject
+		var parentsQualifiedName = null as QualifiedName
+		while (obj.eContainer !== null && parentsQualifiedName === null) {
+			obj = obj.eContainer();
+			parentsQualifiedName = getFullyQualifiedName(obj);
+		}
+
+		return parentsQualifiedName.append(qualifiedForName);
+	}
+
+	def private getCaseNumber(PatternCase caze) {
+		val switchContainer = caze.eContainer as PatternSwitchCase
+		return switchContainer.cases.indexOf(caze)
+	}
+
+	def dispatch QualifiedName computeFullyQualifiedNameInternal(PatternCase caze) {
+		val qualifiedForName = QualifiedName.create(CASE__PREFIX + getCaseNumber(caze))
+
+		var obj = caze as EObject
+		var parentsQualifiedName = null as QualifiedName
+		while (obj.eContainer !== null && parentsQualifiedName === null) {
+			obj = obj.eContainer();
+			parentsQualifiedName = getFullyQualifiedName(obj);
+		}
+
+		return parentsQualifiedName.append(qualifiedForName);
+	}
+
+	def private getCaseNumber(GenCase caze) {
+		val switchContainer = caze.eContainer as GenSwitchCase
+		return switchContainer.cases.indexOf(caze)
+	}
+
+	def dispatch QualifiedName computeFullyQualifiedNameInternal(GenCase caze) {
+		val qualifiedForName = QualifiedName.create(CASE__PREFIX + getCaseNumber(caze))
+
+		var obj = caze as EObject
 		var parentsQualifiedName = null as QualifiedName
 		while (obj.eContainer !== null && parentsQualifiedName === null) {
 			obj = obj.eContainer();
@@ -69,7 +109,7 @@ class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvide
 	def dispatch QualifiedName computeFullyQualifiedNameInternal(Switch zwitch) {
 		val line = NodeModelUtils.getNode(zwitch).startLine
 		val qualifiedForName = QualifiedName.create(SWITCH_PREFIX + line)
-		
+
 		var obj = zwitch as EObject
 		var parentsQualifiedName = null as QualifiedName
 		while (obj.eContainer !== null && parentsQualifiedName === null) {

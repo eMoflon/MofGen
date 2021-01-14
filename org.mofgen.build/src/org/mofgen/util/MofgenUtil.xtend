@@ -4,11 +4,11 @@ import java.io.IOException
 import java.util.Map
 import java.util.Optional
 import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -21,11 +21,11 @@ import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.ParameterNodeOrPattern
 import org.mofgen.mGLang.Pattern
-import org.mofgen.mGLang.PrimitiveParameter
-import org.mofgen.typeModel.TypeModelPackage
-import org.mofgen.mGLang.RefOrCall
 import org.mofgen.mGLang.PatternReturn
-import org.eclipse.emf.ecore.EStructuralFeature
+import org.mofgen.mGLang.PrimitiveParameter
+import org.mofgen.mGLang.RefOrCall
+import org.mofgen.typeModel.TypeModelPackage
+import org.eclipse.xtext.EcoreUtil2
 
 class MofgenUtil {
 
@@ -38,10 +38,10 @@ class MofgenUtil {
 	 * @param eClass the eClass whose package should be retrieved
 	 * @return the corresponding EPackage
 	 */
-	def static EPackage getEPackage(EClass eClass) {
+	def static EPackage getEPackage(EClassifier eClassifier) {
 		for (Object obj : MofgenBuilder.globalPackageRegistry.values) {
 			val ePackage = obj as EPackage
-			if (ePackage.EClassifiers.contains(eClass)) {
+			if (ePackage.EClassifiers.contains(eClassifier)) {
 				return ePackage
 			}
 		}

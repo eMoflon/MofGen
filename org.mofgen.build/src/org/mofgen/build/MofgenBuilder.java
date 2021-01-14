@@ -141,7 +141,13 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 				}
 			}
 		}
-
+		try {
+			project.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		} catch (CoreException e) {
+			logger.error(e.getMessage());
+		}
+		
+		
 		double toc = System.currentTimeMillis();
 		logger.info("Creating API... Done! (" + (toc - tic) / 1000.0 + " seconds.)");
 	}

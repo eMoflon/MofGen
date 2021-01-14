@@ -80,7 +80,7 @@ class PatternTranslator {
 		«getPatternSignature(pattern)»
 			
 			// create data fields for actual nodes
-			«FOR node : nodes»
+			«FOR node : nodes.filter[n|n.eContainer instanceof Pattern]»
 				private «node.type.name» «node.name»;
 			«ENDFOR»
 			
@@ -137,14 +137,14 @@ class PatternTranslator {
 	}
 
 	private static def dispatch String internalTranslate(Node node) {
-		val eClass = node.type
-		val ePackage = MofgenUtil.getEPackage(eClass)
+		val eClassifier = node.type
+		val ePackage = MofgenUtil.getEPackage(eClassifier)
 		val createdBy = node.createdBy
 		if (createdBy === null) {
-			return '''this.«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»)'''
+			return '''this.«node.name» = («eClassifier.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClassifier)»)'''
 		}
 		if (createdBy instanceof NodeContent) {
-			return '''this.«node.name» = («eClass.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClass)»)'''
+			return '''this.«node.name» = («eClassifier.name») «NameProvider.getFactoryClassName(ePackage)».eINSTANCE.create(«NameProvider.getPackageClassName(ePackage)».Literals.«NameProvider.getLiteralName(eClassifier)»)'''
 		} else if (createdBy instanceof PatternCall) {
 			return '''this.«node.name» = «translate(createdBy)»'''
 		} else {
@@ -206,7 +206,7 @@ class PatternTranslator {
 	}
 
 	private static def createGetters(Pattern pattern) {
-		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node)
+		val nodes = EcoreUtil2.getAllContentsOfType(pattern, Node).filter[n|n.eContainer instanceof Pattern]
 		return '''
 			
 			«FOR node : nodes»

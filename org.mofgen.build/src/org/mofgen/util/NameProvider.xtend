@@ -1,7 +1,7 @@
 package org.mofgen.util
 
 import org.eclipse.core.resources.IFile
-import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EEnum
 import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.ENamedElement
@@ -59,9 +59,9 @@ class NameProvider {
 	/**
 	 * @return the literal expression to access the given eClass in its Package
 	 */
-	def static String getLiteralName(EClass clazz){
+	def static String getLiteralName(EClassifier eClassifier){
 		// split camelCase
-		val splitName = clazz.name.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")
+		val splitName = eClassifier.name.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")
 		return '''
 		«FOR nameSegment : splitName SEPARATOR '_'»«nameSegment.toUpperCase»«ENDFOR»
 		'''
