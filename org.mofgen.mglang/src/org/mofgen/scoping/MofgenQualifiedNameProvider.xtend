@@ -9,11 +9,6 @@ import org.mofgen.mGLang.IteratorVariable
 import org.mofgen.mGLang.Node
 import org.mofgen.mGLang.Parameter
 import org.mofgen.mGLang.Switch
-import org.mofgen.mGLang.PatternCase
-import org.mofgen.mGLang.PatternSwitch
-import org.mofgen.mGLang.PatternSwitchCase
-import org.mofgen.mGLang.GenCase
-import org.mofgen.mGLang.GenSwitchCase
 
 class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvider {
 
@@ -62,42 +57,6 @@ class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvide
 		val qualifiedForName = QualifiedName.create(param.name+PARAMETER_SUFFIX)
 
 		var obj = param as EObject
-		var parentsQualifiedName = null as QualifiedName
-		while (obj.eContainer !== null && parentsQualifiedName === null) {
-			obj = obj.eContainer();
-			parentsQualifiedName = getFullyQualifiedName(obj);
-		}
-
-		return parentsQualifiedName.append(qualifiedForName);
-	}
-	
-	def private getCaseNumber(PatternCase caze){
-		val switchContainer = caze.eContainer as PatternSwitchCase
-		return switchContainer.cases.indexOf(caze)
-	}
-	
-	def dispatch QualifiedName computeFullyQualifiedNameInternal(PatternCase caze) {
-		val qualifiedForName = QualifiedName.create(CASE__PREFIX+getCaseNumber(caze))
-
-		var obj = caze as EObject
-		var parentsQualifiedName = null as QualifiedName
-		while (obj.eContainer !== null && parentsQualifiedName === null) {
-			obj = obj.eContainer();
-			parentsQualifiedName = getFullyQualifiedName(obj);
-		}
-
-		return parentsQualifiedName.append(qualifiedForName);
-	}
-	
-		def private getCaseNumber(GenCase caze){
-		val switchContainer = caze.eContainer as GenSwitchCase
-		return switchContainer.cases.indexOf(caze)
-	}
-	
-	def dispatch QualifiedName computeFullyQualifiedNameInternal(GenCase caze) {
-		val qualifiedForName = QualifiedName.create(CASE__PREFIX+getCaseNumber(caze))
-
-		var obj = caze as EObject
 		var parentsQualifiedName = null as QualifiedName
 		while (obj.eContainer !== null && parentsQualifiedName === null) {
 			obj = obj.eContainer();

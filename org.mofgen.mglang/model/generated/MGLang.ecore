@@ -36,7 +36,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="return" eType="#//PatternReturn"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternCommand" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PatternCommand"/>
   <eClassifiers xsi:type="ecore:EClass" name="PatternReturn">
     <eStructuralFeatures xsi:type="ecore:EReference" name="retValue" eType="#//RefOrCall"
         containment="true"/>
@@ -48,7 +48,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//PatternCommand #//VariableSuperClass">
     <eStructuralFeatures xsi:type="ecore:EReference" name="srcModel" eType="#//Import"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="createdBy" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
   </eClassifiers>
@@ -101,7 +101,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="srcModel" eType="#//Import"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PatternSwitch" eSuperTypes="#//PatternCommand #//NodeReferenceOrControlFlow #//Switch">
+  <eClassifiers xsi:type="ecore:EClass" name="PatternSwitch" eSuperTypes="#//NodeReferenceOrAssignmentOrControlFlow #//NodeReferenceOrControlFlow #//Switch">
     <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#//PatternDefault"
         containment="true"/>
   </eClassifiers>

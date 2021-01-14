@@ -33,7 +33,7 @@ Pattern:
 	(return=PatternReturn)?;
 
 PatternCommand:
-	Node | ParamManipulation | PatternSwitch;
+	Node | ParamManipulation;
 
 PatternReturn:
 	{PatternReturn} 'return' retValue=RefOrCall;
@@ -42,7 +42,7 @@ ParamManipulation:
 	param=[ParameterNodeOrPattern] content=NodeContent;
 
 Node:
-	(srcModel=[Import] '.')? type=[ecore::EClassifier] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
+	(srcModel=[Import] '.')? type=[ecore::EClass] name=ID (createdBy=NodeContent | (ASSIGNMENT_OP
 	createdBy=PatternCall) | (ASSIGNMENT_OP
 	createdBy=RefOrCall))?;
 
@@ -56,8 +56,7 @@ PatternCallParameters:
 	{PatternCallParameters} (params+=ArithmeticExpression (',' params+=ArithmeticExpression)*)?;
 
 NodeReferenceOrAssignmentOrControlFlow:
-	PatternCommand | PatternNodeReference | NodeAttributeAssignment | PatternForStatement;
-	// TODO Validation: PatternCommand only when not used in Node or ParameterManipulation
+	PatternNodeReference | NodeAttributeAssignment | PatternSwitch | PatternForStatement;
 
 PatternForStatement:
 	'for' head=ForHead '{' body=PatternForBody '}';
@@ -72,7 +71,7 @@ PatternNodeReference:
 	PatternNodeReferenceToNode | PatternNodeReferenceToPatternCall;
 
 PatternNodeReferenceToNode:
-	type=[ecore::EReference] '->' node=RefOrCall;
+	type=[ecore::EReference] '->' node=RefOrCall; // allow nodes, parameter nodes and access to nodes in patterns as parameter objects in scoping! TODO
 PatternNodeReferenceToPatternCall:
 	type=[ecore::EReference] '->' pc=PatternCall;
 
@@ -212,7 +211,7 @@ GenCaseWithCast:
 	'case' node=Node ('when' when=ArithmeticExpression)? ':' body=GenCaseBody;
 
 GenCaseWithoutCast:
-	'case' val=ArithmeticExpression ':' body=GenCaseBody;
+	'case' val=ArithmeticExpression ':' body=GenCaseBody; // TODO where is this actually used? maybe remove and refactor switch hierarchy then?
 
 GenCaseBody:
 	{GenCaseBody} '{' (expressions+=GenSwitchExpression)* '}' | expressions+=GenSwitchExpression;

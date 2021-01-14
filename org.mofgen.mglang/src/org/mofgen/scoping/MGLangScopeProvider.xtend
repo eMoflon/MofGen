@@ -49,7 +49,6 @@ import org.mofgen.mGLang.VariableDefinition
 import org.mofgen.mGLang.VariableManipulation
 import org.mofgen.typeModel.TypeModelPackage
 import org.mofgen.utils.MofgenModelUtils
-import org.mofgen.mGLang.PatternCase
 
 /**
  * This class contains custom scoping description.
@@ -215,19 +214,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 
 	def getScopeForNode_Type(Node node) {
 		val imp = node.srcModel
-		var parentScope = null as IScope
-		val stringDatatype = #[EObjectDescription.create(QualifiedName.create("String"), EcorePackage.Literals.ESTRING)]
 		if (imp !== null) {
 			val classes = MofgenModelUtils.getClassesFromImport(imp)
-			parentScope = Scopes.scopeFor(classes)
+			return Scopes.scopeFor(classes)
 		} else {
-			parentScope = getScopeForAllImportedClasses(node)
-		}
-
-		if (node.eContainer instanceof PatternCase) {
-			return new SimpleScope(parentScope, stringDatatype)
-		} else {
-			return parentScope
+			return getScopeForAllImportedClasses(node)
 		}
 	}
 
@@ -239,11 +230,11 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 		} else {
 			val root = MofgenModelUtils.getRootFile(paramNode)
 			val classes = MofgenModelUtils.getUniqueClasses(root)
-			classes.add(EcorePackage.Literals.EOBJECT)
 			val patterns = EcoreUtil2.getAllContentsOfType(root, Pattern)
 			val parentScope = Scopes.scopeFor(classes + patterns)
 			val dataTypes = #[EObjectDescription.create(QualifiedName.create("String"), EcorePackage.Literals.ESTRING)]
 			return new SimpleScope(parentScope, dataTypes)
+
 		}
 	}
 
