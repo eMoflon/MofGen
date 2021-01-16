@@ -34,8 +34,6 @@ You have now several ways to available to access the API and start the generatio
 * get your models programmatically as EObjects by creating instances of the corresponding Generator Classes in `src-gen -> <project_name>.api.generators` and calling the *start()*-method
 * save your models programmatically by creating instances of the corresponding Generator Classes in `src-gen -> <project_name>.api.generators` and calling the *startAndSave()*-method while passing the desired location and name of the generated model file as parameters
 
-If you want to know how to run a simulation, have a look at the [running example](https://github.com/Echtzeitsysteme/Re.actionFramework#running-example).
-Any files with the `.mofgen`-extension should be recognized as such by Xtext. Please be aware that maybe not all invalid language components or expressions throw an error or warning message yet. If you encounter any of these, feel free to communicate them via the 'Issues'-section.
-
 There is no exemplary running example yet, but if you want to see the MofgenLanguage in action, feel free to take a look at the mofgen-files in the [test repository](https://github.com/tobnie/MofGen-tests).
 
+Any files with the `.mofgen`-extension should be recognized as such by Xtext. Please be aware that maybe not all invalid language components or expressions throw an error or warning message yet. If you encounter any of these, feel free to communicate them via the 'Issues'-section.
