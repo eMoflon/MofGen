@@ -17,6 +17,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -105,12 +107,6 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			logger.error("Retrieving mofgen files failed with: "+e.getMessage()+"\n"+e.getStackTrace());
 		}
 		if(mofgenFiles != null) {
-			try {
-				updateManifest(project, this::processManifestForPackage);
-			} catch (CoreException e) {
-				logger.error("Updating Manifest failed with " + e.getMessage()+"\n"+e.getStackTrace());
-			}
-
 			for(IFile mofgenFile : mofgenFiles) {
 				// use local registry for determining imports per file in generated source code
 				Registry localPackageRegistry = new EPackageRegistryImpl();
@@ -141,12 +137,18 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 				}
 			}
 		}
+		
+		try {
+			updateManifest(project, this::processManifestForPackage);
+		} catch (CoreException e) {
+			logger.error("Updating Manifest failed with " + e.getMessage()+"\n"+e.getStackTrace());
+		}
+		
 		try {
 			project.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (CoreException e) {
 			logger.error(e.getMessage());
 		}
-		
 		
 		double toc = System.currentTimeMillis();
 		logger.info("Creating API... Done! (" + (toc - tic) / 1000.0 + " seconds.)");
@@ -226,7 +228,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 
 	private boolean processManifestForPackage(IProject project, Manifest manifest) {
 		List<String> dependencies = new ArrayList<String>();
-		dependencies.addAll(Arrays.asList("org.eclipse.emf.ecore", "mofgen.api", "mofgen"));
+		dependencies.addAll(Arrays.asList("org.eclipse.emf.ecore", "org.moflon.mofgen.api"));
 		Set<String> ePackageDependencies = globalPackageRegistry.values().stream().map(p -> ((EPackage)p).getNsPrefix()).collect(Collectors.toSet());
 		dependencies.addAll(ePackageDependencies);
 		boolean changedBasics = ManifestFileUpdater.setBasicProperties(manifest, project.getName());
@@ -298,12 +300,11 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	}
 
 	private void removeGeneratedCode(IProject project, String pathString) {
-		// TODO Add progress monitors instead of null parameters
 		IPath path = Path.fromOSString(pathString);
 		if(path.lastSegment().equals("**")) {
 			IFolder folder = project.getFolder(path.removeLastSegments(1));
 			try {
-				folder.delete(true, null);
+				folder.delete(true, new NullProgressMonitor());
 			} catch (CoreException e) {
 				logger.error("Error occured when deleting old code.");
 				logger.error(e.toString());
@@ -313,8 +314,8 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			IFolder folder = project.getFolder(path);
 			IFile file = project.getFile(path);
 			try {
-				folder.delete(true, null);
-				file.delete(true, null);
+				folder.delete(true,  new NullProgressMonitor());
+				file.delete(true,  new NullProgressMonitor());
 			} catch (CoreException e) {
 				logger.error("Error occured when deleting old code.");
 				logger.error(e.toString());
