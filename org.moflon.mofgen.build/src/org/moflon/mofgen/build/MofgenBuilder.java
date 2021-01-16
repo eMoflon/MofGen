@@ -17,8 +17,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -35,6 +33,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.xtext.EcoreUtil2;
 import org.moflon.core.plugins.manifest.ManifestFileUpdater;
 import org.moflon.core.utilities.ClasspathUtil;
@@ -144,6 +146,13 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 			logger.error("Updating Manifest failed with " + e.getMessage()+"\n"+e.getStackTrace());
 		}
 		
+
+		try {
+			addPluginDependenciesToBuildPath(project);
+		} catch (JavaModelException e) {
+			logger.error("Adding plugin dependencies to project failed with " + e.getMessage()+"\n"+e.getStackTrace());
+		}
+		
 		try {
 			project.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		} catch (CoreException e) {
@@ -201,6 +210,22 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 				subFolder.create(true, true, subMon.split(1));
 		}
 	}
+	
+	/**
+	 * Adds the plug-in dependencies to the build path and thus adds them to the build path
+	 * @param project
+	 * @throws JavaModelException
+	 */
+	private void addPluginDependenciesToBuildPath(IProject project) throws JavaModelException {
+		// org.eclipse.pde.core.requiredPlugins
+		IJavaProject javaProject = JavaCore.create(project);
+		final IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+		final IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
+		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
+		IPath requiredPlugins = new Path("org.eclipse.pde.core.requiredPlugins");
+		newEntries[oldEntries.length] = JavaCore.newContainerEntry(requiredPlugins);
+		javaProject.setRawClasspath(newEntries, null);
+	}
 
 	public void createFolders(IProject project) throws CoreException {
 		createFolderIfNotExists(project.getFolder(DEFAULT_SRC_LOCATION), new NullProgressMonitor());
@@ -238,6 +263,7 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 	}
 
 	public static void findAllEPackages(final MofgenFile mofgenFile, final Registry packageRegistry) {
+		// TODO go through imports rather than nodes
 		EcoreUtil2.getAllContentsOfType(mofgenFile, Node.class).forEach(node -> {
 			EPackage foreign = node.getType().getEPackage();
 			if (!packageRegistry.containsKey(foreign.getNsURI())) {
