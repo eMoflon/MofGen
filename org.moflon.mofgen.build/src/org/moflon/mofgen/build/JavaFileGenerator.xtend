@@ -9,9 +9,9 @@ import org.eclipse.core.resources.IFolder
 import org.eclipse.xtext.EcoreUtil2
 import org.moflon.mofgen.api.EClassifiersManager
 import org.moflon.mofgen.build.util.NameProvider
-import org.moflon.mofgen.lang.mofgenLanguage.Generator
-import org.moflon.mofgen.lang.mofgenLanguage.MofgenFile
-import org.moflon.mofgen.lang.mofgenLanguage.Pattern
+import org.moflon.mofgen.mGLang.Generator
+import org.moflon.mofgen.mGLang.MofgenFile
+import org.moflon.mofgen.mGLang.Pattern
 
 /**
  * This class contains the templates for the API Java classes.

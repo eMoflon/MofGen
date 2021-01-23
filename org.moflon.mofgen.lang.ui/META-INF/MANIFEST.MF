@@ -6,8 +6,7 @@ Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.moflon.mofgen.lang.ui;singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.moflon.mofgen.mglang.ide,
- org.eclipse.xtext.ui,
+Require-Bundle: org.eclipse.xtext.ui,
  org.eclipse.xtext.ui.shared,
  org.eclipse.xtext.ui.codetemplates.ui,
  org.eclipse.ui.editors;bundle-version="3.5.0",
@@ -17,10 +16,11 @@ Require-Bundle: org.moflon.mofgen.mglang.ide,
  org.eclipse.xtext.builder,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
  org.eclipse.xtend.lib;bundle-version="2.14.0";resolution:=optional,
- mofgen;bundle-version="1.0.0"
+ org.moflon.mofgen.lang;bundle-version="1.0.0",
+ org.moflon.mofgen.lang.ide;bundle-version="1.0.0"
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.mofgen.ui.contentassist,
- org.mofgen.ui.quickfix,
- org.mofgen.mglang.ui.internal
-Bundle-Activator: org.mofgen.mglang.ui.internal.MglangActivator
+Export-Package: org.moflon.mofgen.lang.ui.internal,
+ org.moflon.mofgen.ui.contentassist,
+ org.moflon.mofgen.ui.quickfix
+Bundle-Activator: org.moflon.mofgen.lang.ui.internal.LangActivator

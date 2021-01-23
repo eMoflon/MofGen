@@ -42,11 +42,11 @@ import org.moflon.core.plugins.manifest.ManifestFileUpdater;
 import org.moflon.core.utilities.ClasspathUtil;
 import org.moflon.mofgen.api.EClassifiersManager;
 import org.moflon.mofgen.build.util.NameProvider;
-import org.moflon.mofgen.lang.generator.MofgenBuilderExtension;
-import org.moflon.mofgen.lang.mofgenLanguage.Generator;
-import org.moflon.mofgen.lang.mofgenLanguage.MofgenFile;
-import org.moflon.mofgen.lang.mofgenLanguage.Node;
-import org.moflon.mofgen.lang.mofgenLanguage.Pattern;
+import org.moflon.mofgen.generator.MofgenBuilderExtension;
+import org.moflon.mofgen.mGLang.Generator;
+import org.moflon.mofgen.mGLang.MofgenFile;
+import org.moflon.mofgen.mGLang.Node;
+import org.moflon.mofgen.mGLang.Pattern;
 
 public class MofgenBuilder implements MofgenBuilderExtension {
 

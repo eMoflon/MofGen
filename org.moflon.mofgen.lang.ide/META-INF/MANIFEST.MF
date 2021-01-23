@@ -9,7 +9,7 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
- mofgen;bundle-version="1.0.0"
+ org.moflon.mofgen.lang;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.mofgen.ide.contentassist.antlr,
- org.mofgen.ide.contentassist.antlr.internal
+Export-Package: org.moflon.mofgen.ide.contentassist.antlr,
+ org.moflon.mofgen.ide.contentassist.antlr.internal

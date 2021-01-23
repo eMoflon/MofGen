@@ -13,13 +13,13 @@ Workflow {
 				baseName = "org.moflon.mofgen.lang"
 				rootPath = rootPath
 				runtimeTest = {
-					enabled = true
+					enabled = false
 				}
 				eclipsePlugin = {
 					enabled = true
 				}
 				eclipsePluginTest = {
-					enabled = true
+					enabled = false
 				}
 				createEclipseMetaData = true
 			}
@@ -31,14 +31,14 @@ Workflow {
 			}
 		}
 		language = StandardLanguage {
-			name = "org.mofgen.MGLang"
+			name = "org.moflon.mofgen.MGLang"
 			fileExtensions = "mofgen"
 
 			serializer = {
 				generateStub = false
 			}
 			validator = {
-				 composedCheck = "org.mofgen.validation.MofgenNamesAreUniqueValidator"
+				 composedCheck = "org.moflon.mofgen.validation.MofgenNamesAreUniqueValidator"
 				// Generates checks for @Deprecated grammar annotations, an IssueProvider and a corresponding PropertyPage
 				generateDeprecationValidation = true
 			}

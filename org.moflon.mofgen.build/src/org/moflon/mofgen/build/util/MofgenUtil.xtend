@@ -1,9 +1,9 @@
 package org.moflon.mofgen.build.util
 
 import java.io.IOException
+import java.util.Map
 import java.util.Optional
 import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EObject
@@ -14,19 +14,17 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import org.mofgen.typeModel.TypeModelPackage
 import org.moflon.mofgen.build.MofgenBuilder
-import org.moflon.mofgen.build.util.NameProvider
-import org.moflon.mofgen.lang.interpreter.TypeCalculator
-import org.moflon.mofgen.lang.mofgenLanguage.List
-import org.moflon.mofgen.lang.mofgenLanguage.Node
-import org.moflon.mofgen.lang.mofgenLanguage.Parameter
-import org.moflon.mofgen.lang.mofgenLanguage.ParameterNodeOrPattern
-import org.moflon.mofgen.lang.mofgenLanguage.Pattern
-import org.moflon.mofgen.lang.mofgenLanguage.PatternReturn
-import org.moflon.mofgen.lang.mofgenLanguage.PrimitiveParameter
-import org.moflon.mofgen.lang.mofgenLanguage.RefOrCall
-import java.util.Map
+import org.moflon.mofgen.interpreter.TypeCalculator
+import org.moflon.mofgen.mGLang.List
+import org.moflon.mofgen.mGLang.Node
+import org.moflon.mofgen.mGLang.Parameter
+import org.moflon.mofgen.mGLang.ParameterNodeOrPattern
+import org.moflon.mofgen.mGLang.Pattern
+import org.moflon.mofgen.mGLang.PatternReturn
+import org.moflon.mofgen.mGLang.PrimitiveParameter
+import org.moflon.mofgen.mGLang.RefOrCall
+import org.moflon.mofgen.typeModel.TypeModelPackage
 
 class MofgenUtil {
 
@@ -118,12 +116,12 @@ class MofgenUtil {
 			dt === EcorePackage.Literals.EBOOLEAN || dt === EcorePackage.Literals.ECHAR
 	}
 
-	def static getMapKeyType(org.moflon.mofgen.lang.mofgenLanguage.Map map) {
+	def static getMapKeyType(org.moflon.mofgen.mGLang.Map map) {
 		val keyType = TypeCalculator.getMapType(map, true)
 		return convertETypeToInternalType(keyType)
 	}
 
-	def static getMapEntryType(org.moflon.mofgen.lang.mofgenLanguage.Map map) {
+	def static getMapEntryType(org.moflon.mofgen.mGLang.Map map) {
 		val entryType = TypeCalculator.getMapType(map, false)
 		return convertETypeToInternalType(entryType)
 	}

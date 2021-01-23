@@ -1,24 +1,24 @@
-package org.mofgen.interpreter
+package org.moflon.mofgen.interpreter
 
 import org.eclipse.emf.ecore.EOperation
-import org.mofgen.mGLang.ArithmeticExpression
-import org.mofgen.mGLang.BooleanLiteral
-import org.mofgen.mGLang.DoubleLiteral
-import org.mofgen.mGLang.FunctionCall
-import org.mofgen.mGLang.IntegerLiteral
-import org.mofgen.mGLang.NegationExpression
-import org.mofgen.mGLang.PatternCall
-import org.mofgen.mGLang.Primary
-import org.mofgen.mGLang.PrimitiveParameter
-import org.mofgen.mGLang.RefOrCall
-import org.mofgen.mGLang.Rel
-import org.mofgen.mGLang.Secondary
-import org.mofgen.mGLang.StringLiteral
-import org.mofgen.mGLang.Tertiary
-import org.mofgen.mGLang.UnaryMinus
-import org.mofgen.mGLang.VariableDeclaration
-import org.mofgen.mGLang.VariableDefinition
-import org.mofgen.utils.MofgenModelUtils
+import org.moflon.mofgen.mGLang.ArithmeticExpression
+import org.moflon.mofgen.mGLang.BooleanLiteral
+import org.moflon.mofgen.mGLang.DoubleLiteral
+import org.moflon.mofgen.mGLang.FunctionCall
+import org.moflon.mofgen.mGLang.IntegerLiteral
+import org.moflon.mofgen.mGLang.NegationExpression
+import org.moflon.mofgen.mGLang.PatternCall
+import org.moflon.mofgen.mGLang.Primary
+import org.moflon.mofgen.mGLang.PrimitiveParameter
+import org.moflon.mofgen.mGLang.RefOrCall
+import org.moflon.mofgen.mGLang.Rel
+import org.moflon.mofgen.mGLang.Secondary
+import org.moflon.mofgen.mGLang.StringLiteral
+import org.moflon.mofgen.mGLang.Tertiary
+import org.moflon.mofgen.mGLang.UnaryMinus
+import org.moflon.mofgen.mGLang.VariableDeclaration
+import org.moflon.mofgen.mGLang.VariableDefinition
+import org.moflon.mofgen.utils.MofgenModelUtils
 
 class Calculator {
 
