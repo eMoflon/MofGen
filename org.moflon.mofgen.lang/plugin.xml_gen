@@ -2,9 +2,9 @@
 <?eclipse version="3.0"?>
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
-		<package 
+		<package
 			uri = "http://www.mofgen.org/MGLang"
-			class = "org.mofgen.mGLang.MGLangPackage"
+			class = "org.moflon.mofgen.mGLang.MGLangPackage"
 			genModel = "model/generated/MGLang.genmodel" />
 	</extension>
 </plugin>

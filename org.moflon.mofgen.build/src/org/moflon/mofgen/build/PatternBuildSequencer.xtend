@@ -7,24 +7,24 @@ import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
-import org.moflon.mofgen.lang.mofgenLanguage.ArithmeticExpression
-import org.moflon.mofgen.lang.mofgenLanguage.Node
-import org.moflon.mofgen.lang.mofgenLanguage.NodeAttributeAssignment
-import org.moflon.mofgen.lang.mofgenLanguage.NodeContent
-import org.moflon.mofgen.lang.mofgenLanguage.ParamManipulation
-import org.moflon.mofgen.lang.mofgenLanguage.Parameter
-import org.moflon.mofgen.lang.mofgenLanguage.ParameterNodeOrPattern
-import org.moflon.mofgen.lang.mofgenLanguage.Pattern
-import org.moflon.mofgen.lang.mofgenLanguage.PatternCall
-import org.moflon.mofgen.lang.mofgenLanguage.PatternCase
-import org.moflon.mofgen.lang.mofgenLanguage.PatternForStatement
-import org.moflon.mofgen.lang.mofgenLanguage.PatternIfElseSwitch
-import org.moflon.mofgen.lang.mofgenLanguage.PatternNodeReference
-import org.moflon.mofgen.lang.mofgenLanguage.PatternNodeReferenceToNode
-import org.moflon.mofgen.lang.mofgenLanguage.PatternNodeReferenceToPatternCall
-import org.moflon.mofgen.lang.mofgenLanguage.PatternSwitchCase
-import org.moflon.mofgen.lang.mofgenLanguage.RefOrCall
 import org.moflon.mofgen.build.util.NameProvider
+import org.moflon.mofgen.mGLang.ArithmeticExpression
+import org.moflon.mofgen.mGLang.Node
+import org.moflon.mofgen.mGLang.NodeAttributeAssignment
+import org.moflon.mofgen.mGLang.NodeContent
+import org.moflon.mofgen.mGLang.ParamManipulation
+import org.moflon.mofgen.mGLang.Parameter
+import org.moflon.mofgen.mGLang.ParameterNodeOrPattern
+import org.moflon.mofgen.mGLang.Pattern
+import org.moflon.mofgen.mGLang.PatternCall
+import org.moflon.mofgen.mGLang.PatternCase
+import org.moflon.mofgen.mGLang.PatternForStatement
+import org.moflon.mofgen.mGLang.PatternIfElseSwitch
+import org.moflon.mofgen.mGLang.PatternNodeReference
+import org.moflon.mofgen.mGLang.PatternNodeReferenceToNode
+import org.moflon.mofgen.mGLang.PatternNodeReferenceToPatternCall
+import org.moflon.mofgen.mGLang.PatternSwitchCase
+import org.moflon.mofgen.mGLang.RefOrCall
 
 class PatternBuildSequencer {
 

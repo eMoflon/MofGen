@@ -11,7 +11,7 @@ import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.validation.NamesAreUniqueValidationHelper;
 import org.eclipse.xtext.validation.ValidationMessageAcceptor;
-import org.mofgen.mGLang.MGLangPackage;
+import org.moflon.mofgen.mGLang.MGLangPackage;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;

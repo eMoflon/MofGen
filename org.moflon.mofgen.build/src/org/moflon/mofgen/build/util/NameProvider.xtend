@@ -7,10 +7,10 @@ import org.eclipse.emf.ecore.EEnumLiteral
 import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
-import org.moflon.mofgen.lang.mofgenLanguage.Generator
-import org.moflon.mofgen.lang.mofgenLanguage.Node
-import org.moflon.mofgen.lang.mofgenLanguage.Parameter
-import org.moflon.mofgen.lang.mofgenLanguage.Pattern
+import org.moflon.mofgen.mGLang.Generator
+import org.moflon.mofgen.mGLang.Node
+import org.moflon.mofgen.mGLang.Parameter
+import org.moflon.mofgen.mGLang.Pattern
 
 class NameProvider {
 	

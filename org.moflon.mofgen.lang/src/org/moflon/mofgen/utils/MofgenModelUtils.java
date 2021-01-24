@@ -20,14 +20,14 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
-import org.mofgen.mGLang.Import;
-import org.mofgen.mGLang.MGLangPackage;
-import org.mofgen.mGLang.MofgenFile;
-import org.mofgen.mGLang.Parameter;
-import org.mofgen.mGLang.ParameterNodeOrPattern;
-import org.mofgen.mGLang.Pattern;
-import org.mofgen.mGLang.PrimitiveParameter;
-import org.mofgen.typeModel.TypeModelPackage;
+import org.moflon.mofgen.typeModel.TypeModelPackage;
+import org.moflon.mofgen.mGLang.Import;
+import org.moflon.mofgen.mGLang.MGLangPackage;
+import org.moflon.mofgen.mGLang.MofgenFile;
+import org.moflon.mofgen.mGLang.Parameter;
+import org.moflon.mofgen.mGLang.ParameterNodeOrPattern;
+import org.moflon.mofgen.mGLang.Pattern;
+import org.moflon.mofgen.mGLang.PrimitiveParameter;
 
 public class MofgenModelUtils {
 	/**

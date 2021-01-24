@@ -5,8 +5,8 @@ package org.mofgen.ide
 
 import com.google.inject.Guice
 import org.eclipse.xtext.util.Modules2
-import org.mofgen.MGLangRuntimeModule
-import org.mofgen.MGLangStandaloneSetup
+import org.moflon.mofgen.MGLangRuntimeModule
+import org.moflon.mofgen.MGLangStandaloneSetup
 
 /**
  * Initialization support for running Xtext languages as language servers.

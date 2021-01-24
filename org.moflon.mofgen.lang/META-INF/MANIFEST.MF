@@ -20,17 +20,16 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.core.runtime;bundle-version="3.17.0",
  org.moflon.mofgen.typeModel;bundle-version="0.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.mofgen,
+Export-Package: org.moflon.mofgen,
  org.moflon.mofgen.generator,
-  org.moflon.mofgen.interpreter,
-  org.moflon.mofgen.lang,
-  org.moflon.mofgen.lang.impl, org.moflon.mofgen.interpreter,
-  org.moflon.mofgen.lang.util,
-  org.moflon.mofgen.parser.antlr,
-  org.moflon.mofgen.parser.antlr.internal,
-  org.moflon.mofgen.scoping,
-  org.moflon.mofgen.serializer,
-  org.moflon.mofgen.services,
-  org.moflon.mofgen.validation,
-  org.moflon.mofgen.lang.impl
+ org.moflon.mofgen.interpreter,
+ org.moflon.mofgen.mGLang,
+ org.moflon.mofgen.mGLang.impl,
+ org.moflon.mofgen.mGLang.util,
+ org.moflon.mofgen.parser.antlr,
+ org.moflon.mofgen.parser.antlr.internal,
+ org.moflon.mofgen.scoping,
+ org.moflon.mofgen.serializer,
+ org.moflon.mofgen.services,
+ org.moflon.mofgen.validation
 Import-Package: org.apache.log4j

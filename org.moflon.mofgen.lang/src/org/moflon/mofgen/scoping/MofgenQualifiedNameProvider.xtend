@@ -1,18 +1,18 @@
-package org.mofgen.scoping
+package org.moflon.mofgen.scoping
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.DefaultDeclarativeQualifiedNameProvider
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
-import org.mofgen.mGLang.ForStatement
-import org.mofgen.mGLang.IteratorVariable
-import org.mofgen.mGLang.Node
-import org.mofgen.mGLang.Parameter
-import org.mofgen.mGLang.Switch
-import org.mofgen.mGLang.GenCase
-import org.mofgen.mGLang.GenSwitchCase
-import org.mofgen.mGLang.PatternCase
-import org.mofgen.mGLang.PatternSwitchCase
+import org.moflon.mofgen.mGLang.ForStatement
+import org.moflon.mofgen.mGLang.GenCase
+import org.moflon.mofgen.mGLang.GenSwitchCase
+import org.moflon.mofgen.mGLang.IteratorVariable
+import org.moflon.mofgen.mGLang.Node
+import org.moflon.mofgen.mGLang.Parameter
+import org.moflon.mofgen.mGLang.PatternCase
+import org.moflon.mofgen.mGLang.PatternSwitchCase
+import org.moflon.mofgen.mGLang.Switch
 
 class MofgenQualifiedNameProvider extends DefaultDeclarativeQualifiedNameProvider {
 

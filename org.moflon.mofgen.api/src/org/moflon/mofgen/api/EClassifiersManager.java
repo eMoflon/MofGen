@@ -14,13 +14,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.EcoreUtil2;
-import org.moflon.core.utilities.*;
-import org.moflon.mofgen.lang.interpreter.TypeCalculator;
-import org.moflon.mofgen.lang.mofgenLanguage.Collection;
-import org.moflon.mofgen.lang.mofgenLanguage.MofgenFile;
-import org.moflon.mofgen.lang.mofgenLanguage.Node;
-import org.moflon.mofgen.lang.mofgenLanguage.ParameterNodeOrPattern;
-import org.moflon.mofgen.lang.mofgenLanguage.VariableDeclaration;
+import org.moflon.core.utilities.EcoreUtils;
+import org.moflon.mofgen.interpreter.TypeCalculator;
+import org.moflon.mofgen.mGLang.Collection;
+import org.moflon.mofgen.mGLang.MofgenFile;
+import org.moflon.mofgen.mGLang.Node;
+import org.moflon.mofgen.mGLang.ParameterNodeOrPattern;
+import org.moflon.mofgen.mGLang.VariableDeclaration;
 
 /**
  * This class manages the mapping between names of EClasses/EDataTypes to the
@@ -221,14 +221,14 @@ public class EClassifiersManager {
 	public Set<String> getImportsForCollectionTypes(final List<Collection> colls) {
 		Set<EClassifier> typeSet = new HashSet<>();
 		for (Collection c : colls) {
-			if (c instanceof org.moflon.mofgen.lang.mofgenLanguage.List) {
-				EObject val = TypeCalculator.getListType((org.moflon.mofgen.lang.mofgenLanguage.List) c);
+			if (c instanceof org.moflon.mofgen.mGLang.List) {
+				EObject val = TypeCalculator.getListType((org.moflon.mofgen.mGLang.List) c);
 				if (val instanceof EClassifier) {
 					typeSet.add((EClassifier) val);
 				}
-			} else if (c instanceof org.moflon.mofgen.lang.mofgenLanguage.Map) {
-				typeSet.add(TypeCalculator.getMapType((org.moflon.mofgen.lang.mofgenLanguage.Map) c, true));
-				typeSet.add(TypeCalculator.getMapType((org.moflon.mofgen.lang.mofgenLanguage.Map) c, false));
+			} else if (c instanceof org.moflon.mofgen.mGLang.Map) {
+				typeSet.add(TypeCalculator.getMapType((org.moflon.mofgen.mGLang.Map) c, true));
+				typeSet.add(TypeCalculator.getMapType((org.moflon.mofgen.mGLang.Map) c, false));
 			} else {
 				throw new IllegalStateException("There should be no collection of type other than List or Map");
 			}

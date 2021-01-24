@@ -4,48 +4,48 @@
 	<extension
 		point="org.eclipse.ui.editors">
 		<editor
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
 			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
 			default="true"
 			extensions="mofgen"
-			id="org.mofgen.MGLang"
+			id="org.moflon.mofgen.MGLang"
 			name="MGLang Editor">
 		</editor>
 	</extension>
 	<extension
 		point="org.eclipse.ui.handlers">
 		<handler
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
 			commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
 			<activeWhen>
 				<reference
-					definitionId="org.mofgen.MGLang.Editor.opened">
+					definitionId="org.moflon.mofgen.MGLang.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
 		<handler
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
-			commandId="org.mofgen.MGLang.validate">
-		<activeWhen>
-			<reference
-					definitionId="org.mofgen.MGLang.Editor.opened">
-			</reference>
-		</activeWhen>
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
+			commandId="org.moflon.mofgen.MGLang.validate">
+			<activeWhen>
+				<reference
+					definitionId="org.moflon.mofgen.MGLang.Editor.opened">
+				</reference>
+			</activeWhen>
 		</handler>
 		<!-- copy qualified name -->
 		<handler
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
 			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName">
 			<activeWhen>
-				<reference definitionId="org.mofgen.MGLang.Editor.opened" />
+				<reference definitionId="org.moflon.mofgen.MGLang.Editor.opened" />
 			</activeWhen>
 		</handler>
 		<handler
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
 			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName">
 			<activeWhen>
 				<and>
-					<reference definitionId="org.mofgen.MGLang.XtextEditor.opened" />
+					<reference definitionId="org.moflon.mofgen.MGLang.XtextEditor.opened" />
 					<iterate>
 						<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
 					</iterate>
@@ -54,22 +54,22 @@
 		</handler>
 	</extension>
 	<extension point="org.eclipse.core.expressions.definitions">
-		<definition id="org.mofgen.MGLang.Editor.opened">
+		<definition id="org.moflon.mofgen.MGLang.Editor.opened">
 			<and>
 				<reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
 				<with variable="activeEditor">
 					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="org.mofgen.MGLang"
+						value="org.moflon.mofgen.MGLang"
 						forcePluginActivation="true"/>
 				</with>
 			</and>
 		</definition>
-		<definition id="org.mofgen.MGLang.XtextEditor.opened">
+		<definition id="org.moflon.mofgen.MGLang.XtextEditor.opened">
 			<and>
 				<reference definitionId="isXtextEditorActive"/>
 				<with variable="activeEditor">
 					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
-						value="org.mofgen.MGLang"
+						value="org.moflon.mofgen.MGLang"
 						forcePluginActivation="true"/>
 				</with>
 			</and>
@@ -78,33 +78,33 @@
 	<extension
 			point="org.eclipse.ui.preferencePages">
 		<page
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-			id="org.mofgen.MGLang"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="org.moflon.mofgen.MGLang"
 			name="MGLang">
-			<keywordReference id="org.mofgen.ui.keyword_MGLang"/>
+			<keywordReference id="org.moflon.mofgen.ui.keyword_MGLang"/>
 		</page>
 		<page
-			category="org.mofgen.MGLang"
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
-			id="org.mofgen.MGLang.coloring"
+			category="org.moflon.mofgen.MGLang"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+			id="org.moflon.mofgen.MGLang.coloring"
 			name="Syntax Coloring">
-			<keywordReference id="org.mofgen.ui.keyword_MGLang"/>
+			<keywordReference id="org.moflon.mofgen.ui.keyword_MGLang"/>
 		</page>
 		<page
-			category="org.mofgen.MGLang"
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
-			id="org.mofgen.MGLang.templates"
+			category="org.moflon.mofgen.MGLang"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
+			id="org.moflon.mofgen.MGLang.templates"
 			name="Templates">
-			<keywordReference id="org.mofgen.ui.keyword_MGLang"/>
+			<keywordReference id="org.moflon.mofgen.ui.keyword_MGLang"/>
 		</page>
 	</extension>
 	<extension
 			point="org.eclipse.ui.propertyPages">
 		<page
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
-			id="org.mofgen.MGLang"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="org.moflon.mofgen.MGLang"
 			name="MGLang">
-			<keywordReference id="org.mofgen.ui.keyword_MGLang"/>
+			<keywordReference id="org.moflon.mofgen.ui.keyword_MGLang"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
 			</enabledWhen>
@@ -114,50 +114,50 @@
 	<extension
 		point="org.eclipse.ui.keywords">
 		<keyword
-			id="org.mofgen.ui.keyword_MGLang"
+			id="org.moflon.mofgen.ui.keyword_MGLang"
 			label="MGLang"/>
 	</extension>
 	<extension
 		point="org.eclipse.ui.commands">
-	<command
+		<command
 			description="Trigger expensive validation"
-			id="org.mofgen.MGLang.validate"
+			id="org.moflon.mofgen.MGLang.validate"
 			name="Validate">
-	</command>
-	<!-- copy qualified name -->
-	<command
+		</command>
+		<!-- copy qualified name -->
+		<command
 			id="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
 			categoryId="org.eclipse.ui.category.edit"
 			description="Copy the qualified name for the selected element"
 			name="Copy Qualified Name">
-	</command>
-	<command
+		</command>
+		<command
 			id="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
 			categoryId="org.eclipse.ui.category.edit"
 			description="Copy the qualified name for the selected element"
 			name="Copy Qualified Name">
-	</command>
+		</command>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
 			locationURI="popup:#TextEditorContext?after=group.edit">
-			 <command
-				 commandId="org.mofgen.MGLang.validate"
-				 style="push"
-				 tooltip="Trigger expensive validation">
-			<visibleWhen checkEnabled="false">
-				<reference
-					definitionId="org.mofgen.MGLang.Editor.opened">
-				</reference>
-			</visibleWhen>
-		</command>
+			<command
+				commandId="org.moflon.mofgen.MGLang.validate"
+				style="push"
+				tooltip="Trigger expensive validation">
+				<visibleWhen checkEnabled="false">
+					<reference
+						definitionId="org.moflon.mofgen.MGLang.Editor.opened">
+					</reference>
+				</visibleWhen>
+			</command>
 		</menuContribution>
 		<!-- copy qualified name -->
 		<menuContribution locationURI="popup:#TextEditorContext?after=copy">
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.mofgen.MGLang.Editor.opened" />
+					<reference definitionId="org.moflon.mofgen.MGLang.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -165,7 +165,7 @@
 			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.mofgen.MGLang.Editor.opened" />
+					<reference definitionId="org.moflon.mofgen.MGLang.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
@@ -174,7 +174,7 @@
 				style="push" tooltip="Copy Qualified Name">
 				<visibleWhen checkEnabled="false">
 					<and>
-						<reference definitionId="org.mofgen.MGLang.XtextEditor.opened" />
+						<reference definitionId="org.moflon.mofgen.MGLang.XtextEditor.opened" />
 						<iterate>
 							<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
 						</iterate>
@@ -187,7 +187,7 @@
 		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
 			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.mofgen.MGLang.Editor.opened">
+					<reference definitionId="org.moflon.mofgen.MGLang.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -195,11 +195,11 @@
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
 			commandId="org.eclipse.xtext.ui.editor.FindReferences">
 			<activeWhen>
 				<reference
-					definitionId="org.mofgen.MGLang.Editor.opened">
+					definitionId="org.moflon.mofgen.MGLang.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -208,7 +208,7 @@
 		<content-type
 			base-type="org.eclipse.core.runtime.text"
 			file-extensions="mofgen"
-			id="org.mofgen.MGLang.contenttype"
+			id="org.moflon.mofgen.MGLang.contenttype"
 			name="MGLang File"
 			priority="normal">
 		</content-type>
@@ -217,17 +217,17 @@
 	<extension
 		point="org.eclipse.emf.ecore.extension_parser">
 		<parser
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
 			type="mofgen">
 		</parser>
 	</extension>
 	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
 		<resourceServiceProvider
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
 			uriExtension="mofgen">
 		</resourceServiceProvider>
 	</extension>
-	<!-- marker definitions for org.mofgen.MGLang -->
+	<!-- marker definitions for org.moflon.mofgen.MGLang -->
 	<extension
 			id="mglang.check.fast"
 			name="MGLang Problem"
@@ -251,34 +251,34 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.mofgen.MGLang"
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
-			id="org.mofgen.MGLang.validator.preferencePage"
+			category="org.moflon.mofgen.MGLang"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.validation.ValidatorPreferencePage"
+			id="org.moflon.mofgen.MGLang.validator.preferencePage"
 			name="Errors/Warnings">
-			<keywordReference id="org.mofgen.ui.keyword_MGLang"/>
+			<keywordReference id="org.moflon.mofgen.ui.keyword_MGLang"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.xtext.builder.participant">
 		<participant
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
 			fileExtensions="mofgen"/>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.mofgen.MGLang"
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-			id="org.mofgen.MGLang.compiler.preferencePage"
+			category="org.moflon.mofgen.MGLang"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="org.moflon.mofgen.MGLang.compiler.preferencePage"
 			name="Compiler">
-			<keywordReference id="org.mofgen.ui.keyword_MGLang"/>
+			<keywordReference id="org.moflon.mofgen.ui.keyword_MGLang"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="org.mofgen.MGLang"
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-			id="org.mofgen.MGLang.compiler.propertyPage"
+			category="org.moflon.mofgen.MGLang"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="org.moflon.mofgen.MGLang.compiler.propertyPage"
 			name="Compiler">
-			<keywordReference id="org.mofgen.ui.keyword_MGLang"/>
+			<keywordReference id="org.moflon.mofgen.ui.keyword_MGLang"/>
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject"/>
 			</enabledWhen>
@@ -289,32 +289,32 @@
 		<menuContribution locationURI="popup:#TextEditorContext?after=xtext.ui.openDeclaration">
 			<command
 				commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
-				id="org.mofgen.MGLang.OpenGeneratedCode"
+				id="org.moflon.mofgen.MGLang.OpenGeneratedCode"
 				style="push">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.mofgen.MGLang.Editor.opened" />
+					<reference definitionId="org.moflon.mofgen.MGLang.Editor.opened" />
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 		<handler
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
 			commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand">
 			<activeWhen>
-				<reference definitionId="org.mofgen.MGLang.Editor.opened" />
+				<reference definitionId="org.moflon.mofgen.MGLang.Editor.opened" />
 			</activeWhen>
 		</handler>
 	</extension>
 	<!-- Quick Outline -->
 	<extension
 		point="org.eclipse.ui.handlers">
-		<handler 
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+		<handler
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
 			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
 			<activeWhen>
 				<reference
-					definitionId="org.mofgen.MGLang.Editor.opened">
+					definitionId="org.moflon.mofgen.MGLang.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -334,33 +334,33 @@
 				style="push"
 				tooltip="Open Quick Outline">
 				<visibleWhen checkEnabled="false">
-					<reference definitionId="org.mofgen.MGLang.Editor.opened"/>
+					<reference definitionId="org.moflon.mofgen.MGLang.Editor.opened"/>
 				</visibleWhen>
 			</command>
 		</menuContribution>
 	</extension>
-	<!-- quickfix marker resolution generator for org.mofgen.MGLang -->
+	<!-- quickfix marker resolution generator for org.moflon.mofgen.MGLang -->
 	<extension
 			point="org.eclipse.ui.ide.markerResolution">
 		<markerResolutionGenerator
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="org.mofgen.mglang.ui.mglang.check.fast">
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="org.moflon.mofgen.lang.ui.mglang.check.fast">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
 			</attribute>
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="org.mofgen.mglang.ui.mglang.check.normal">
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="org.moflon.mofgen.lang.ui.mglang.check.normal">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
 			</attribute>
 		</markerResolutionGenerator>
 		<markerResolutionGenerator
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-			markerType="org.mofgen.mglang.ui.mglang.check.expensive">
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="org.moflon.mofgen.lang.ui.mglang.check.expensive">
 			<attribute
 				name="FIXABLE_KEY"
 				value="true">
@@ -369,12 +369,12 @@
 	</extension>
 	<!-- Rename Refactoring -->
 	<extension point="org.eclipse.ui.handlers">
-		<handler 
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
+		<handler
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
 			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
 			<activeWhen>
 				<reference
-					definitionId="org.mofgen.MGLang.Editor.opened">
+					definitionId="org.moflon.mofgen.MGLang.Editor.opened">
 				</reference>
 			</activeWhen>
 		</handler>
@@ -386,7 +386,7 @@
 				style="push">
 				<visibleWhen checkEnabled="false">
 					<reference
-						definitionId="org.mofgen.MGLang.Editor.opened">
+						definitionId="org.moflon.mofgen.MGLang.Editor.opened">
 					</reference>
 				</visibleWhen>
 			</command>
@@ -394,34 +394,34 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.mofgen.MGLang"
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
-			id="org.mofgen.MGLang.refactoring"
+			category="org.moflon.mofgen.MGLang"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+			id="org.moflon.mofgen.MGLang.refactoring"
 			name="Refactoring">
-			<keywordReference id="org.mofgen.ui.keyword_MGLang"/>
+			<keywordReference id="org.moflon.mofgen.ui.keyword_MGLang"/>
 		</page>
 	</extension>
 	<extension point="org.eclipse.compare.contentViewers">
-		<viewer id="org.mofgen.MGLang.compare.contentViewers"
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+		<viewer id="org.moflon.mofgen.MGLang.compare.contentViewers"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="mofgen">
 		</viewer>
 		<contentTypeBinding
-			contentTypeId="org.mofgen.MGLang.contenttype"
-			contentViewerId="org.mofgen.MGLang.compare.contentViewers" />
+			contentTypeId="org.moflon.mofgen.MGLang.contenttype"
+			contentViewerId="org.moflon.mofgen.MGLang.compare.contentViewers" />
 	</extension>
 	<extension point="org.eclipse.compare.contentMergeViewers">
-		<viewer id="org.mofgen.MGLang.compare.contentMergeViewers"
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+		<viewer id="org.moflon.mofgen.MGLang.compare.contentMergeViewers"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="mofgen" label="MGLang Compare">
 		</viewer>
 		<contentTypeBinding
-			contentTypeId="org.mofgen.MGLang.contenttype"
-			contentMergeViewerId="org.mofgen.MGLang.compare.contentMergeViewers" />
+			contentTypeId="org.moflon.mofgen.MGLang.contenttype"
+			contentMergeViewerId="org.moflon.mofgen.MGLang.compare.contentMergeViewers" />
 	</extension>
 	<extension point="org.eclipse.ui.editors.documentProviders">
-		<provider id="org.mofgen.MGLang.editors.documentProviders"
-			class="org.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+		<provider id="org.moflon.mofgen.MGLang.editors.documentProviders"
+			class="org.moflon.mofgen.ui.MGLangExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
 			extensions="mofgen">
 		</provider>
 	</extension>

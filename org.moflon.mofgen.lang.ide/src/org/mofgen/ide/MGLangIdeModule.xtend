@@ -3,6 +3,7 @@
  */
 package org.mofgen.ide
 
+import org.moflon.mofgen.ide.AbstractMGLangIdeModule
 
 /**
  * Use this class to register ide components.

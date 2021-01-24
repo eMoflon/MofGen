@@ -55,7 +55,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.mofgen.generator.MofgenBuilderExtension"/>
+                  <meta.attribute kind="java" basedOn=":org.moflon.mofgen.generator.MofgenBuilderExtension"/>
                </appInfo>
             </annotation>
          </attribute>

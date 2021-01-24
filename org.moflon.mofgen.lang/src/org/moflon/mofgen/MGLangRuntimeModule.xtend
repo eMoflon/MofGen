@@ -4,7 +4,7 @@
 package org.moflon.mofgen
 
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import org.mofgen.scoping.MofgenQualifiedNameProvider
+import org.moflon.mofgen.scoping.MofgenQualifiedNameProvider
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.

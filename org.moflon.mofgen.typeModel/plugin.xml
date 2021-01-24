@@ -10,7 +10,7 @@
       <!-- @generated typeModel -->
       <package
             uri="http://www.example.org/typeModel"
-            class="org.mofgen.typeModel.TypeModelPackage"
+            class="org.moflon.mofgen.typeModel.TypeModelPackage"
             genModel="model/typeModel.genmodel"/>
    </extension>
 
