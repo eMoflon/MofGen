@@ -14,7 +14,6 @@ If you don't already have a working setup of eMoflon it is recommended to start 
 * Get rid of all errors:
    * Set your text file encoding to `UTF-8` in `Window->Preferences->General->Workspace`
    * Open `org.moflon.mofgen.lang -> src -> org.moflon.mofgen.lang -> GenerateMofgenLanguage.mwe2` right-click and choose `Run As -> MWE2 Workflow`
-   * Open `org.moflon.mofgen.typeModel -> model -> typeModel.genmodel` click the top-level item and choose "Generate Model Code"
    * Eventually rebuild
    * Make sure you have JDK 8 or above.
 
