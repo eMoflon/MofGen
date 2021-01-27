@@ -6,7 +6,7 @@ A language for specifying and generating EMF-compliant models from corresponding
 * Eclipse Modeling Tools
 * Working [eMoflon](https://github.com/eMoflon/emoflon-ibex) setup
 
-If you don't already have a working setup of eMoflon it is recommended to start with a fresh and clean install of eclipse as provided by the [Eclipse Modeling Tools](https://www.eclipse.org/downloads/packages/release/2020-06/r/eclipse-modeling-tools).
+If you don't already have a working setup of eMoflon it is recommended to start with a fresh and clean install of eclipse as provided by the [Eclipse Modeling Tools](https://www.eclipse.org/downloads/packages/release/2020-12/r/eclipse-modeling-tools).
 
 ## Setup instructions
 * Install eMoflon::IBeX as given [here](https://github.com/eMoflon/emoflon-ibex) and follow the "How to Develop" or "How to Install" instructions based on what you want to do.
