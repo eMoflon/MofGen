@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="mofgen" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.moflon.mofgen.lang" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="mofgen" id="MofgenBuilderExtension" name="MofgenBuilderExtension"/>
+         <meta.schema plugin="org.moflon.mofgen.lang" id="MofgenBuilderExtension" name="MofgenBuilderExtension"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]

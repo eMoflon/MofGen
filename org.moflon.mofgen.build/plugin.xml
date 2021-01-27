@@ -2,6 +2,8 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         id="org.moflon.mofgen.lang"
+         name="MofgenBuilderExtension"
          point="org.moflon.mofgen.lang.MofgenBuilderExtension">
       <builder_extension
             class="org.moflon.mofgen.build.MofgenBuilder">

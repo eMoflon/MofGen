@@ -143,14 +143,14 @@ public class MofgenBuilder implements MofgenBuilderExtension {
 		try {
 			updateManifest(project, this::processManifestForPackage);
 		} catch (CoreException e) {
-			logger.error("Updating Manifest failed with " + e.getMessage()+"\n"+e.getStackTrace());
+			logger.error("Updating Manifest failed with: \n " + e.getMessage()+"\n"+e.getStackTrace());
 		}
 		
 
 		try {
 			addPluginDependenciesToBuildPath(project);
 		} catch (JavaModelException e) {
-			logger.error("Adding plugin dependencies to project failed with " + e.getMessage()+"\n"+e.getStackTrace());
+			logger.warn("Adding plugin dependencies to project failed with: \n" + e.getMessage()+"\n"+e.getStackTrace());
 		}
 		
 		try {
