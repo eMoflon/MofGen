@@ -102,6 +102,13 @@ class MGLangValidator extends AbstractMGLangValidator {
 			}
 		}
 	}
+	
+	@Check
+	def validForStatement(ForStatement forStatement){
+		if(forStatement.head === null){
+			error("Each for-loop needs a head.", MGLangPackage.Literals.FOR_STATEMENT__HEAD)
+		}
+	}
 
 	@Check
 	def checkImportResolvable(Import imp) {

@@ -115,11 +115,11 @@ class GeneralTranslator {
 
 		return '''«coll.name».«translateCollectionManipulationOperationName(op)»(«internalTranslate(params)»)'''
 	}
-	
-	private def static String translateCollectionManipulationOperationName(EOperation op){
-		if(op == TypeModelPackage.Literals.LIST___REMOVE_AT__INT){
+
+	private def static String translateCollectionManipulationOperationName(EOperation op) {
+		if (op == TypeModelPackage.Literals.LIST___REMOVE_AT__INT) {
 			return TypeModelPackage.Literals.LIST___REMOVE__EOBJECT.name
-		}else{
+		} else {
 			return op.name
 		}
 	}
@@ -196,15 +196,15 @@ class GeneralTranslator {
 					if (rightEval instanceof EClass) {
 						if (leftEval !== TypeModelPackage.Literals.NULL_OBJECT &&
 							rightEval !== TypeModelPackage.Literals.NULL_OBJECT) {
-							if (ae.relation == RelationalOp.EQUAL&&
+							if (ae.relation == RelationalOp.EQUAL &&
 								!TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(leftEval) &&
 								!TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(leftEval)) {
-									// TODO What to use here?
-									if (isClassImplementingEquals(leftEval)) {
-										return '''«translate(ae.left)».equals(«translate(ae.right)»)'''
-									} else {
-										return '''(new EcoreUtil.EqualityHelper()).equals(«translate(ae.left)», «translate(ae.right)»)'''
-									}
+								// TODO What to use here?
+								if (isClassImplementingEquals(leftEval)) {
+									return '''«translate(ae.left)».equals(«translate(ae.right)»)'''
+								} else {
+									return '''(new EcoreUtil.EqualityHelper()).equals(«translate(ae.left)», «translate(ae.right)»)'''
+								}
 							}
 							if (ae.relation == RelationalOp.UNEQUAL &&
 								!TypeModelPackage.Literals.PRIMITIVE.isSuperTypeOf(leftEval) &&
@@ -238,7 +238,7 @@ class GeneralTranslator {
 	}
 
 	private static def isClassImplementingEquals(EClass eClass) {
-		if(eClass == TypeModelPackage.Literals.STRING){
+		if (eClass == TypeModelPackage.Literals.STRING) {
 			return true;
 		}
 		val allOps = eClass.EAllOperations
@@ -265,7 +265,11 @@ class GeneralTranslator {
 				if (roc.target !== null) {
 					prefix = '''«translate(roc.target)».'''
 				}
-				if (ref instanceof EEnum || ref instanceof EEnumLiteral) {
+				if (ref instanceof EEnum) {
+					prefix = ref.EPackage.name + "."
+					suffix = ""
+				}
+				if (ref instanceof EEnumLiteral) {
 					suffix = ""
 				}
 				if (ref instanceof EAttribute || ref instanceof EReference) {
