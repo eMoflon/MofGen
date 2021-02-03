@@ -381,7 +381,9 @@ class MGLangScopeProvider extends AbstractMGLangScopeProvider {
 			}
 			for (statement : forStatements) {
 				val head = statement.head
-				iteratorVars.add(head.iteratorVar)
+				if (head !== null && head.iteratorVar !== null){
+					iteratorVars.add(head.iteratorVar)
+				}
 			}
 
 			// add (eventually cast) nodes of switch if in switch
