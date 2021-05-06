@@ -292,7 +292,8 @@ NullLiteral:
 enum MathFunc:
 	SQRT='sqrt' | ABS='abs';
 
-enum PrimitiveType: //TODO: Replace by standard eDataTypes?
+//TODO: Replace by standard eDataTypes?
+enum PrimitiveType:
 	INT='int' | CHAR='char' | DOUBLE='double' | BOOLEAN='boolean';
 
 terminal DOUBLE returns ecore::EDouble:
